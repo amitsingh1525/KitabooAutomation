@@ -1,4 +1,4 @@
-package com.hurix.com.platform.loginPage;
+package com.hurix.platform.loginPage;
 
 import java.util.Properties;
 
@@ -7,7 +7,7 @@ import com.hurix.automation.utility.Log;
 
 public class LoginModule extends LoginStepModule {
 
-	private static String loginScenario(String username, String password){
+	public static String loginScenario(String username, String password){
 
 		txtUsername(username);
 		txtPassword(password);

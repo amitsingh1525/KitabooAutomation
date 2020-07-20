@@ -10,8 +10,10 @@ import org.openqa.selenium.ElementNotSelectableException;
 import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class UIElements {
@@ -240,6 +242,17 @@ public class UIElements {
 			Thread.sleep(5000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public static void selectDropdown(By by, String visibleText, String elementName){
+		try {
+			Select drpLocator = new Select(Driver.driver.findElement(by));
+			drpLocator.selectByVisibleText(visibleText);
+			Log.info("In a "+elementName+" Dropdown "+visibleText+" will selected.");
+		} catch (Exception e) {
+			Log.error("In a "+elementName+" Dropdown "+visibleText+" will Not selected due to some reason!");
 			e.printStackTrace();
 		}
 	}

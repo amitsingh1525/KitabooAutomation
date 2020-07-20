@@ -6,6 +6,7 @@ import org.junit.BeforeClass;
 
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
+import io.cucumber.java.PendingException;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -14,62 +15,70 @@ import com.hurix.automation.utility.BrowserConfigure;
 import com.hurix.automation.utility.Driver;
 import com.hurix.automation.utility.Log;
 import com.hurix.automation.utility.UIElements;
-import com.hurix.com.platform.loginPage.LoginStepModule;
+import com.hurix.platform.loginPage.LoginStepModule;
 
 public class LoginTest{
 
-	static boolean initializeClass = true;
-
-	@Before
-	public static void openBrowser(){
-
-		if(initializeClass){
-			System.out.println("Inside Loop");
-			Log.initialization();
-			initializeClass = false;
-		}
-
-		Log.startTestCase("Test - 1");
+	@When("Open {string} Browser")
+	public void open_browser(String browserName) {
+		Log.initialization();
 		BrowserConfigure.browserConfigure("Chrome");
-		Log.info("Driver: "+Driver.driver);
-		Driver.driver.get("https://create.kitaboo.com/home.xhtml");
+		
 	}
 
-	@When("inert given username {string}")
-	public void inert_given_username_username(String username) {
-		try {
-			LoginStepModule.txtUsername(username);
-		} catch (Exception e) {
-		}
-	}
-
-	@And("insert the given password {string}")
-	public void insert_the_given_password_pass(String password) {
-		LoginStepModule.txtPassword(password);
-	}
-
-	@Then("verify the url it's not redirect to the home page")
-	public void verify_the_url_it_s_not_redirect_to_the_home_page() {
-		UIElements.threadHold();
-		if("https://create.kitaboo.com/home.xhtml".contains("home.xhtml")){
-			Log.pass("expected url matched with actual url.");
+	@Then("Navigate to LogIn Page {string}")
+	public void user_navigate_to_log_in_page_i_e_url(String url) {
+		Log.startTestCase("Test the login page with given data");
+		Driver.driver.navigate().to(url);
+		if(Driver.driver.getCurrentUrl().equals(url)){
+			Log.info("Expected and ACtual URL matched for login page. i.e '"+Driver.driver.getCurrentUrl()+"'");
 		}else{
-			Log.fail("Actaul and expected dosen't matched!");
+			Log.fail("Expected: "+url+" but found "+Driver.driver.getCurrentUrl());
 		}
-			
-		Log.endTestCase("");
+	}
 
+	@And("User enters {string} and {string} on textbox")
+	public void user_enters_user_name_and_pass(String username, String password) {
+		try {
+			
+			LoginStepModule.txtUsername(username);
+			Log.info("Username enterd i.e '"+username+"'");
+			LoginStepModule.txtPassword(password);
+			Log.info("Password enterd i.e '"+password+"'");
+		} catch (PendingException e) {
+			Log.error("Execution occur!");
+			System.out.println(e.getMessage());
+		}
 	}
 
 	@And("click on login button")
 	public void click_on_login_button() {
-
-		// Write code here that turns the phrase above into concrete actions
-		LoginStepModule.btnLogin();
+		try {
+			LoginStepModule.btnLogin();
+		} catch (PendingException e) {
+			Log.error("Execution occur!");
+			System.out.println(e.getMessage());
+		}
 	}
 
-	@After
-	public static void closeBrowser(){
+	@Then("verify the url it's redirect to the home page {string}")
+	public void verify_the_url_it_s_redirect_to_the_home_page(String homePageURL) {
+		try {
+			if(Driver.driver.getCurrentUrl().equals(homePageURL)){
+				Log.pass("Expected and Actual URL matched after redirect to home page. i.e '"+Driver.driver.getCurrentUrl()+"'");
+			}else{
+				Log.fail("Expected: "+homePageURL+" but found "+Driver.driver.getCurrentUrl());
+			}
+		} catch (PendingException e) {
+			Log.error("Execution occur!");
+			System.out.println(e.getMessage());
+			Log.endTestCase("End");
+		}
+		Log.endTestCase("End");
+	}
+
+	@When("Close Browser")
+	public void close_browser() {
 		Driver.driver.quit();
 	}
 }

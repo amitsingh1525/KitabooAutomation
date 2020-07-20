@@ -16,16 +16,22 @@
 #""
 ## (Comments)
 #Sample Feature Definition Template
-
 Feature: Test Login Page
 
+  Scenario: Open Chrome Browser
+    When Open "Chrome" Browser
+    Then Navigate to LogIn Page 'https://create.kitaboo.com/home.xhtml'
+
   Scenario Outline: Test the login page with given data
-   	When inert given username "<username>"
-    And insert the given password "<password>"
+    And User enters "<username>" and "<password>" on textbox
     And click on login button
-    Then verify the url it's not redirect to the home page
+    Then verify the url it's redirect to the home page "https://create.kitaboo.com/jsp/books/books.xhtml"
 
     Examples: 
       | username  | password |
-      | username1 |     pass@123 |
-      | username2 |     pass@123 |
+      | username1 | pass@123 |
+      | username2 | pass@321 |
+      | automation.test1@yopmail.com | kitaboo!123 |
+
+  Scenario: Close Chrome Browser
+    When Close Browser

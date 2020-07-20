@@ -4,7 +4,6 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 
 import java.util.HashMap;
 
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -18,27 +17,27 @@ public  class BrowserConfigure  {
 		try {
 			switch (BrowserConfig) {
 			case "Safari":
-				Log.info("Safari Browser Start...");
+				System.out.println("Safari Browser Start...");
 				Driver.driver = new SafariDriver();
 				Driver.driver.manage().window().maximize();
 				break;
 			
 			case "Firefox":
-				Log.info("Firefox Browser Starting...");
+				System.out.println("Firefox Browser Starting...");
 				WebDriverManager.firefoxdriver().setup();
 				Driver.driver = new FirefoxDriver();
 				Driver.driver.manage().window().maximize();
 				break;
 				
 			case "Internet Explorer":
-				Log.info("Internet Explorer Browser Starting...");
+				System.out.println("Internet Explorer Browser Starting...");
 				WebDriverManager.iedriver().setup();
 				Driver.driver = new InternetExplorerDriver();
 				Driver.driver.manage().window().maximize();
 				break;
 
 			case "Chrome":
-				Log.info("Chrome Browser Starting...");
+				System.out.println("Chrome Browser Starting...");
 				ChromeOptions options = new ChromeOptions();
 				HashMap<String, Object> chromePrefs = new HashMap<String, Object>();
 				chromePrefs.put("download.default_directory", "/pathToDownloadFolder");
@@ -57,10 +56,10 @@ public  class BrowserConfigure  {
 				break;
 				
 			default:
-				Log.error("Driver crashed while execution!");
+				System.out.println("Driver crashed while execution!");
 				break;
 			}
-			Log.info("Browser Launched...");
+			System.out.println("Browser Launched...");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

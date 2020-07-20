@@ -27,6 +27,7 @@ public class Log {
      
 	public static void initialization(){
 	 	try {
+	 		//need to changes in a log file
 			File file = new File("");
 			String log_Path = "\\logs\\LogInAndBookLaunchReport1.html";
 			extent = new ExtentReports(file.getAbsolutePath()+log_Path, true, NetworkMode.OFFLINE);
@@ -97,8 +98,8 @@ public class Log {
 			//BufferedImage image = new Robot().createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
 			//ImageIO.write(image, "png", new File(file.getAbsolutePath()+scr_Path));
 			
-			test.log(LogStatus.INFO, "Screencast below: " + test.addScreenCapture(file.getAbsolutePath()+scr_Path));
 			test.log(LogStatus.ERROR, message);
+			test.log(LogStatus.ERROR, "Find the Screenshot below: " + test.addScreenCapture(file.getAbsolutePath()+scr_Path));
 			extent.flush();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
