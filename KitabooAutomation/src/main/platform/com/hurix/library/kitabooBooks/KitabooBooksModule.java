@@ -2,7 +2,10 @@ package com.hurix.library.kitabooBooks;
 
 import io.cucumber.java.en.Then;
 
-import com.google.api.client.googleapis.media.MediaHttpUploader.UploadState;
+import java.time.Instant;
+import java.util.Calendar;
+import java.util.Date;
+
 import com.hurix.automation.utility.Driver;
 import com.hurix.automation.utility.Log;
 
@@ -15,8 +18,8 @@ public class KitabooBooksModule extends KitabooBooksStepModule {
 	 * 
 	 */
 	@Then("create a book with data")
-	public static String bookCreationPDF(String isbn,String title,String author,String catLevel, String description,String language,
-			String bookType, String keywords, String bookOriantaion, String bookPath){
+	//String isbn,String title,String author,String catLevel, String description,String language, String bookType, String keywords, String bookOriantaion, String bookPath
+	public static String bookCreationPDF(){
 
 		drpAddNew_HTMLCreateBook();
 		threadHold(); //wait for 5 sec
@@ -25,12 +28,14 @@ public class KitabooBooksModule extends KitabooBooksStepModule {
 			Driver.driver.switchTo().window(winHandle);
 
 		}
-		txtISBN(isbn);
-		Log.info("ISBN enterd i.e '"+isbn+"'");
-		txtTitle(title);
-		Log.info("Title enterd i.e '"+title+"'");
-		txtAuthor(author);
-		Log.info("Author enterd i.e '"+author+"'");
+		long nowEpochTime = Instant.now().toEpochMilli();
+		txtISBN(nowEpochTime+"");
+		Log.info("ISBN enterd i.e '"+nowEpochTime+""+"'");
+		txtTitle("AutomTeam_"+nowEpochTime);
+		Log.info("Title enterd i.e '"+"AutomTeam_"+nowEpochTime+"'");
+		txtAuthor("Automation Team");
+		Log.info("Author enterd i.e '"+"Automation Team"+"'");
+		String catLevel = "level 1";
 		switch(catLevel){
 		case "level 1":
 			drpCategory("Automation");
@@ -59,20 +64,34 @@ public class KitabooBooksModule extends KitabooBooksStepModule {
 			break;
 		}
 
-		txtDescription(description);
-		Log.info("Description enterd i.e '"+description+"'");
-		drpLanguageSelection(language); //language like English, Spanish, etc..
-		Log.info("In Language selected i.e '"+language+"'");
-		drpBookType(bookType); // Other, Standard, Workbook, etc.. 
-		Log.info("In Book Type selected i.e '"+bookType+"'");
-		txtkeywords(keywords);
-		drpBookOriantation(bookOriantaion);// Dynamic, Lock Portrait, etc...
-		Log.info("In Book Oriantaion selected i.e '"+bookOriantaion+"'");
+		txtDescription("This book create by Automation Team. For testing purpose.");
+		Log.info("Description enterd i.e '"+"This book create by Automation Team. For testing purpose"+"'");
+		drpLanguageSelection("English"); //language like English, Spanish, etc..
+		Log.info("In Language selected i.e '"+"English"+"'");
+		drpBookType("Other"); // Other, Standard, Workbook, etc.. 
+		Log.info("In Book Type selected i.e '"+"Other"+"'");
+		txtkeywords("Automation, Hurix,  PDGTeam");
+		Log.info("Keywords enterd i.e '"+"Automation, Hurix,  PDGTeam"+"'");
+		drpBookOriantation("Dynamic");// Dynamic, Lock Portrait, etc...
+		Log.info("In Book Oriantaion selected i.e '"+"Dynamic"+"'");
 
-		btnUploadBook(bookPath);
-		Log.info("Book Sucessfully Uploaded i.e '"+bookPath+"'");
+		threadHold();
+		btnUploadBook("C:/Users/amit.singh/git/KitabooAutomation/KitabooAutomation/resources/Hurix_Showcase.pdf");
+		rdbDefaultImage();
 		btnFinish();
-		return null;
+		afterFinishBtnContinue();
+		Driver.driver.switchTo().defaultContent();
+		
+		return "AutomTeam_"+nowEpochTime;
 
 	}
+	
+	public static String bookPublishPDF(String title){
+		
+		
+		btnPublish();
+		return null;
+	}
+	
+	
 }

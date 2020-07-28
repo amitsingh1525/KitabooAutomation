@@ -4,7 +4,10 @@ import java.io.File;
 import java.util.Properties;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import com.hurix.automation.utility.Driver;
+import com.hurix.automation.utility.Log;
 import com.hurix.automation.utility.UIElements;
 
 public class KitabooBooksStepModule extends UIElements {
@@ -67,6 +70,8 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 			selectDropdown(By.id(prop.getProperty("category_drp_ID")), prop.getProperty("category_addNewCategory_VisibleText"), "Add New Category");
 			elementFinderByXpath(prop.getProperty("categoryName_Xpath"), "txt_NewCategory").sendKeys(categoryName);
 			elementFinderByXpath(prop.getProperty("categorySave_Xpath"), "txt_SaveCategory").click();
+			Thread.sleep(500);
+			UIElements.wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(prop.getProperty("loaderClass_xpath"))));
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -127,8 +132,18 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 	public static void btnUploadBook(String path){
 		try {
 			File projectLocation = new File("");
-			elementFinderByID(prop.getProperty("uploadFile_Browse_ID"), "btn_Browse").sendKeys(projectLocation.getAbsoluteFile()+path);
+			Driver.driver.findElement(By.xpath(prop.getProperty("uploadFile_Browse_Xpath"))).sendKeys(path);
+			UIElements.wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(prop.getProperty("loaderClass_xpath"))));
 			elementFinderByXpath(prop.getProperty("afterFileUploadPopUp_xpath"), "Ok Button(After Upload Book Popup msg)").click();
+			Log.info("Book Sucessfully Uploaded i.e '"+"C:/Users/amit.singh/git/KitabooAutomation/KitabooAutomation/resources/TwoPagePdfFile.pdf"+"'");
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void rdbDefaultImage(){
+		try {
+			elementFinderByXpath(prop.getProperty("defaultImage_Xpath"), "rdb_Default").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -137,6 +152,23 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 	public static void btnFinish(){
 		try {
 			elementFinderByXpath(prop.getProperty("bookCreation_FinishBtn_Xpath"), "btn_Finish").click();
+			UIElements.wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(prop.getProperty("loaderClass_xpath"))));
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void afterFinishBtnContinue(){
+		try {
+			elementFinderByXpath(prop.getProperty("afterFinishBtnContinue_xpath"), "btn_Continue").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void btnPublish(){
+		try {
+			elementFinderByID(prop.getProperty("publishBtn_ID"), "btn_Continue");
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
