@@ -26,6 +26,7 @@ public class KitabooBooksModule extends KitabooBooksStepModule {
 		for(String winHandle : Driver.driver.getWindowHandles())  // Switch to new opened window
 		{
 			Driver.driver.switchTo().window(winHandle);
+			//hey
 
 		}
 		long nowEpochTime = Instant.now().toEpochMilli();
