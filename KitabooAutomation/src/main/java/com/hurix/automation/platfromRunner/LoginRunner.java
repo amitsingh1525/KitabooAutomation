@@ -8,8 +8,9 @@ import org.junit.runner.RunWith;
 
 @RunWith(Cucumber.class)
 @CucumberOptions( 
-		features = "features/platform/kitabooBooks.feature",
+		features = "features/platform/login.feature",
 		glue = {"classpath:com/hurix/test/loginScenario", "classpath:com/hurix/library/kitabooBooks"} , monochrome = true )
+
 
 public class LoginRunner {
 

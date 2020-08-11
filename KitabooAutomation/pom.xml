@@ -72,17 +72,7 @@
 			<version>17.0</version>
 		</dependency>
 
-		<dependency>
-			<groupId>com.google.http-client</groupId>
-			<artifactId>google-http-client</artifactId>
-			<version>1.23.0</version>
-		</dependency>
 
-		<dependency>
-			<groupId>com.google.http-client</groupId>
-			<artifactId>google-http-client-jackson2</artifactId>
-			<version>1.23.0</version>
-		</dependency>
 
 		<dependency>
 			<groupId>com.google.oauth-client</groupId>
@@ -117,5 +107,26 @@
 			<version>1.1.1</version>
 		</dependency>
 		<!-- Gmail API end -->
+
+		<!-- RestAssured API -->
+		<dependency>
+			<groupId>io.rest-assured</groupId>
+			<artifactId>rest-assured</artifactId>
+			<version>3.0.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20090211</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.github.scribejava</groupId>
+			<artifactId>scribejava-apis</artifactId>
+			<version>2.5.3</version>
+		</dependency>
+		
+		<!-- RestAssured API end -->
 	</dependencies>
 </project>
