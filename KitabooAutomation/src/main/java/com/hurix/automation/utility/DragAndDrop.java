@@ -13,7 +13,7 @@ public class DragAndDrop {
 			Actions act=new Actions(Driver.driver);		
 		    act.dragAndDrop(From, To).build().perform();
 		} catch (Exception e) {
-			System.out.println("Element not present."+e.getMessage());
+			System.out.println("Element NOT present."+e.getMessage());
 		}
 	}
 
