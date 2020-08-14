@@ -12,7 +12,7 @@ public class LoginModule extends LoginStepModule {
 		txtUsername(username);
 		txtPassword(password);
 		btnLogin();
-		threadHold();
+		threadHold_5Sec();
 		if(Driver.driver.getCurrentUrl().contains("books.xhtml")){
 			Log.pass("After successfully login redirected to the home page"+Driver.driver.getCurrentUrl());
 			return "After successfully login redirected to the home page"+Driver.driver.getCurrentUrl();

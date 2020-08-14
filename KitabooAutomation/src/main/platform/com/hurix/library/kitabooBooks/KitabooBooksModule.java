@@ -1,6 +1,8 @@
 package com.hurix.library.kitabooBooks;
 
+import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 
 import java.time.Instant;
 import java.util.Calendar;
@@ -17,12 +19,14 @@ public class KitabooBooksModule extends KitabooBooksStepModule {
 	 * 
 	 * 
 	 */
-	@Then("create a book with data")
+	
+	
+	@Given("create a book with data")
 	//String isbn,String title,String author,String catLevel, String description,String language, String bookType, String keywords, String bookOriantaion, String bookPath
 	public static String bookCreationPDF(){
 
 		drpAddNew_HTMLCreateBook();
-		threadHold(); //wait for 5 sec
+		threadHold_5Sec(); //wait for 5 sec
 		for(String winHandle : Driver.driver.getWindowHandles())  // Switch to new opened window
 		{
 			Driver.driver.switchTo().window(winHandle);
@@ -76,7 +80,7 @@ public class KitabooBooksModule extends KitabooBooksStepModule {
 		drpBookOriantation("Dynamic");// Dynamic, Lock Portrait, etc...
 		Log.info("In Book Oriantaion selected i.e '"+"Dynamic"+"'");
 
-		threadHold();
+		threadHold_5Sec();
 		btnUploadBook("C:/Users/amit.singh/git/KitabooAutomation/KitabooAutomation/resources/Hurix_Showcase.pdf");
 		rdbDefaultImage();
 		btnFinish();

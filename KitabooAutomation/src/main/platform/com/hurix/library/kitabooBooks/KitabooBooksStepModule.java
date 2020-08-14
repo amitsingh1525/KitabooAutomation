@@ -12,7 +12,7 @@ import com.hurix.automation.utility.UIElements;
 
 public class KitabooBooksStepModule extends UIElements {
 
-private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAutomation/KitabooAutomation/config/platform/kitabooBooks.properties");
+private static Properties prop = getProperty(System.getProperty("user.dir")+"/config/platform/kitabooBooks.properties");
 	
 	public static void drpAddNew_BulkConversion(){
 		try {

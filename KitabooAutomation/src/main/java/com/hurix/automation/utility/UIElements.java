@@ -237,9 +237,18 @@ public class UIElements {
 		return prop;
 	}
 
-	public static void threadHold(){
+	public static void threadHold_5Sec(){
 		try {
 			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public static void threadHold_2Sec(){
+		try {
+			Thread.sleep(2000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

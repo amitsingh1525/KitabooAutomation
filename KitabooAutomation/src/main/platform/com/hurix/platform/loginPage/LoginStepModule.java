@@ -6,7 +6,7 @@ import com.hurix.automation.utility.UIElements;
 
 public class LoginStepModule extends UIElements {
 
-	private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAutomation/KitabooAutomation/config/platform/loginPage.properties");
+	private static Properties prop = getProperty(System.getProperty("user.dir")+"/config/platform/loginPage.properties");
 	
 	public static void txtUsername(String username){
 		try {
