@@ -212,6 +212,15 @@ public class BookShelfStepModule extends UIElements{
 		}
 	}
 
+	public static void btnThumbnails(){
+		try {
+			elementFinderByXpath(prop.getProperty("bookThumbnails_xpath"), "btnThumbnails").click();
+		} catch (Exception e) {
+			System.out.println("Element not present.");
+		}
+	}
+	
+	
 	public static void linkRecentlyView(){
 		linkHorizontalCatName("Recently Viewed");
 	}

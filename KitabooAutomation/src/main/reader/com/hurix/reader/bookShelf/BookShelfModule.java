@@ -7,12 +7,10 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 public class BookShelfModule extends BookShelfStepModule {
-	
-	@Then("Search and launch a book")
+
 	@Given("Search and launch a book")
-	@When("Search and launch a book")
 	public static String searchAndLaunchBook(String title){
-		
+
 		btnSearch();
 		txt_Search(title);
 		String totalBook = afterSearchBookFound();
@@ -22,6 +20,18 @@ public class BookShelfModule extends BookShelfStepModule {
 		btnMarkAsFav().get(0).click();
 		return Driver.driver.getCurrentUrl();
 	}
+
+	public static void profileIconChangeUsingJPG(){
+		btnProfileIcon();
+		btnEditProfile();
+		btnUploadPic(System.getProperty("user.dir")+"/resources/einstein.jpg");
+		btnSaveProfile();
+	}
 	
+	public static void catNavigationAndLaunch(String catName){
+		linkHorizontalCatName(catName);
+		btnThumbnails();
+	}
+
 	
 }

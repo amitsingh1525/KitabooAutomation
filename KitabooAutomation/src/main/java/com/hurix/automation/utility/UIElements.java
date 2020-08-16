@@ -255,6 +255,17 @@ public class UIElements {
 		}
 	}
 
+	public static void windowhandle() throws InterruptedException{
+		//	wait.until(ExpectedConditions.numberOfWindowsToBe(2));
+			Thread.sleep(3000);
+			for (String windowhandle : Driver.driver.getWindowHandles())  
+			{  
+				Driver.driver.switchTo().window(windowhandle);  
+				
+			}
+			Thread.sleep(3000);
+		}
+	
 	public static void selectDropdown(By by, String visibleText, String elementName){
 		try {
 			Select drpLocator = new Select(Driver.driver.findElement(by));
