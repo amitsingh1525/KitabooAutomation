@@ -218,7 +218,7 @@ public class BookplayerStepModule extends UIElements {
 	
 	public static void btnstickynotes(){
 		try {
-			elementFinderByXpath(prop.getProperty("stickynotes_ID"), "btn_stickynotes").click();
+			elementFinderByID(prop.getProperty("stickynotes_ID"), "btn_stickynotes").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -226,7 +226,7 @@ public class BookplayerStepModule extends UIElements {
 	
 	public static void btnhighlight(){
 		try {
-			elementFinderByXpath(prop.getProperty("highlight_ID"), "btn_highlight").click();
+			elementFinderByID(prop.getProperty("highlight_ID"), "btn_highlight").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -234,7 +234,7 @@ public class BookplayerStepModule extends UIElements {
 	
 	public static void btnzoom(){
 		try {
-			elementFinderByXpath(prop.getProperty("zoom_ID"), "btn_zoom").click();
+			elementFinderByID(prop.getProperty("zoom_ID"), "btn_zoom").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -282,7 +282,7 @@ public class BookplayerStepModule extends UIElements {
 	
 	public static void btnthumbnail(){
 		try {
-			elementFinderByXpath(prop.getProperty("thumbnailbtn_ID"), "thumbnail").click();
+			elementFinderByID(prop.getProperty("thumbnailbtn_ID"), "thumbnail").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -382,7 +382,7 @@ public class BookplayerStepModule extends UIElements {
 	
 	public static void editnote(){
 		try {
-			elementFinderByXpath(prop.getProperty("editnote_ID"), "editnote").sendKeys("add note");
+			elementFinderByID(prop.getProperty("editnote_ID"), "editnote").sendKeys("add note");
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}

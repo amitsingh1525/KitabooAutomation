@@ -12,7 +12,6 @@ public class LoginModule extends LoginStepModule {
 
 	public static void TC_InvalidUserNameANDPassword(String username, String password){
 
-		//Author Rajesh
 		txtUsername(username);
 		txtPassword(password);
 		btnLogin();
