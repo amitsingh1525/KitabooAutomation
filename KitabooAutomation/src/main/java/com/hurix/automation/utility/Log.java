@@ -25,17 +25,13 @@ public class Log {
     private static ExtentTest test;
     private static Logger Log = Logger.getLogger(Log.class.getName()); 
      
-	public static void initialization(){
+	public static void initialization(String logFileName){
 	 	try {
-	 		//need to changes in a log file
-			File file = new File("");
-			String log_Path = "\\logs\\LogInAndBookLaunchReport1.html";
-			extent = new ExtentReports(file.getAbsolutePath()+log_Path, true, NetworkMode.OFFLINE);
-			//need dynamic path
-			extent.loadConfig(new File("D:/eclipseWorkSpace/KitabooAutomation/config/extentConfig/extent-config.xml"));
-			System.out.println(file.getAbsolutePath()+log_Path);
+			String log_Path = "/logs/"+logFileName+".html";
+			extent = new ExtentReports(System.getProperty("user.dir")+log_Path, true, NetworkMode.OFFLINE);
+			extent.loadConfig(new File(System.getProperty("user.dir")+"/config/extentConfig/extent-config.xml"));
+			System.out.println(System.getProperty("user.dir")+log_Path);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}  
@@ -121,7 +117,7 @@ public class Log {
 
 	public static void main(String args[]){
 		System.out.println("hey");
-		initialization();
+		initialization("TestingLog");
 		startTestCase("Testing_1");
 		info("Step - 1");
 		info("Step - 2");

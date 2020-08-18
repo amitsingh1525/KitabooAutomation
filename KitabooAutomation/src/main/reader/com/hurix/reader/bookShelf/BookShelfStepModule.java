@@ -15,7 +15,7 @@ import com.hurix.automation.utility.UIElements;
 public class BookShelfStepModule extends UIElements{
 
 
-	private static Properties prop = getProperty(System.getProperty("user.dir")+"/config/platform/loginPage.properties");
+	private static Properties prop = getProperty(System.getProperty("user.dir")+"/config/reader/BookShelf.properties");
 
 	public static void btnSearch(){
 		try {
@@ -106,7 +106,55 @@ public class BookShelfStepModule extends UIElements{
 		try {
 			elementFinderByID(prop.getProperty("profileIcon_id"), "btnProfileIcon").click();
 		} catch (Exception e) {
-			System.out.println("Element not present.");
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void linkChangePassword(){
+		try {
+			elementFinderByID(prop.getProperty("changePassword_id"), "linkChangePassword").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void txtCurrentPassword(String currentPassword){
+		try {
+			elementFinderByXpath(prop.getProperty("currentPassword_xpath"), "txtCurrentPassword").sendKeys(currentPassword);
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void txtNewPassword(String newPassword){
+		try {
+			elementFinderByID(prop.getProperty("newPassword_id"), "txtNewPassword").sendKeys(newPassword);
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void txtConfirmPassword(String confirmPassword){
+		try {
+			elementFinderByXpath(prop.getProperty("confirmPassword_xpath"), "txtConfirmPassword").sendKeys(confirmPassword);
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void btnSaveChangePassword(){
+		try {
+			elementFinderByXpath(prop.getProperty("saveChangePassword_xpath"), "btnSaveChangePassword").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void btnCancelChangePassword(){
+		try {
+			elementFinderByXpath(prop.getProperty("cancelChangePassword_xpath"), "btnCancelChangePassword").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
 		}
 	}
 
@@ -116,6 +164,16 @@ public class BookShelfStepModule extends UIElements{
 		} catch (Exception e) {
 			System.out.println("Element not present.");
 		}
+	}
+	
+	public static String getAboutUSVersion(){
+		String versionInfo = null;
+		try {
+			versionInfo = elementFinderByID(prop.getProperty("aboutUs_id"), "linkAboutUS").getText();
+		} catch (Exception e) {
+			System.out.println("Element not present.");
+		}
+		return versionInfo;
 	}
 
 	public static void linkPrivacyPolicy(){
@@ -152,6 +210,7 @@ public class BookShelfStepModule extends UIElements{
 
 	public static void txtFirstName(String firstName){
 		try {
+			elementFinderByXpath(prop.getProperty("firstName_xpath"), "txtFirstName").clear();
 			elementFinderByXpath(prop.getProperty("firstName_xpath"), "txtFirstName").sendKeys(firstName);
 		} catch (Exception e) {
 			System.out.println("Element not present.");
@@ -160,6 +219,7 @@ public class BookShelfStepModule extends UIElements{
 
 	public static void txtLastName(String lastName){
 		try {
+			elementFinderByXpath(prop.getProperty("lastName_xpath"), "txtFirstName").clear();
 			elementFinderByXpath(prop.getProperty("lastName_xpath"), "txtFirstName").sendKeys(lastName);
 		} catch (Exception e) {
 			System.out.println("Element not present.");
@@ -184,7 +244,8 @@ public class BookShelfStepModule extends UIElements{
 
 	public static void btnUploadPic(String filePath){
 		try {
-			elementFinderByID(prop.getProperty("uploadProfile_id"), "btnUploadPic").sendKeys(filePath);
+			System.out.println(filePath);
+			elementFinderByXpath(prop.getProperty("uploadProfile_id"), "btnUploadPic").sendKeys(filePath);
 		} catch (Exception e) {
 			System.out.println("Element not present.");
 		}
@@ -240,26 +301,33 @@ public class BookShelfStepModule extends UIElements{
 		return size;
 	}
 	
-	public static List<WebElement> btnMarkAsFav(){
-		List<WebElement> elements = null;
+	public static void btnMarkAsFav(int bookNum){
 		try {
-			elements = elementsFinderByXpaths(prop.getProperty("markAsFav_listview_xpath"), "btnMarkAsFav");
+			List<WebElement> elements = elementsFinderByXpaths(prop.getProperty("markAsFav_listview_xpath"), "btnMarkAsFav");
+			elements.get(bookNum).click();
 		} catch (Exception e) {
 			System.out.println("Element not present.");
 		}
-		return elements;
 	}
 	
-	public static List<WebElement> btnUnmarkAsFav(){
-		List<WebElement> elements = null;
+	public static void btnUnmarkAsFav(int bookNum){
 		try {
 			linkFavorite();
-			elements = elementsFinderByXpaths(prop.getProperty("unmarkAsFav_listview_xpath"), "btnUnmarkAsFav");
+			List<WebElement> elements = elementsFinderByXpaths(prop.getProperty("unmarkAsFav_listview_xpath"), "btnUnmarkAsFav");
+			elements.get(bookNum).click();
 		} catch (Exception e) {
 			System.out.println("Element not present.");
 		}
-		return elements;
-		
+	}
+	
+	public static String getUnmarkAsFav_msgNoBookFound(){
+		String msg = null;
+		try {
+			msg = elementFinderByXpath("unmarkAsFav_msgNoBookAvailable_xpath", "getUnmarkAsFav_msgNoBookFound").getText();
+		} catch (Exception e) {
+			System.out.println("Element not present.");
+		}
+		return null;
 	}
 	
 	public static void allUnmarkAsFav(){
@@ -330,6 +398,20 @@ public class BookShelfStepModule extends UIElements{
 		return bookDiscription;
 	}
 	
+	public static void btnSkipHelpScreen(){
+		try {
+			elementFinderByXpath(prop.getProperty("Skip_xpath"), "btnSkipHelpScreen").click();
+		} catch (Exception e) {
+			System.out.println("Element not present.");
+		}
+	}
 	
+	public static void btnNextHelpScreen(){
+		try {
+			elementFinderByXpath(prop.getProperty("NextHelpScreen_xpath"), "btnNextHelpScreen").click();
+		} catch (Exception e) {
+			System.out.println("Element not present.");
+		}
+	}
 	//Analytics part pending
 }

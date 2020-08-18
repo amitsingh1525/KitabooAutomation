@@ -255,15 +255,12 @@ public class UIElements {
 		}
 	}
 
-	public static void windowhandle() throws InterruptedException{
-		//	wait.until(ExpectedConditions.numberOfWindowsToBe(2));
-			Thread.sleep(3000);
-			for (String windowhandle : Driver.driver.getWindowHandles())  
+	public static void windowhandle() {
+			wait.until(ExpectedConditions.numberOfWindowsToBe(2));
+			for (String childWindow : Driver.driver.getWindowHandles())  
 			{  
-				Driver.driver.switchTo().window(windowhandle);  
-				
+				Driver.driver.switchTo().window(childWindow);  
 			}
-			Thread.sleep(3000);
 		}
 	
 	public static void selectDropdown(By by, String visibleText, String elementName){

@@ -11,7 +11,7 @@ import com.hurix.automation.utility.UIElements;
 
 public class LoginStepModule extends UIElements {
 
-	private static Properties prop = getProperty("D:/Kitaboo Automation/KitabooAutomation/KitabooAutomation/config/reader/loginPage.properties");
+	public static Properties prop = getProperty(System.getProperty("user.dir")+"/config/reader/loginPage.properties");
 
 	public static void txtUsername(String username){
 		try {
@@ -78,18 +78,18 @@ public class LoginStepModule extends UIElements {
 
 	public static void btnIOSInstaller(){
 		try {
+			String parent_Window = Driver.driver.getWindowHandle();
 			elementFinderByXpath(prop.getProperty("IOSInstaller_btn_xpath"), "IOS installer").click();
 			windowhandle();
 			String ebookreader = elementFinderByXpath(prop.getProperty("IOSebookreader_xpath"), "IOS kitaboo ebookreader").getText();
-			if(ebookreader.equalsIgnoreCase("Kitaboo eBook Reader")) {
+			if(ebookreader.equalsIgnoreCase("Kitaboo eBook Reader 4+")) {
 				Log.info("Kitaboo eBook reader is found on Apple store");
 			}
 			else {
-				Log.error("Kitaboo eBook reader is not found on Apple store");
+				Log.fail("Kitaboo eBook reader is not found on Apple store");
 			}
 			Driver.driver.close();
-			windowhandle();
-			
+			Driver.driver.switchTo().window(parent_Window);
 			
 		} catch (Exception e) {
 			System.out.println("Element not present.");
@@ -98,6 +98,7 @@ public class LoginStepModule extends UIElements {
 
 	public static void btnAndroidInstaller(){
 		try {
+			String parent_Window = Driver.driver.getWindowHandle();
 			elementFinderByXpath(prop.getProperty("androidInstaller_btn_xpath"), "Android installer").click();
 			windowhandle();
 			String ebookreader = elementFinderByXpath(prop.getProperty("androideBookreader_xpath"), "Apple store kitaboo ebookreader").getText();
@@ -105,11 +106,10 @@ public class LoginStepModule extends UIElements {
 				Log.info("Kitaboo eBook reader is found on Google play store");
 			}
 			else {
-				Log.error("Kitaboo eBook reader is not found on Google play store");
+				Log.fail("Kitaboo eBook reader is not found on Google play store");
 			}
 			Driver.driver.close();
-			windowhandle();
-			
+			Driver.driver.switchTo().window(parent_Window);
 		} catch (Exception e) {
 			System.out.println("Element not present.");
 		}
@@ -117,6 +117,7 @@ public class LoginStepModule extends UIElements {
 
 	public static void btnWindowsInstaller(){
 		try {
+			String parent_Window = Driver.driver.getWindowHandle();
 			elementFinderByXpath(prop.getProperty("windowsInstaller_btn_xpath"), "Windows installer").click();
 			windowhandle();
 			elementFinderByXpath(prop.getProperty("windowsCancelbtn_xpath"), "Popup cancel btn").click();
@@ -125,10 +126,10 @@ public class LoginStepModule extends UIElements {
 				Log.info("Kitaboo eBook reader is found on Windows store");
 			}
 			else {
-				Log.error("Kitaboo eBook reader is not found on Windows store");
+				Log.fail("Kitaboo eBook reader is not found on Windows store");
 			}
 			Driver.driver.close();
-			windowhandle();
+			Driver.driver.switchTo().window(parent_Window);
 			
 		} catch (Exception e) {
 			System.out.println("Element not present.");
@@ -152,9 +153,9 @@ public class LoginStepModule extends UIElements {
 		}
 	}
 
-	public static void btnSubmit(){
+	public static void btnForgetSubmit(){
 		try {
-			elementFinderByXpath(prop.getProperty("submitbtn_xpath"), "Submit btn").click();
+			elementFinderByXpath(prop.getProperty("forgetSubmitbtn_xpath"), "Submit btn").click();
 		} catch (Exception e) {
 			System.out.println("Element not present.");
 		}
@@ -178,7 +179,7 @@ public class LoginStepModule extends UIElements {
 
 	public static void btnAccesscode(){
 		try {
-			elementFinderByLinkText(prop.getProperty("accesscode_linktext"), "Accesscode link").click();
+			elementFinderByXpath(prop.getProperty("accesscode_xpath"), "btnAccesscode").click();
 		} catch (Exception e) {
 			System.out.println("Element not present.");
 		}
@@ -195,7 +196,7 @@ public class LoginStepModule extends UIElements {
 
 	public static void btnSend(){
 		try {
-			elementFinderByID(prop.getProperty("sendbtn_xpath"), "Send btn").click();
+			elementFinderByXpath(prop.getProperty("sendbtn_xpath"), "Send btn").click();
 		} catch (Exception e) {
 			System.out.println("Element not present.");
 		}
@@ -229,7 +230,7 @@ public class LoginStepModule extends UIElements {
 		}
 	}
 
-	public static void txtpassword(String password){
+	public static void txtNewUserPassword(String password){
 		try {
 			elementFinderByXpath(prop.getProperty("password_txt_xpath"), "password txt").clear();
 			elementFinderByXpath(prop.getProperty("password_txt_xpath"), "password txt").sendKeys(password);
@@ -257,7 +258,7 @@ public class LoginStepModule extends UIElements {
 
 	public static void btnsubmitaccesscode(){
 		try {
-			elementFinderByLinkText(prop.getProperty("submitbtn_linktext"), "submit btn").click();
+			elementFinderByXpath(prop.getProperty("submitbtn_xpath"), "btnsubmitaccesscode").click();
 		} catch (Exception e) {
 			System.out.println("Element not present.");
 		}
@@ -267,6 +268,26 @@ public class LoginStepModule extends UIElements {
 		String msg = null;
 		try {
 			msg = elementFinderByXpath(prop.getProperty("emailidexists_visibletext_xpath"), "email id already exists").getText();
+		} catch (Exception e) {
+			System.out.println("Element not present.");
+		}
+		return msg;
+	}
+	
+	public static String getinvalidForgetEmailmsg(){
+		String msg = null;
+		try {
+			msg = elementFinderByXpath(prop.getProperty("invalidForgetEmailID_xpathh"), "Forget Email ID entered is incorrect.").getText();
+		} catch (Exception e) {
+			System.out.println("Element not present.");
+		}
+		return msg;
+	}
+	
+	public static String getForgetmsg(){
+		String msg = null;
+		try {
+			msg = elementFinderByXpath(prop.getProperty("resetconfirm_visibletext_xpath"), "Forget msg found.").getText();
 		} catch (Exception e) {
 			System.out.println("Element not present.");
 		}
