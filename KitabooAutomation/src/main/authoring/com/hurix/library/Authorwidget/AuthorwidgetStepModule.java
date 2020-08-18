@@ -102,6 +102,9 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 		}
 	}
 
+	
+//	Components started
+
 // Title component started
 	public static void cmp_title(){
 		try {
@@ -174,7 +177,7 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 	
 // Header component started
 	
-	public static void cmp_header(){
+	public static void cmpheader(){
 		try {
 			DragAndDrop.dragAndDrop(By.xpath(prop.getProperty("header_cmp_Xpath")), By.id(prop.getProperty("dragDrop_ID")));
 			//elementFinderByXpath(prop.getProperty("title_cmp_Xpath"), "cmp_title");
@@ -183,5 +186,153 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 		}
 	}
 	
+// copy functionality  (List and grid view)	
 	
+	public static void btnlistview_copy(){
+		try {
+			elementFinderByXpath(prop.getProperty("listviewscopy_btn_ID"), "btn_copy").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void btngridview_copy(){
+		try {
+			elementFinderByXpath(prop.getProperty("gridviewscopy_btn__ID"), "btn_copy").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+// Rename functionality  (grid view)	
+	
+	public static void btnrenamewidget(){
+		try {
+			elementFinderByXpath(prop.getProperty("rename_btn_ID"), "btn_rename").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void txtbx_widgetname(String widgetname){
+		try {
+			elementFinderByXpath(prop.getProperty("widgetname_txtbx_ID"), "txtbx_widgetname").clear();
+			elementFinderByXpath(prop.getProperty("widgetname_txtbx_ID"), "txtbx_widgetname").sendKeys(widgetname);
+			elementFinderByXpath(prop.getProperty("widgetname_txtbx_ID"), "txtbx_widgetnamer").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void btnsavewidget(){
+		try {
+			elementFinderByXpath(prop.getProperty("save_btn_ID"), "btn_save").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+// Change cover functionality  (grid view)	
+	
+	
+	
+// Share functionality (List and Grid view)
+	
+	public static void btnlistview_share(){
+		try {
+			elementFinderByXpath(prop.getProperty("listviewshare_btn_ID"), "btn_share").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void rdbtnoption_share(){
+		try {
+			elementFinderByXpath(prop.getProperty("radiooption_btn_ID"), "btn_radiooption").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void btnconfirm_share(){
+		try {
+			elementFinderByXpath(prop.getProperty("shareconfirm_btn_Id"), "btn_confirm").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void btngridview(){
+		try {
+			elementFinderByXpath(prop.getProperty("gridview_btn_ID"), "btn_gridview").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void btngridview_share(){
+		try {
+			elementFinderByXpath(prop.getProperty("gridviewshare_btn__ID"), "btn_share").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void btnlistview(){
+		try {
+			elementFinderByXpath(prop.getProperty("listview_btn_ID"), "btn_listview").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+// Delete author widget Functionality
+	public static void btndelete(){
+		try {
+			elementFinderByXpath(prop.getProperty("delete_btn_ID"), "btn_delete").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void btnconfirmdelete(){
+		try {
+			elementFinderByXpath(prop.getProperty("deleteconfirm_btn_ID"), "btn_confirmdelete").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+// Filter author widget and create widget Functionality
+	public static void drpdwnselect(){
+		try {
+			elementFinderByXpath(prop.getProperty("select_drpdwn_Xpath"), "drpdwn_select").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void drpdwnauthorwidget(){
+		try {
+			elementFinderByXpath(prop.getProperty("authorwidget_drpdwn_Xpath"), "drpdwn_authorwidget").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void drpdwncreatewidget(){
+		try {
+			elementFinderByXpath(prop.getProperty("createwidget_drpdwn_Xpath"), "drpdwn_createwidget").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void drpdwnselectall(){
+		try {
+			elementFinderByXpath(prop.getProperty("selectall_drpdwn_Xpath"), "drpdwn_selectall").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
 }
