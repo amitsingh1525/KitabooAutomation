@@ -40,8 +40,8 @@ public  class BrowserConfigure  {
 				System.out.println("Chrome Browser Starting...");
 				ChromeOptions options = new ChromeOptions();
 				HashMap<String, Object> chromePrefs = new HashMap<String, Object>();
-				chromePrefs.put("download.default_directory", "/pathToDownloadFolder");
-				chromePrefs.put("download.prompt_for_download", true);
+				//chromePrefs.put("download.default_directory", "/pathToDownloadFolder");
+				chromePrefs.put("download.prompt_for_download", false);
 				chromePrefs.put("download.directory_upgrade", false);
 				chromePrefs.put("safebrowsing.enabled", true);
 				options.setExperimentalOption("prefs", chromePrefs);

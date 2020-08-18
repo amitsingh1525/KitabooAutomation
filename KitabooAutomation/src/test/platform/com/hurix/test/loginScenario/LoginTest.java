@@ -21,7 +21,7 @@ public class LoginTest{
 
 	@When("Open {string} Browser")
 	public void open_browser(String browserName) {
-		Log.initialization();
+		Log.initialization("PlatformSanity");
 		BrowserConfigure.browserConfigure("Chrome");
 		
 	}

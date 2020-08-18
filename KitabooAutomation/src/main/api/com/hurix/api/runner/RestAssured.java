@@ -15,7 +15,7 @@ public class RestAssured {
 	static String userToken = "";
 	
 	public static void main(String []args){
-		Log.initialization();
+		Log.initialization("RestAssuredAPI");
 		
 		io.restassured.RestAssured.baseURI = "https://cloud.kitaboo.com";
 		long startDate = EpochTime.getEpochTime("2019/04/30 23:45:15");
