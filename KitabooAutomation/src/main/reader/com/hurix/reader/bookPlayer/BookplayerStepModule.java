@@ -21,6 +21,7 @@ public class BookplayerStepModule extends UIElements {
 	
 	public static void btntableofcontentandresources(){
 		try {
+			//changes
 			elementFinderByID(prop.getProperty("tableofcontentandresources_ID"), "btn_tableofcontentandresources").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
