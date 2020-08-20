@@ -77,9 +77,10 @@ public class BookShelfModule extends BookShelfStepModule {
 	public static String aboutUS(){
 		btnProfileIcon();
 		linkAboutUS();
-		Driver.driver.navigate().refresh();
+		String msg = getAboutUSVersion();
 		threadHold_2Sec();
-		return getAboutUSVersion();
+		Driver.driver.navigate().refresh();
+		return msg;
 		
 	}
 	

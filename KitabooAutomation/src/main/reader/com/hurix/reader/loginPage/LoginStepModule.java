@@ -83,7 +83,7 @@ public class LoginStepModule extends UIElements {
 			windowhandle();
 			String ebookreader = elementFinderByXpath(prop.getProperty("IOSebookreader_xpath"), "IOS kitaboo ebookreader").getText();
 			if(ebookreader.equalsIgnoreCase("Kitaboo eBook Reader 4+")) {
-				Log.info("Kitaboo eBook reader is found on Apple store");
+				Log.pass("Kitaboo eBook reader is found on Apple store");
 			}
 			else {
 				Log.fail("Kitaboo eBook reader is not found on Apple store");
@@ -103,7 +103,7 @@ public class LoginStepModule extends UIElements {
 			windowhandle();
 			String ebookreader = elementFinderByXpath(prop.getProperty("androideBookreader_xpath"), "Apple store kitaboo ebookreader").getText();
 			if(ebookreader.equalsIgnoreCase("Kitaboo eBook Reader")) {
-				Log.info("Kitaboo eBook reader is found on Google play store");
+				Log.pass("Kitaboo eBook reader is found on Google play store");
 			}
 			else {
 				Log.fail("Kitaboo eBook reader is not found on Google play store");
@@ -123,7 +123,7 @@ public class LoginStepModule extends UIElements {
 			elementFinderByXpath(prop.getProperty("windowsCancelbtn_xpath"), "Popup cancel btn").click();
 			String ebookreader = elementFinderByID(prop.getProperty("windowsebookreader_id"), "windows installer kitaboo ebookreader").getText();
 			if(ebookreader.equalsIgnoreCase("Kitaboo eBook Reader")) {
-				Log.info("Kitaboo eBook reader is found on Windows store");
+				Log.pass("Kitaboo eBook reader is found on Windows store");
 			}
 			else {
 				Log.fail("Kitaboo eBook reader is not found on Windows store");
@@ -277,7 +277,7 @@ public class LoginStepModule extends UIElements {
 	public static String getinvalidForgetEmailmsg(){
 		String msg = null;
 		try {
-			msg = elementFinderByXpath(prop.getProperty("invalidForgetEmailID_xpathh"), "Forget Email ID entered is incorrect.").getText();
+			msg = elementFinderByID(prop.getProperty("invalidForgetEmailID_id"), "Forget Email ID entered is incorrect.").getText();
 		} catch (Exception e) {
 			System.out.println("Element not present.");
 		}
