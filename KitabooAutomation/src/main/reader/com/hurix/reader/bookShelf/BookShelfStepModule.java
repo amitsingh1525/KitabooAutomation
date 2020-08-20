@@ -157,6 +157,16 @@ public class BookShelfStepModule extends UIElements{
 			System.out.println("Element not present."+e.getMessage());
 		}
 	}
+	
+	public static String getForgetChangePasswordMissmatchText(){
+		String msg = null;
+		try {
+			msg = elementFinderByID(prop.getProperty("passwordMissmatchText_id"), "getChangePasswordMissmatchText").getAttribute("aria-label");
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+		return null;
+	}
 
 	public static void linkAboutUS(){
 		try {
@@ -169,7 +179,7 @@ public class BookShelfStepModule extends UIElements{
 	public static String getAboutUSVersion(){
 		String versionInfo = null;
 		try {
-			versionInfo = elementFinderByID(prop.getProperty("aboutUs_id"), "linkAboutUS").getText();
+			versionInfo = elementFinderByXpath(prop.getProperty("aboutUsPopUpgetVersionText_xpath"), "getAboutUSVersion").getText();
 		} catch (Exception e) {
 			System.out.println("Element not present.");
 		}
@@ -350,14 +360,13 @@ public class BookShelfStepModule extends UIElements{
 		}
 	}
 
-	public static List<WebElement> btnMoreInfo(){
-		List<WebElement> elements = null;
+	public static void btnMoreInfo(int num){
 		try {
-			elements = elementsFinderByXpaths(prop.getProperty("moreInfo_listview_xpath"), "btnMoreInfo");
+			List<WebElement> elements = elementsFinderByXpaths(prop.getProperty("moreInfo_listview_xpath"), "btnMoreInfo");
+			elements.get(num).click();
 		} catch (Exception e) {
 			System.out.println("Element not present.");
 		}
-		return elements;
 	}
 	
 	public static void btnAnalytics(){
