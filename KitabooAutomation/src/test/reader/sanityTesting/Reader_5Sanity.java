@@ -2,17 +2,12 @@ package sanityTesting;
 
 import java.time.Instant;
 
-
-
-
-
-
 import com.hurix.automation.utility.BrowserConfigure;
 import com.hurix.automation.utility.Driver;
 import com.hurix.automation.utility.Gmail_ReadAndDelete;
 import com.hurix.automation.utility.Log;
 import com.hurix.automation.utility.UIElements;
-import com.hurix.reader.bookPlayer.BookplayerModule;
+import com.hurix.reader.bookPlayer.BookPlayerModule;
 import com.hurix.reader.bookPlayer.BookplayerStepModule;
 import com.hurix.reader.bookShelf.BookShelfModule;
 import com.hurix.reader.bookShelf.BookShelfStepModule;
@@ -377,9 +372,12 @@ public class Reader_5Sanity{
 		
 		LoginModule.userLogin("sharing.teacher@yopmail.com", "kitaboo@123");
 		BookShelfModule.catNavigationAndLaunch("showcase");
-		BookplayerModule.goToPage("2");
 		
+		LoginModule.userLogin("hurixreader5@gmail.com", "kitaboo@123");
+		BookShelfModule.catNavigationAndLaunch("showcase");
 		termination();
 	}
+	
+	
 	
 }

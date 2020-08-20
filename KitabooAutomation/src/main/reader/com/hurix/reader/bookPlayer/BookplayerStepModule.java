@@ -62,10 +62,10 @@ public class BookplayerStepModule extends UIElements {
 		}
 	}
 	
-	public static void lstcontent_list(){
+	public static void lstcontent_list(int chapterno){
 		try {
 			List<WebElement> element= elementsFinderByXpaths(prop.getProperty("content_list_lstview_xpath"), "lst_content_list");
-			
+			element.get(chapterno).click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -323,6 +323,17 @@ public class BookplayerStepModule extends UIElements {
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
+	}
+	
+	public static String getchapterTitle(){
+		String chaptertitle = null;
+		try {
+			chaptertitle = elementFinderByXpath(prop.getProperty("chapterTitle_id"), "Chapter Title").getText();
+		} catch (Exception e) {
+			System.out.println("Element not present.");
+		}
+		return chaptertitle;
+		
 	}
 	
 	public static void btnnextchapter(){
