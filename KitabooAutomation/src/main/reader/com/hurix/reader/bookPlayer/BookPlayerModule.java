@@ -44,6 +44,19 @@ public class BookPlayerModule extends BookplayerStepModule
 		btnhistorynext();
 	}
 	
+	public static void zoomin(){
+		btnzoomin();
+	}
+	
+	public static void zoomout(){
+		btnzoomout();
+	}
+	
+	public static void searchbooktext(){
+		btnsearch();
+	}
+	
+	
 	public static String getPageNum(){
 		btnthumbnail();
 		
