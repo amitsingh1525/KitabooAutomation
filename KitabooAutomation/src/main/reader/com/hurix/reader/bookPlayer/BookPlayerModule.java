@@ -20,7 +20,8 @@ public class BookPlayerModule extends BookplayerStepModule
 	
 	
 	public static void highlight(){
-		
+		btnthumbnail();
+		txtbxgotopage("20");
 		btnhighlight();
 		selectparagraph();
 		

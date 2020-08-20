@@ -372,10 +372,8 @@ public class Reader_5Sanity{
 		
 		LoginModule.userLogin("sharing.teacher@yopmail.com", "kitaboo@123");
 		BookShelfModule.catNavigationAndLaunch("showcase");
-		BookPlayerModule.threadHold_5Sec();
-		BookPlayerModule.goToPage("4");
-		BookPlayerModule.historyPrevious();
-		BookPlayerModule.historyNext();
+		BookPlayerModule.highlight();
+		
 		//termination();
 	}
 	

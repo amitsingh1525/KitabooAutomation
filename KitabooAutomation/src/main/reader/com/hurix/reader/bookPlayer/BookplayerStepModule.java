@@ -13,7 +13,7 @@ import com.hurix.automation.utility.Log;
 import com.hurix.automation.utility.UIElements;
 
 public class BookplayerStepModule extends UIElements {
-	private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAutomation/KitabooAutomation/config/reader/bookplayer.properties");
+	private static Properties prop = getProperty(System.getProperty("user.dir")+"/config/reader/bookplayer.properties");
 
 	public static void btnbacktobookshelf(){
 		try {
