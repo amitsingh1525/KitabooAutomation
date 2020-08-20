@@ -21,6 +21,7 @@ public class BookplayerStepModule extends UIElements {
 	
 	public static void btntableofcontentandresources(){
 		try {
+			//changes
 			elementFinderByID(prop.getProperty("tableofcontentandresources_ID"), "btn_tableofcontentandresources").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
@@ -61,10 +62,10 @@ public class BookplayerStepModule extends UIElements {
 		}
 	}
 	
-	public static void lstcontent_list(){
+	public static void lstcontent_list(int chapterno){
 		try {
 			List<WebElement> element= elementsFinderByXpaths(prop.getProperty("content_list_lstview_xpath"), "lst_content_list");
-			
+			element.get(chapterno).click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -218,7 +219,7 @@ public class BookplayerStepModule extends UIElements {
 	
 	public static void btnstickynotes(){
 		try {
-			elementFinderByID(prop.getProperty("stickynotes_ID"), "btn_stickynotes").click();
+			elementFinderByXpath(prop.getProperty("stickynotes_ID"), "btn_stickynotes").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -226,7 +227,7 @@ public class BookplayerStepModule extends UIElements {
 	
 	public static void btnhighlight(){
 		try {
-			elementFinderByID(prop.getProperty("highlight_ID"), "btn_highlight").click();
+			elementFinderByXpath(prop.getProperty("highlight_ID"), "btn_highlight").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -234,7 +235,7 @@ public class BookplayerStepModule extends UIElements {
 	
 	public static void btnzoom(){
 		try {
-			elementFinderByID(prop.getProperty("zoom_ID"), "btn_zoom").click();
+			elementFinderByXpath(prop.getProperty("zoom_ID"), "btn_zoom").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -282,7 +283,7 @@ public class BookplayerStepModule extends UIElements {
 	
 	public static void btnthumbnail(){
 		try {
-			elementFinderByID(prop.getProperty("thumbnailbtn_ID"), "thumbnail").click();
+			elementFinderByXpath(prop.getProperty("thumbnailbtn_ID"), "thumbnail").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -322,6 +323,17 @@ public class BookplayerStepModule extends UIElements {
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
+	}
+	
+	public static String getchapterTitle(){
+		String chaptertitle = null;
+		try {
+			chaptertitle = elementFinderByXpath(prop.getProperty("chapterTitle_id"), "Chapter Title").getText();
+		} catch (Exception e) {
+			System.out.println("Element not present.");
+		}
+		return chaptertitle;
+		
 	}
 	
 	public static void btnnextchapter(){
@@ -382,7 +394,7 @@ public class BookplayerStepModule extends UIElements {
 	
 	public static void editnote(){
 		try {
-			elementFinderByID(prop.getProperty("editnote_ID"), "editnote").sendKeys("add note");
+			elementFinderByXpath(prop.getProperty("editnote_ID"), "editnote").sendKeys("add note");
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}

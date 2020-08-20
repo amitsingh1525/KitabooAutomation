@@ -12,6 +12,40 @@ public class AuthorwidgetModule extends AuthorwidgetStepModule {
 		Driver.driver.switchTo().frame("iframeBody");
 		btnAuthorWidget();
 		txtwidgetName(WidgetName);
+		
+	//copy functionality
+		btnlistview_copy();
+		btngridview();
+		btngridview_copy();
+		
+	//Rename functionality	
+		btnrenamewidget();
+		txtbx_widgetname(WidgetName);
+		btnsavewidget();
+		
+	// Change cover functionality
+		
+		
+	// share functionaliy
+		btnlistview_share();
+		rdbtnoption_share();
+		btnconfirm_share();
+		btngridview();
+		btngridview_share();
+		rdbtnoption_share();
+		btnconfirm_share();
+		btnlistview();
+		
+	//Delete functionality
+		btndelete();
+		btnconfirmdelete();
+		
+	// Filter author widget and create widget Functionality
+		drpdwnselect();
+		drpdwnauthorwidget();
+		drpdwnselect();
+		drpdwncreatewidget();
+		drpdwnselectall();
 	}
 
 }
