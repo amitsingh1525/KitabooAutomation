@@ -372,10 +372,11 @@ public class Reader_5Sanity{
 		
 		LoginModule.userLogin("sharing.teacher@yopmail.com", "kitaboo@123");
 		BookShelfModule.catNavigationAndLaunch("showcase");
-		
-		LoginModule.userLogin("hurixreader5@gmail.com", "kitaboo@123");
-		BookShelfModule.catNavigationAndLaunch("showcase");
-		termination();
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.goToPage("4");
+		BookPlayerModule.historyPrevious();
+		BookPlayerModule.historyNext();
+		//termination();
 	}
 	
 	

@@ -307,13 +307,23 @@ public class BookplayerStepModule extends UIElements {
 	
 	public static void txtbxgotopage(String pageNum){
 		try {
-			elementFinderByXpath(prop.getProperty("gotopagetextbox_id"), "gotopagetextbox").click();
-			elementFinderByXpath(prop.getProperty("gotopagetextbox_id"), "gotopagetextbox").clear();
-			elementFinderByXpath(prop.getProperty("gotopagetextbox_id"), "gotopagetextbox").sendKeys(pageNum);
-			elementFinderByXpath(prop.getProperty("gotopagetextbox_id"), "gotopagetextbox").sendKeys(Keys.ENTER);
+			elementFinderByID(prop.getProperty("gotopagetextbox_id"), "gotopagetextbox").click();
+			elementFinderByID(prop.getProperty("gotopagetextbox_id"), "gotopagetextbox").clear();
+			elementFinderByID(prop.getProperty("gotopagetextbox_id"), "gotopagetextbox").sendKeys(pageNum);
+			elementFinderByID(prop.getProperty("gotopagetextbox_id"), "gotopagetextbox").sendKeys(Keys.ENTER);
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
+	}
+	
+	public static String txtgotopage(){
+		String pageCount = "0";
+		try {
+			pageCount = elementFinderByID(prop.getProperty("gotopagetextbox_id"), "gotopagetextbox").getText();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+		return null;
 	}
 	
 	public static void noofpages(){
@@ -394,7 +404,7 @@ public class BookplayerStepModule extends UIElements {
 	
 	public static void editnote(){
 		try {
-			elementFinderByXpath(prop.getProperty("editnote_ID"), "editnote").sendKeys("add note");
+			elementFinderByID(prop.getProperty("editnote_ID"), "editnote").sendKeys("add note");
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
