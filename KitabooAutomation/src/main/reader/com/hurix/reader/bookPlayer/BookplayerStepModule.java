@@ -3,9 +3,13 @@ package com.hurix.reader.bookPlayer;
 import java.util.List;
 import java.util.Properties;
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 
+import com.hurix.automation.utility.Driver;
+import com.hurix.automation.utility.Log;
 import com.hurix.automation.utility.UIElements;
 
 public class BookplayerStepModule extends UIElements {
@@ -227,7 +231,26 @@ public class BookplayerStepModule extends UIElements {
 	
 	public static void btnhighlight(){
 		try {
-			elementFinderByXpath(prop.getProperty("highlight_ID"), "btn_highlight").click();
+			elementFinderByID(prop.getProperty("highlight_ID"), "btn_highlight").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void selectparagraph(){
+		try {
+			Thread.sleep(1000);
+			Driver.driver.switchTo().frame(elementFinderByID(prop.getProperty("highlightfram_ID"), "highlight frame id"));
+			Thread.sleep(500);
+			elementFinderByID(prop.getProperty("highlightword_id"), "highlight word id");
+			WebElement from = elementFinderByID(prop.getProperty("highlightword_id"), "highlight word id");
+			JavascriptExecutor js = (JavascriptExecutor)Driver.driver;
+			js.executeScript("arguments[0].click();", from);
+			Thread.sleep(500);
+			System.out.println("mouse movement");
+			actionclass(from, 0, 45);
+		    Thread.sleep(1000);
+		    Driver.driver.switchTo().defaultContent();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -394,7 +417,7 @@ public class BookplayerStepModule extends UIElements {
 	
 	public static void editnote(){
 		try {
-			elementFinderByXpath(prop.getProperty("editnote_ID"), "editnote").sendKeys("add note");
+			elementFinderByID(prop.getProperty("editnote_ID"), "editnote").sendKeys("add note");
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}

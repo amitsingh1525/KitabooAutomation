@@ -23,6 +23,9 @@ public class BookPlayerModule extends BookplayerStepModule
 	public static void highlight(){
 		
 		
+		btnhighlight();
+		selectparagraph();
+		
 		
 	}
 	
