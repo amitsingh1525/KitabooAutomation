@@ -19,7 +19,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class UIElements {
 
 
-	public static long waitTiming = 240;
+	public static long waitTiming = 60;
 	public static WebDriverWait wait = new WebDriverWait(Driver.driver, waitTiming);
 
 	public static WebElement elementFinderByID(String elmentID, String elementName) {
