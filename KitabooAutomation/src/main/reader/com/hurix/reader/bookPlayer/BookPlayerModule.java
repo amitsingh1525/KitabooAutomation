@@ -1,4 +1,4 @@
-package com.hurix.reader.bookplayer;
+package com.hurix.reader.bookPlayer;
 
 import com.hurix.automation.utility.Driver;
 
@@ -19,6 +19,13 @@ public class BookPlayerModule extends BookplayerStepModule
 		
 		
 	}
+	
+	public static void highlight(){
+		
+		
+		
+	}
+	
 	
 
 }

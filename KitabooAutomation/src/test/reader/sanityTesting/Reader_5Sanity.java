@@ -344,7 +344,7 @@ public class Reader_5Sanity{
 	
 	public static void main(String []args){
 		setup();
-		TC_InvalidUserNameANDPassword("", "");
+		/*TC_InvalidUserNameANDPassword("", "");
 		TC_DownloadForDesktop();
 		TC_AvailableOnTheAppleStore();
 		TC_GetItOnGooglePlay();
@@ -371,8 +371,13 @@ public class Reader_5Sanity{
 		TC_redeemAccessCode("");
 		TC_SearchAndLaunchBook();
 		TC_moreInfo();
-		TC_Analytics();
+		TC_Analytics();*/
+		
+		LoginModule.userLogin("hurixreader5@gmail.com", "kitaboo@123");
+		BookShelfModule.catNavigationAndLaunch("showcase");
 		termination();
 	}
+	
+	
 	
 }
