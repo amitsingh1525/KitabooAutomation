@@ -1,4 +1,4 @@
-package com.hurix.reader.bookplayer;
+package com.hurix.reader.bookPlayer;
 
 import java.util.List;
 import java.util.Properties;
