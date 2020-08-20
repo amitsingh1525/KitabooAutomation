@@ -12,6 +12,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -273,4 +274,13 @@ public class UIElements {
 			e.printStackTrace();
 		}
 	}
+	
+	public static void actionclass(WebElement from, int x, int y)
+	{
+		
+		Actions act=new Actions(Driver.driver);					
+//		Dragged and dropped.	
+	    act.dragAndDropBy(from, x, y).build().perform();
+	}
+	
 }
