@@ -6,11 +6,13 @@ import java.time.Instant;
 
 
 
+
 import com.hurix.automation.utility.BrowserConfigure;
 import com.hurix.automation.utility.Driver;
 import com.hurix.automation.utility.Gmail_ReadAndDelete;
 import com.hurix.automation.utility.Log;
 import com.hurix.automation.utility.UIElements;
+import com.hurix.reader.bookPlayer.BookplayerModule;
 import com.hurix.reader.bookPlayer.BookplayerStepModule;
 import com.hurix.reader.bookShelf.BookShelfModule;
 import com.hurix.reader.bookShelf.BookShelfStepModule;
@@ -344,7 +346,7 @@ public class Reader_5Sanity{
 	
 	public static void main(String []args){
 		setup();
-		TC_InvalidUserNameANDPassword("", "");
+		/*TC_InvalidUserNameANDPassword("", "");
 		TC_DownloadForDesktop();
 		TC_AvailableOnTheAppleStore();
 		TC_GetItOnGooglePlay();
@@ -371,7 +373,12 @@ public class Reader_5Sanity{
 		TC_redeemAccessCode("");
 		TC_SearchAndLaunchBook();
 		TC_moreInfo();
-		TC_Analytics();
+		TC_Analytics();*/
+		
+		LoginModule.userLogin("sharing.teacher@yopmail.com", "kitaboo@123");
+		BookShelfModule.catNavigationAndLaunch("showcase");
+		BookplayerModule.goToPage("2");
+		
 		termination();
 	}
 	
