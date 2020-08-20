@@ -16,19 +16,36 @@ public class BookPlayerModule extends BookplayerStepModule
 		lstcontent_list(chapterno);	
 		getchapterTitle();           // get chapter title validation
 		btnresources();
-		
-		
 	}
+	
 	
 	public static void highlight(){
 		
-		
 		btnhighlight();
 		selectparagraph();
-		
 		
 	}
 	
 	
 
+	public static void goToPage(String pageNum){
+		btnthumbnail();
+		txtbxgotopage(pageNum);
+	}
+	
+	public static void historyPrevious(){
+		btnthumbnail();
+		btnhistoryprevious();
+	}
+	
+	public static void historyNext(){
+		btnthumbnail();
+		btnhistorynext();
+	}
+	
+	public static String getPageNum(){
+		btnthumbnail();
+		
+		return null;
+	}
 }
