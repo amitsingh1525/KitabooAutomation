@@ -1,5 +1,6 @@
 package com.hurix.reader.bookPlayer;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -27,6 +28,8 @@ public class BookplayerStepModule extends UIElements {
 		try {
 			//changes
 			elementFinderByID(prop.getProperty("tableofcontentandresources_ID"), "btn_tableofcontentandresources").click();
+			elementFinderByID(prop.getProperty("resources_ID"), "btn_resources").click();
+			elementFinderByID(prop.getProperty("resources_drpdwn_xpath"), "drpdwn_resourcelist").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -116,23 +119,38 @@ public class BookplayerStepModule extends UIElements {
 		}
 	}
 	
-	public static void btnsearch(){
+	public static void btnsearch(String text){
 		try {
-			Thread.sleep(9000);
 			elementFinderByID(prop.getProperty("searchbtn_ID"), "btn_search").click();
-			elementFinderByID(prop.getProperty("searchboxtxt_ID"), "txt_searchbox").sendKeys("the");
+			elementFinderByID(prop.getProperty("searchboxtxt_ID"), "txt_searchbox").sendKeys(text);
 			Thread.sleep(1000);
 			elementFinderByID(prop.getProperty("searchboxtxt_ID"), "txt_searchbox").sendKeys(Keys.ENTER);
-			Thread.sleep(9000);
-			WebElement element0 = elementFinderByID(prop.getProperty("searchresult_xpath"), "drpdwn_searchresult");
-			JavascriptExecutor executor = (JavascriptExecutor)Driver.driver;
-			executor.executeScript("arguments[0].click();", element0);
-			Log.info("Click");
-			
-			
+			Thread.sleep(8000);
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
+	}
+		
+	
+	public static void searchResult(int i){
+		try {
+	
+			List<WebElement> element= elementsFinderByXpaths(prop.getProperty("searchresult_lstview_xpath"), "searchresult_lstview_xpath");
+			element.get(i).click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static String getinvalidsearchmsg(){
+		String msg = null;
+		try {
+			msg = elementFinderByXpath(prop.getProperty("invalidsearch_visibletext_xpath"), "search results not found").getText();
+            System.out.println("Invalid message"+ msg);
+		} catch (Exception e) {
+			System.out.println("Element not present.");
+		}
+		return msg;
 	}
 	
 	public static void txtsearchbox(){
