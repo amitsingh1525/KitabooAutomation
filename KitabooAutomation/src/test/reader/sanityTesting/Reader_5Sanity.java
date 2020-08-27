@@ -419,6 +419,13 @@ public class Reader_5Sanity{
 		//act.moveToElement(from).click().perform();
 
 
+		BookPlayerModule.zoomIn();
+		BookPlayerModule.zoomOut();
+		BookPlayerModule.fitToWidth();
+		BookPlayerModule.searchBookText();
+		
+		
+		
 		//termination();
 	}
 

@@ -1,5 +1,6 @@
 package com.hurix.reader.bookPlayer;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -27,6 +28,8 @@ public class BookplayerStepModule extends UIElements {
 		try {
 			//changes
 			elementFinderByID(prop.getProperty("tableofcontentandresources_ID"), "btn_tableofcontentandresources").click();
+			elementFinderByID(prop.getProperty("resources_ID"), "btn_resources").click();
+			elementFinderByID(prop.getProperty("resources_drpdwn_xpath"), "drpdwn_resourcelist").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -116,17 +119,43 @@ public class BookplayerStepModule extends UIElements {
 		}
 	}
 	
-	public static void btnsearch(){
+	public static void btnsearch(String text){
 		try {
 			elementFinderByID(prop.getProperty("searchbtn_ID"), "btn_search").click();
+			elementFinderByID(prop.getProperty("searchboxtxt_ID"), "txt_searchbox").sendKeys(text);
+			Thread.sleep(1000);
+			elementFinderByID(prop.getProperty("searchboxtxt_ID"), "txt_searchbox").sendKeys(Keys.ENTER);
+			Thread.sleep(8000);
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+		
+	
+	public static void searchResult(int i){
+		try {
+	
+			List<WebElement> element= elementsFinderByXpaths(prop.getProperty("searchresult_lstview_xpath"), "searchresult_lstview_xpath");
+			element.get(i).click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
 	}
 	
+	public static String getinvalidsearchmsg(){
+		String msg = null;
+		try {
+			msg = elementFinderByXpath(prop.getProperty("invalidsearch_visibletext_xpath"), "search results not found").getText();
+            System.out.println("Invalid message"+ msg);
+		} catch (Exception e) {
+			System.out.println("Element not present.");
+		}
+		return msg;
+	}
+	
 	public static void txtsearchbox(){
 		try {
-			elementFinderByID(prop.getProperty("searchboxtxt_ID"), "txt_searchbox").click();
+			
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -223,7 +252,7 @@ public class BookplayerStepModule extends UIElements {
 	
 	public static void btnstickynotes(){
 		try {
-			elementFinderByXpath(prop.getProperty("stickynotes_ID"), "btn_stickynotes").click();
+			elementFinderByID(prop.getProperty("stickynotes_ID"), "btn_stickynotes").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -256,21 +285,64 @@ public class BookplayerStepModule extends UIElements {
 		}
 	}
 	
-	public static void btnzoom(){
+	public static void btnzoomin(){
 		try {
-			elementFinderByID(prop.getProperty("zoom_ID"), "btn_zoom").click();
+			Thread.sleep(9000);
+			Thread.sleep(9000);
+			Thread.sleep(9000);
+			Thread.sleep(9000);
+			elementFinderByXpath(prop.getProperty("zoomin_xpath"), "btn_zoomin").click();
+			Thread.sleep(2000);
+			elementFinderByXpath(prop.getProperty("zoomsliderzoomin_xpath"), "Zoom sliderin xpath");
+			WebElement slider = elementFinderByXpath(prop.getProperty("zoomsliderzoomin_xpath"), "Zoom sliderin xpath");
+			Actions action =  new Actions(Driver.driver);
+			action.clickAndHold(slider);
+			action.moveByOffset(240, 0).build().perform();
+			action.click();
+			System.out.println("action completed");
+			Thread.sleep(1000);
+			//elementFinderByXpath(prop.getProperty("zoomsliderzoomin_xpath"), "Zoom slider xpath").click();
+			System.out.println("slider");
+			Thread.sleep(1000);
+			//elementFinderByXpath(prop.getProperty("zoomin_xpath"), "btn_zoomin").click();
+			btnhighlight();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
 	}
 	
-	public static void zoomslider(){
+	public static void btnzoomout(){
+		try {
+			Thread.sleep(9000);
+			Thread.sleep(9000);
+			Thread.sleep(9000);
+			elementFinderByID(prop.getProperty("zoomout_ID"), "btn_zoomout").click();
+			Thread.sleep(2000);
+			elementFinderByXpath(prop.getProperty("zoomsliderzoomout_xpath"), "Zoom slider xpath");
+			WebElement slider = elementFinderByXpath(prop.getProperty("zoomsliderzoomout_xpath"), "Zoom slider xpath");
+			Actions action =  new Actions(Driver.driver);
+			action.clickAndHold(slider);
+			action.moveByOffset(0, 0).build().perform();
+			action.click();
+			Thread.sleep(1000);
+			//elementFinderByXpath(prop.getProperty("zoomsliderzoomout_xpath"), "Zoom slider xpath").click();
+			System.out.println("slider");
+			Thread.sleep(1000);
+			//elementFinderByID(prop.getProperty("zoomout_ID"), "btn_zoomout").click();
+			btnhighlight();
+			
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	/*public static void zoomslider(){
 		try {
 			elementFinderByXpath(prop.getProperty("zoomslider_xpath"), "zoomslider").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
-	}
+	}*/
 	
 	public static void btnfittowidth(){
 		try {
@@ -349,7 +421,7 @@ public class BookplayerStepModule extends UIElements {
 		return pageCount;
 	}
 	
-	public static void noofpages(){
+	public static void noOfpages(){
 		try {
 			List<WebElement> element= elementsFinderByXpaths(prop.getProperty("noofpages_lstview_xpath"), "noofpages");
 			
@@ -361,7 +433,7 @@ public class BookplayerStepModule extends UIElements {
 	public static String getchapterTitle(){
 		String chaptertitle = null;
 		try {
-			chaptertitle = elementFinderByXpath(prop.getProperty("chapterTitle_id"), "Chapter Title").getText();
+			chaptertitle = elementFinderByID(prop.getProperty("chapterTitle_id"), "Chapter Title").getText();
 		} catch (Exception e) {
 			System.out.println("Element not present.");
 		}
