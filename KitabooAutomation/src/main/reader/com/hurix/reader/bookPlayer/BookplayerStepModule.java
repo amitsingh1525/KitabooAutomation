@@ -339,14 +339,14 @@ public class BookplayerStepModule extends UIElements {
 		}
 	}
 	
-	public static String txtgotopage(){
+	public static String getpageNum(){
 		String pageCount = "0";
 		try {
-			pageCount = elementFinderByID(prop.getProperty("gotopagetextbox_id"), "gotopagetextbox").getText();
+			pageCount = elementFinderByXpath(prop.getProperty("getPageNumber_xpath"), "gotopagetextbox").getAttribute("aria-valuenow");
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
-		return null;
+		return pageCount;
 	}
 	
 	public static void noofpages(){

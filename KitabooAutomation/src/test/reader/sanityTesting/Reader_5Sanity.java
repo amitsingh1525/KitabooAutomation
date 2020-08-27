@@ -1,6 +1,12 @@
 package sanityTesting;
 
 import java.time.Instant;
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.Point;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 
 import com.hurix.automation.utility.BrowserConfigure;
 import com.hurix.automation.utility.Driver;
@@ -14,7 +20,7 @@ import com.hurix.reader.bookShelf.BookShelfStepModule;
 import com.hurix.reader.loginPage.LoginModule;
 
 public class Reader_5Sanity{
-	
+
 	public static void setup(){
 		Log.initialization("ReaderSanity_5.O");
 		Log.startTestCase("setup");
@@ -27,7 +33,7 @@ public class Reader_5Sanity{
 		}
 		Log.endTestCase("END");
 	}
-	
+
 	public static void TC_InvalidUserNameANDPassword(String username, String password){
 		Log.startTestCase("TC_InvalidUserNameANDPassword");
 		LoginModule.userLogin("invalidUsername@yopmail.com", "InvalidP@$$");
@@ -40,7 +46,7 @@ public class Reader_5Sanity{
 		}
 		Log.endTestCase("End");
 	}
-	
+
 	public static  void TC_DownloadForDesktop(){
 		Log.startTestCase("TC_DownloadForDesktop");
 		//validation pending..
@@ -65,7 +71,7 @@ public class Reader_5Sanity{
 		LoginModule.btnWindowsInstaller();
 		Log.endTestCase("End");
 	}
-	
+
 	public static void TC_LoginWithValidUserNameANDPassword(String username, String password){
 		Log.startTestCase("TC_LoginWithValidUserNameANDPassword");
 		LoginModule.userLogin("sharing.teacher@yopmail.com", "kitaboo@123");
@@ -109,7 +115,7 @@ public class Reader_5Sanity{
 		}
 		Log.endTestCase("End");
 	}	
-	
+
 	public static  void TC_AccessCodeSignupByUsedEmailID(String accesscode, String fullname, String emailid, String password, String confirmpassword){
 		Log.startTestCase("TC_AccessCodeSignupByUsedEmailID");
 		LoginModule.accessCodeSignup("3195071661782080", "hello Tester_4324", "helloTester4324@yopmail.com", 
@@ -123,7 +129,7 @@ public class Reader_5Sanity{
 		Driver.driver.navigate().refresh();
 		Log.endTestCase("End");
 	}	
-	
+
 	public static  void TC_AccessCodeSignup(String accesscode, String fullname, String emailid, String password, String confirmpassword){
 		Log.startTestCase("TC_AccessCodeSignup");
 		long nowEpochTime = Instant.now().toEpochMilli();
@@ -148,7 +154,7 @@ public class Reader_5Sanity{
 		}
 		Log.endTestCase("End");
 	}
-	
+
 	public static  void TC_InvalidForgetPassword(String username){
 		Log.startTestCase("TC_InvalidForgetPassword");
 		LoginModule.forgetPassword("invalidEmailID@gmail.com");
@@ -162,7 +168,7 @@ public class Reader_5Sanity{
 		Driver.driver.navigate().refresh();
 		Log.endTestCase("End");
 	}
-	
+
 	public static  void TC_ForgetPassword(String username){
 		Log.startTestCase("TC_ForgetPassword");
 		Gmail_ReadAndDelete.deleteAllMails();
@@ -176,7 +182,7 @@ public class Reader_5Sanity{
 		LoginModule.btnOk();
 		Log.endTestCase("End");
 	}
-	
+
 	public static  void TC_ChangePassword(String username, String newPass){
 		Log.startTestCase("TC_ChangePassword");
 		String newPassword = Gmail_ReadAndDelete.readMails();
@@ -224,7 +230,7 @@ public class Reader_5Sanity{
 		BookShelfModule.userLogOut();
 		Log.endTestCase("End");
 	}
-	
+
 	public static  void TC_TermAndCondition(){
 		Log.startTestCase("TC_TermAndCondition");
 		String url = BookShelfModule.termAndCondition();
@@ -235,7 +241,7 @@ public class Reader_5Sanity{
 		}
 		Log.endTestCase("End");
 	}
-	
+
 	public static  void TC_PrivacyPolicy(){
 		Log.startTestCase("TC_PrivacyPolicy");
 		String url = BookShelfModule.privacyPolicy();
@@ -246,7 +252,7 @@ public class Reader_5Sanity{
 		}
 		Log.endTestCase("End");
 	}
-	
+
 	public static  void TC_AboutUS(){
 		Log.startTestCase("TC_AboutUS");
 		LoginModule.userLogin("sharing.teacher@yopmail.com", "kitaboo@123");
@@ -259,19 +265,19 @@ public class Reader_5Sanity{
 		}
 		Log.endTestCase("End");
 	}
-	
+
 	public static  void TC_Refresh(){
 		Log.startTestCase("TC_Refresh");
 		BookShelfStepModule.btnRefresh();
 		Log.endTestCase("End");
 	}
-	
+
 	public static  void TC_ChangeFirstNameAndLastnameClickOnCancel(){
 		Log.startTestCase("TC_ChangeFirstNameAndLastnameClickOnCancel");
 		BookShelfModule.changefirstNameAndLastName("Clickon", "Cancel", false);
 		Log.endTestCase("End");
 	}
-	
+
 	public static  void TC_ChangeFirstNameAndLastname(){
 		Log.startTestCase("TC_ChangeFirstNameAndLastname");
 		BookShelfModule.changefirstNameAndLastName("Amit", "Singh", true);
@@ -279,7 +285,7 @@ public class Reader_5Sanity{
 		BookShelfModule.changefirstNameAndLastName("Hurix", "Reader", true);
 		Log.endTestCase("End");
 	}
-	
+
 	public static  void TC_CatNavigationAndLaunch(){
 		Log.startTestCase("TC_CatNavigationAndLaunch");
 		BookShelfModule.catNavigationAndLaunch("Showcase");
@@ -287,7 +293,7 @@ public class Reader_5Sanity{
 		BookplayerStepModule.btnbacktobookshelf();
 		Log.endTestCase("End");
 	}
-	
+
 	public static  void TC_SearchAndLaunchBook(){
 		Log.startTestCase("TC_SearchAndLaunchBook");
 		BookShelfModule.searchAndLaunchBook("Showcase eBook");
@@ -295,27 +301,27 @@ public class Reader_5Sanity{
 		BookplayerStepModule.btnbacktobookshelf();
 		Log.endTestCase("End");
 	}
-	
+
 	public static  void TC_MarkAsFav(){
 		Log.startTestCase("TC_MarkAsFav");
 		BookShelfModule.markAsFav(0);
 		Log.endTestCase("End");
 	}
-	
+
 	public static  void TC_unmarkAsFav(){
 		Log.startTestCase("TC_unmarkAsFav");
 		LoginModule.threadHold_2Sec();
 		BookShelfModule.unmarkAsFav(0);
 		Log.endTestCase("End");
 	}
-	
+
 	public static  void TC_redeemAccessCode(String accessCode){
 		Log.startTestCase("TC_redeemAccessCode");
 		BookShelfModule.redeemAccessCode("3195071483305723");
 		BookShelfStepModule.btnAccessCodeCancel();
 		Log.endTestCase("End");
 	}
-	
+
 	public static  void TC_moreInfo(){
 		Log.startTestCase("TC_moreInfo");
 		BookShelfModule.catNavigationAndLaunch("All");
@@ -326,7 +332,7 @@ public class Reader_5Sanity{
 		BookShelfStepModule.btn_XClose();
 		Log.endTestCase("End");
 	}
-	
+
 	public static  void TC_Analytics(){
 		Log.startTestCase("TC_Analytics");
 		BookShelfModule.catNavigationAndLaunch("Showcase");
@@ -334,11 +340,11 @@ public class Reader_5Sanity{
 		BookShelfStepModule.btnAnalytics();
 		Log.endTestCase("End");
 	}
-	
+
 	public static void termination(){
 		Driver.driver.quit();
 	}
-	
+
 	public static void main(String []args){
 		setup();
 		/*TC_InvalidUserNameANDPassword("", "");
@@ -354,7 +360,7 @@ public class Reader_5Sanity{
 		TC_InvalidForgetPassword("");
 		TC_ForgetPassword("");
 		TC_ChangePassword("", "");
-		
+
 		TC_AboutUS();
 		TC_TermAndCondition();
 		TC_PrivacyPolicy();
@@ -369,14 +375,53 @@ public class Reader_5Sanity{
 		TC_SearchAndLaunchBook();
 		TC_moreInfo();
 		TC_Analytics();*/
-		
+
 		LoginModule.userLogin("sharing.teacher@yopmail.com", "kitaboo@123");
 		BookShelfModule.catNavigationAndLaunch("showcase");
-		BookPlayerModule.highlight();
-		
+		//BookPlayerModule.highlight();
+		//BookPlayerModule.goToPage("20");
+		LoginModule.threadHold_5Sec();
+		LoginModule.threadHold_5Sec();
+		LoginModule.threadHold_5Sec();
+		LoginModule.threadHold_5Sec();
+		//BookPlayerModule.getPageNum();
+		BookplayerStepModule.btnhighlight();
+		Driver.driver.switchTo().frame("epub_5");
+		System.out.println(UIElements.elementFinderByID("p5-textid50001", "").getText());
+		//Driver.driver.findElement(By.cssSelector("body.disable-user-selection")).click();
+		//WebElement elem = UIElements.elementFinderByID("p5-textid50001", "");
+
+		List <WebElement> list = Driver.driver.findElements(By.tagName("span"));
+		System.out.println("Number of links: "+list.size());
+		List <WebElement> ele = null;
+		for(int i = 0; i < list.size(); i++){
+				System.out.println(list.get(i).getText());
+				list.get(i).click();
+				Driver.driver.switchTo().defaultContent();
+				int size = Driver.driver.findElements(By.id("highlight_0")).size();
+				if(size <= 1){
+					System.out.println("present...");
+				}
+				Driver.driver.switchTo().frame("epub_5");
+				
+		}
+
+		//Driver.driver.findElement(By.id("highlight_0")).click();
+		//int width = elem.getSize().getWidth();
+		//int height = elem.getSize().getHeight();
+		//Actions act = new Actions(Driver.driver);
+		//System.out.println(width);
+		//Point location = elem.getLocation();
+		// int x = location.getX();
+		//int y = location.getY();
+		// System.out.println("Coordinates of an element is : " + x + " and " + y);
+		//act.moveToElement(elem).moveByOffset(width, height).click().perform();
+		//act.moveToElement(from).click().perform();
+
+
 		//termination();
 	}
-	
-	
-	
+
+
+
 }

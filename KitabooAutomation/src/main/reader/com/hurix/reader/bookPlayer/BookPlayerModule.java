@@ -45,8 +45,9 @@ public class BookPlayerModule extends BookplayerStepModule
 	}
 	
 	public static String getPageNum(){
+		threadHold_5Sec();
 		btnthumbnail();
-		
+		System.out.println("Page Number: "+getpageNum());
 		return null;
 	}
 }

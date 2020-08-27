@@ -12,7 +12,6 @@ import io.restassured.response.ValidatableResponse;
 public class GetRawTrackingData{
 
 	public static Response getRawTracking(long startDate, long endDate, String consumerKey, String consumerSecret){
-		
 		Response jsonResponse = null;
 		try {
 			Log.startTestCase("getRawTracking");
@@ -23,11 +22,10 @@ public class GetRawTrackingData{
 			
 			Log.info("Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			//TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		Log.endTestCase("End");
 		return jsonResponse;
-		
 	}
 }
