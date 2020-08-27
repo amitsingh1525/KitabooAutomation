@@ -3,7 +3,6 @@ package com.hurix.reader.bookPlayer;
 import java.util.List;
 import java.util.Properties;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import com.hurix.automation.utility.Driver;
@@ -94,6 +93,8 @@ public class BookPlayerModule extends BookplayerStepModule
 		threadHold_5Sec();
 		btnthumbnail();
 		System.out.println("Page Number: "+getpageNum());
-		return null;
+		return getpageNum();
+		
 	}
+	
 }

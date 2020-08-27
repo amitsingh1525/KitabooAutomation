@@ -4,9 +4,7 @@ import java.time.Instant;
 import java.util.List;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 
 import com.hurix.automation.utility.BrowserConfigure;
 import com.hurix.automation.utility.Driver;
@@ -428,7 +426,5 @@ public class Reader_5Sanity{
 		
 		//termination();
 	}
-
-
 
 }
