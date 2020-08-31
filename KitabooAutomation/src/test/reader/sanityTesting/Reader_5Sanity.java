@@ -374,22 +374,21 @@ public class Reader_5Sanity{
 		TC_moreInfo();
 		TC_Analytics();*/
 
-		LoginModule.userLogin("sharing.teacher@yopmail.com", "kitaboo@123");
-		BookShelfModule.catNavigationAndLaunch("showcase");
+		
 		//BookPlayerModule.highlight();
 		//BookPlayerModule.goToPage("20");
-		LoginModule.threadHold_5Sec();
+		/*LoginModule.threadHold_5Sec();
 		LoginModule.threadHold_5Sec();
 		LoginModule.threadHold_5Sec();
 		LoginModule.threadHold_5Sec();
 		//BookPlayerModule.getPageNum();
 		BookplayerStepModule.btnhighlight();
 		Driver.driver.switchTo().frame("epub_5");
-		System.out.println(UIElements.elementFinderByID("p5-textid50001", "").getText());
+		System.out.println(UIElements.elementFinderByID("p5-textid50001", "").getText());*/
 		//Driver.driver.findElement(By.cssSelector("body.disable-user-selection")).click();
 		//WebElement elem = UIElements.elementFinderByID("p5-textid50001", "");
 
-		List <WebElement> list = Driver.driver.findElements(By.tagName("span"));
+		/*List <WebElement> list = Driver.driver.findElements(By.tagName("span"));
 		System.out.println("Number of links: "+list.size());
 		List <WebElement> ele = null;
 		for(int i = 0; i < list.size(); i++){
@@ -402,7 +401,7 @@ public class Reader_5Sanity{
 				}
 				Driver.driver.switchTo().frame("epub_5");
 				
-		}
+		}*/
 
 		//Driver.driver.findElement(By.id("highlight_0")).click();
 		//int width = elem.getSize().getWidth();
@@ -417,10 +416,18 @@ public class Reader_5Sanity{
 		//act.moveToElement(from).click().perform();
 
 
+		/*LoginModule.userLogin("sharing.teacher@yopmail.com", "kitaboo@123");
+		BookShelfModule.catNavigationAndLaunch("showcase");
 		BookPlayerModule.zoomIn();
 		BookPlayerModule.zoomOut();
 		BookPlayerModule.fitToWidth();
-		BookPlayerModule.searchBookText();
+		BookPlayerModule.searchBookText();*/
+		
+		LoginModule.userLogin("hurixreader5@gmail.com", "kitaboo@123");
+		BookShelfModule.catNavigationAndLaunch("Hurix Showcase");
+		BookPlayerModule.highlight("blue");
+		BookPlayerModule.deleteHighlight();
+		//BookPlayerModule.pentool();
 		
 		
 		
