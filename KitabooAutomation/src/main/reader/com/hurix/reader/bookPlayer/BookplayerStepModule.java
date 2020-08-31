@@ -16,7 +16,7 @@ import com.hurix.automation.utility.Log;
 import com.hurix.automation.utility.UIElements;
 
 public class BookplayerStepModule extends UIElements {
-	private static Properties prop = getProperty(System.getProperty("user.dir")+"/config/reader/bookplayer.properties");
+	public static Properties prop = getProperty(System.getProperty("user.dir")+"/config/reader/bookplayer.properties");
 
 	public static void btnbacktobookshelf(){
 		try {
@@ -136,7 +136,6 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void searchResult(int i){
 		try {
-
 			List<WebElement> element= elementsFinderByXpaths(prop.getProperty("searchresult_lstview_xpath"), "searchresult_lstview_xpath");
 			element.get(i).click();
 		} catch (Exception e) {
@@ -148,20 +147,112 @@ public class BookplayerStepModule extends UIElements {
 		String msg = null;
 		try {
 			msg = elementFinderByXpath(prop.getProperty("invalidsearch_visibletext_xpath"), "search results not found").getText();
-			System.out.println("Invalid message"+ msg);
+			System.out.println("Invalid search message found: "+ msg);
 		} catch (Exception e) {
 			System.out.println("Element not present.");
 		}
 		return msg;
 	}
 
-	public static void txtsearchbox(){
+	public static void btnmyData(){
 		try {
-
+			elementFinderByID(prop.getProperty("mydata_ID"), "btn_mydata").click();
+			Thread.sleep(5000);
+			elementFinderByXpath(prop.getProperty("highlights_xpath"), "btn_highlights").click();
+			elementFinderByXpath(prop.getProperty("filter_xpath"), "btn_filter").click();
+			
+			elementFinderByXpath(prop.getProperty("filter_all_uncheck_xpath"), "chkbx_all").click();
+			
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
 	}
+	
+	public static void chkbxyellow(){
+		try {
+			elementFinderByXpath(prop.getProperty("filter_yellow_uncheck_xpath"), "chkbx_yellow").click();
+			Thread.sleep(8000);
+			elementFinderByXpath(prop.getProperty("filter_yellow_uncheck_xpath"), "chkbx_yellow").sendKeys(Keys.ESCAPE);
+			Thread.sleep(5000);
+		
+				int size= Driver.driver.findElements(By.xpath(prop.getProperty("highlights_list_xpath"))).size();
+			    System.out.println("Size of search element is :"+ size);
+			    
+			    String highlightsize= Driver.driver.findElement(By.xpath(prop.getProperty("HighlightCount_visibletext_xpath"))).getText();
+			    System.out.println("Size of search element is :"+ highlightsize.replace("Highlights", ""));
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void chkbxred(){
+		try {
+			elementFinderByXpath(prop.getProperty("filter_red_uncheck_xpath"), "chkbx_red").click();
+			Thread.sleep(8000);
+			elementFinderByXpath(prop.getProperty("filter_red_uncheck_xpath"), "chkbx_red").sendKeys(Keys.ESCAPE);
+			Thread.sleep(5000);
+		
+				int size= Driver.driver.findElements(By.xpath(prop.getProperty("highlights_list_xpath"))).size();
+			    System.out.println("Size of search element is :"+ size);
+			    
+			    String highlightsize= Driver.driver.findElement(By.xpath(prop.getProperty("HighlightCount_visibletext_xpath"))).getText();
+			    System.out.println("Size of search element is :"+ highlightsize.replace("Highlights", ""));
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+
+	public static void chkbxpurple(){
+		try {
+			elementFinderByXpath(prop.getProperty("filter_purple_uncheck_xpath"), "chkbx_purple").click();
+			Thread.sleep(8000);
+			elementFinderByXpath(prop.getProperty("filter_purple_uncheck_xpath"), "chkbx_purple").sendKeys(Keys.ESCAPE);
+			Thread.sleep(5000);
+		
+				int size= Driver.driver.findElements(By.xpath(prop.getProperty("highlights_list_xpath"))).size();
+			    System.out.println("Size of search element is :"+ size);
+			    
+			    String highlightsize= Driver.driver.findElement(By.xpath(prop.getProperty("HighlightCount_visibletext_xpath"))).getText();
+			    System.out.println("Size of search element is :"+ highlightsize.replace("Highlights", ""));
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void chkbxgreen(){
+		try {
+			elementFinderByXpath(prop.getProperty("filter_green_uncheck_xpath"), "chkbx_green").click();
+			Thread.sleep(8000);
+			elementFinderByXpath(prop.getProperty("filter_green_uncheck_xpath"), "chkbx_green").sendKeys(Keys.ESCAPE);
+			Thread.sleep(5000);
+		
+				int size= Driver.driver.findElements(By.xpath(prop.getProperty("highlights_list_xpath"))).size();
+			    System.out.println("Size of search element is :"+ size);
+			    
+			    String highlightsize= Driver.driver.findElement(By.xpath(prop.getProperty("HighlightCount_visibletext_xpath"))).getText();
+			    System.out.println("Size of search element is :"+ highlightsize.replace("Highlights", ""));
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void chkbxblue(){
+		try {
+			elementFinderByXpath(prop.getProperty("filter_blue_uncheck_xpath"), "chkbx_blue").click();
+			Thread.sleep(8000);
+			elementFinderByXpath(prop.getProperty("filter_blue_uncheck_xpath"), "chkbx_blue").sendKeys(Keys.ESCAPE);
+			Thread.sleep(5000);
+		
+				int size= Driver.driver.findElements(By.xpath(prop.getProperty("highlights_list_xpath"))).size();
+			    System.out.println("Size of search element is :"+ size);
+			    
+			    String highlightsize= Driver.driver.findElement(By.xpath(prop.getProperty("HighlightCount_visibletext_xpath"))).getText();
+			    System.out.println("Size of search element is :"+ highlightsize.replace("Highlights", ""));
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+
 
 	public static void btnpentool(){
 		try {
@@ -236,7 +327,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void btneraser(){
 		try {
-			elementFinderByXpath(prop.getProperty("eraser_xpath"), "btn_eraser").click();
+			elementFinderByXpath(prop.getProperty("eraserbtn_xpath"), "btn_eraser").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}

@@ -3,6 +3,7 @@ package com.hurix.reader.bookPlayer;
 import java.util.List;
 import java.util.Properties;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import com.hurix.automation.utility.Driver;
@@ -89,14 +90,12 @@ public class BookPlayerModule extends BookplayerStepModule
 	}
 
 	public static String searchBookText(){
-		Properties prop = getProperty(System.getProperty("user.dir")+"/config/reader/bookplayer.properties");
-		btnsearch("encyclopedia");
+		btnsearch("the");
 		threadHold_2Sec();
-		List<WebElement> element= elementsFinderByXpaths(prop.getProperty("searchresult_lstview_xpath"), "searchresult_lstview_xpath");
-		int size=  element.size();
-		System.out.println("Size of search element is :"+ element.size());
+		int size= Driver.driver.findElements(By.xpath(prop.getProperty("searchresult_lstview_xpath"))).size();
+	    System.out.println("Size of search element is :"+ size);
 		String msg = null;
-		if(size>=0){
+		if(size>0){
 			searchResult(0);
 			threadHold_5Sec();
 		}else{
@@ -104,6 +103,26 @@ public class BookPlayerModule extends BookplayerStepModule
 		}
 		return msg;
 
+	}
+	
+	public static void myDataHighlight(String filtercolour){
+		btnmyData();
+		
+		if(filtercolour.equalsIgnoreCase("yellow")) {
+			chkbxyellow();
+		}
+		if(filtercolour.equalsIgnoreCase("red")) {
+			chkbxred();
+		}
+		if(filtercolour.equalsIgnoreCase("purple")) {
+			chkbxpurple();
+		}
+		if(filtercolour.equalsIgnoreCase("green")) {
+			chkbxgreen();
+		}
+		if(filtercolour.equalsIgnoreCase("blue")) {
+			chkbxblue();
+		}
 	}
 
 	public static void tableOfContentAndResources(){
