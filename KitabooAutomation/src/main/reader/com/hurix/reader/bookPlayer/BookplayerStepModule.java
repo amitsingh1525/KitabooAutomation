@@ -171,41 +171,41 @@ public class BookplayerStepModule extends UIElements {
 		}
 	}
 
-	public static void btnpencolourpaletteblack(){
+	public static void btnPenColour_Black(){
 		try {
-			elementFinderByXpath(prop.getProperty("pencolourpaletteblack_xpath"), "btn_pencolourpaletteblack").click();
+			elementFinderByXpath(prop.getProperty("pencolourpaletteblack_xpath"), "btnPenColour_Black").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
 	}
 
-	public static void btnpencolourpalettered(){
+	public static void btnPenColour_Red(){
 		try {
-			elementFinderByXpath(prop.getProperty("pencolourpalettered_xpath"), "btn_pencolourpalettered").click();
+			elementFinderByXpath(prop.getProperty("pencolourpalettered_xpath"), "btnPenColour_Red").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
 	}
 
-	public static void btnpencolourpalettepurple(){
+	public static void btnPenColour_Purple(){
 		try {
-			elementFinderByXpath(prop.getProperty("pencolourpalettepurple_xpath"), "btn_pencolourpalettepurple").click();
+			elementFinderByXpath(prop.getProperty("pencolourpalettepurple_xpath"), "btnPenColour_Purple").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
 	}
 
-	public static void btnpencolourpalettegreen(){
+	public static void btnPenColour_Green(){
 		try {
-			elementFinderByXpath(prop.getProperty("pencolourpalettegreen_xpath"), "btn_pencolourpalettegreen").click();
+			elementFinderByXpath(prop.getProperty("pencolourpalettegreen_xpath"), "btnPenColour_Green").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
 	}
 
-	public static void btnpencolourpaletteblue(){
+	public static void btnPenColour_Blue(){
 		try {
-			elementFinderByXpath(prop.getProperty("pencolourpaletteblue_xpath"), "btn_pencolourpaletteblue").click();
+			elementFinderByXpath(prop.getProperty("pencolourpaletteblue_xpath"), "btnPenColour_Blue").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -220,14 +220,12 @@ public class BookplayerStepModule extends UIElements {
 			Actions action =  new Actions(Driver.driver);
 			action.clickAndHold(slider);
 			Thread.sleep(1000);
-			action.moveToElement(stroke_slider, 50, 50).build().perform();
+			action.moveToElement(stroke_slider, 0, 50).build().perform();
 			action.click().build().perform();
 			System.out.println("action completed");
 			Thread.sleep(1000);
-			//elementFinderByXpath(prop.getProperty("zoomsliderzoomin_xpath"), "Zoom slider xpath").click();
 			System.out.println("slider");
 			Thread.sleep(1000);
-			//elementFinderByXpath(prop.getProperty("zoomin_xpath"), "btn_zoomin").click();
 
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
@@ -494,17 +492,57 @@ public class BookplayerStepModule extends UIElements {
 		}
 	}
 
-	public static void editnote(){
+	public static void txtStickyNotes(String notes){
 		try {
-			elementFinderByID(prop.getProperty("editnote_ID"), "editnote").sendKeys("add note");
+			elementFinderByID(prop.getProperty("editnote_ID"), "txtStickyNotes").sendKeys(notes);
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
 	}
 
-	public static void btnpostnote(){
+	public static void btnSaveStickyNotes(){
 		try {
-			elementFinderByXpath(prop.getProperty("postnotebtn_xpath"), "postnote").click();
+			elementFinderByXpath(prop.getProperty("postnotebtn_xpath"), "btnSaveStickyNotes").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void btnStickyClr_orange(){
+		try {
+			elementFinderByXpath(prop.getProperty("clrOrangeSticky_xpath"), "btnStickyClr_orange").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void btnStickyClr_pink(){
+		try {
+			elementFinderByXpath(prop.getProperty("clrRedSticky_xpath"), "btnStickyClr_pink").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void btnStickyClr_purple(){
+		try {
+			elementFinderByXpath(prop.getProperty("clrPurpleSticky_xpath"), "btnStickyClr_purple").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void btnStickyClr_green(){
+		try {
+			elementFinderByXpath(prop.getProperty("clrGreenSticky_xpath"), "btnStickyClr_green").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void btnStickyClr_blue(){
+		try {
+			elementFinderByXpath(prop.getProperty("clrBlueSticky_xpath"), "btnStickyClr_blue").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -595,7 +633,7 @@ public class BookplayerStepModule extends UIElements {
 		}
 	}
 
-	public static void draw_line(By element, int x,int y) throws Exception{
+	public static void drawLine(By element, int x,int y){
 		try{
 			UIElements.wait.until(ExpectedConditions.visibilityOfElementLocated(element));
 			Thread.sleep(500);    
@@ -606,8 +644,7 @@ public class BookplayerStepModule extends UIElements {
 			action.moveByOffset(x, y).build().perform();
 			Log.info("Clicked to draw Line");
 		}catch (Exception e){
-			Log.error("Not Clicked to draw Line ");
-			throw(e);
+			Log.error("Not Clicked to draw Line."+e.getMessage());
 		}
 	}
 

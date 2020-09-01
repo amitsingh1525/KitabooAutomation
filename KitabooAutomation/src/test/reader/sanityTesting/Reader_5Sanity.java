@@ -425,9 +425,14 @@ public class Reader_5Sanity{
 		
 		LoginModule.userLogin("hurixreader5@gmail.com", "kitaboo@123");
 		BookShelfModule.catNavigationAndLaunch("Hurix Showcase");
-		BookPlayerModule.highlight("blue");
-		BookPlayerModule.deleteHighlight();
-		//BookPlayerModule.pentool();
+		//BookPlayerModule.highlight("blue");
+		//BookPlayerModule.deleteHighlight();
+		
+		//BookPlayerModule.pentool("black", "5", 50, 60);
+		//BookPlayerModule.pentool("blue", "5", 70, 60);
+		BookPlayerModule.goToPage("5");
+		BookPlayerModule.stickyNotes("green", "5", 70, 60);
+		//BookPlayerModule.erasepentool("5", 50, 60);
 		
 		
 		

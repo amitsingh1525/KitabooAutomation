@@ -3,6 +3,7 @@ package com.hurix.reader.bookPlayer;
 import java.util.List;
 import java.util.Properties;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import com.hurix.automation.utility.Driver;
@@ -45,7 +46,7 @@ public class BookPlayerModule extends BookplayerStepModule
 		if(color.equalsIgnoreCase("blue")) {
 			bltblue();
 		}
-		
+
 	}
 
 	public static void deleteHighlight(){
@@ -54,16 +55,70 @@ public class BookPlayerModule extends BookplayerStepModule
 		btnhighlightdelete();
 		btnhighlight();
 	}
-	
-	public static void pentool(){
+
+	public static void pentool(String color, String pageNum, int x, int y){
+
 		btnthumbnail();
 		txtbxgotopage("5");
 		btnpentool();
 		dragthicknessbar();
-		btnpencolourpalettered();
+		//btnpentool();
+		if(color.equalsIgnoreCase("black")) {
+			btnPenColour_Black();
+		}
+		if(color.equalsIgnoreCase("red")) {
+			btnPenColour_Red();
+		}
+		if(color.equalsIgnoreCase("purple")) {
+			btnPenColour_Purple();
+		}
+		if(color.equalsIgnoreCase("green")) {
+			btnPenColour_Green();
+		}
+		if(color.equalsIgnoreCase("blue")) {
+			btnPenColour_Blue();
+		}
+
+		Driver.driver.switchTo().frame("epub_"+pageNum);
+		drawLine(By.id("p5-textid50001"), x, y);
+		Driver.driver.switchTo().parentFrame();
+		btnpentool();
 	}
 
+	public static void erasepentool(String pageNum, int x, int y){
+		btnpentool();
+		btneraser();
+		Driver.driver.switchTo().frame("epub_"+pageNum);
+		drawLine(By.id("p5-textid50001"), x, y);
+		Driver.driver.switchTo().parentFrame();
+	}
 
+	public static void stickyNotes(String color, String pageNum, int x, int y){
+		btnstickynotes();
+		Driver.driver.switchTo().frame("epub_"+pageNum);
+		WebElement element = Driver.driver.findElement(By.id("p5-textid50001"));
+		actionclass(element, x, y);
+		Driver.driver.switchTo().parentFrame();
+		if(color.equalsIgnoreCase("Orange")) {
+			btnStickyClr_orange();
+		}
+		if(color.equalsIgnoreCase("pink")) {
+			btnStickyClr_pink();
+		}
+		if(color.equalsIgnoreCase("purple")) {
+			btnStickyClr_purple();
+		}
+		if(color.equalsIgnoreCase("green")) {
+			btnStickyClr_green();
+		}
+		if(color.equalsIgnoreCase("blue")) {
+			btnStickyClr_blue();
+		}
+		
+		txtStickyNotes("Hello Brother!");
+		btnSaveStickyNotes();
+		Driver.driver.switchTo().parentFrame();
+	}
 
 	public static void goToPage(String pageNum){
 		btnthumbnail();
