@@ -423,6 +423,8 @@ public class Reader_5Sanity{
 		BookPlayerModule.fitToWidth();
 		BookPlayerModule.searchBookText();*/
 		BookPlayerModule.myDataHighlight("yellow");
+		BookPlayerModule.myDatanormalNotes("yellow");
+		BookPlayerModule.myDatacontextualNotes("yellow");
 		
 		/*LoginModule.userLogin("hurixreader5@gmail.com", "kitaboo@123");
 		BookShelfModule.catNavigationAndLaunch("Hurix Showcase");
