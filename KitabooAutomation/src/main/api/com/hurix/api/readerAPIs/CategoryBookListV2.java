@@ -7,7 +7,7 @@ import com.hurix.automation.utility.Log;
 
 public class CategoryBookListV2 {
 	
-	public static Response categoryBookListV2(String catname)
+	public static Response categoryBookListV2(String catname,String userToken,String deviceId,String DeiceType)
 	{
 		//GETfetchBookCountPath = ""+com.hurix.api.utility.ExcelUtils.getbaseURI()+"/DistributionServices/services/api/reader/distribution/145644544/PC/fetchBookCount";
 		
@@ -17,9 +17,9 @@ public class CategoryBookListV2 {
 			Log.startTestCase("CategoryBookListV2");
 			
 			jsonResponse = given()
-					.header("usertoken",com.hurix.api.runner.RestAssured.userToken)
+					.header("usertoken",userToken)
 					.header("category",catname)				
-					.get("/DistributionServices/services/api/reader/books/145644544/IPAD/books/v2/categoryBookList");
+					.get("/DistributionServices/services/api/reader/books/"+deviceId+"/"+DeiceType+"/books/v2/categoryBookList");
 			
 			Log.info("CategoryBookListV2 Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 

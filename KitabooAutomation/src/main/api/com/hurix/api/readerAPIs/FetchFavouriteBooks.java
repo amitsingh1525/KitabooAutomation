@@ -7,7 +7,7 @@ import com.hurix.automation.utility.Log;
 
 public class FetchFavouriteBooks {
 	
-	public static Response fetchFavouriteBooks()
+	public static Response fetchFavouriteBooks(String userToken,String devideId,String DeviceType)
 	{
 		Response jsonResponse = null;
 		try {
@@ -15,8 +15,8 @@ public class FetchFavouriteBooks {
 			Log.startTestCase("FetchFavouriteBooks");		
 			//System.out.println("GETfetchCategoriesCollectionsBooksRequestURL:" +GETfetchCategoriesCollectionsBooksPath);
 			jsonResponse = given()
-					.header("usertoken",com.hurix.api.runner.RestAssured.userToken)
-					.get("/DistributionServices/services/api/reader/user/123/IPAD/fetchFavouriteBooks");
+					.header("usertoken",userToken)
+					.get("/DistributionServices/services/api/reader/user/"+devideId+"/"+DeviceType+"/fetchFavouriteBooks");
 			
 			Log.info("FetchFavouriteBooks Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 

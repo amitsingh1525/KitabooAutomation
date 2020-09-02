@@ -8,7 +8,7 @@ import com.hurix.automation.utility.Log;
 public class RefreshBookList 
 {	
 	public static String refreshBookListPath;
-	public static Response refreshBookList()
+	public static Response refreshBookList(String userToken,String deviceID, String deviceType)
 	{
 		//refreshBookListPath = ""+com.hurix.api.utility.ExcelUtils.getbaseURI()+"/DistributionServices/services/api/reader/distribution/123234234/PC/refreshBookList";
 		
@@ -19,7 +19,7 @@ public class RefreshBookList
 			//System.out.println("GETrefreshBookList:" +refreshBookListPath);
 			jsonResponse = given()
 					.header("usertoken",com.hurix.api.runner.RestAssured.userToken)						
-					.get("/DistributionServices/services/api/reader/distribution/123234234/PC/refreshBookList");
+					.get("/DistributionServices/services/api/reader/distribution/"+deviceID+"/"+deviceType+"/refreshBookList");
 			
 			Log.info("RefreshBookListResponse: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 
