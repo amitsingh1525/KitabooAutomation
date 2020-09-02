@@ -11,10 +11,7 @@ import com.hurix.api.utility.Validation;
 import com.hurix.automation.utility.Log;
 
 public class V1refreshBookList {
-	
-	
-	//public static String POSTv1refreshBookListath=""+com.hurix.api.utility.ExcelUtils.getbaseURI()+"/DistributionServices/services/api/reader/distribution/123/HTML5/v1/refreshBookList?t=1596298740&clientID="+com.hurix.api.utility.ExcelUtils.getClientID()+"";
-	
+
 	private static String v1refreshBookListBody;
 	public static Response v1refreshBookList(long startDate,String operation1,String operation2,String bookID1,String bookID2,String userToken,String deviceID ,String DiviceType)
 	{
@@ -35,7 +32,8 @@ public class V1refreshBookList {
 			Validation.responseTimeValidation(jsonResponse);
 			Validation.responseKeyValidation_key(jsonResponse, "isbn");
 			Validation.responseKeyValidation_key(jsonResponse, "formats");
-			Validation.responseKeyValidation_key(jsonResponse, "id");									
+			Validation.responseKeyValidation_key(jsonResponse, "id");	
+			Validation.responseKeyValidation_key(jsonResponse, "category");
 			Log.info("v1refreshBookList Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 
 		{
@@ -45,14 +43,13 @@ public class V1refreshBookList {
 		}
 		Log.endTestCase("End");
 		return jsonResponse;
-		
 	}	
-	
+
 	public static Response v1refreshBookList_with_pagi(long startIndex, long endIndex,String userToken,String deviceID,String deviceType)
 	{
 		Response jsonResponse = null;
 		try {
-			
+
 			Log.startTestCase("v1refreshBookList_with_pagi");
 			//System.out.println("searchV2Body: "+v1refreshBookListBody);
 			jsonResponse = given()
@@ -77,7 +74,5 @@ public class V1refreshBookList {
 		}
 		Log.endTestCase("End");
 		return jsonResponse;
-		
 	}	
-
 }
