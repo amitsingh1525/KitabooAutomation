@@ -167,25 +167,73 @@ public class BookPlayerModule extends BookplayerStepModule
 
 	}
 	
-	public static void myDataHighlight(String filtercolour){
+	public static void myDataHighlight(String filtercolourhighlight){
 		btnmyData();
+		btnmyDatahighlight();
+		
+		if(filtercolourhighlight.equalsIgnoreCase("yellow")) {
+			chkbxyellowhighlight();
+		}
+		if(filtercolourhighlight.equalsIgnoreCase("red")) {
+			chkbxredhighlight();
+		}
+		if(filtercolourhighlight.equalsIgnoreCase("purple")) {
+			chkbxpurplehighlight();
+		}
+		if(filtercolourhighlight.equalsIgnoreCase("green")) {
+			chkbxgreenhighlight();
+		}
+		if(filtercolourhighlight.equalsIgnoreCase("blue")) {
+			chkbxbluehighlight();
+		}
+		btnmyData();
+	}
+	
+	public static void myDatanormalNotes(String filtercolour){
+		btnmyData();
+		btnmyDatanotes();
+		btnmyDatanormalnotes();
 		
 		if(filtercolour.equalsIgnoreCase("yellow")) {
-			chkbxyellow();
+			chkbxyellownotes();
 		}
 		if(filtercolour.equalsIgnoreCase("red")) {
-			chkbxred();
+			chkbxrednotes();
 		}
 		if(filtercolour.equalsIgnoreCase("purple")) {
-			chkbxpurple();
+			chkbxpurplenotes();
 		}
 		if(filtercolour.equalsIgnoreCase("green")) {
-			chkbxgreen();
+			chkbxgreennotes();
 		}
 		if(filtercolour.equalsIgnoreCase("blue")) {
-			chkbxblue();
+			chkbxbluenotes();
+		}
+		btnmyData();
+	}
+		
+	public static void myDatacontextualNotes(String filtercolour){
+		btnmyData();
+		btnmyDatanotes();
+		btnmyDatacontextualnotes();
+		
+		if(filtercolour.equalsIgnoreCase("yellow")) {
+			chkbxyellowcontextualnotes();
+		}
+		if(filtercolour.equalsIgnoreCase("red")) {
+			chkbxredcontextualnotes();
+		}
+		if(filtercolour.equalsIgnoreCase("purple")) {
+			chkbxpurplecontextualnotes();
+		}
+		if(filtercolour.equalsIgnoreCase("green")) {
+			chkbxgreencontextualnotes();
+		}
+		if(filtercolour.equalsIgnoreCase("blue")) {
+			chkbxbluecontextualnotes();
 		}
 	}
+		
 
 	public static void tableOfContentAndResources(){
 		btntableofcontentandresources();

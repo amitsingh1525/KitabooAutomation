@@ -24,6 +24,7 @@ private static Properties prop = getProperty(System.getProperty("user.dir")+"/co
 	}
 	
 	public static void drpAddNew_CreateBook(){
+		//dsds
 		try {
 			elementFinderByID(prop.getProperty("addNew_ID"), "addNew").click();
 			elementFinderByXpath(prop.getProperty("addNew_CreateNBook_Xpath"), "addNew_CreateNBook").click();
@@ -143,6 +144,7 @@ private static Properties prop = getProperty(System.getProperty("user.dir")+"/co
 	
 	public static void rdbDefaultImage(){
 		try {
+			threadHold_2Sec();
 			elementFinderByXpath(prop.getProperty("defaultImage_Xpath"), "rdb_Default").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
@@ -168,9 +170,47 @@ private static Properties prop = getProperty(System.getProperty("user.dir")+"/co
 	
 	public static void btnPublish(){
 		try {
-			elementFinderByID(prop.getProperty("publishBtn_ID"), "btn_Continue");
+			UIElements.waitTiming = 240;
+			elementFinderByID(prop.getProperty("publishBtn_ID"), "btn_Continue").click();
+			elementFinderByID("kitabooFormatGrid:0:kitabooformatid", "Ipad").click();
+			elementFinderByID("kitabooFormatGrid:2:kitabooformatid", "HTML").click();
+			elementFinderByID("kitabooFormatGrid:1:kitabooformatid", "Android").click();
+			elementFinderByID("kitabooFormatGrid:3:kitabooformatid", "Windows").click();
+			elementFinderByID("kitabooFormatGrid:4:kitabooformatid", "Offline HTML").click();
+			elementFinderByID("updateID", "btnPublish").click();
+			UIElements.waitTiming = 60;
+		} catch (Exception e) {
+			UIElements.waitTiming = 60;
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void btnArchived(){
+		try {
+			UIElements.waitTiming = 240;
+			elementFinderByID(prop.getProperty("archiveBtn_ID"), "btnArchived").click();
+			UIElements.waitTiming = 60;
+		} catch (Exception e) {
+			UIElements.waitTiming = 60;
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void txtSearch(String title){
+		try {
+			elementFinderByID(prop.getProperty("search_id"), "txtSearchTitle").sendKeys(title);
+			btnSearch();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
 	}
+	
+	public static void btnSearch(){
+		try {
+			elementFinderByID(prop.getProperty("searchbtn_id"), "btnSearch").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
 }
