@@ -472,6 +472,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void btnhistoryprevious(){
 		try {
+			btnthumbnail();
 			elementFinderByXpath(prop.getProperty("historyprevious_xpath"), "historyprevious").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
@@ -480,6 +481,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void btnhistorynext(){
 		try {
+			btnthumbnail();
 			elementFinderByXpath(prop.getProperty("historynext_xpath"), "historynext").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
@@ -594,6 +596,22 @@ public class BookplayerStepModule extends UIElements {
 	public static void btnSaveStickyNotes(){
 		try {
 			elementFinderByXpath(prop.getProperty("postnotebtn_xpath"), "btnSaveStickyNotes").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void btnDeleteStickyNotes(){
+		try {
+			elementFinderByXpath(prop.getProperty("deleteSticky_Xpath"), "btnDeleteStickyNotes").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void btnStickyNotes_PopUp(){
+		try {
+			elementFinderByXpath(prop.getProperty("StickyPopUp_Xpath"), "btnStickyNotes_PopUp").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}

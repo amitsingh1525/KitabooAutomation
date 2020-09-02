@@ -117,7 +117,15 @@ public class BookPlayerModule extends BookplayerStepModule
 		
 		txtStickyNotes("Hello Brother!");
 		btnSaveStickyNotes();
+	}
+	
+	public static void DeletestickyNotes(String pageNum, int x, int y){
+		Driver.driver.switchTo().frame("epub_"+pageNum);
+		/*WebElement element = Driver.driver.findElement(By.id("p5-textid50001"));
+		actionclass(element, x, y);*/
+		btnStickyNotes_PopUp();
 		Driver.driver.switchTo().parentFrame();
+		btnDeleteStickyNotes();
 	}
 
 	public static void goToPage(String pageNum){
@@ -192,11 +200,13 @@ public class BookPlayerModule extends BookplayerStepModule
 	}
 
 
-	public static String getPageNum(){
+	public static String getCurrentPageNum(){
 		threadHold_5Sec();
 		btnthumbnail();
+		String currentPage = getpageNum();
 		System.out.println("Page Number: "+getpageNum());
-		return getpageNum();
+		btnthumbnail();
+		return currentPage;
 
 	}
 
