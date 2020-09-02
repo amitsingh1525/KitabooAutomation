@@ -1,0 +1,41 @@
+package com.hurix.api.readerAPIs;
+
+import static io.restassured.RestAssured.given;
+import io.restassured.response.Response;
+
+import com.hurix.api.runner.RestAssured;
+import com.hurix.automation.utility.Log;
+
+public class FetchCategoriesCollectionsBooks {
+	public static String GETfetchCategoriesCollectionsBooksPath;
+	
+	public static Response fetchCategoriesCollectionsBooks()
+	{
+		//GETfetchCategoriesCollectionsBooksPath = ""+com.hurix.api.utility.ExcelUtils.getbaseURI()+"/DistributionServices/services/api/reader/books/123454/PC/books/fetchCategoriesCollectionsBooks";
+		
+		Response jsonResponse = null;
+		try {
+			
+			Log.startTestCase("fetchCategoriesCollectionsBooks");
+		
+			//System.out.println("GETfetchCategoriesCollectionsBooksRequestURL:" +GETfetchCategoriesCollectionsBooksPath);
+			String strcollection="Native_cat4";
+			String strcat="level1_upd";
+			jsonResponse = given()
+					.header("usertoken",com.hurix.api.runner.RestAssured.userToken)
+					.header("category",RestAssured.catname)
+					.header("collection",RestAssured.collectionName1)
+					.get("/DistributionServices/services/api/reader/books/123454/PC/books/fetchCategoriesCollectionsBooks");
+			
+			Log.info("FetchCategoriesCollectionsBooks Response: "+jsonResponse.then().extract().response().prettyPrint());
+		} catch (Exception exp) 
+		{
+			System.out.println(exp.getMessage());
+			System.out.println(exp.getCause());
+			exp.printStackTrace();
+		}
+		Log.endTestCase("End");
+		return jsonResponse;
+	}
+
+}

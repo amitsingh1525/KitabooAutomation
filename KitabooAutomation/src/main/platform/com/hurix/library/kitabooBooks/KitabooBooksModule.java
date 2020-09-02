@@ -23,8 +23,11 @@ public class KitabooBooksModule extends KitabooBooksStepModule {
 	
 	@Given("create a book with data")
 	//String isbn,String title,String author,String catLevel, String description,String language, String bookType, String keywords, String bookOriantaion, String bookPath
-	public static String bookCreationPDF(){
-
+	//public static String bookCreationPDF(){
+	public static String bookCreationPDF(String title, String author, String catLevel,
+			String discription, String keyWords){
+		
+		String parentWin = Driver.driver.getWindowHandle();
 		drpAddNew_HTMLCreateBook();
 		threadHold_5Sec(); //wait for 5 sec
 		for(String winHandle : Driver.driver.getWindowHandles())  // Switch to new opened window
@@ -36,11 +39,11 @@ public class KitabooBooksModule extends KitabooBooksStepModule {
 		long nowEpochTime = Instant.now().toEpochMilli();
 		txtISBN(nowEpochTime+"");
 		Log.info("ISBN enterd i.e '"+nowEpochTime+""+"'");
-		txtTitle("AutomTeam_"+nowEpochTime);
+		txtTitle(title+nowEpochTime);
 		Log.info("Title enterd i.e '"+"AutomTeam_"+nowEpochTime+"'");
-		txtAuthor("Automation Team");
+		txtAuthor(author);
 		Log.info("Author enterd i.e '"+"Automation Team"+"'");
-		String catLevel = "level 1";
+		//String catLevel = "level 1";
 		switch(catLevel){
 		case "level 1":
 			drpCategory("Automation");
@@ -69,32 +72,36 @@ public class KitabooBooksModule extends KitabooBooksStepModule {
 			break;
 		}
 
-		txtDescription("This book create by Automation Team. For testing purpose.");
+		txtDescription(discription);
 		Log.info("Description enterd i.e '"+"This book create by Automation Team. For testing purpose"+"'");
 		drpLanguageSelection("English"); //language like English, Spanish, etc..
 		Log.info("In Language selected i.e '"+"English"+"'");
 		drpBookType("Other"); // Other, Standard, Workbook, etc.. 
 		Log.info("In Book Type selected i.e '"+"Other"+"'");
-		txtkeywords("Automation, Hurix,  PDGTeam");
+		txtkeywords(keyWords);
 		Log.info("Keywords enterd i.e '"+"Automation, Hurix,  PDGTeam"+"'");
 		drpBookOriantation("Dynamic");// Dynamic, Lock Portrait, etc...
 		Log.info("In Book Oriantaion selected i.e '"+"Dynamic"+"'");
-
+		
 		threadHold_5Sec();
-		btnUploadBook("C:/Users/amit.singh/git/KitabooAutomation/KitabooAutomation/resources/Hurix_Showcase.pdf");
-		rdbDefaultImage();
+		btnUploadBook(System.getProperty("user.dir")+"/resources/Hurix_Showcase.pdf");
+		//threadHold_5Sec();
+		//rdbDefaultImage();
 		btnFinish();
 		afterFinishBtnContinue();
-		Driver.driver.switchTo().defaultContent();
-		
-		return "AutomTeam_"+nowEpochTime;
+		threadHold_5Sec();
+		threadHold_5Sec();
+		Driver.driver.switchTo().window(parentWin);
+		return title+nowEpochTime;
 
 	}
 	
-	public static String bookPublishPDF(String title){
+	public static String bookPublishAndArchivePDF(String title){
 		
-		
+		txtSearch(title);
+		threadHold_5Sec();
 		btnPublish();
+		btnArchived();
 		return null;
 	}
 	
