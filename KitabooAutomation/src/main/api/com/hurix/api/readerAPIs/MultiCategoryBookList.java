@@ -11,21 +11,21 @@ import com.hurix.automation.utility.Log;
 
 public class MultiCategoryBookList {
 
-	public static Response multiCategoryBookList(String catLevel,int bookID, String sqlhost, String sqlUsername, String sqlPassword)
+	public static Response multiCategoryBookList(String catLevel,int bookID, String sqlhost, String sqlUsername, String sqlPassword,String userToken,String deviceID,String deviceType)
 	{
 		Response jsonResponse = null;
 		try {
 
-			Log.startTestCase("MultiCategoryBookList");
+			Log.startTestCase("MultiCategoryBookList:"+catLevel+"");
 			if(catLevel.contains ("4"))
 			{
 				jsonResponse = given()
-						.header("usertoken",RestAssured.userToken)
+						.header("usertoken",userToken)
 						.header("base64CategoryLevel1", JDBC_category.getCategory(bookID, "level1", sqlhost,sqlUsername,sqlPassword))
 						.header("base64CategoryLevel2", JDBC_category.getCategory(bookID, "level2", sqlhost,sqlUsername,sqlPassword))
 						.header("base64CategoryLevel3", JDBC_category.getCategory(bookID, "level3", sqlhost,sqlUsername,sqlPassword))
 						.header("base64CategoryLevel4", JDBC_category.getCategory(bookID, "level4", sqlhost,sqlUsername,sqlPassword))
-						.get("/DistributionServices/services/api/reader/user/123/IPAD/multiCategoryBookList");
+						.get("/DistributionServices/services/api/reader/user/"+deviceID+"/"+deviceType+"/multiCategoryBookList");
 				Validation.responseHeaderCodeValidation(jsonResponse, 200);
 				Validation.responseCodeValidation1(jsonResponse, 200);
 				Validation.responseTimeValidation(jsonResponse);
@@ -33,11 +33,12 @@ public class MultiCategoryBookList {
 				Validation.responseKeyValidation_key(jsonResponse, "category");
 				Validation.responseKeyValidation_key(jsonResponse, "description");	
 				Log.info("MultiCategoryBookList: "+catLevel+ " Response: "+jsonResponse.then().extract().response().prettyPrint());
+				
 			}
 			else if(catLevel.contains ("3"))
 			{
 				jsonResponse = given()
-						.header("usertoken",RestAssured.userToken)
+						.header("usertoken",userToken)
 						.header("base64CategoryLevel1", JDBC_category.getCategory(bookID, "level1", sqlhost,sqlUsername,sqlPassword))
 						.header("base64CategoryLevel2", JDBC_category.getCategory(bookID, "level2", sqlhost,sqlUsername,sqlPassword))
 						.header("base64CategoryLevel3", JDBC_category.getCategory(bookID, "level3", sqlhost,sqlUsername,sqlPassword))
@@ -53,7 +54,7 @@ public class MultiCategoryBookList {
 			if(catLevel.contains ("2"))
 			{
 				jsonResponse = given()
-						.header("usertoken",RestAssured.userToken)
+						.header("usertoken",userToken)
 						.header("base64CategoryLevel1", JDBC_category.getCategory(bookID, "level1", sqlhost,sqlUsername,sqlPassword))
 						.header("base64CategoryLevel2", JDBC_category.getCategory(bookID, "level2", sqlhost,sqlUsername,sqlPassword))
 						.get("/DistributionServices/services/api/reader/user/123/IPAD/multiCategoryBookList");
@@ -64,6 +65,7 @@ public class MultiCategoryBookList {
 				Validation.responseKeyValidation_key(jsonResponse, "category");
 				Validation.responseKeyValidation_key(jsonResponse, "description");	
 				Log.info("MultiCategoryBookList: "+catLevel+ " Response: "+jsonResponse.then().extract().response().prettyPrint());
+				
 			}
 
 		} catch (Exception exp) 

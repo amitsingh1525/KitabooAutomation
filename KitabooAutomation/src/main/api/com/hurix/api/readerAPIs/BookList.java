@@ -1,24 +1,30 @@
 package com.hurix.api.readerAPIs;
 
 import static io.restassured.RestAssured.given;
+
+import org.apache.http.HttpStatus;
+
 import io.restassured.response.Response;
 
+import com.hurix.api.utility.Validation;
 import com.hurix.automation.utility.Log;
 
-public class BookList {
+public class BookList {	
 	
-	
-	public static Response bookList()
-	{
-		
+	public static Response bookList(String userToken,String deviceID, String DeviceType)
+	{		
 		Response jsonResponse = null;
 		try {
-			
 			Log.startTestCase("bookList");
 			jsonResponse = given()
-					.header("usertoken",com.hurix.api.runner.RestAssured.userToken)						
-					.get("/DistributionServices/services/api/reader/books/123234234/IPAD/bookList");
-			
+					.header("usertoken",userToken)						
+					.get("/DistributionServices/services/api/reader/books/"+deviceID+"/"+DeviceType+"/bookList");
+			Validation.responseHeaderCodeValidation(jsonResponse, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(jsonResponse, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(jsonResponse);
+			Validation.responseKeyValidation_key(jsonResponse, "isbn");
+			Validation.responseKeyValidation_key(jsonResponse, "formats");
+			Validation.responseKeyValidation_key(jsonResponse, "id");
 			Log.info("bookListResponse: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 
 		{
