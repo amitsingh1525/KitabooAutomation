@@ -53,26 +53,31 @@ public class audio {
 			String invalidaudiofilepath = ExcelFile.getCellData(2,6);
 			String audiofile = null;
 			int i = 0;
-			//AudioModule.audio(audiofile,"video"+nowEpochTime,description,tags,subject,transcriptfile,coverpath,invalidaudiofilepath,wrongtranscriptfile);
-		/*	for(i=1;i<=1;i++)
+			//AudioModule.audio(audiofile,"Audio"+nowEpochTime,description,tags,subject,transcriptfile,coverpath,invalidaudiofilepath,wrongtranscriptfile);
+			for(i=1;i<=1;i++)
 			{
 				audiofile = ExcelFile.getCellData(i,6);	
-				AudioModule.audio(audiofile,"video"+nowEpochTime,description,tags,subject,transcriptfile,coverpath,invalidaudiofilepath,wrongtranscriptfile);
+				AudioModule.audio(audiofile,"Audio"+nowEpochTime,description,tags,subject,transcriptfile,coverpath,invalidaudiofilepath,wrongtranscriptfile);
+			}
+			for(i=1;i<=1;i++)
+			{
+				audiofile = ExcelFile.getCellData(i,6);	
+				AudioModule.cancelaudio(audiofile,"Audio"+nowEpochTime,description,tags,subject,transcriptfile,coverpath,invalidaudiofilepath,wrongtranscriptfile);
 			}
 			for(i=4;i<=5;i++)
 			{
 				audiofile = ExcelFile.getCellData(i,6);	
-				AudioModule.changeaudio(audiofile,"video"+nowEpochTime,description,tags,subject,transcriptfile,coverpath,invalidaudiofilepath,wrongtranscriptfile);
-			}*/
-			/*for(i=6;i<=6;i++)
-			{
-				audiofile = ExcelFile.getCellData(i,6);	
-				AudioModule.audio(audiofile,"video"+nowEpochTime,description,tags,subject,transcriptfile,coverpath,invalidaudiofilepath,wrongtranscriptfile);
-			}*/
+				AudioModule.changeaudio(audiofile,"Audio"+nowEpochTime,description,tags,subject,transcriptfile,coverpath,invalidaudiofilepath,wrongtranscriptfile);
+			}
 			for(i=6;i<=6;i++)
 			{
 				audiofile = ExcelFile.getCellData(i,6);	
-				AudioModule.Editaudio(audiofile,"video"+nowEpochTime,description,tags,subject,transcriptfile,coverpath,invalidaudiofilepath,wrongtranscriptfile);
+				AudioModule.audio(audiofile,"Audio"+nowEpochTime,description,tags,subject,transcriptfile,coverpath,invalidaudiofilepath,wrongtranscriptfile);
+			}
+			for(i=6;i<=6;i++)
+			{
+				audiofile = ExcelFile.getCellData(i,6);	
+				AudioModule.Editaudio(audiofile,"Audio"+nowEpochTime,description,tags,subject,transcriptfile,coverpath,invalidaudiofilepath,wrongtranscriptfile);
 			}
 			
 			

@@ -82,7 +82,7 @@ public class AudioStepModule extends UIElements {
 		try {
 			wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("loader_image")));
 			JavascriptExecutor js = ( JavascriptExecutor)Driver.driver;
-			WebElement audioCancel = elementFinderByID(prop.getProperty("audioCancel_xpath"), "btnaudioCancel");
+			WebElement audioCancel = elementFinderByXpath(prop.getProperty("audioCancel_xpath"), "btnaudioCancel");
 			threadHold_2Sec();
 			js.executeScript("arguments[0].scrollIntoView(true)",audioCancel);
 			elementFinderByXpath(prop.getProperty("audioCancel_xpath"), "btnaudioCancel").click();
@@ -182,7 +182,7 @@ public class AudioStepModule extends UIElements {
 		try {
 			wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("loader_image")));
 			JavascriptExecutor js = ( JavascriptExecutor)Driver.driver;
-			WebElement Changeaudio = elementFinderByID(prop.getProperty("Changeaudio_xpath"), "btnChangeaudio");
+			WebElement Changeaudio = elementFinderByXpath(prop.getProperty("Changeaudio_xpath"), "btnChangeaudio");
 			threadHold_2Sec();
 			js.executeScript("arguments[0].scrollIntoView(true)",Changeaudio);
 			wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("loader_image")));
@@ -194,6 +194,11 @@ public class AudioStepModule extends UIElements {
 		
 	public static void btnAddchapter(){
 		try {
+			threadHold_2Sec();
+			JavascriptExecutor js = (JavascriptExecutor) Driver.driver;
+			js .executeScript("document.getElementById(\"audioPlay\").play()");
+			threadHold_2Sec();
+			js .executeScript("document.getElementById(\"audioPlay\").pause()");
 			wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("loader_image")));
 			txtchapterTime();
 			elementFinderByXpath(prop.getProperty("Addchapter_xpath"), "btnAddchapter").click();
