@@ -17,8 +17,7 @@ import com.hurix.api.utility.EpochTime;
 import com.hurix.api.utility.ExcelUtils;
 import com.hurix.api.utility.ExtractCategory;
 import com.hurix.automation.utility.Log;
-
-import static org.hamcrest.Matchers.*;
+//import static org.hamcrest.Matchers.*;
 
 public class RestAssured {
 
@@ -118,11 +117,11 @@ public class RestAssured {
 				System.out.println("userToken:"+userToken);
 				clientUserID = authenticateValue.then().extract().path("user.clientUserID");
 				System.out.println("clientUserID:"+clientUserID);
-				Response fetchBookList_with_pagination = FetchBookList.fetchBookList_with_pagination();
+				Response fetchBookList_with_pagination = FetchBookList.fetchBookList_with_pagination(userToken,"45616452","IPAD");
 				System.out.println("fetchBookList_with_pagination_RES : " +fetchBookList_with_pagination);
 				totalbooks= fetchBookList_with_pagination.then().assertThat().extract().path("totalbooks");
 
-				Response fetchBookList_without_pagination = FetchBookList.fetchBookList_without_pagination();
+				Response fetchBookList_without_pagination = FetchBookList.fetchBookList_without_pagination(userToken,"45616452","IPAD");
 				bookID1 = fetchBookList_without_pagination.then().extract().path("bookList.book.id[0]");
 				System.out.println("bookID_1: "+bookID1);
 				bookID2 = fetchBookList_without_pagination.then().extract().path("bookList.book.id[1]");
@@ -139,7 +138,7 @@ public class RestAssured {
 				System.out.println("collectionName1: "+collectionName1);
 				catname = ExtractCategory.extractCategory(category1);
 				System.out.println("catname: " +catname);
-				Response GETfetchBookCount_res =FetchBookCount.fetchBookCount();
+				Response GETfetchBookCount_res =FetchBookCount.fetchBookCount(userToken,"45616452","IPAD");
 				System.out.println("fetchBookCount_res : "+GETfetchBookCount_res);
 				
 				Response FetchBookListHash_res =FetchBookListHash.fetchBookListHash();

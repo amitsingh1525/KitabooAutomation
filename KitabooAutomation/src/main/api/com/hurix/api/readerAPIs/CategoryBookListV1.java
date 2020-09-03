@@ -9,19 +9,18 @@ public class CategoryBookListV1 {
 	
 	public static String GETcategoryBookListV1Path;
 
-	public static Response categoryBookListV1(String catname)
+	public static Response categoryBookListV1(String catname,String userToken,String DeviceID,String DeviceType)
 	{
 		//GETcategoryBookListV1Path = ""+com.hurix.api.utility.ExcelUtils.getbaseURI()+"/DistributionServices/services/api/reader/books/145644544/PC/books/"+catname+"";
 		
 		Response jsonResponse = null;
-		try {
-			
+		try {			
 			Log.startTestCase("categoryBookListV1");
 			System.out.println("GETcategoryBookListV1 RequestURL:" +GETcategoryBookListV1Path);
 			jsonResponse = given()
 					.header("usertoken",com.hurix.api.runner.RestAssured.userToken)	
 	
-					.get("/DistributionServices/services/api/reader/books/145644544/PC/books/"+catname+"");
+					.get("/DistributionServices/services/api/reader/books/"+DeviceID+"/"+DeviceType+"/books/"+catname+"");
 			
 			Log.info("categoryBookListV1 Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 
