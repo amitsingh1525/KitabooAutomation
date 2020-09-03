@@ -1,5 +1,10 @@
 package com.hurix.api.runner;
 
+import io.restassured.response.Response;
+
+import com.hurix.api.externalAPIs.IngectEpub;
+import com.hurix.api.externalAPIs.IngestionStatus;
+import com.hurix.api.externalAPIs.Metadata;
 import com.hurix.automation.utility.BrowserConfigure;
 import com.hurix.automation.utility.Driver;
 import com.hurix.library.kitabooBooks.KitabooBooksModule;
@@ -16,7 +21,22 @@ public class DIS_1979 {
 		String title = KitabooBooksModule.bookCreationPDF("hello", "World", "level 2", "For automation Testing", "Hello, World");
 	
 		KitabooBooksModule.bookPublishAndArchivePDF(title);
-
+		/*for(int i1=1;i1<=2;i1++)
+		{
+			System.out.println("detailisbn = "+detailisbn.get(i1));
+			Response Metadata_res = Metadata.metadata(consumerKey, consumerSecret,detailisbn.get(i1));
+			System.out.println("Metadata_res : "+Metadata_res);
+			isbnMeta = Metadata_res.then().extract().path("isbn");
+			System.out.println("isbnMeta: "+isbnMeta);
+			isbnMeta=detailisbn.get(i1);
+			Response IngectEpub_res = IngectEpub.ingectEpub_ext(consumerKey, consumerSecret,isbnMeta);
+			System.out.println("IngectEpub_res : "+IngectEpub_res);
+			isbnIng = IngectEpub_res.then().extract().path("isbn");			
+			System.out.println("isbnIng: "+isbnIng);			
+			Response IngestionStatus_res = IngestionStatus.ingestionStatus(consumerKey, consumerSecret, isbnIng);
+			System.out.println("IngestionStatus_res : "+IngestionStatus_res);			
+		}
+*/
 	}
 
 }

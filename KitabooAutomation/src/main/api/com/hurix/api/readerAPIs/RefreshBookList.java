@@ -18,7 +18,7 @@ public class RefreshBookList
 			Log.startTestCase("refreshBookList");
 			//System.out.println("GETrefreshBookList:" +refreshBookListPath);
 			jsonResponse = given()
-					.header("usertoken",com.hurix.api.runner.RestAssured.userToken)						
+					.header("usertoken",userToken)						
 					.get("/DistributionServices/services/api/reader/distribution/"+deviceID+"/"+deviceType+"/refreshBookList");
 			
 			Log.info("RefreshBookListResponse: "+jsonResponse.then().extract().response().prettyPrint());

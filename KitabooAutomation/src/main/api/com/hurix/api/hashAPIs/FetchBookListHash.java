@@ -10,18 +10,17 @@ import com.hurix.automation.utility.Log;
 
 public class FetchBookListHash {	
 
-	public static Response fetchBookListHash()
+	public static Response fetchBookListHash(String userToken,String deviceID,String deviceType)
 	{
 		
 		Response jsonResponse = null;
 		try {
-
 			Log.startTestCase("FetchBookList_Hash");
 			System.out.println("Header HASH == " +MD5Genration.hashGenration(RestAssured.detail+"/DistributionServices/services/api/reader/distribution/145644544/PC/fetchBookList"));
 			jsonResponse = given()
-					.header("usertoken",com.hurix.api.runner.RestAssured.userToken)	
+					.header("usertoken",userToken)	
 					.header("hash",MD5Genration.hashGenration(RestAssured.detail+"/DistributionServices/services/api/reader/distribution/145644544/PC/fetchBookList"))
-					.get("/DistributionServices/services/api/reader/distribution/145644544/PC/fetchBookList");
+					.get("/DistributionServices/services/api/reader/distribution/"+deviceID+"/"+deviceType+"/fetchBookList");
 			Validation.responseHeaderCodeValidation(jsonResponse, 200);
 			Validation.responseCodeValidation1(jsonResponse, 200);
 			Validation.responseTimeValidation(jsonResponse);		

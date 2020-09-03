@@ -141,6 +141,38 @@ public class Validation {
 			Log.fail(e.getMessage());
 		}
 	}
+	public static void responseNOTKeyValidation_key(Response jsonResponse, String key)
+	{
+		try {			
+			//JSONObject array = new JSONObject(jsonResponse .getBody().asString());
+			//for(String i=0;i<array.length();i++)
+			body = jsonResponse.getBody();
+			String bodyStringValue = body.asString();
+			Log.info("Whole string :: " +key);
+			
+			try {
+				Log.info("HERE we are "+"bodyStringValue: :"+bodyStringValue+"key: :"+key+"");
+				if(bodyStringValue != key)
+				{
+				//Assert.assertFalse(bodyStringValue.contains(key));
+				Log.pass("validation Not Present pass Parameter is Present are : " +key);
+				}
+				else if(bodyStringValue == key)
+				{
+					Log.fail("validated Not Present Fails Asserting for contails= 1 Not FOUND are : " +key);
+					
+				}
+			} catch (AssertionError e) {
+				e.printStackTrace();
+				Log.fail("validated Not Present Fails Asserting for contails= 1 Not FOUND are : " +key);
+				
+				//Log.fail("validated Not FOUND are : " +key+ "=" +value );
+			}
+		} catch (Exception e) 
+		{			
+			Log.fail(e.getMessage());
+		}
+	}
 	/*public static void   main(String []args) throws SQLException
 	{
 		Response jsonResponse=given()

@@ -2,16 +2,15 @@ package com.hurix.api.utility;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
-
-import com.hurix.api.hashAPIs.V1RefreshBooks;
+import com.hurix.api.hashAPIs.*;
 
 public class MD5GenrationWithBodyData {
 	
 	public static String hashGenration(String url) throws Exception 
 	{
 		String s = url.replaceAll("http://", "").replaceAll("https://", "");
-		String s1 = s+V1RefreshBooks.v1refreshBooksBody;
-		System.out.println("body:  :: " +s+V1RefreshBooks.v1refreshBooksBody);
+		String s1 = s+V1RefreshBooksHash.v1refreshBooksBody;
+		System.out.println("body:  :: " +s+V1RefreshBooksHash.v1refreshBooksBody);
 		int count = 0;  
 		for(int i = 0; i < s1.length(); i++) {    
 			if(s1.charAt(i) != ' ')    

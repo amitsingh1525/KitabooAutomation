@@ -10,7 +10,7 @@ public class BookMetadata {
 	
 	//public static String GETbookMetadataPath=""+com.hurix.api.utility.ExcelUtils.getbaseURI()+"/DistributionServices/ext/api/book/"+com.hurix.api.runner.RestAssured.bookID1+"/bookMetadata";
 	
-	public static Response bookMetadata(String consumerKey, String consumerSecret)
+	public static Response bookMetadata(String consumerKey, String consumerSecret,int bookID1)
 	{
 		Response jsonResponse = null;
 		try {
@@ -21,7 +21,7 @@ public class BookMetadata {
 					.auth()
 					.oauth(consumerKey, consumerSecret, "", "")
 					.header("Content-Type","application/json")								
-					.get("/DistributionServices/ext/api/book/"+com.hurix.api.runner.RestAssured.bookID1+"/bookMetadata");
+					.get("/DistributionServices/ext/api/book/"+bookID1+"/bookMetadata");
 					Validation.responseHeaderCodeValidation(jsonResponse, 200);
 					Validation.responseCodeValidation1(jsonResponse, 200);
 					Validation.responseTimeValidation(jsonResponse);

@@ -9,10 +9,12 @@ import com.hurix.automation.utility.Log;
 public class SearchV2_OAuth {
 	
 	//public static String POSTsearchV2Path=""+com.hurix.api.utility.ExcelUtils.getbaseURI()+"/DistributionServices/ext/api/searchV2";
-
-	private static String searchV2Body = "{\"searchText\":\"Native\",\"searchOn\":\"both\",\"searchType\":\"partial\",\"books\":[],\"searchField\":[\"author\",\"ISBN\",\"description\",\"bookTitle\",\"subject\",\"Publisher\",\"Book content\"],\"from\":0,\"size\":50,\"userId\":\""+com.hurix.api.runner.RestAssured.clientUserID+"\"}";
-	public static Response searchV2_OAuth(String consumerKey, String consumerSecret)
+	private static String searchV2Body;// = "{\"searchText\":\"Native\",\"searchOn\":\"both\",\"searchType\":\"partial\",\"books\":[],\"searchField\":[\"author\",\"ISBN\",\"description\",\"bookTitle\",\"subject\",\"Publisher\",\"Book content\"],\"from\":0,\"size\":50,\"userId\":\""+clientUserID+"\"}";
+	
+	public static Response searchV2_OAuth(String searchTEXT,String consumerKey, String consumerSecret,String clientUserID)
 	{
+		searchV2Body = "{\"searchText\":\""+searchTEXT+"\",\"searchOn\":\"both\",\"searchType\":\"partial\",\"books\":[],\"searchField\":[\"author\",\"ISBN\",\"description\",\"bookTitle\",\"subject\",\"Publisher\",\"Book content\"],\"from\":0,\"size\":50,\"userId\":\""+clientUserID+"\"}";
+		
 		Response jsonResponse = null;
 		try {
 			

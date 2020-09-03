@@ -16,10 +16,10 @@ public class CategoryBookListV1 {
 		Response jsonResponse = null;
 		try {			
 			Log.startTestCase("categoryBookListV1");
+			Log.info("catname  : "+catname);
 			System.out.println("GETcategoryBookListV1 RequestURL:" +GETcategoryBookListV1Path);
 			jsonResponse = given()
-					.header("usertoken",com.hurix.api.runner.RestAssured.userToken)	
-	
+					.header("usertoken",userToken)	
 					.get("/DistributionServices/services/api/reader/books/"+DeviceID+"/"+DeviceType+"/books/"+catname+"");
 			
 			Log.info("categoryBookListV1 Response: "+jsonResponse.then().extract().response().prettyPrint());
