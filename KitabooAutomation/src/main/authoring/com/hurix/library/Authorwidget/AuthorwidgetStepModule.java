@@ -80,7 +80,7 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 // Authoring tool opened
 	public static void btn_tableof_content(){
 		try {
-			elementFinderByID(prop.getProperty("tableof_content_Xpath"), "btn_tableof_content").click();
+			elementFinderByXpath(prop.getProperty("tableof_content_Xpath"), "btn_tableof_content").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -117,7 +117,7 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 	
 	public static void dragDrop(){
 		try {
-			elementFinderByXpath(prop.getProperty("dropdown_ID"), "dragDrop()");
+			elementFinderByID(prop.getProperty("dropdown_ID"), "dragDrop()");
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -169,7 +169,7 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 	
 	public static void saveActivity(){
 		try {
-			elementFinderByXpath(prop.getProperty("dropdown_ID"), "SaveActivity()");
+			elementFinderByID(prop.getProperty("dropdown_ID"), "SaveActivity()");
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -190,7 +190,7 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 	
 	public static void btnlistview_copy(){
 		try {
-			elementFinderByXpath(prop.getProperty("listviewscopy_btn_ID"), "btn_copy").click();
+			elementFinderByID(prop.getProperty("listviewscopy_btn_ID"), "btn_copy").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -198,7 +198,7 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 	
 	public static void btngridview_copy(){
 		try {
-			elementFinderByXpath(prop.getProperty("gridviewscopy_btn__ID"), "btn_copy").click();
+			elementFinderByID(prop.getProperty("gridviewscopy_btn__ID"), "btn_copy").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -208,7 +208,7 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 	
 	public static void btnrenamewidget(){
 		try {
-			elementFinderByXpath(prop.getProperty("rename_btn_ID"), "btn_rename").click();
+			elementFinderByID(prop.getProperty("rename_btn_ID"), "btn_rename").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -216,9 +216,9 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 	
 	public static void txtbx_widgetname(String widgetname){
 		try {
-			elementFinderByXpath(prop.getProperty("widgetname_txtbx_ID"), "txtbx_widgetname").clear();
-			elementFinderByXpath(prop.getProperty("widgetname_txtbx_ID"), "txtbx_widgetname").sendKeys(widgetname);
-			elementFinderByXpath(prop.getProperty("widgetname_txtbx_ID"), "txtbx_widgetnamer").click();
+			elementFinderByID(prop.getProperty("widgetname_txtbx_ID"), "txtbx_widgetname").clear();
+			elementFinderByID(prop.getProperty("widgetname_txtbx_ID"), "txtbx_widgetname").sendKeys(widgetname);
+			elementFinderByID(prop.getProperty("widgetname_txtbx_ID"), "txtbx_widgetnamer").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -226,7 +226,7 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 	
 	public static void btnsavewidget(){
 		try {
-			elementFinderByXpath(prop.getProperty("save_btn_ID"), "btn_save").click();
+			elementFinderByID(prop.getProperty("save_btn_ID"), "btn_save").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -234,13 +234,19 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 	
 // Change cover functionality  (grid view)	
 	
-	
+	public static void btngridview_changeCover(){
+		try {
+			elementFinderByXpath(prop.getProperty("changecover_bx_Xpath"), "btn_changeCover").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
 	
 // Share functionality (List and Grid view)
 	
 	public static void btnlistview_share(){
 		try {
-			elementFinderByXpath(prop.getProperty("listviewshare_btn_ID"), "btn_share").click();
+			elementFinderByID(prop.getProperty("listviewshare_btn_ID"), "btn_share").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -248,7 +254,7 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 	
 	public static void rdbtnoption_share(){
 		try {
-			elementFinderByXpath(prop.getProperty("radiooption_btn_ID"), "btn_radiooption").click();
+			elementFinderByID(prop.getProperty("radiooption_btn_ID"), "btn_radiooption").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -256,7 +262,7 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 	
 	public static void btnconfirm_share(){
 		try {
-			elementFinderByXpath(prop.getProperty("shareconfirm_btn_Id"), "btn_confirm").click();
+			elementFinderByID(prop.getProperty("shareconfirm_btn_Id"), "btn_confirm").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -264,7 +270,7 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 	
 	public static void btngridview(){
 		try {
-			elementFinderByXpath(prop.getProperty("gridview_btn_ID"), "btn_gridview").click();
+			elementFinderByID(prop.getProperty("gridview_btn_ID"), "btn_gridview").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -272,7 +278,7 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 	
 	public static void btngridview_share(){
 		try {
-			elementFinderByXpath(prop.getProperty("gridviewshare_btn__ID"), "btn_share").click();
+			elementFinderByID(prop.getProperty("gridviewshare_btn__ID"), "btn_share").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -280,7 +286,7 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 	
 	public static void btnlistview(){
 		try {
-			elementFinderByXpath(prop.getProperty("listview_btn_ID"), "btn_listview").click();
+			elementFinderByID(prop.getProperty("listview_btn_ID"), "btn_listview").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -289,7 +295,7 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 // Delete author widget Functionality
 	public static void btndelete(){
 		try {
-			elementFinderByXpath(prop.getProperty("delete_btn_ID"), "btn_delete").click();
+			elementFinderByID(prop.getProperty("delete_btn_ID"), "btn_delete").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -297,7 +303,7 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 	
 	public static void btnconfirmdelete(){
 		try {
-			elementFinderByXpath(prop.getProperty("deleteconfirm_btn_ID"), "btn_confirmdelete").click();
+			elementFinderByID(prop.getProperty("deleteconfirm_btn_ID"), "btn_confirmdelete").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
