@@ -1,6 +1,7 @@
 package com.hurix.asset.audio;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.hurix.automation.utility.Driver;
@@ -11,6 +12,7 @@ public class AudioModule extends AudioStepModule
 {
 	public static void audio(String audiopath,String title,String desc,String tag, String subject ,String transcriptfilepath,String coverpath,String invalidaudiofilepath,String wrongtranscriptfile)
 	{
+		Log.startTestCase("create audio");
 		linklibrary();
 		linkAsset();
 		linkAudio();
@@ -41,6 +43,7 @@ public class AudioModule extends AudioStepModule
 			audiopath=System.getProperty("user.dir")+audiopath;
 			
 			wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("loader_image")));
+			
 			btnAddchapter();
 			txtChapterTitle("ChapterTitle");
 			txtChapterDescription("ChapterDescription");
@@ -63,17 +66,19 @@ public class AudioModule extends AudioStepModule
 			
 			/*JavascriptExecutor js = (JavascriptExecutor) driver;
 			js.executeScript("document.getElementById('//id of element').setAttribute('attr', '10')");*/
+			
 		}
 		else
 		{
 			Log.fail("Expected URL contain 'books.xhtml' but found "+Driver.driver.getCurrentUrl());
 		
 		}
-		
+		Log.endTestCase("End");
 	}
 	
 	public static void changeaudio(String audiopath,String title,String desc,String tag, String subject ,String transcriptfilepath,String coverpath,String invalidaudiofilepath,String wrongtranscriptfile)
 	{
+		Log.startTestCase("Change audio");
 		linklibrary();
 		linkAsset();
 		linkAudio();
@@ -129,17 +134,19 @@ public class AudioModule extends AudioStepModule
 			
 			/*JavascriptExecutor js = (JavascriptExecutor) driver;
 			js.executeScript("document.getElementById('//id of element').setAttribute('attr', '10')");*/
+			
 		}
 		else
 		{
 			Log.fail("Expected URL contain 'books.xhtml' but found "+Driver.driver.getCurrentUrl());
 		
-		}
+		}Log.endTestCase("End");
 		
 	}
 	
 	public static void cancelaudio(String audiopath,String title,String desc,String tag, String subject ,String transcriptfilepath,String coverpath,String invalidaudiofilepath,String wrongtranscriptfile)
 	{
+		Log.startTestCase("Cancel audio");
 		linklibrary();
 		linkAsset();
 		linkAudio();
@@ -160,7 +167,6 @@ public class AudioModule extends AudioStepModule
 			
 			btnChangeaudio();
 			
-			audiopath=System.getProperty("user.dir")+audiopath;
 			uploadAudio(audiopath);
 			
 			txtAudioTitle(title);
@@ -188,6 +194,7 @@ public class AudioModule extends AudioStepModule
 			btnaudioCancel();
 			//btnaudioEdit();
 			
+			
 			/*JavascriptExecutor js = (JavascriptExecutor) driver;
 			js.executeScript("document.getElementById('//id of element').setAttribute('attr', '10')");*/
 		}
@@ -195,12 +202,13 @@ public class AudioModule extends AudioStepModule
 		{
 			Log.fail("Expected URL contain 'books.xhtml' but found "+Driver.driver.getCurrentUrl());
 		
-		}
+		}Log.endTestCase("End");
 		
 	}
 	
 	public static void Editaudio(String audiopath,String title,String desc,String tag, String subject ,String transcriptfilepath,String coverpath,String invalidaudiofilepath,String wrongtranscriptfile)
 	{
+		Log.startTestCase("Edit audio");
 		linklibrary();
 		linkAsset();
 		linkAudio();
@@ -222,11 +230,13 @@ public class AudioModule extends AudioStepModule
 			coverpath=System.getProperty("user.dir")+coverpath;
 			coverAudio(coverpath); 
 			
-			btnChangeaudio();
-			
 			audiopath=System.getProperty("user.dir")+audiopath;
 			uploadAudio(audiopath);
 			
+			threadHold_5Sec();
+			threadHold_5Sec();
+			threadHold_5Sec();
+			threadHold_5Sec();
 			txtAudioTitle(title);
 			txtAudioDesription(desc);
 			txtAudioTag(tag);
@@ -253,7 +263,7 @@ public class AudioModule extends AudioStepModule
 			btnaudioarchiveNo();
 			btnaudioarchive();
 			btnaudioarchiveYes();
-			btnAudioSave();
+			//btnAudioSave();
 			//btnaudioCancel();
 			//btnaudioEdit();
 			
@@ -265,7 +275,7 @@ public class AudioModule extends AudioStepModule
 			Log.fail("Expected URL contain 'books.xhtml' but found "+Driver.driver.getCurrentUrl());
 		
 		}
-		
+		Log.endTestCase("End");
 	}
 	
 }
