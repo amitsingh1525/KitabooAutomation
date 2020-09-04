@@ -120,6 +120,14 @@ public class BookShelfModule extends BookShelfStepModule {
 		}
 		
 	}
-
+	
+	public static void analytics(){
+		 btnMoreInfo(0);
+		 btnAnalytics();
+		/*String msg = getAboutUSVersion();
+		threadHold_2Sec();
+		Driver.driver.navigate().refresh();
+		return msg;*/
+	}
 	
 }

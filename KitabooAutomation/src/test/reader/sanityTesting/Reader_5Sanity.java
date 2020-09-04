@@ -441,7 +441,7 @@ public class Reader_5Sanity{
 		TC_Analytics();*/
 
 		
-		LoginModule.userLogin("hurixreader5@gmail.com", "kitaboo@123");
+		/*LoginModule.userLogin("hurixreader5@gmail.com", "kitaboo@123");
 		BookShelfModule.catNavigationAndLaunch("Hurix Showcase");
 		//TC_goToPage();
 		//TC_HistoryPrevious();
@@ -450,7 +450,7 @@ public class Reader_5Sanity{
 		BookPlayerModule.threadHold_5Sec();
 		TC_SinglePageView();
 		BookPlayerModule.threadHold_2Sec();
-		TC_DoublePageView();
+		TC_DoublePageView();*/
 		
 		
 		//BookPlayerModule.highlight();
@@ -494,19 +494,21 @@ public class Reader_5Sanity{
 		//act.moveToElement(from).click().perform();
 
 
-		/*LoginModule.userLogin("sharing.teacher@yopmail.com", "kitaboo@123");
+	LoginModule.userLogin("sharing.teacher@yopmail.com", "kitaboo@123");
 		BookShelfModule.catNavigationAndLaunch("showcase");
-		BookPlayerModule.zoomIn();
+		BookPlayerModule.backtoBookshelf();
+	     BookShelfModule.analytics();
+		/*BookPlayerModule.zoomIn();
 		BookPlayerModule.zoomOut();
 		BookPlayerModule.fitToWidth();
 		BookPlayerModule.searchBookText();
 		BookPlayerModule.myDataHighlight("yellow");*/
 		
 		
-		BookPlayerModule.searchBookText();
+		/*BookPlayerModule.searchBookText();
 		BookPlayerModule.myDataHighlight("yellow");
 		BookPlayerModule.myDatanormalNotes("yellow");
-		BookPlayerModule.myDatacontextualNotes("yellow");
+		BookPlayerModule.myDatacontextualNotes("yellow");*/
 		
 		/*LoginModule.userLogin("hurixreader5@gmail.com", "kitaboo@123");
 		BookShelfModule.catNavigationAndLaunch("Hurix Showcase");
