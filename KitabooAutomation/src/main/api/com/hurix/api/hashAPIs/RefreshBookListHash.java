@@ -12,18 +12,18 @@ import com.hurix.automation.utility.Log;
 
 public class RefreshBookListHash {
 	
-	public static Response refreshBookListHash()
+	public static Response refreshBookListHash(String userToken,String deviceID,String deviceType)
 	{
 
 		Response jsonResponse = null;
 		try {
 
 			Log.startTestCase("RefreshBookList_Hash");
-			System.out.println("Header HASH == " +MD5Genration.hashGenration(RestAssured.detail+"/DistributionServices/services/api/reader/distribution/123234234/PC/refreshBookList"));
+			System.out.println("Header HASH == " +MD5Genration.hashGenration(RestAssured.detail+"/DistributionServices/services/api/reader/distribution/"+deviceID+"/"+deviceType+"/refreshBookList"));
 			jsonResponse = given()
-					.header("usertoken",com.hurix.api.runner.RestAssured.userToken)	
-					.header("hash",MD5Genration.hashGenration(RestAssured.detail+"/DistributionServices/services/api/reader/distribution/123234234/PC/refreshBookList"))
-					.get("/DistributionServices/services/api/reader/distribution/123234234/PC/refreshBookList");
+					.header("usertoken",userToken)	
+					.header("hash",MD5Genration.hashGenration(RestAssured.detail+"/DistributionServices/services/api/reader/distribution/"+deviceID+"/"+deviceType+"/refreshBookList"))
+					.get("/DistributionServices/services/api/reader/distribution/"+deviceID+"/"+deviceType+"/refreshBookList");
 			Validation.responseHeaderCodeValidation(jsonResponse, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(jsonResponse, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(jsonResponse);

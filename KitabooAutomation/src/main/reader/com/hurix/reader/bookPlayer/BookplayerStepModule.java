@@ -104,14 +104,6 @@ public class BookplayerStepModule extends UIElements {
 		}
 	}
 
-	public static void btnfilter(){
-		try {
-			elementFinderByXpath(prop.getProperty("filter_xpath"), "btn_filter").click();
-		} catch (Exception e) {
-			System.out.println("Element not present."+e.getMessage());
-		}
-	}
-
 	public static void lstfilter_list(){
 		try {
 			List<WebElement> element= elementsFinderByXpaths(prop.getProperty("filter_list_lstview_xpath"), "lst_filter_list");
@@ -153,11 +145,10 @@ public class BookplayerStepModule extends UIElements {
 		}
 		return msg;
 	}
-	
+
 	public static void btnmyData(){
 		try {
 			elementFinderByID(prop.getProperty("mydata_ID"), "btn_mydata").click();
-			Thread.sleep(5000);	
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -166,44 +157,40 @@ public class BookplayerStepModule extends UIElements {
 	public static void btnmyDatahighlight(){
 		try {
 			elementFinderByXpath(prop.getProperty("highlights_xpath"), "btn_highlights").click();
-			elementFinderByXpath(prop.getProperty("filter_xpath"), "btn_filter").click();
-			
-			elementFinderByXpath(prop.getProperty("filter_allhighlight_uncheck_xpath"), "chkbx_all").click();
-			
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
 	}
 	
+	public static void btnFilter(){
+		try {
+			elementFinderByXpath(prop.getProperty("filter_xpath"), "btn_filter").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void btnClearAllFilter(){
+		try {
+			elementFinderByXpath(prop.getProperty("filter_allhighlight_uncheck_xpath"), "chkbx_all").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+
 	public static void chkbxyellowhighlight(){
 		try {
 			elementFinderByXpath(prop.getProperty("filter_yellowhighlight_uncheck_xpath"), "chkbx_yellow").click();
-			Thread.sleep(8000);
-			elementFinderByXpath(prop.getProperty("filter_yellowhighlight_uncheck_xpath"), "chkbx_yellow").sendKeys(Keys.ESCAPE);
-			Thread.sleep(5000);
-		
-				int size= Driver.driver.findElements(By.xpath(prop.getProperty("highlights_list_xpath"))).size();
-			    System.out.println("Size of search element is :"+ size);
-			    
-			    String highlightsize= Driver.driver.findElement(By.xpath(prop.getProperty("HighlightCount_visibletext_xpath"))).getText();
-			    System.out.println("Size of search element is :"+ highlightsize.replace("Highlights", ""));
+			threadHold_2Sec();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
 	}
-	
+
 	public static void chkbxredhighlight(){
 		try {
 			elementFinderByXpath(prop.getProperty("filter_redhighlight_uncheck_xpath"), "chkbx_red").click();
-			Thread.sleep(8000);
-			elementFinderByXpath(prop.getProperty("filter_redhighlight_uncheck_xpath"), "chkbx_red").sendKeys(Keys.ESCAPE);
-			Thread.sleep(5000);
-		
-				int size= Driver.driver.findElements(By.xpath(prop.getProperty("highlights_list_xpath"))).size();
-			    System.out.println("Size of search element is :"+ size);
-			    
-			    String highlightsize= Driver.driver.findElement(By.xpath(prop.getProperty("HighlightCount_visibletext_xpath"))).getText();
-			    System.out.println("Size of search element is :"+ highlightsize.replace("Highlights", ""));
+			threadHold_2Sec();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -212,70 +199,102 @@ public class BookplayerStepModule extends UIElements {
 	public static void chkbxpurplehighlight(){
 		try {
 			elementFinderByXpath(prop.getProperty("filter_purplehighlight_uncheck_xpath"), "chkbx_purple").click();
-			Thread.sleep(8000);
-			elementFinderByXpath(prop.getProperty("filter_purplehighlight_uncheck_xpath"), "chkbx_purple").sendKeys(Keys.ESCAPE);
-			Thread.sleep(5000);
-		
-				int size= Driver.driver.findElements(By.xpath(prop.getProperty("highlights_list_xpath"))).size();
-			    System.out.println("Size of search element is :"+ size);
-			    
-			    String highlightsize= Driver.driver.findElement(By.xpath(prop.getProperty("HighlightCount_visibletext_xpath"))).getText();
-			    System.out.println("Size of search element is :"+ highlightsize.replace("Highlights", ""));
+			threadHold_2Sec();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
 	}
-	
+
 	public static void chkbxgreenhighlight(){
 		try {
 			elementFinderByXpath(prop.getProperty("filter_greenhighlight_uncheck_xpath"), "chkbx_green").click();
-			Thread.sleep(8000);
-			elementFinderByXpath(prop.getProperty("filter_greenhighlight_uncheck_xpath"), "chkbx_green").sendKeys(Keys.ESCAPE);
-			Thread.sleep(5000);
-		
-				int size= Driver.driver.findElements(By.xpath(prop.getProperty("highlights_list_xpath"))).size();
-			    System.out.println("Size of search element is :"+ size);
-			    
-			    String highlightsize= Driver.driver.findElement(By.xpath(prop.getProperty("HighlightCount_visibletext_xpath"))).getText();
-			    System.out.println("Size of search element is :"+ highlightsize.replace("Highlights", ""));
+			threadHold_2Sec();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
 	}
-	
+
 	public static void chkbxbluehighlight(){
 		try {
 			elementFinderByXpath(prop.getProperty("filter_bluehighlight_uncheck_xpath"), "chkbx_blue").click();
-			Thread.sleep(8000);
-			elementFinderByXpath(prop.getProperty("filter_bluehighlight_uncheck_xpath"), "chkbx_blue").sendKeys(Keys.ESCAPE);
-			Thread.sleep(5000);
-		
-				int size= Driver.driver.findElements(By.xpath(prop.getProperty("highlights_list_xpath"))).size();
-			    System.out.println("Size of search element is :"+ size);
-			    
-			    String highlightsize= Driver.driver.findElement(By.xpath(prop.getProperty("HighlightCount_visibletext_xpath"))).getText();
-			    System.out.println("Size of search element is :"+ highlightsize.replace("Highlights", ""));
+			threadHold_2Sec();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
 	}
-	
+
 	public static void btnmyDatanotes(){
 		try {
 			elementFinderByXpath(prop.getProperty("notes_xpath"), "btn_notes").click();
-			elementFinderByXpath(prop.getProperty("filter_xpath"), "btn_filter").click();
-			
-			elementFinderByXpath(prop.getProperty("filter_allnotes_uncheck_xpath"), "chkbx_all").click();
-			
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
 	}
 	
+	public static void btnClearAllNoteschkbx(){
+		try {
+			elementFinderByXpath(prop.getProperty("filter_allnotes_uncheck_xpath"), "chkbx_all").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+
 	public static void btnmyDatanormalnotes(){
 		try {
-			Thread.sleep(5000);
+			threadHold_2Sec();
 			elementFinderByXpath(prop.getProperty("normalnotes_drpdwn_xpath"), "drpdwn_normalnotes").click();
+			threadHold_2Sec();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+
+	
+	public static int getHighLightCounts(){
+		int size = 0;
+		try {
+			size= Driver.driver.findElements(By.xpath(prop.getProperty("highlights_list_xpath"))).size();
+			System.out.println("List Count:"+ size);
+
+			String highlightsize = Driver.driver.findElement(By.xpath(prop.getProperty("HighlightCount_visibletext_xpath"))).getText().replace("Highlights ", "");
+			System.out.println("Indicator count :"+ highlightsize.replace("Highlights ", ""));
+			
+			if(size == Integer.parseInt(highlightsize)){
+				Log.pass("Both counts matched. In Indicator: "+highlightsize+". And list shown: "+size);
+			}else{
+				Log.fail("Both counts dosen't matched. In Indicator: "+highlightsize+". And list shown: "+size);
+			}
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+		return size;
+	}
+	
+	public static int getNotesCounts(){
+		int size = 0;
+		try {
+			size= Driver.driver.findElements(By.xpath(prop.getProperty("highlights_list_xpath"))).size();
+			System.out.println("List Count:"+ size);
+
+			String highlightsize = Driver.driver.findElement(By.xpath(prop.getProperty("HighlightCount_visibletext_xpath"))).getText().replace("Notes ", "");
+			System.out.println("Indicator count :"+ highlightsize);
+			if(size == Integer.parseInt(highlightsize)){
+				Log.pass("Both counts matched. In Indicator: "+highlightsize+". And list shown: "+size);
+			}else{
+				Log.fail("Both counts dosen't matched. In Indicator: "+highlightsize+". And list shown: "+size);
+			}
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+		return size;
+	}
+	
+	public static void chkbxNotesForAll(){
+		try {
+			threadHold_2Sec();
+			elementFinderByXpath(prop.getProperty("chknormalnotesAll_xpath"), "chkbxNotesForAll").click();
+			elementFinderByXpath(prop.getProperty("chknormalnotesAll_xpath"), "chkbxNotesForAll").click();
+			threadHold_2Sec();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -284,32 +303,17 @@ public class BookplayerStepModule extends UIElements {
 	public static void chkbxyellownotes(){
 		try {
 			elementFinderByXpath(prop.getProperty("filter_yellownotes_uncheck_xpath"), "chkbx_yellow").click();
-			Thread.sleep(8000);
-			elementFinderByXpath(prop.getProperty("filter_yellownotes_uncheck_xpath"), "chkbx_yellow").sendKeys(Keys.ESCAPE);
-			Thread.sleep(5000);
-		
-				int size= Driver.driver.findElements(By.xpath(prop.getProperty("highlights_list_xpath"))).size();
-			    System.out.println("Size of search element is :"+ size);
-			    
-			    String highlightsize= Driver.driver.findElement(By.xpath(prop.getProperty("HighlightCount_visibletext_xpath"))).getText();
-			    System.out.println("Size of search element is :"+ highlightsize.replace("Notes", ""));
+			threadHold_2Sec();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
 	}
-	
+
 	public static void chkbxrednotes(){
 		try {
 			elementFinderByXpath(prop.getProperty("filter_rednotes_uncheck_xpath"), "chkbx_red").click();
-			Thread.sleep(8000);
-			elementFinderByXpath(prop.getProperty("filter_rednotes_uncheck_xpath"), "chkbx_red").sendKeys(Keys.ESCAPE);
-			Thread.sleep(5000);
-		
-				int size= Driver.driver.findElements(By.xpath(prop.getProperty("highlights_list_xpath"))).size();
-			    System.out.println("Size of search element is :"+ size);
-			    
-			    String highlightsize= Driver.driver.findElement(By.xpath(prop.getProperty("HighlightCount_visibletext_xpath"))).getText();
-			    System.out.println("Size of search element is :"+ highlightsize.replace("Notes", ""));
+			threadHold_2Sec();
+
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -318,58 +322,46 @@ public class BookplayerStepModule extends UIElements {
 	public static void chkbxpurplenotes(){
 		try {
 			elementFinderByXpath(prop.getProperty("filter_purplenotes_uncheck_xpath"), "chkbx_purple").click();
-			Thread.sleep(8000);
-			elementFinderByXpath(prop.getProperty("filter_purplenotes_uncheck_xpath"), "chkbx_purple").sendKeys(Keys.ESCAPE);
-			Thread.sleep(5000);
-		
-				int size= Driver.driver.findElements(By.xpath(prop.getProperty("highlights_list_xpath"))).size();
-			    System.out.println("Size of search element is :"+ size);
-			    
-			    String highlightsize= Driver.driver.findElement(By.xpath(prop.getProperty("HighlightCount_visibletext_xpath"))).getText();
-			    System.out.println("Size of search element is :"+ highlightsize.replace("Notes", ""));
+			threadHold_2Sec();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
 	}
-	
+
 	public static void chkbxgreennotes(){
 		try {
 			elementFinderByXpath(prop.getProperty("filter_greennotes_uncheck_xpath"), "chkbx_green").click();
-			Thread.sleep(8000);
-			elementFinderByXpath(prop.getProperty("filter_greennotes_uncheck_xpath"), "chkbx_green").sendKeys(Keys.ESCAPE);
-			Thread.sleep(5000);
-		
-				int size= Driver.driver.findElements(By.xpath(prop.getProperty("highlights_list_xpath"))).size();
-			    System.out.println("Size of search element is :"+ size);
-			    
-			    String highlightsize= Driver.driver.findElement(By.xpath(prop.getProperty("HighlightCount_visibletext_xpath"))).getText();
-			    System.out.println("Size of search element is :"+ highlightsize.replace("Notes", ""));
+			threadHold_2Sec();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
 	}
-	
+
 	public static void chkbxbluenotes(){
 		try {
 			elementFinderByXpath(prop.getProperty("filter_bluenotes_uncheck_xpath"), "chkbx_blue").click();
-			Thread.sleep(8000);
-			elementFinderByXpath(prop.getProperty("filter_bluenotes_uncheck_xpath"), "chkbx_blue").sendKeys(Keys.ESCAPE);
-			Thread.sleep(5000);
-		
-				int size= Driver.driver.findElements(By.xpath(prop.getProperty("highlights_list_xpath"))).size();
-			    System.out.println("Size of search element is :"+ size);
-			    
-			    String highlightsize= Driver.driver.findElement(By.xpath(prop.getProperty("HighlightCount_visibletext_xpath"))).getText();
-			    System.out.println("Size of search element is :"+ highlightsize.replace("Notes", ""));
+			threadHold_2Sec();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
 	}
-	
+
 	public static void btnmyDatacontextualnotes(){
 		try {
-			Thread.sleep(5000);
+			threadHold_5Sec();
 			elementFinderByXpath(prop.getProperty("contextualnotes_drpdwn_xpath"), "drpdwn_contextualnotes").click();
+			threadHold_2Sec();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+
+	public static void chkbxContextualNotesForAll(){
+		try {
+			threadHold_2Sec();
+			elementFinderByXpath(prop.getProperty("chkContextualNotesAll_xpath"), "chkbxContextualNotesForAll").click();
+			elementFinderByXpath(prop.getProperty("chkContextualNotesAll_xpath"), "chkbxContextualNotesForAll").click();
+			threadHold_2Sec();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -378,32 +370,16 @@ public class BookplayerStepModule extends UIElements {
 	public static void chkbxyellowcontextualnotes(){
 		try {
 			elementFinderByXpath(prop.getProperty("filter_yellowcontextualnotes_uncheck_xpath"), "chkbx_yellow").click();
-			Thread.sleep(8000);
-			elementFinderByXpath(prop.getProperty("filter_yellowcontextualnotes_uncheck_xpath"), "chkbx_yellow").sendKeys(Keys.ESCAPE);
-			Thread.sleep(5000);
-		
-				int size= Driver.driver.findElements(By.xpath(prop.getProperty("highlights_list_xpath"))).size();
-			    System.out.println("Size of search element is :"+ size);
-			    
-			    String highlightsize= Driver.driver.findElement(By.xpath(prop.getProperty("HighlightCount_visibletext_xpath"))).getText();
-			    System.out.println("Size of search element is :"+ highlightsize.replace("Notes", ""));
+			threadHold_2Sec();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
 	}
-	
+
 	public static void chkbxredcontextualnotes(){
 		try {
 			elementFinderByXpath(prop.getProperty("filter_redcontextualnotes_uncheck_xpath"), "chkbx_red").click();
-			Thread.sleep(8000);
-			elementFinderByXpath(prop.getProperty("filter_redcontextualnotes_uncheck_xpath"), "chkbx_red").sendKeys(Keys.ESCAPE);
-			Thread.sleep(5000);
-		
-				int size= Driver.driver.findElements(By.xpath(prop.getProperty("highlights_list_xpath"))).size();
-			    System.out.println("Size of search element is :"+ size);
-			    
-			    String highlightsize= Driver.driver.findElement(By.xpath(prop.getProperty("HighlightCount_visibletext_xpath"))).getText();
-			    System.out.println("Size of search element is :"+ highlightsize.replace("Notes", ""));
+			threadHold_2Sec();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -412,49 +388,25 @@ public class BookplayerStepModule extends UIElements {
 	public static void chkbxpurplecontextualnotes(){
 		try {
 			elementFinderByXpath(prop.getProperty("filter_purplecontextualnotes_uncheck_xpath"), "chkbx_purple").click();
-			Thread.sleep(8000);
-			elementFinderByXpath(prop.getProperty("filter_purplecontextualnotes_uncheck_xpath"), "chkbx_purple").sendKeys(Keys.ESCAPE);
-			Thread.sleep(5000);
-		
-				int size= Driver.driver.findElements(By.xpath(prop.getProperty("highlights_list_xpath"))).size();
-			    System.out.println("Size of search element is :"+ size);
-			    
-			    String highlightsize= Driver.driver.findElement(By.xpath(prop.getProperty("HighlightCount_visibletext_xpath"))).getText();
-			    System.out.println("Size of search element is :"+ highlightsize.replace("Notes", ""));
+			threadHold_2Sec();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
 	}
-	
+
 	public static void chkbxgreencontextualnotes(){
 		try {
 			elementFinderByXpath(prop.getProperty("filter_greencontextualnotes_uncheck_xpath"), "chkbx_green").click();
-			Thread.sleep(8000);
-			elementFinderByXpath(prop.getProperty("filter_greencontextualnotes_uncheck_xpath"), "chkbx_green").sendKeys(Keys.ESCAPE);
-			Thread.sleep(5000);
-		
-				int size= Driver.driver.findElements(By.xpath(prop.getProperty("highlights_list_xpath"))).size();
-			    System.out.println("Size of search element is :"+ size);
-			    
-			    String highlightsize= Driver.driver.findElement(By.xpath(prop.getProperty("HighlightCount_visibletext_xpath"))).getText();
-			    System.out.println("Size of search element is :"+ highlightsize.replace("Notes", ""));
+			threadHold_2Sec();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
 	}
-	
+
 	public static void chkbxbluecontextualnotes(){
 		try {
 			elementFinderByXpath(prop.getProperty("filter_bluecontextualnotes_uncheck_xpath"), "chkbx_blue").click();
-			Thread.sleep(8000);
-			elementFinderByXpath(prop.getProperty("filter_bluecontextualnotes_uncheck_xpath"), "chkbx_blue").sendKeys(Keys.ESCAPE);
-			Thread.sleep(5000);
-		
-				int size= Driver.driver.findElements(By.xpath(prop.getProperty("highlights_list_xpath"))).size();
-			    System.out.println("Size of search element is :"+ size);
-			    
-			    String highlightsize= Driver.driver.findElement(By.xpath(prop.getProperty("HighlightCount_visibletext_xpath"))).getText();
-			    System.out.println("Size of search element is :"+ highlightsize.replace("Notes", ""));
+			threadHold_2Sec();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -680,7 +632,6 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void btnhistoryprevious(){
 		try {
-			btnthumbnail();
 			elementFinderByXpath(prop.getProperty("historyprevious_xpath"), "historyprevious").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
@@ -689,7 +640,6 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void btnhistorynext(){
 		try {
-			btnthumbnail();
 			elementFinderByXpath(prop.getProperty("historynext_xpath"), "historynext").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
@@ -808,23 +758,7 @@ public class BookplayerStepModule extends UIElements {
 			System.out.println("Element not present."+e.getMessage());
 		}
 	}
-	
-	public static void btnDeleteStickyNotes(){
-		try {
-			elementFinderByXpath(prop.getProperty("deleteSticky_Xpath"), "btnDeleteStickyNotes").click();
-		} catch (Exception e) {
-			System.out.println("Element not present."+e.getMessage());
-		}
-	}
-	
-	public static void btnStickyNotes_PopUp(){
-		try {
-			elementFinderByXpath(prop.getProperty("StickyPopUp_Xpath"), "btnStickyNotes_PopUp").click();
-		} catch (Exception e) {
-			System.out.println("Element not present."+e.getMessage());
-		}
-	}
-	
+
 	public static void btnStickyClr_orange(){
 		try {
 			elementFinderByXpath(prop.getProperty("clrOrangeSticky_xpath"), "btnStickyClr_orange").click();
@@ -832,7 +766,7 @@ public class BookplayerStepModule extends UIElements {
 			System.out.println("Element not present."+e.getMessage());
 		}
 	}
-	
+
 	public static void btnStickyClr_pink(){
 		try {
 			elementFinderByXpath(prop.getProperty("clrRedSticky_xpath"), "btnStickyClr_pink").click();
@@ -840,7 +774,7 @@ public class BookplayerStepModule extends UIElements {
 			System.out.println("Element not present."+e.getMessage());
 		}
 	}
-	
+
 	public static void btnStickyClr_purple(){
 		try {
 			elementFinderByXpath(prop.getProperty("clrPurpleSticky_xpath"), "btnStickyClr_purple").click();
@@ -848,7 +782,7 @@ public class BookplayerStepModule extends UIElements {
 			System.out.println("Element not present."+e.getMessage());
 		}
 	}
-	
+
 	public static void btnStickyClr_green(){
 		try {
 			elementFinderByXpath(prop.getProperty("clrGreenSticky_xpath"), "btnStickyClr_green").click();
@@ -856,7 +790,7 @@ public class BookplayerStepModule extends UIElements {
 			System.out.println("Element not present."+e.getMessage());
 		}
 	}
-	
+
 	public static void btnStickyClr_blue(){
 		try {
 			elementFinderByXpath(prop.getProperty("clrBlueSticky_xpath"), "btnStickyClr_blue").click();

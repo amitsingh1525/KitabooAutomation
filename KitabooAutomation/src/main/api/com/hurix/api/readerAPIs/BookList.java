@@ -19,12 +19,12 @@ public class BookList {
 			jsonResponse = given()
 					.header("usertoken",userToken)						
 					.get("/DistributionServices/services/api/reader/books/"+deviceID+"/"+DeviceType+"/bookList");
-			Validation.responseHeaderCodeValidation(jsonResponse, HttpStatus.SC_OK);
+			/*Validation.responseHeaderCodeValidation(jsonResponse, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(jsonResponse, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(jsonResponse);
 			Validation.responseKeyValidation_key(jsonResponse, "isbn");
 			Validation.responseKeyValidation_key(jsonResponse, "formats");
-			Validation.responseKeyValidation_key(jsonResponse, "id");
+			Validation.responseKeyValidation_key(jsonResponse, "id");*/
 			Log.info("bookListResponse: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 
 		{

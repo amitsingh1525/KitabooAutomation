@@ -8,7 +8,7 @@ import com.hurix.api.utility.Validation;
 import com.hurix.automation.utility.Log;
 
 public class FetchCatBookList {
-	public static Response fetchCatBookList(String catname)
+	public static Response fetchCatBookList(String catname,String userToken,String deviceID,String deviceType)
 	{
 		//GETcategoryBookListV1Path = ""+com.hurix.api.utility.ExcelUtils.getbaseURI()+"/DistributionServices/services/api/reader/books/145644544/PC/books/"+catname+"";
 
@@ -16,12 +16,12 @@ public class FetchCatBookList {
 		try {
 
 			Log.startTestCase("FetchCatBookList_Hash");
-			System.out.println("Header HASH == " +MD5Genration.hashGenration(RestAssured.detail+"/DistributionServices/services/api/reader/books/123456/PC/books/v2/fetchCatBookList"));
+			System.out.println("Header HASH == " +MD5Genration.hashGenration(RestAssured.detail+"/DistributionServices/services/api/reader/books/"+deviceID+"/"+deviceType+"/books/v2/fetchCatBookList"));
 			jsonResponse = given()
-					.header("usertoken",com.hurix.api.runner.RestAssured.userToken)	
+					.header("usertoken",userToken)	
 					.header("category",catname)	
-					.header("hash",MD5Genration.hashGenration(RestAssured.detail+"/DistributionServices/services/api/reader/books/123456/PC/books/v2/fetchCatBookList"))
-					.get("/DistributionServices/services/api/reader/books/123456/PC/books/v2/fetchCatBookList");
+					.header("hash",MD5Genration.hashGenration(RestAssured.detail+"/DistributionServices/services/api/reader/books/"+deviceID+"/"+deviceType+"/books/v2/fetchCatBookList"))
+					.get("/DistributionServices/services/api/reader/books/"+deviceID+"/"+deviceType+"/books/v2/fetchCatBookList");
 			Validation.responseHeaderCodeValidation(jsonResponse, 200);
 			Validation.responseCodeValidation1(jsonResponse, 200);
 			Validation.responseTimeValidation(jsonResponse);		

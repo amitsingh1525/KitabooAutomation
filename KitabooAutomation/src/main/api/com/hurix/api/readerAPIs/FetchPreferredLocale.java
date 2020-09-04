@@ -9,7 +9,7 @@ public class FetchPreferredLocale {
 	
 public static String FetchPreferredLocale;
 	
-	public static Response fetchPreferredLocale()
+	public static Response fetchPreferredLocale(String userToken,String deviceID,String deviceType)
 	{
 		
 		Response jsonResponse = null;
@@ -18,8 +18,8 @@ public static String FetchPreferredLocale;
 			Log.startTestCase("fetchPreferredLocale");
 		
 			jsonResponse = given()
-					.header("usertoken",com.hurix.api.runner.RestAssured.userToken)									
-					.get("/DistributionServices/services/api/reader/user/123/IPAD/fetchPreferredLocale");
+					.header("usertoken",userToken)									
+					.get("/DistributionServices/services/api/reader/user/"+deviceID+"/"+deviceType+"/fetchPreferredLocale");
 			
 			Log.info("fetchPreferredLocale Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 

@@ -9,7 +9,7 @@ public class FetchCategoriesCollections {
 
 	
 	public static String GETfetchCategoriesCollectionsPath;
-	public static Response fetchCategoriesCollections()
+	public static Response fetchCategoriesCollections(String userToken,String deviceID,String deviceType)
 	{
 		//GETfetchCategoriesCollectionsPath = ""+com.hurix.api.utility.ExcelUtils.getbaseURI()+"/DistributionServices/services/api/reader/books/145644544/PC/books/fetchCategoriesCollections";
 		
@@ -19,8 +19,8 @@ public class FetchCategoriesCollections {
 			Log.startTestCase("fetchCategoriesCollections");
 			//System.out.println("GETfetchCategoriesCollectionsRequestURL:" +GETfetchCategoriesCollectionsPath);
 			jsonResponse = given()
-					.header("usertoken",com.hurix.api.runner.RestAssured.userToken)						
-					.get("/DistributionServices/services/api/reader/books/145644544/PC/books/fetchCategoriesCollections");
+					.header("usertoken",userToken)						
+					.get("/DistributionServices/services/api/reader/books/"+deviceID+"/"+deviceType+"/books/fetchCategoriesCollections");
 			
 			Log.info("FetchCategoriesCollections Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 

@@ -11,7 +11,7 @@ import com.hurix.api.utility.MD5Genration;
 import com.hurix.api.utility.Validation;
 import com.hurix.automation.utility.Log;
 
-public class UnMarkAsFavourite {
+public class UnMarkAsFavouriteHash {
 	
 	public static Response unMarkAsFavourite()
 	{

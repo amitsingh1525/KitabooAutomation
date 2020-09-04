@@ -15,7 +15,7 @@ public class ListBooksV1_OAuth {
 	//public static String GETListBooksV1_OAuthPath=""+com.hurix.api.utility.ExcelUtils.getbaseURI()+"/DistributionServices/ext/api/v1/ListBooks";
 	
 
-	public static Response listBooksV1_OAuth(String consumerKey, String consumerSecret){
+	public static Response listBooksV1_OAuth_without_pagi(String consumerKey, String consumerSecret){
 		//System.out.println("POSTresetDevices_clientUserIDPath: " +GETListBooksV1_OAuthPath);
 		
 		Response jsonResponse = null;
