@@ -2,10 +2,6 @@ package com.hurix.api.externalAPIs;
 
 import static io.restassured.RestAssured.given;
 import io.restassured.response.Response;
-
-import org.apache.hc.core5.http.HttpStatus;
-
-import com.hurix.api.utility.Validation;
 import com.hurix.automation.utility.Log;
 
 public class EpubStatus {

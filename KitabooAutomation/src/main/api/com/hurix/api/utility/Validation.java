@@ -1,8 +1,10 @@
 package com.hurix.api.utility;
 
 import org.junit.Assert;
+
 import com.relevantcodes.extentreports.ExtentReports;
 import com.hurix.automation.utility.*;
+
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
@@ -149,29 +151,61 @@ public class Validation {
 			body = jsonResponse.getBody();
 			String bodyStringValue = body.asString();
 			Log.info("Whole string :: " +key);
-			
+
 			try {
-				Log.info("HERE we are "+"bodyStringValue: :"+bodyStringValue+"key: :"+key+"");
+				Log.info("HERE we are-> "+" bodyStringValue: :"+bodyStringValue+" key: :"+key+"");
 				if(bodyStringValue != key)
 				{
-				//Assert.assertFalse(bodyStringValue.contains(key));
-				Log.pass("validation Not Present pass Parameter is Present are : " +key);
+					//Assert.assertFalse(bodyStringValue.contains(key));
+					Log.pass("validation Not Present pass Parameter is Present are : " +key);
 				}
 				else if(bodyStringValue == key)
 				{
 					Log.fail("validated Not Present Fails Asserting for contails= 1 Not FOUND are : " +key);
-					
+
 				}
 			} catch (AssertionError e) {
 				e.printStackTrace();
 				Log.fail("validated Not Present Fails Asserting for contails= 1 Not FOUND are : " +key);
-				
+
 				//Log.fail("validated Not FOUND are : " +key+ "=" +value );
 			}
 		} catch (Exception e) 
 		{			
 			Log.fail(e.getMessage());
 		}
+	}
+	public static void responseIntGreater3(int VariThatTobeTested ,int statusCode) {
+		try {
+			if(VariThatTobeTested >= 2)
+			{
+				//Assert.assertEquals(VariThatTobeTested, 6);
+				Log.pass(""+VariThatTobeTested+" : parameter is grater than 3");
+			}
+			else if(VariThatTobeTested <= 2)
+			{
+				Log.fail(""+VariThatTobeTested+" : Parameter is NOT grater than 3");
+			}
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+
+	}
+
+	public static void responseKeyAndValue(Response jsonResponse ,String key ,Object value) {
+		try {	
+			/*JsonPath jsonPathEvaluator = jsonResponse.jsonPath();
+			key= jsonPathEvaluator.get(key);*/
+			Assert.assertEquals(key, value);
+			Log.pass("Assertion key="+key+" and value="+value+" is EQUAL");
+
+		} catch (AssertionError e) {
+			Log.fail("Assertion key="+key+" and value="+value+" is NOT EQUAL");
+			e.printStackTrace();
+		}
+
 	}
 	/*public static void   main(String []args) throws SQLException
 	{

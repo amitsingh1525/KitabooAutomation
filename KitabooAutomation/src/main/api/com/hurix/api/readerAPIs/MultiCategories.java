@@ -2,24 +2,68 @@ package com.hurix.api.readerAPIs;
 
 import static io.restassured.RestAssured.given;
 import io.restassured.response.Response;
-
 import com.hurix.automation.utility.Log;
 
 public class MultiCategories {
 	
-	public static Response multiCategories(int level)
+	public static Response multiCategories(String catLevel,String userToken,String deviceID,String deviceType)
 	{
 		Response jsonResponse = null;
 		try {
 			
 			Log.startTestCase("MultiCategories");		
-			//System.out.println("GETfetchCategoriesCollectionsBooksRequestURL:" +GETfetchCategoriesCollectionsBooksPath);
-			jsonResponse = given()
-					.header("usertoken",com.hurix.api.runner.RestAssured.userToken)
-					.header("level", level)
-					.get("/DistributionServices/services/api/reader/user/123/IPAD/multiCategories");
-			
-			Log.info("MultiCategories Response: "+jsonResponse.then().extract().response().prettyPrint());
+			if(catLevel.contains ("4"))
+			{
+				int level = 4;
+				jsonResponse = given()
+						.header("usertoken",userToken)
+						.header("level", level)
+						.get("/DistributionServices/services/api/reader/user/"+deviceID+"/"+deviceType+"/multiCategories");
+				
+				/*Validation.responseHeaderCodeValidation(jsonResponse, 200);
+				Validation.responseCodeValidation1(jsonResponse, 200);
+				Validation.responseTimeValidation(jsonResponse);
+				Validation.responseKeyValidation_key(jsonResponse, "categories");
+				Validation.responseKeyValidation_key(jsonResponse, "collectionCount");
+				Validation.responseKeyValidation_key(jsonResponse, "bookCount");	*/
+				Log.info("MultiCategoryBookList: "+catLevel+ " Response: "+jsonResponse.then().extract().response().prettyPrint());
+				
+			}
+			else if(catLevel.contains ("3"))
+			{
+				int level = 3;
+				jsonResponse = given()
+						.header("usertoken",userToken)
+						.header("level", level)
+						.get("/DistributionServices/services/api/reader/user/"+deviceID+"/"+deviceType+"/multiCategories");
+				
+				/*Validation.responseHeaderCodeValidation(jsonResponse, 200);
+				Validation.responseCodeValidation1(jsonResponse, 200);
+				Validation.responseTimeValidation(jsonResponse);
+				Validation.responseKeyValidation_key(jsonResponse, "categories");
+				Validation.responseKeyValidation_key(jsonResponse, "collectionCount");
+				Validation.responseKeyValidation_key(jsonResponse, "bookCount");	*/
+				Log.info("MultiCategoryBookList: "+catLevel+ " Response: "+jsonResponse.then().extract().response().prettyPrint());
+				
+			}
+			else if(catLevel.contains ("2"))
+			{
+				int level = 2;
+				jsonResponse = given()
+						.header("usertoken",userToken)
+						.header("level", level)
+						.get("/DistributionServices/services/api/reader/user/"+deviceID+"/"+deviceType+"/multiCategories");
+				
+				/*Validation.responseHeaderCodeValidation(jsonResponse, 200);
+				Validation.responseCodeValidation1(jsonResponse, 200);
+				Validation.responseTimeValidation(jsonResponse);
+				Validation.responseKeyValidation_key(jsonResponse, "categories");
+				Validation.responseKeyValidation_key(jsonResponse, "collectionCount");
+				Validation.responseKeyValidation_key(jsonResponse, "bookCount");	*/
+				Log.info("MultiCategoryBookList: "+catLevel+ " Response: "+jsonResponse.then().extract().response().prettyPrint());
+				
+			}
+						
 		} catch (Exception exp) 
 		{
 			System.out.println(exp.getMessage());
