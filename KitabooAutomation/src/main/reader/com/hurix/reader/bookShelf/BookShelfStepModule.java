@@ -377,6 +377,108 @@ public class BookShelfStepModule extends UIElements{
 		}
 	}
 	
+	public static String getBookOpenedAssigned(){
+		//String bookTitle = null;
+		
+		String bookTitlecount=null;
+		try {
+			//bookTitle = elementFinderByXpath(prop.getProperty("getBookOpenedAssigned_xpath"), "getBookOpenedAssigned").getText();
+			bookTitlecount = elementFinderByXpath(prop.getProperty("getBookOpenedAssignedCount_xpath"), "getBookOpenedAssigned_Count").getText();
+			System.out.println(bookTitlecount);
+		} catch (Exception e) {
+			System.out.println("Element not present.");
+		}
+		return bookTitlecount;
+	}
+	
+	public static String getAverageReadingTime(){
+		String AverageReadingTimecount=null;
+		try {
+			AverageReadingTimecount = elementFinderByXpath(prop.getProperty("getAverageReadingTimeCount_xpath"), "AverageReadingTime_Count").getText();
+			System.out.println(AverageReadingTimecount);
+		} catch (Exception e) {
+			System.out.println("Element not present.");
+		}
+		return AverageReadingTimecount;
+	}
+	
+	public static String getAveragePagesRead(){
+		String AveragePagesReadCount=null;
+		try {
+			AveragePagesReadCount = elementFinderByXpath(prop.getProperty("getAveragePagesReadCount_xpath"), "AveragePagesRead_Count").getText();
+			System.out.println(AveragePagesReadCount);
+		} catch (Exception e) {
+			System.out.println("Element not present.");
+		}
+		return AveragePagesReadCount;
+	}
+	
+	public static String getAverageReadingSession(){
+		String AverageReadingSession=null;
+		try {
+			AverageReadingSession = elementFinderByXpath(prop.getProperty("getAverageReadingSessionCount_xpath"), "AverageReadingSession_Count").getText();
+			System.out.println(AverageReadingSession);
+		} catch (Exception e) {
+			System.out.println("Element not present.");
+		}
+		return AverageReadingSession;
+	}
+	
+	public static String getAverageReadingTimeSession(){
+		String AverageReadingTimeSession=null;
+		try {
+			AverageReadingTimeSession = elementFinderByXpath(prop.getProperty("getAverageReadingTime/SessionCount_xpath"), "AverageReadingTime/Session_Count").getText();
+			System.out.println(AverageReadingTimeSession);
+		} catch (Exception e) {
+			System.out.println("Element not present.");
+		}
+		return AverageReadingTimeSession;
+	}
+	
+	public static String getAveragePagesReadSessionCount(){
+		String AveragePagesReadSessionCount=null;
+		try {
+			AveragePagesReadSessionCount = elementFinderByXpath(prop.getProperty("getAveragePagesRead/SessionCount_xpath"), "AveragePagesRead/Session_Count").getText();
+			System.out.println(AveragePagesReadSessionCount);
+		} catch (Exception e) {
+			System.out.println("Element not present.");
+		}
+		return AveragePagesReadSessionCount;
+	}
+	
+	public static String getAverageNotesSharedCreatedCount(){
+		String AverageNotesSharedCreatedCount=null;
+		try {
+			AverageNotesSharedCreatedCount = elementFinderByXpath(prop.getProperty("getAverageNotesShared/CreatedCount_xpath"), "AverageNotesShared/Created_Count").getText();
+			System.out.println(AverageNotesSharedCreatedCount);
+		} catch (Exception e) {
+			System.out.println("Element not present.");
+		}
+		return AverageNotesSharedCreatedCount;
+	}
+	
+	public static String getAverageHighlightSharedCreatedCount(){
+		String AverageHighlightSharedCreatedCount=null;
+		try {
+			AverageHighlightSharedCreatedCount = elementFinderByXpath(prop.getProperty("getAverageHighlightShared/CreatedCount_xpath"), "AverageHighlightShared/Created_Count").getText();
+			System.out.println(AverageHighlightSharedCreatedCount);
+		} catch (Exception e) {
+			System.out.println("Element not present.");
+		}
+		return AverageHighlightSharedCreatedCount;
+	}
+	
+	public static String getAvgResourceViewedAvailableCount(){
+		String AvgResourceViewedAvailableCount=null;
+		try {
+			AvgResourceViewedAvailableCount = elementFinderByXpath(prop.getProperty("getAvg.ResourceViewed/AvailableCount_ID"), "Avg.ResourceViewed/AvailableCount_Count").getText();
+			System.out.println(AvgResourceViewedAvailableCount);
+		} catch (Exception e) {
+			System.out.println("Element not present.");
+		}
+		return AvgResourceViewedAvailableCount;
+	}
+	
 	public static String getBookTitleMoreInfo(){
 		String bookTitle = null;
 		try {

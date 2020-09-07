@@ -7,6 +7,7 @@ import java.util.Properties;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -46,8 +47,8 @@ public class BookplayerStepModule extends UIElements {
 		try {
 			//changes
 			elementFinderByID(prop.getProperty("tableofcontentandresources_ID"), "btn_tableofcontentandresources").click();
-			elementFinderByID(prop.getProperty("resources_ID"), "btn_resources").click();
-			elementFinderByID(prop.getProperty("resources_drpdwn_xpath"), "drpdwn_resourcelist").click();
+			/*elementFinderByID(prop.getProperty("resources_ID"), "btn_resources").click();
+			elementFinderByID(prop.getProperty("resources_drpdwn_xpath"), "drpdwn_resourcelist").click();*/
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -916,6 +917,117 @@ public class BookplayerStepModule extends UIElements {
 			Log.info("Clicked to draw Line");
 		}catch (Exception e){
 			Log.error("Not Clicked to draw Line."+e.getMessage());
+		}
+	}
+	
+	public static void btnbookmark(){
+		try {
+			Thread.sleep(8000);
+			Driver.driver.switchTo().frame(elementFinderByID(prop.getProperty("bookmarkfram_ID"), "bookmark frame id"));
+			Thread.sleep(500);
+			System.out.println("Frame Switch");
+			Thread.sleep(9000);
+			Thread.sleep(9000);
+			
+	//	elementFinderByID(prop.getProperty("bookmarkThisPage_ID"), "bookmark this page").sendKeys(Keys.ENTER);
+			//elementFinderByID(prop.getProperty("bookmarkThisPage_ID"), "bookmark this page").click();
+			
+			WebElement element0 = elementFinderByID(prop.getProperty("bookmarkThisPage_ID"), "bookmark this page"); 
+			JavascriptExecutor executor = (JavascriptExecutor)Driver.driver;
+			executor.executeScript("arguments[0].click();", element0);
+			System.out.println("Clicked on bookmark");
+			Driver.driver.switchTo().defaultContent();
+			System.out.println("Default content Switch");
+			
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void txtbookmark(){
+		try {
+			Thread.sleep(8000);
+			elementFinderByXpath(prop.getProperty("bookmarkTitle_xpath"), "bookmark title").clear();
+			elementFinderByXpath(prop.getProperty("bookmarkTitle_xpath"), "bookmark title").sendKeys("Bookmark title");
+			
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void btnaddbookmark(){
+		try {
+		
+			elementFinderByXpath(prop.getProperty("addBookmark_xpath"), "add bookmark").click();	
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void btntocbookmark(){
+		try {
+		
+			elementFinderByXpath(prop.getProperty("bookmarks_xpath"), "bookmark").click();	
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static int getbookmarkCounts(){
+		int size = 0;
+		try {
+			size= Driver.driver.findElements(By.xpath(prop.getProperty("bookmark_list_lstview_xpath"))).size();
+			System.out.println("List Count:"+ size);
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+		return size;
+	}
+	
+	public static void btnbookmarkpageno(){
+		try {
+			String pageno = null;
+			pageno =elementFinderByXpath(prop.getProperty("bookmarkpageno_xpath"), "bookmark page number").getText();	
+			System.out.println("bookmark page number: "+ pageno );
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void bookmarklist(int i){
+		try {
+			List<WebElement> element= elementsFinderByXpaths(prop.getProperty("bookmark_list_lstview_xpath"), "bookmark_lstview_xpath");
+			element.get(i).click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	/*public static int getbookmarkCount(){
+		int size = 0;
+		try {
+			size= Driver.driver.findElements(By.xpath(prop.getProperty("highlights_list_xpath"))).size();
+			System.out.println("List Count:"+ size);
+
+			String highlightsize = Driver.driver.findElement(By.xpath(prop.getProperty("HighlightCount_visibletext_xpath"))).getText().replace("Notes ", "");
+			System.out.println("Indicator count :"+ highlightsize);
+			if(size == Integer.parseInt(highlightsize)){
+				Log.pass("Both counts matched. In Indicator: "+highlightsize+". And list shown: "+size);
+			}else{
+				Log.fail("Both counts dosen't matched. In Indicator: "+highlightsize+". And list shown: "+size);
+			}
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+		return size;
+	}*/
+	
+	public static void btndeletebookmark(){
+		try {
+		
+			elementFinderByXpath(prop.getProperty("deleteBookmark_xpath"), "delete bookmark").click();	
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
 		}
 	}
 
