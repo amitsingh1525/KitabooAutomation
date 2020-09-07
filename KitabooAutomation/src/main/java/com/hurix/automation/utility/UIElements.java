@@ -275,12 +275,20 @@ public class UIElements {
 		}
 	}
 	
-	public static void actionclass(WebElement from, int x, int y)
+	public static void dragAndDrop(WebElement from, int x, int y)
 	{
-		
 		Actions act=new Actions(Driver.driver);					
-//		Dragged and dropped.	
+		//Dragged and dropped.	
 	    act.dragAndDropBy(from, x, y).build().perform();
 	}
+	
+	public static void moveToGivenPoint(WebElement from, int x, int y)
+	{
+		Actions action =  new Actions(Driver.driver);
+		action.clickAndHold(from);
+		action.moveByOffset(x, y).build().perform();
+		action.click();
+	}
+	
 	
 }

@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
 
 import com.hurix.automation.utility.BrowserConfigure;
@@ -343,6 +344,200 @@ public class Reader_5Sanity{
 		Driver.driver.quit();
 	}
 
+
+	//Book Player
+	public static  void TC_goToPage(){
+		Log.startTestCase("TC_goToPage");
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.goToPage("20");
+		String pageNum = BookPlayerModule.getCurrentPageNum();
+		if(pageNum.equalsIgnoreCase("20")){
+			Log.pass("Current page Num.: "+pageNum);
+		}else{
+			Log.fail("Expected Page Number: '20' But Found :'"+pageNum+"'");
+		}
+		Log.endTestCase("End");
+	}
+
+	public static  void TC_HistoryPrevious(){
+		Log.startTestCase("TC_HistoryPrevious");
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.goToPage("5");
+		BookPlayerModule.threadHold_2Sec();
+		BookPlayerModule.goToPage("10");
+		BookPlayerModule.threadHold_2Sec();
+		BookplayerStepModule.btnhistoryprevious();
+		BookPlayerModule.threadHold_2Sec();
+		String pageNum = BookPlayerModule.getCurrentPageNum();
+		if(pageNum.equalsIgnoreCase("5")){
+			Log.pass("Current page Num.: "+pageNum);
+		}else{
+			Log.fail("Expected Page Number: '5' But Found :'"+pageNum+"'");
+		}
+		Log.endTestCase("End");
+	}
+
+	public static  void TC_HistoryNext(){
+		Log.startTestCase("TC_HistoryNext");
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.goToPage("8");
+		BookPlayerModule.threadHold_2Sec();
+		BookPlayerModule.goToPage("13");
+		BookPlayerModule.threadHold_2Sec();
+		BookplayerStepModule.btnhistoryprevious();
+		BookPlayerModule.threadHold_2Sec();
+		BookplayerStepModule.btnhistorynext();
+		BookPlayerModule.threadHold_2Sec();
+		String pageNum = BookPlayerModule.getCurrentPageNum();
+		if(pageNum.equalsIgnoreCase("13")){
+			Log.pass("Current page Num.: "+pageNum);
+		}else{
+			Log.fail("Expected Page Number: '13' But Found :'"+pageNum+"'");
+		}
+		Log.endTestCase("End");
+	}
+
+	public static  void TC_SinglePageView(){
+		Log.startTestCase("TC_SinglePageView");
+		BookplayerStepModule.btnsinglepage();
+		Log.endTestCase("End");
+	}
+
+	public static  void TC_DoublePageView(){
+		Log.startTestCase("TC_DoublePageView");
+		BookplayerStepModule.btndoublepage();
+		Log.endTestCase("End");
+	}
+
+	public static  void TC_RightNavigation(){
+		Log.startTestCase("TC_RightNavigation");
+		String pageNum = BookPlayerModule.getCurrentPageNum();
+		Log.info("Current Page Num: "+pageNum);
+		BookplayerStepModule.btnNextPageNavigation();
+		int nextPage = 0;
+		if(UIElements.elementFinderByXpath(BookplayerStepModule.prop.getProperty("CommonbtnForSingleAndDbl_xpath"), 
+				"CommonbtnForSingleAndDbl_xpath").getAttribute("aria-label").contains("Single Page View")) {
+			nextPage = Integer.parseInt(pageNum) + 2;
+		}else if(UIElements.elementFinderByXpath(BookplayerStepModule.prop.getProperty("CommonbtnForSingleAndDbl_xpath"), 
+				"CommonbtnForSingleAndDbl_xpath").getAttribute("aria-label").contains("Double Page View")) {
+			nextPage = Integer.parseInt(pageNum) + 1;
+		}
+		String curtPage = BookPlayerModule.getCurrentPageNum();
+		if(Integer.toString(nextPage).equalsIgnoreCase(curtPage)){
+			Log.pass("After navigate page number: "+nextPage);
+		}else{
+			Log.fail("Expected Page Number: "+nextPage+" But Found :'"+curtPage+"'");
+		}
+		Log.endTestCase("End");
+	}
+
+	public static  void TC_LeftNavigation(){
+		Log.startTestCase("TC_LeftNavigation");
+		String pageNum = BookPlayerModule.getCurrentPageNum();
+		Log.info("Current Page Num: "+pageNum);
+		BookplayerStepModule.btnPreviousPageNavigation();
+		int nextPage = 0;
+		if(UIElements.elementFinderByXpath(BookplayerStepModule.prop.getProperty("CommonbtnForSingleAndDbl_xpath"), 
+				"CommonbtnForSingleAndDbl_xpath").getAttribute("aria-label").contains("Single Page View")) {
+			nextPage = Integer.parseInt(pageNum) - 2;
+		}else if(UIElements.elementFinderByXpath(BookplayerStepModule.prop.getProperty("CommonbtnForSingleAndDbl_xpath"), 
+				"CommonbtnForSingleAndDbl_xpath").getAttribute("aria-label").contains("Double Page View")) {
+			nextPage = Integer.parseInt(pageNum) - 1;
+		}
+		String curtPage = BookPlayerModule.getCurrentPageNum();
+		if(Integer.toString(nextPage).equalsIgnoreCase(curtPage)){
+			Log.pass("After navigate page number: "+nextPage);
+		}else{
+			Log.fail("Expected Page Number: "+nextPage+" But Found :'"+curtPage+"'");
+		}
+		Log.endTestCase("End");
+	}
+
+
+	public static void TC_Fit2widhtVerification() {
+		Log.startTestCase("TC_Fit2widhtVerification");
+		BookplayerStepModule.btnfittowidth();
+		Log.endTestCase("End");
+	}
+
+	public static void TC_Fit2heightVerification() {
+		Log.startTestCase("TC_Fit2heightVerification");
+		BookplayerStepModule.btnfittoheight();
+		Log.endTestCase("End");
+	}
+
+	public static void TC_ZoomIn() {
+		Log.startTestCase("TC_ZoomIn");
+		String zoomVal = BookplayerStepModule.getzoomValue();
+		BookPlayerModule.zoomIn(240);
+		Log.info("Current Zoom Percantage: "+zoomVal);
+		String curZoomVal = BookplayerStepModule.getzoomValue();
+		if(Integer.parseInt(zoomVal.replace("%", "")) < Integer.parseInt(curZoomVal.replace("%", ""))) {
+			Log.pass("After ZoomIn Percantage: "+curZoomVal);
+		}else {
+			Log.fail("Expected Increment by n number of current Percentage: "+zoomVal+" But Found :'"+curZoomVal+"'");
+		}
+		Log.endTestCase("End");
+	}
+
+	public static void TC_ZoomOut() {
+		Log.startTestCase("TC_ZoomOut");
+		String zoomVal = BookplayerStepModule.getzoomValue();
+		BookPlayerModule.zoomOut(120);
+		Log.info("Current Zoom Percantage: "+zoomVal);
+		String curZoomVal = BookplayerStepModule.getzoomValue();
+		if(Integer.parseInt(zoomVal.replace("%", "")) < Integer.parseInt(curZoomVal.replace("%", ""))) {
+			Log.pass("After ZoomIn Percantage: "+curZoomVal);
+		}else {
+			Log.fail("Expected Increment by n number of current Percentage: "+zoomVal+" But Found :'"+curZoomVal+"'");
+		}
+		Log.endTestCase("End");
+	}
+
+	public static void TC_SearchBooktext() {
+		Log.startTestCase("TC_SearchBooktext");
+		String pageNum = BookPlayerModule.searchBookText("the", 0);
+		System.out.println(">>>"+pageNum);
+		String curPageNum = BookPlayerModule.getCurrentPageNum();
+		if(pageNum.replace("Page ", "").equals(curPageNum)) {
+			Log.pass("Yes, it's redirect to the right page. Page Num: "+curPageNum);
+		}else {
+			Log.fail("Expected page number: "+pageNum.replace("Page ", "")+" But Found: "+curPageNum);
+		}
+		Log.endTestCase("End");
+	}
+
+	public static void TC_Full_DefaultScreen() {
+		Log.startTestCase("TC_Full_DefaultScreen");
+		int beforeFullscrSize = Driver.driver.manage().window().getSize().getHeight();
+		BookplayerStepModule.btnfull_DefaultScreen();
+		UIElements.threadHold_2Sec();
+		int afterFullscrSize = Driver.driver.manage().window().getSize().getHeight();
+		if(beforeFullscrSize < afterFullscrSize) {
+			Log.pass("Before full screen mode height: "+beforeFullscrSize+" and after full screen mode height: "+afterFullscrSize);
+		}else {
+			Log.fail("Expected Increment by n number of current height: "+beforeFullscrSize+ " But Found: "+afterFullscrSize);
+		}
+		BookplayerStepModule.btnfull_DefaultScreen();
+		UIElements.threadHold_2Sec();
+		int afterDefaultscrSize = Driver.driver.manage().window().getSize().getHeight();
+		if(afterFullscrSize > afterDefaultscrSize) {
+			Log.pass("Before full screen mode height: "+afterFullscrSize+" and after full screen mode height: "+afterDefaultscrSize);
+		}else {
+			Log.fail("Expected decrement by n number of current height: "+beforeFullscrSize+ " But Found: "+afterFullscrSize);
+		}
+		Log.endTestCase("End");
+	}
+
+	public static void TC_DefaultScreen() {
+		Log.startTestCase("TC_CollapseScreen");
+		UIElements.threadHold_2Sec();
+		BookplayerStepModule.btnfull_DefaultScreen();
+		Log.endTestCase("End");
+	}
+
+
 	public static void main(String []args){
 		setup();
 		/*TC_InvalidUserNameANDPassword("", "");
@@ -374,7 +569,28 @@ public class Reader_5Sanity{
 		TC_moreInfo();
 		TC_Analytics();*/
 
-		
+
+		LoginModule.userLogin("hurixreader5@gmail.com", "kitaboo@123");
+		BookShelfModule.catNavigationAndLaunch("Hurix Showcase");
+		//TC_goToPage();
+		//TC_HistoryPrevious();
+		//TC_HistoryNext();
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.threadHold_5Sec();
+		//TC_SinglePageView();
+		//BookPlayerModule.threadHold_2Sec();
+		//TC_DoublePageView();
+		//TC_RightNavigation();
+		//TC_LeftNavigation();
+		//TC_Fit2widhtVerification();
+		//TC_Fit2heightVerification();
+		//TC_ZoomIn();//need assertion
+		//TC_ZoomOut();//need assertion
+		//TC_SearchBooktext();
+		TC_Full_DefaultScreen();
+
 		//BookPlayerModule.highlight();
 		//BookPlayerModule.goToPage("20");
 		/*LoginModule.threadHold_5Sec();
@@ -400,7 +616,7 @@ public class Reader_5Sanity{
 					System.out.println("present...");
 				}
 				Driver.driver.switchTo().frame("epub_5");
-				
+
 		}*/
 
 		//Driver.driver.findElement(By.id("highlight_0")).click();
@@ -416,21 +632,21 @@ public class Reader_5Sanity{
 		//act.moveToElement(from).click().perform();
 
 
-		LoginModule.userLogin("sharing.teacher@yopmail.com", "kitaboo@123");
-		BookShelfModule.catNavigationAndLaunch("showcase");
+		//LoginModule.userLogin("sharing.teacher@yopmail.com", "kitaboo@123");
+		//BookShelfModule.catNavigationAndLaunch("showcase");
 		/*BookPlayerModule.zoomIn();
 		BookPlayerModule.zoomOut();
 		BookPlayerModule.fitToWidth();
 		BookPlayerModule.searchBookText();*/
 		//BookPlayerModule.myDataHighlightCount("all");
 		//BookPlayerModule.myDatanormalNotesCount("all");//y
-		BookPlayerModule.myDatacontextualNotesCount("yellow,red");
-		
+		//BookPlayerModule.myDatacontextualNotesCount("yellow,red");
+
 		/*LoginModule.userLogin("hurixreader5@gmail.com", "kitaboo@123");
 		BookShelfModule.catNavigationAndLaunch("Hurix Showcase");
 		//BookPlayerModule.highlight("blue");
 		//BookPlayerModule.deleteHighlight();
-		
+
 		//BookPlayerModule.pentool("black", "5", 50, 60);
 		//BookPlayerModule.pentool("blue", "5", 70, 60);
 		BookPlayerModule.goToPage("5");
@@ -439,9 +655,9 @@ public class Reader_5Sanity{
 		BookPlayerModule.highlight("blue");
 		BookPlayerModule.deleteHighlight();*/
 		//BookPlayerModule.pentool();
-		
-		
-		
+
+
+
 		//termination();
 	}
 

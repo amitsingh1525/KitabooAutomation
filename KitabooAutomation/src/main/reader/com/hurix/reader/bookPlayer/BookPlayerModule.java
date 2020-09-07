@@ -6,8 +6,10 @@ import java.util.Properties;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 
 import com.hurix.automation.utility.Driver;
+import com.hurix.automation.utility.Log;
 
 public class BookPlayerModule extends BookplayerStepModule
 {
@@ -98,7 +100,7 @@ public class BookPlayerModule extends BookplayerStepModule
 		btnstickynotes();
 		Driver.driver.switchTo().frame("epub_"+pageNum);
 		WebElement element = Driver.driver.findElement(By.id("p5-textid50001"));
-		actionclass(element, x, y);
+		dragAndDrop(element, x, y);
 		Driver.driver.switchTo().parentFrame();
 		if(color.equalsIgnoreCase("Orange")) {
 			btnStickyClr_orange();
@@ -136,28 +138,36 @@ public class BookPlayerModule extends BookplayerStepModule
 		btnhistorynext();
 	}
 
-	public static void zoomIn(){
+	public static void zoomIn(int zoomInLevel){
 		btnzoomin();
+		elementFinderByXpath(prop.getProperty("zoomsliderzoomin_xpath"), "Zoom sliderin xpath");
+		WebElement slider = elementFinderByXpath(prop.getProperty("zoomsliderzoomin_xpath"), "Zoom sliderin xpath");
+		moveToGivenPoint(slider, zoomInLevel, 0);
+		btnhighlight();
 	}
 
-	public static void zoomOut(){
+	public static void zoomOut(int zoomoutLevel){
 		btnzoomout();
+		elementFinderByXpath(prop.getProperty("zoomsliderzoomout_xpath"), "Zoom slider xpath");
+		WebElement slider = elementFinderByXpath(prop.getProperty("zoomsliderzoomout_xpath"), "Zoom slider xpath");
+		moveToGivenPoint(slider, -zoomoutLevel, 0);
+		btnhighlight();
 	}
 
-	public static String searchBookText(){
-		btnsearch("the");
-		threadHold_2Sec();
-		int size= Driver.driver.findElements(By.xpath(prop.getProperty("searchresult_lstview_xpath"))).size();
-		System.out.println("Size of search element is :"+ size);
+	public static String searchBookText(String searchtxt, int elementNum){
+		btnsearch();
+		txtSearch(searchtxt);
+		int size= elementsFinderByXpaths(prop.getProperty("searchresult_lstview_xpath"), "Search result count").size();
+		Log.info("Number of search found:"+ size);
 		String msg = null;
 		if(size>0){
-			searchResult(0);
+			
+			msg = searchResult(elementNum);
 			threadHold_5Sec();
 		}else{
 			msg = getinvalidsearchmsg();
 		}
 		return msg;
-
 	}
 
 	public static int myDataHighlightCount(String clrName){
@@ -280,11 +290,13 @@ public class BookPlayerModule extends BookplayerStepModule
 	}
 
 
-	public static String getPageNum(){
+	public static String getCurrentPageNum(){
 		threadHold_5Sec();
 		btnthumbnail();
-		System.out.println("Page Number: "+getpageNum());
-		return getpageNum();
+		String pageNum = getpageNum();
+		System.out.println("Page Number: "+pageNum);
+		btnthumbnail();
+		return pageNum;
 
 	}
 
