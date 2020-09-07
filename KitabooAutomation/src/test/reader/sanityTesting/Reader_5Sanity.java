@@ -537,6 +537,69 @@ public class Reader_5Sanity{
 		Log.endTestCase("End");
 	}
 
+	public static void TC_AddingStickyNotes() {
+		Log.startTestCase("TC_AddingStickyNotes");
+		int countAfterNotes = BookPlayerModule.myDatanormalNotesCount("purple");
+		BookPlayerModule.stickyNotes("purple", "5", 70, 60);
+		int countBeforeNotes = BookPlayerModule.myDatanormalNotesCount("purple");
+		if(countAfterNotes < countBeforeNotes) {
+			Log.pass("Before adding sticky Notes Count: "+countAfterNotes+" After adding sticky notes Count: "+countBeforeNotes);
+		}else {
+			Log.fail("Expected increment by n number of current notes: "+countAfterNotes+ " But Found: "+countBeforeNotes);
+		}
+		Log.endTestCase("End");
+	}
+
+	public static void TC_DeleteStickyNotes() {
+		Log.startTestCase("TC_DeleteStickyNotes");
+		int countAfterNotes = BookPlayerModule.myDatanormalNotesCount("all");
+		BookPlayerModule.deleteStickyNotes("5", 70, 60);
+		int countBeforeNotes = BookPlayerModule.myDatanormalNotesCount("all");
+		if(countAfterNotes > countBeforeNotes) {
+			Log.pass("Before delete sticky Notes Count: "+countAfterNotes+" After adding sticky notes Count: "+countBeforeNotes);
+		}else {
+			Log.fail("Expected decrement by n number of current notes: "+countAfterNotes+ " But Found: "+countBeforeNotes);
+		}
+		Log.endTestCase("End");
+	}
+
+	public static void TC_Highlight() {
+		Log.startTestCase("TC_Highlight");
+		int countAfterNotes = BookPlayerModule.myDataHighlightCount("green");
+		BookPlayerModule.highlight("green");
+		int countBeforeNotes = BookPlayerModule.myDataHighlightCount("green");
+		if(countAfterNotes < countBeforeNotes) {
+			Log.pass("Before apply highlight Count: "+countAfterNotes+" After adding sticky notes Count: "+countBeforeNotes);
+		}else {
+			Log.fail("Expected increment by n number of current highlight: "+countAfterNotes+ " But Found: "+countBeforeNotes);
+		}
+		Log.endTestCase("End");
+	}
+	
+	public static void TC_DeleteHighlight() {
+		Log.startTestCase("TC_DeleteHighlight");
+		int countAfterNotes = BookPlayerModule.myDataHighlightCount("green");
+		BookPlayerModule.deleteHighlight();
+		int countBeforeNotes = BookPlayerModule.myDataHighlightCount("green");
+		if(countAfterNotes > countBeforeNotes) {
+			Log.pass("Before delete highlight Count: "+countAfterNotes+" After adding sticky notes Count: "+countBeforeNotes);
+		}else {
+			Log.fail("Expected decrement by n number of current highlight: "+countAfterNotes+ " But Found: "+countBeforeNotes);
+		}
+		Log.endTestCase("End");
+	}
+	
+	public static void TC_PenTool() {
+		Log.startTestCase("TC_PenTool");
+		BookPlayerModule.pentool("blue", "5", 70, 60);
+		Log.endTestCase("End");
+	}
+	
+	public static void TC_ErasePenTool() {
+		Log.startTestCase("TC_ErasePenTool");
+		BookPlayerModule.erasepentool("5", 70, 60);
+		Log.endTestCase("End");
+	}
 
 	public static void main(String []args){
 		setup();
@@ -589,7 +652,13 @@ public class Reader_5Sanity{
 		//TC_ZoomIn();//need assertion
 		//TC_ZoomOut();//need assertion
 		//TC_SearchBooktext();
-		TC_Full_DefaultScreen();
+		//TC_Full_DefaultScreen();
+		//TC_AddingStickyNotes();
+		//TC_DeleteStickyNotes();
+		//TC_Highlight();
+		//TC_DeleteHighlight();
+		//TC_PenTool();
+		TC_ErasePenTool();
 
 		//BookPlayerModule.highlight();
 		//BookPlayerModule.goToPage("20");
@@ -655,8 +724,6 @@ public class Reader_5Sanity{
 		BookPlayerModule.highlight("blue");
 		BookPlayerModule.deleteHighlight();*/
 		//BookPlayerModule.pentool();
-
-
 
 		//termination();
 	}

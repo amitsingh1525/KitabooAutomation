@@ -558,6 +558,23 @@ public class BookplayerStepModule extends UIElements {
 			System.out.println("Element not present."+e.getMessage());
 		}
 	}
+	
+	public static void btnDeleteStickyNotes(){
+		try {
+			elementFinderByXpath(prop.getProperty("deleteSticky_Xpath"), "btnDeleteStickyNotes").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	//If there any sticky notes apply on page then use this method for open sticky notes pop-up
+	public static void btnStickyNotesInsidePage(){
+		try {
+			elementFinderByXpath(prop.getProperty("StickyNote_Xpath"), "btnStickyNotesInsidePage").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
 
 	public static void btnhighlight(){
 		try {

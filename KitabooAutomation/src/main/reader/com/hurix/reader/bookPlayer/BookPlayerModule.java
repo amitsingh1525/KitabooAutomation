@@ -97,6 +97,9 @@ public class BookPlayerModule extends BookplayerStepModule
 	}
 
 	public static void stickyNotes(String color, String pageNum, int x, int y){
+		goToPage(pageNum);
+		threadHold_5Sec();
+		threadHold_2Sec();
 		btnstickynotes();
 		Driver.driver.switchTo().frame("epub_"+pageNum);
 		WebElement element = Driver.driver.findElement(By.id("p5-textid50001"));
@@ -123,6 +126,16 @@ public class BookPlayerModule extends BookplayerStepModule
 		Driver.driver.switchTo().parentFrame();
 	}
 
+	public static void deleteStickyNotes(String pageNum, int x, int y){
+		goToPage(pageNum);
+		threadHold_5Sec();
+		threadHold_2Sec();
+		Driver.driver.switchTo().frame("epub_"+pageNum);
+		btnStickyNotesInsidePage();
+		Driver.driver.switchTo().parentFrame();
+		btnDeleteStickyNotes();
+	}
+	
 	public static void goToPage(String pageNum){
 		btnthumbnail();
 		txtbxgotopage(pageNum);
