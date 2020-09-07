@@ -1,9 +1,11 @@
 package com.hurix.api.utility;
 import java.sql.*;
+
 import org.apache.commons.codec.binary.Base64;
 
 public class JDBC_category {	
 
+	@SuppressWarnings("resource")
 	public static String getCategory(int bookID, String catLevel, String sqlhost, String sqlUsername, String sqlPassword)
 	{
 		String encodeValue = null;

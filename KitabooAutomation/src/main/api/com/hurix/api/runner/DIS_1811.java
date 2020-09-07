@@ -202,7 +202,7 @@ public class DIS_1811 {
 				System.out.println("upDateEpub_res : "+upDateEpub_res);
 
 
-				Response CategoryBookListV1s = CategoryBookListV1.categoryBookListV1("level4",userToken,"56454", "IPAD");
+				Response CategoryBookListV1s = CategoryBookListV1.categoryBookListV1(""+category1+"",userToken,"56454", "IPAD",bookID1,catlevel,"jdbc:mysql://172.18.10.147:3306","readonly","readonly@123");
 				Validation.responseHeaderCodeValidation(CategoryBookListV1s, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(CategoryBookListV1s, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(CategoryBookListV1s);
@@ -213,7 +213,7 @@ public class DIS_1811 {
 				Validation.responseKeyValidation_key(CategoryBookListV1s,"formats");				
 				System.out.println("CategoryBookListV1_res : "+CategoryBookListV1s);
 
-				Response CategoryBook_ListV2 = CategoryBookListV2.categoryBookListV2("level4",userToken,"56454", "IPAD");
+				Response CategoryBook_ListV2 = CategoryBookListV2.categoryBookListV2(""+category1+"",userToken,"56454", "IPAD",bookID1,catlevel,"jdbc:mysql://172.18.10.147:3306","readonly","readonly@123");
 				Validation.responseHeaderCodeValidation(CategoryBook_ListV2, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(CategoryBook_ListV2, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(CategoryBook_ListV2);

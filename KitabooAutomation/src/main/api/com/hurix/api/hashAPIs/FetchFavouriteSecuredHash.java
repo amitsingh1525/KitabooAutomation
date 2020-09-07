@@ -2,12 +2,8 @@ package com.hurix.api.hashAPIs;
 
 import static io.restassured.RestAssured.given;
 import io.restassured.response.Response;
-
-import org.apache.http.HttpStatus;
-
 import com.hurix.api.runner.RestAssured;
 import com.hurix.api.utility.MD5Genration;
-import com.hurix.api.utility.Validation;
 import com.hurix.automation.utility.Log;
 
 public class FetchFavouriteSecuredHash {

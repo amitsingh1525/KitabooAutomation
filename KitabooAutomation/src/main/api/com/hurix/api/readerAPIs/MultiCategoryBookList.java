@@ -1,10 +1,8 @@
 package com.hurix.api.readerAPIs;
 
 import static io.restassured.RestAssured.given;
-
 import java.sql.SQLException;
 import io.restassured.response.Response;
-import com.hurix.api.runner.RestAssured;
 import com.hurix.api.utility.JDBC_category;
 import com.hurix.api.utility.Validation;
 import com.hurix.automation.utility.Log;
@@ -26,12 +24,12 @@ public class MultiCategoryBookList {
 						.header("base64CategoryLevel3", JDBC_category.getCategory(bookID, "level3", sqlhost,sqlUsername,sqlPassword))
 						.header("base64CategoryLevel4", JDBC_category.getCategory(bookID, "level4", sqlhost,sqlUsername,sqlPassword))
 						.get("/DistributionServices/services/api/reader/user/"+deviceID+"/"+deviceType+"/multiCategoryBookList");
-				Validation.responseHeaderCodeValidation(jsonResponse, 200);
+				/*Validation.responseHeaderCodeValidation(jsonResponse, 200);
 				Validation.responseCodeValidation1(jsonResponse, 200);
 				Validation.responseTimeValidation(jsonResponse);
 				Validation.responseKeyValidation_key(jsonResponse, "totalbooks");
 				Validation.responseKeyValidation_key(jsonResponse, "category");
-				Validation.responseKeyValidation_key(jsonResponse, "description");	
+				Validation.responseKeyValidation_key(jsonResponse, "description");*/	
 				Log.info("MultiCategoryBookList: "+catLevel+ " Response: "+jsonResponse.then().extract().response().prettyPrint());
 				
 			}

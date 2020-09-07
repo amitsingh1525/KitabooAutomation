@@ -1,14 +1,8 @@
 package com.hurix.api.readerAPIs;
 
 import static io.restassured.RestAssured.given;
-
-import org.apache.http.HttpStatus;
-
 import io.restassured.response.Response;
-
-import com.hurix.api.runner.RestAssured;
 import com.hurix.api.utility.EpochTime;
-import com.hurix.api.utility.Validation;
 import com.hurix.automation.utility.Log;
 
 public class Bookdetails {

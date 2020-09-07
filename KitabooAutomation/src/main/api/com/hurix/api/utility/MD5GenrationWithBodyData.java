@@ -9,8 +9,8 @@ public class MD5GenrationWithBodyData {
 	public static String hashGenration(String url) throws Exception 
 	{
 		String s = url.replaceAll("http://", "").replaceAll("https://", "");
-		String s1 = s+V1RefreshBooksHash.v1refreshBooksBody;
-		System.out.println("body:  :: " +s+V1RefreshBooksHash.v1refreshBooksBody);
+		String s1 = s+V1RefreshBooksHash.v1refreshBooksBody1;
+		System.out.println("body:  :: " +s+V1RefreshBooksHash.v1refreshBooksBody1);
 		int count = 0;  
 		for(int i = 0; i < s1.length(); i++) {    
 			if(s1.charAt(i) != ' ')    
@@ -24,8 +24,8 @@ public class MD5GenrationWithBodyData {
 		while (hashtext.length() < 32) { 
 			hashtext = "0" + hashtext; 
 		} 
-		System.out.println("HashValue##########################"+GenerateHashValue.GenerateHashValue(hashtext, counter));
-		return GenerateHashValue.GenerateHashValue(hashtext, counter);
+		System.out.println("HashValue##########################"+GenerateHashValue.generateHashValue(hashtext, counter));
+		return GenerateHashValue.generateHashValue(hashtext, counter);
 	}	
 
 }
