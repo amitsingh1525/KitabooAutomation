@@ -124,10 +124,26 @@ public class BookShelfModule extends BookShelfStepModule {
 	public static void analytics(){
 		 btnMoreInfo(0);
 		 btnAnalytics();
-		/*String msg = getAboutUSVersion();
-		threadHold_2Sec();
-		Driver.driver.navigate().refresh();
-		return msg;*/
+		 threadHold_2Sec();
+		String msg1 = getBookOpenedAssigned();
+		System.out.println("Book Opened/Assigned: " + msg1);
+		String msg2 = getAverageReadingTime();
+		System.out.println("Average Reading Time: " + msg2);
+		String msg3 = getAveragePagesRead();
+		System.out.println("Average Pages Read: " + msg3);
+		String msg4 = getAverageReadingSession();
+		System.out.println("Average Reading Session: " + msg4);
+		String msg5 = getAverageReadingTimeSession();
+		System.out.println("Average Reading Time/Session: " + msg5);
+		String msg6 = getAveragePagesReadSessionCount();
+		System.out.println("Average Pages Read/Session: " + msg6);
+		String msg7 = getAverageNotesSharedCreatedCount();
+		System.out.println("Average Notes Shared/Created: " + msg7);
+		String msg8 = getAverageHighlightSharedCreatedCount();
+		System.out.println("Average Highlight Shared/Created: " + msg8);
+		String msg9 = getAvgResourceViewedAvailableCount();
+		System.out.println("Avg. Resource Viewed/Available: " + msg9);
+	
 	}
 	
 }

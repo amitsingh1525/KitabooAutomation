@@ -287,5 +287,26 @@ public class BookPlayerModule extends BookplayerStepModule
 		return getpageNum();
 
 	}
+	
+	public static void addbookmark(){
+		//txtbxgotopage("10");
+		btnbookmark();
+		txtbookmark();
+		btnaddbookmark();
+		btntableofcontentandresources();
+		btntocbookmark();
+		getbookmarkCounts();
+		btnbookmarkpageno();
+		bookmarklist(0);
+		getPageNum();
+	}
+	
+	public static void deletebookmark(){
+		btnbookmark();
+		btndeletebookmark();
+		btntableofcontentandresources();
+		btntocbookmark();
+		getbookmarkCounts();
+	}
 
 }

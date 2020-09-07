@@ -416,15 +416,22 @@ public class Reader_5Sanity{
 		//act.moveToElement(from).click().perform();
 
 
-		LoginModule.userLogin("sharing.teacher@yopmail.com", "kitaboo@123");
-		BookShelfModule.catNavigationAndLaunch("showcase");
+		/*LoginModule.userLogin("sharing.teacher@yopmail.com", "kitaboo@123");
+		BookShelfModule.catNavigationAndLaunch("showcase");*/
+		 
+		/*BookPlayerModule.backtoBookshelf();
+	     BookShelfModule.analytics();*/
+		LoginModule.userLogin("rajesha.sdk1@yopmail.com", "kitaboo@123");
+	//	BookShelfModule.catNavigationAndLaunch("showcase");
+		BookPlayerModule.addbookmark();
+		BookPlayerModule.deletebookmark();
 		/*BookPlayerModule.zoomIn();
 		BookPlayerModule.zoomOut();
 		BookPlayerModule.fitToWidth();
 		BookPlayerModule.searchBookText();*/
 		//BookPlayerModule.myDataHighlightCount("all");
 		//BookPlayerModule.myDatanormalNotesCount("all");//y
-		BookPlayerModule.myDatacontextualNotesCount("yellow,red");
+	//	BookPlayerModule.myDatacontextualNotesCount("yellow,red");
 		
 		/*LoginModule.userLogin("hurixreader5@gmail.com", "kitaboo@123");
 		BookShelfModule.catNavigationAndLaunch("Hurix Showcase");
