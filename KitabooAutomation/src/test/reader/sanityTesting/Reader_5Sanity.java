@@ -658,7 +658,7 @@ public class Reader_5Sanity{
 		//TC_Highlight();
 		//TC_DeleteHighlight();
 		//TC_PenTool();
-		TC_ErasePenTool();
+		//TC_ErasePenTool();
 
 		//BookPlayerModule.highlight();
 		//BookPlayerModule.goToPage("20");
