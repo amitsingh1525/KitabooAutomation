@@ -102,7 +102,13 @@ public class BookPlayerModule extends BookplayerStepModule
 		drawLine(By.id("p5-textid50001"), x, y);
 		Driver.driver.switchTo().parentFrame();
 	}
-
+	
+	public static void clearAllpentool(){
+		btnclearall();
+		btnclearallAlertPopup_Yes();
+		btnsavePenTool();
+	}
+	
 	public static void stickyNotes(String color, String pageNum, int x, int y){
 		goToPage(pageNum);
 		threadHold_5Sec();
@@ -344,6 +350,15 @@ public class BookPlayerModule extends BookplayerStepModule
 		btntableofcontentandresources();
 		btntocbookmark();
 		getbookmarkCounts();
+	}
+	
+	public static void contentResources(int i){
+		btntableofcontentandresources();
+		btnresources();
+		btnResourceDrpdwn();
+		btnResourcelst(i);
+		
+		
 	}
 
 }

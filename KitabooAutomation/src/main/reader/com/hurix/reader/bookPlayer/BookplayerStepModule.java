@@ -53,7 +53,7 @@ public class BookplayerStepModule extends UIElements {
 			System.out.println("Element not present."+e.getMessage());
 		}
 	}
-
+	
 	public static void btnresources(){
 		try {
 			elementFinderByXpath(prop.getProperty("resources_xpath"), "btn_resources").click();
@@ -62,6 +62,51 @@ public class BookplayerStepModule extends UIElements {
 		}
 	}
 
+	public static void btnResourceDrpdwn(){
+		try {
+			elementFinderByXpath(prop.getProperty("resources_drpdwn_xpath"), "drpdwn_resourcelist").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static int getResourcelst(){
+		btntableofcontentandresources();
+		btnresources();
+		btnResourceDrpdwn();
+		int size = elementsFinderByXpaths(prop.getProperty("resources_list_drpdwn_lstview_xpath"), "drpdwn_resourcelist").size();
+		btnResourceDrpdwn();
+		btntableofcontentandresources();
+		return size;
+	}
+	
+	public static void btnResourcelst(int i){
+		try {
+			List<WebElement> element = elementsFinderByXpaths(prop.getProperty("resources_list_drpdwn_lstview_xpath"), "drpdwn_resourcelist");
+			element.get(i).click();
+			String value = element.get(i).getAttribute("aria-label");
+			String title = value.replaceAll("Page [0-9]", "");
+			String pageNum = value.replaceAll("(.+?)Page ", "");
+			
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("epub_"+pageNum)));
+			threadHold_2Sec();
+			Driver.driver.switchTo().frame("epub_"+pageNum);
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@title=\""+title+"\"]")));
+			threadHold_2Sec();
+			WebElement ele = Driver.driver.findElement(By.xpath("//*[@title=\""+title+"\"]"));
+			JavascriptExecutor executor = (JavascriptExecutor)Driver.driver;
+			executor.executeScript("arguments[0].click();", ele);
+			threadHold_5Sec();
+			Driver.driver.navigate().refresh();
+			Driver.driver.switchTo().alert().accept();
+			threadHold_5Sec();
+			Driver.driver.switchTo().defaultContent();
+			
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
 	public static void lstresources_list(){
 		try {
 			List<WebElement> element= elementsFinderByXpaths(prop.getProperty("resources_list_lstview_xpath"), "lst_resources_list");
@@ -543,10 +588,18 @@ public class BookplayerStepModule extends UIElements {
 			System.out.println("Element not present."+e.getMessage());
 		}
 	}
-
-	public static void btnsave(){
+	
+	public static void btnclearallAlertPopup_Yes(){
 		try {
-			elementFinderByXpath(prop.getProperty("savebtn_xpath"), "btn_save").click();
+			elementFinderByXpath(prop.getProperty("clearallYesbtn_xpath"), "btnclearallAlertPopup_Yes").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+
+	public static void btnsavePenTool(){
+		try {
+			elementFinderByXpath(prop.getProperty("pentoolsavebtn_xpath"), "btnsavePenTool").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
