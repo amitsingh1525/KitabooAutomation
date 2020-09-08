@@ -22,7 +22,7 @@ public class CategoryBookListV1 {
 		//String catname="";
 		Response jsonResponse = null;
 		try {			
-			Log.startTestCase("categoryBookListV1");
+			Log.startTestCase("categoryBookListV1.catname="+catname+"");
 
 			if(catLevel .contains("1"))
 			{
@@ -33,7 +33,7 @@ public class CategoryBookListV1 {
 						.header("usertoken",userToken)	
 						.get("/DistributionServices/services/api/reader/books/"+DeviceID+"/"+DeviceType+"/books/"+catname+"");
 
-				Log.info("categoryBookListV1 Response: "+jsonResponse.then().extract().response().prettyPrint());
+				Log.info("categoryBookListV1.catname="+catname+" Response: "+jsonResponse.then().extract().response().prettyPrint());
 			}		
 
 			else if(catLevel .contains("2"))
