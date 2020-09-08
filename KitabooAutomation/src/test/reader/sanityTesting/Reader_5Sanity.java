@@ -575,7 +575,7 @@ public class Reader_5Sanity{
 		}
 		Log.endTestCase("End");
 	}
-	
+
 	public static void TC_DeleteHighlight() {
 		Log.startTestCase("TC_DeleteHighlight");
 		int countAfterNotes = BookPlayerModule.myDataHighlightCount("green");
@@ -588,16 +588,40 @@ public class Reader_5Sanity{
 		}
 		Log.endTestCase("End");
 	}
-	
+
 	public static void TC_PenTool() {
 		Log.startTestCase("TC_PenTool");
 		BookPlayerModule.pentool("blue", "5", 70, 60);
 		Log.endTestCase("End");
 	}
-	
+
 	public static void TC_ErasePenTool() {
 		Log.startTestCase("TC_ErasePenTool");
 		BookPlayerModule.erasepentool("5", 70, 60);
+		Log.endTestCase("End");
+		UIElements.threadHold_2Sec();
+		Log.startTestCase("TC_UndoPenTool");
+		BookPlayerModule.btnundo();
+		Log.endTestCase("End");
+		UIElements.threadHold_2Sec();
+		Log.startTestCase("TC_ClearAllPenTool");
+		BookPlayerModule.clearAllpentool();
+		Log.endTestCase("End");
+	}
+	
+	public static void TC_ContentResources() {
+		Log.startTestCase("TC_ContentResources");
+		int resourceSize = BookplayerStepModule.getResourcelst();
+		for(int i=0; i< resourceSize; i++) {
+			BookPlayerModule.threadHold_2Sec();
+			BookPlayerModule.contentResources(i);
+		}
+		Log.endTestCase("End");
+	}
+	
+	public static void TC_Content() {
+		Log.startTestCase("TC_Content");
+		
 		Log.endTestCase("End");
 	}
 
@@ -634,14 +658,16 @@ public class Reader_5Sanity{
 
 
 		LoginModule.userLogin("hurixreader5@gmail.com", "kitaboo@123");
-		BookShelfModule.catNavigationAndLaunch("Hurix Showcase");
+		BookShelfModule.catNavigationAndLaunch("Automation");
 		//TC_goToPage();
 		//TC_HistoryPrevious();
 		//TC_HistoryNext();
+		
 		BookPlayerModule.threadHold_5Sec();
 		BookPlayerModule.threadHold_5Sec();
 		BookPlayerModule.threadHold_5Sec();
 		BookPlayerModule.threadHold_5Sec();
+		
 		//TC_SinglePageView();
 		//BookPlayerModule.threadHold_2Sec();
 		//TC_DoublePageView();
@@ -659,6 +685,7 @@ public class Reader_5Sanity{
 		//TC_DeleteHighlight();
 		//TC_PenTool();
 		//TC_ErasePenTool();
+		TC_ContentResources();
 
 		//BookPlayerModule.highlight();
 		//BookPlayerModule.goToPage("20");
@@ -701,11 +728,14 @@ public class Reader_5Sanity{
 		//act.moveToElement(from).click().perform();
 
 
-		LoginModule.userLogin("sharing.teacher@yopmail.com", "kitaboo@123");
-		BookShelfModule.catNavigationAndLaunch("showcase");
+		
+		/*
+		 * LoginModule.userLogin("sharing.teacher@yopmail.com", "kitaboo@123");
+		 * BookShelfModule.catNavigationAndLaunch("showcase");
+		 * 
+		 * BookPlayerModule.backtoBookshelf(); BookShelfModule.analytics();
+		 */
 		 
-		BookPlayerModule.backtoBookshelf();
-	     BookShelfModule.analytics();
 		/*LoginModule.userLogin("rajesha.sdk1@yopmail.com", "kitaboo@123");
 	//	BookShelfModule.catNavigationAndLaunch("showcase");
 		BookPlayerModule.addbookmark();
@@ -718,8 +748,8 @@ public class Reader_5Sanity{
 		BookPlayerModule.searchBookText();*/
 		//BookPlayerModule.myDataHighlightCount("all");
 		//BookPlayerModule.myDatanormalNotesCount("all");//y
-	//	BookPlayerModule.myDatacontextualNotesCount("yellow,red");
-		
+		//	BookPlayerModule.myDatacontextualNotesCount("yellow,red");
+
 		//BookPlayerModule.myDatacontextualNotesCount("yellow,red");
 
 		/*LoginModule.userLogin("hurixreader5@gmail.com", "kitaboo@123");
