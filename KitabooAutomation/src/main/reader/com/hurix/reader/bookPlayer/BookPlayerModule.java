@@ -58,6 +58,13 @@ public class BookPlayerModule extends BookplayerStepModule
 		btnhighlightdelete();
 		btnhighlight();
 	}
+	
+	public static void searchAWord(){
+		btnthumbnail();
+		txtbxgotopage("5");
+		btnhighlight();
+		selectparagraph();
+	}
 
 	public static void pentool(String color, String pageNum, int x, int y){
 
@@ -318,6 +325,11 @@ public class BookPlayerModule extends BookplayerStepModule
 		btnbookmark();
 		txtbookmark();
 		btnaddbookmark();
+		btntableofcontentandresources();
+		btntocbookmark();
+		threadHold_5Sec();
+		btntableofcontentandresources();
+		threadHold_5Sec();
 		btntableofcontentandresources();
 		btntocbookmark();
 		getbookmarkCounts();

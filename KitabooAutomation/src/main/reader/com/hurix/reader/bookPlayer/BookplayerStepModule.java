@@ -56,7 +56,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void btnresources(){
 		try {
-			elementFinderByID(prop.getProperty("resources_ID"), "btn_resources").click();
+			elementFinderByXpath(prop.getProperty("resources_xpath"), "btn_resources").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}

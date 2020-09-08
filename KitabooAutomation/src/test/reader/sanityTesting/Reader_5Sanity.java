@@ -633,7 +633,7 @@ public class Reader_5Sanity{
 		TC_Analytics();*/
 
 
-		LoginModule.userLogin("hurixreader5@gmail.com", "kitaboo@123");
+		/*LoginModule.userLogin("hurixreader5@gmail.com", "kitaboo@123");
 		BookShelfModule.catNavigationAndLaunch("Hurix Showcase");
 		//TC_goToPage();
 		//TC_HistoryPrevious();
@@ -641,7 +641,7 @@ public class Reader_5Sanity{
 		BookPlayerModule.threadHold_5Sec();
 		BookPlayerModule.threadHold_5Sec();
 		BookPlayerModule.threadHold_5Sec();
-		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.threadHold_5Sec();*/
 		//TC_SinglePageView();
 		//BookPlayerModule.threadHold_2Sec();
 		//TC_DoublePageView();
@@ -658,7 +658,7 @@ public class Reader_5Sanity{
 		//TC_Highlight();
 		//TC_DeleteHighlight();
 		//TC_PenTool();
-		TC_ErasePenTool();
+		//TC_ErasePenTool();
 
 		//BookPlayerModule.highlight();
 		//BookPlayerModule.goToPage("20");
@@ -701,15 +701,16 @@ public class Reader_5Sanity{
 		//act.moveToElement(from).click().perform();
 
 
-		LoginModule.userLogin("sharing.teacher@yopmail.com", "kitaboo@123");
-		BookShelfModule.catNavigationAndLaunch("showcase");
-		 
-		BookPlayerModule.backtoBookshelf();
-	     BookShelfModule.analytics();
-		/*LoginModule.userLogin("rajesha.sdk1@yopmail.com", "kitaboo@123");
+		/*LoginModule.userLogin("sharing.teacher@yopmail.com", "kitaboo@123");
+		BookShelfModule.catNavigationAndLaunch("showcase");*/
+		//BookPlayerModule.highlight("yellow");
+		//BookPlayerModule.searchAWord();
+		/*BookPlayerModule.backtoBookshelf();
+	     BookShelfModule.analytics();*/
+		LoginModule.userLogin("rajesha.sdk1@yopmail.com", "kitaboo@12345");
 	//	BookShelfModule.catNavigationAndLaunch("showcase");
 		BookPlayerModule.addbookmark();
-		BookPlayerModule.deletebookmark();*/
+		BookPlayerModule.deletebookmark();
 		//LoginModule.userLogin("sharing.teacher@yopmail.com", "kitaboo@123");
 		//BookShelfModule.catNavigationAndLaunch("showcase");
 		/*BookPlayerModule.zoomIn();
