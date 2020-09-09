@@ -5,13 +5,17 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
 import org.apache.http.HttpStatus;
+import org.apache.poi.hssf.record.formula.functions.Replace;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.JSONException;
+
 //import static org.hamcrest.Matchers.*;
 import io.restassured.response.Response;
+
 import com.hurix.api.externalAPIs.*;
 import com.hurix.api.hashAPIs.*;
 import com.hurix.api.readerAPIs.*;
@@ -48,8 +52,11 @@ public class RestAssured {
 	public static String isbn;
 	public static String isbnMeta;
 	public static String isbnIng;
+	public static String responseMsg;
+	public static String content_ownership;
 	public static int userID;
 	public static int totalbooks;
+	public static int total;
 	public static String archiveDate;
 	public static String archiveDate6;
 	public static String operation0;
@@ -71,6 +78,7 @@ public class RestAssured {
 	public static String userName;
 	public static String password;
 	public static String detail;
+	public static String externalURI;
 	public static String clientID;
 	public static String catlevel;
 	public static int type;
@@ -97,7 +105,7 @@ public class RestAssured {
 			String excelPath="./testData/ExcelData.xlsx";
 			workbook = new XSSFWorkbook(excelPath);
 			sheet= workbook.getSheet("Sheet1");
-			for(int i=1;i<=1;i++)
+			for(int i=1;i<=4;i++)
 			{	
 				DataFormatter formatter = new DataFormatter();
 				environMent = formatter.formatCellValue(sheet.getRow(i).getCell(0));
@@ -130,6 +138,11 @@ public class RestAssured {
 				}	
 				Log.info("DIS-1466");
 				io.restassured.RestAssured.baseURI = detail;
+				//list of services which use http class
+				
+				
+				io.restassured.RestAssured.baseURI = detail.replace("https", "http"); //http
+				
 				Response authenticateValue = Authenticate.authenticate(clientID, userName, password,"65454","IPAD");
 				Validation.responseHeaderCodeValidation(authenticateValue, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(authenticateValue, HttpStatus.SC_OK);
@@ -219,7 +232,7 @@ public class RestAssured {
 				System.out.println("FetchbookListPermutation_withpagi : "+FetchbookListPermutation_withpagiDEC);
 
 				////$$$$$$$$ END FETCHBOOKLIST PERMUTATION
-				Response fetchBookList_without_pagination = FetchBookList.fetchBookList_without_pagination(userToken,"45616452","IPAD");
+			Response fetchBookList_without_pagination = FetchBookList.fetchBookList_without_pagination(userToken,"45616452","IPAD");
 				Validation.responseCodeValidation1(fetchBookList_without_pagination, HttpStatus.SC_OK);
 				Validation.responseHeaderCodeValidation(fetchBookList_without_pagination, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(fetchBookList_without_pagination);
@@ -418,6 +431,10 @@ public class RestAssured {
 				System.out.println("FetchFavouriteSecured_Hash: "+FetchFavouriteSecured_Hash);
 
 				Response UnMarkAsFavourite_Hash = UnMarkAsFavouriteHash.unMarkAsFavourite(markesAsFav,userToken,"56454", "IPAD");
+				Validation.responseHeaderCodeValidation(UnMarkAsFavourite_Hash, HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(UnMarkAsFavourite_Hash, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(UnMarkAsFavourite_Hash);
+				Validation.responseNOTKeyValidation_key(UnMarkAsFavourite_Hash, ""+markesAsFav+"");
 				System.out.println("UnMarkAsFavourite_Hash: "+UnMarkAsFavourite_Hash);
 
 				Response FetchFavouriteSecured_Hash1 = FetchFavouriteSecuredHash.fetchFavouriteSecuredHash(userToken,"56454", "IPAD");
@@ -452,58 +469,212 @@ public class RestAssured {
 
 
 				Response downloadBookForANDROID_offline = DownloadBook.downloadBook(userToken,"ds9465","ANDROID",bookID1,"offline");
+				Validation.responseHeaderCodeValidation(downloadBookForANDROID_offline, HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(downloadBookForANDROID_offline, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(downloadBookForANDROID_offline);
+				Validation.responseKeyValidation_key(downloadBookForANDROID_offline,"content_ownership");
+				content_ownership=downloadBookForANDROID_offline.then().extract().path("content_ownership");
+				Validation.responseKeyAndValue(downloadBookForANDROID_offline, content_ownership, "FALSE");
+				Validation.responseKeyValidation_key(downloadBookForANDROID_offline,"fileSize");
+				Validation.responseKeyValidation_key(downloadBookForANDROID_offline,"responseMsg");
+				Validation.responseKeyValidation_key(downloadBookForANDROID_offline,"timestamp");
 				System.out.println("downloadBookForANDROID_offline: "+downloadBookForANDROID_offline);
 
 
 				Response downloadBookForANDROID_online = DownloadBook.downloadBook(userToken,"ds9465","ANDROID",bookID1,"online");
+				Validation.responseHeaderCodeValidation(downloadBookForANDROID_online, HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(downloadBookForANDROID_online, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(downloadBookForANDROID_online);
+				Validation.responseKeyValidation_key(downloadBookForANDROID_online,"content_ownership");
+				content_ownership=downloadBookForANDROID_online.then().extract().path("content_ownership");
+				Validation.responseKeyAndValue(downloadBookForANDROID_online, content_ownership, "FALSE");
+				Validation.responseKeyValidation_key(downloadBookForANDROID_online,"fileSize");
+				Validation.responseKeyValidation_key(downloadBookForANDROID_online,"responseMsg");
+				Validation.responseKeyValidation_key(downloadBookForANDROID_online,"timestamp");
 				System.out.println("downloadBookForANDROID_online: "+downloadBookForANDROID_online);
 
 				Response downloadBookForIPAD_online = DownloadBook.downloadBook(userToken,"ds9465","IPAD",bookID1,"online");
+				Validation.responseHeaderCodeValidation(downloadBookForIPAD_online, HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(downloadBookForIPAD_online, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(downloadBookForIPAD_online);
+				Validation.responseKeyValidation_key(downloadBookForIPAD_online,"content_ownership");
+				content_ownership=downloadBookForIPAD_online.then().extract().path("content_ownership");
+				Validation.responseKeyAndValue(downloadBookForIPAD_online, content_ownership, "FALSE");
+				Validation.responseKeyValidation_key(downloadBookForIPAD_online,"fileSize");
+				Validation.responseKeyValidation_key(downloadBookForIPAD_online,"responseMsg");
+				Validation.responseKeyValidation_key(downloadBookForIPAD_online,"timestamp");
 				System.out.println("downloadBookForIPAD_online: "+downloadBookForIPAD_online);
 
 				Response downloadBookForIPAD_offline = DownloadBook.downloadBook(userToken,"ds9465","IPAD",bookID1,"offline");
+				Validation.responseHeaderCodeValidation(downloadBookForIPAD_offline, HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(downloadBookForIPAD_offline, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(downloadBookForIPAD_offline);
+				Validation.responseKeyValidation_key(downloadBookForIPAD_offline,"content_ownership");
+				content_ownership=downloadBookForIPAD_offline.then().extract().path("content_ownership");
+				Validation.responseKeyAndValue(downloadBookForIPAD_offline, content_ownership, "FALSE");
+				Validation.responseKeyValidation_key(downloadBookForIPAD_offline,"fileSize");
+				Validation.responseKeyValidation_key(downloadBookForIPAD_offline,"responseMsg");
+				Validation.responseKeyValidation_key(downloadBookForIPAD_offline,"timestamp");
 				System.out.println("downloadBookForIPAD_offline: "+downloadBookForIPAD_offline);
 
 				Response downloadBookForWINDOWNS_offline = DownloadBook.downloadBook(userToken,"ds9465","WINDOWNS",bookID1,"offline");
+				Validation.responseHeaderCodeValidation(downloadBookForWINDOWNS_offline, HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(downloadBookForWINDOWNS_offline, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(downloadBookForWINDOWNS_offline);
+				Validation.responseKeyValidation_key(downloadBookForWINDOWNS_offline,"content_ownership");
+				content_ownership=downloadBookForWINDOWNS_offline.then().extract().path("content_ownership");
+				Validation.responseKeyAndValue(downloadBookForWINDOWNS_offline, content_ownership, "FALSE");
+				Validation.responseKeyValidation_key(downloadBookForWINDOWNS_offline,"fileSize");
+				Validation.responseKeyValidation_key(downloadBookForWINDOWNS_offline,"responseMsg");
+				Validation.responseKeyValidation_key(downloadBookForWINDOWNS_offline,"timestamp");
 				System.out.println("downloadBookForWINDOWNS_offline: "+downloadBookForWINDOWNS_offline);
 
 				Response downloadBookForWINDOWNS_online = DownloadBook.downloadBook(userToken,"ds9465","WINDOWNS",bookID1,"online");
+				Validation.responseHeaderCodeValidation(downloadBookForWINDOWNS_online, HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(downloadBookForWINDOWNS_online, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(downloadBookForWINDOWNS_online);
+				Validation.responseKeyValidation_key(downloadBookForWINDOWNS_online,"content_ownership");
+				content_ownership=downloadBookForWINDOWNS_online.then().extract().path("content_ownership");
+				Validation.responseKeyAndValue(downloadBookForWINDOWNS_online, content_ownership, "FALSE");
+				Validation.responseKeyValidation_key(downloadBookForWINDOWNS_online,"fileSize");
+				Validation.responseKeyValidation_key(downloadBookForWINDOWNS_online,"responseMsg");
+				Validation.responseKeyValidation_key(downloadBookForWINDOWNS_online,"timestamp");
 				System.out.println("downloadBookForWINDOWNS_online: "+downloadBookForWINDOWNS_online);
 
 				Response downloadBookForHTPM5_offline = DownloadBook.downloadBook(userToken,"ds9465","HTML5",bookID1,"offline");
+				Validation.responseHeaderCodeValidation(downloadBookForHTPM5_offline, HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(downloadBookForHTPM5_offline, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(downloadBookForHTPM5_offline);
+				Validation.responseKeyValidation_key(downloadBookForHTPM5_offline,"content_ownership");
+				content_ownership=downloadBookForHTPM5_offline.then().extract().path("content_ownership");
+				Validation.responseKeyAndValue(downloadBookForHTPM5_offline, content_ownership, "FALSE");
+				Validation.responseKeyValidation_key(downloadBookForHTPM5_offline,"fileSize");
+				Validation.responseKeyValidation_key(downloadBookForHTPM5_offline,"responseMsg");
+				Validation.responseKeyValidation_key(downloadBookForHTPM5_offline,"timestamp");
 				System.out.println("downloadBookForHTPM5_offline: "+downloadBookForHTPM5_offline);
 
 				Response downloadBookForPC_ONLINE = DownloadBook.downloadBook(userToken,"ds9465","PC",bookID1,"online");
+				Validation.responseHeaderCodeValidation(downloadBookForPC_ONLINE, HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(downloadBookForPC_ONLINE, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(downloadBookForPC_ONLINE);
+				Validation.responseKeyValidation_key(downloadBookForPC_ONLINE,"content_ownership");
+				content_ownership=downloadBookForPC_ONLINE.then().extract().path("content_ownership");
+				Validation.responseKeyAndValue(downloadBookForPC_ONLINE, content_ownership, "FALSE");
+				Validation.responseKeyValidation_key(downloadBookForPC_ONLINE,"fileSize");
+				Validation.responseKeyValidation_key(downloadBookForPC_ONLINE,"responseMsg");
+				Validation.responseKeyValidation_key(downloadBookForPC_ONLINE,"timestamp");
 				System.out.println("downloadBookForPC_ONLINE: "+downloadBookForPC_ONLINE);
 
 
 				System.out.println("consumerKey: "+consumerKey);
 				System.out.println("consumerSecret: "+consumerSecret);
 				Response searchV2res = SearchV2.searchV2("Native",userToken,"ds9465","PC");
+				Validation.responseHeaderCodeValidation(searchV2res, HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(searchV2res, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(searchV2res);
+				Validation.responseKeyValidation_key(searchV2res,"searchResult");
+				Validation.responseKeyValidation_key(searchV2res,"_id");
+				Validation.responseKeyValidation_key(searchV2res,"_index");
+				Validation.responseKeyValidation_key(searchV2res,"ISBN");
+				Validation.responseKeyValidation_key(searchV2res,"bookTitle");
+				Validation.responseKeyValidation_key(searchV2res,"description");
+				Validation.responseKeyValidation_key(searchV2res,"_type");
+				Validation.responseKeyValidation_key(searchV2res,"searchResult");
+				total=searchV2res.then().extract().path("total");
+				Validation.responseKeyValidation_key(searchV2res, "");
+				Validation.responseISGreater("total", total, 1);
 				System.out.println("searchV2res : "+searchV2res);
 
 				Response SearchV2_OAuthres = SearchV2_OAuth.searchV2_OAuth("Native",consumerKey, consumerSecret,clientUserID);
+				Validation.responseHeaderCodeValidation(SearchV2_OAuthres, HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(SearchV2_OAuthres, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(SearchV2_OAuthres);
+				Validation.responseKeyValidation_key(SearchV2_OAuthres,"searchResult");
+				Validation.responseKeyValidation_key(SearchV2_OAuthres,"_id");
+				Validation.responseKeyValidation_key(SearchV2_OAuthres,"_index");
+				Validation.responseKeyValidation_key(SearchV2_OAuthres,"ISBN");
+				Validation.responseKeyValidation_key(SearchV2_OAuthres,"bookTitle");
+				Validation.responseKeyValidation_key(SearchV2_OAuthres,"description");
+				Validation.responseKeyValidation_key(SearchV2_OAuthres,"_type");
+				Validation.responseKeyValidation_key(SearchV2_OAuthres,"searchResult");
+				total=SearchV2_OAuthres.then().extract().path("total");
+				Validation.responseKeyValidation_key(SearchV2_OAuthres, "");
+				Validation.responseISGreater("total", total, 1);
 				System.out.println("SearchV2_OAuthres : "+SearchV2_OAuthres);
 
 				Response searchV2_AdvanceFilterres =SearchV2_AdvanceFilter.searchV2_AdvanceFilter("Native",userToken, "5454545","IPAD",clientUserID);
+				Validation.responseHeaderCodeValidation(searchV2_AdvanceFilterres, HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(searchV2_AdvanceFilterres, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(searchV2_AdvanceFilterres);
+				Validation.responseKeyValidation_key(searchV2_AdvanceFilterres,"searchResult");
+				Validation.responseKeyValidation_key(searchV2_AdvanceFilterres,"_id");
+				Validation.responseKeyValidation_key(searchV2_AdvanceFilterres,"_index");
+				Validation.responseKeyValidation_key(searchV2_AdvanceFilterres,"ISBN");
+				Validation.responseKeyValidation_key(searchV2_AdvanceFilterres,"bookTitle");
+				Validation.responseKeyValidation_key(searchV2_AdvanceFilterres,"description");
+				Validation.responseKeyValidation_key(searchV2_AdvanceFilterres,"_type");
+				Validation.responseKeyValidation_key(searchV2_AdvanceFilterres,"searchResult");
+				total=searchV2_AdvanceFilterres.then().extract().path("total");
+				Validation.responseKeyValidation_key(searchV2_AdvanceFilterres, "");
+				Validation.responseISGreater("total", total, 1);
 				System.out.println("searchV2_AdvanceFilterres : "+searchV2_AdvanceFilterres);
 
 				Response Booklist = BookList.bookList(userToken,"56454", "IPAD");
+				Validation.responseHeaderCodeValidation(Booklist, HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(Booklist, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(Booklist);
+				Validation.responseKeyValidation_key(Booklist,"archiveDate");
+				Validation.responseKeyValidation_key(Booklist,"assetType");
+				Validation.responseKeyValidation_key(Booklist,"assignedOn");
+				Validation.responseKeyValidation_key(Booklist,"bookCode");
+				Validation.responseKeyValidation_key(Booklist,"bookId");
+				Validation.responseKeyValidation_key(Booklist,"category");
+				Validation.responseKeyValidation_key(Booklist,"categoryIdList");
+				Validation.responseKeyValidation_key(Booklist,"categoryList");
+				Validation.responseKeyValidation_key(Booklist,"readingPercentage");
+				Validation.responseKeyValidation_key(Booklist,"pages");
+				Validation.responseKeyValidation_key(Booklist,"title");
+				Validation.responseKeyValidation_key(Booklist,"reflow");
+				Validation.responseKeyValidation_key(Booklist,"version");
 				System.out.println("Booklist_res : "+Booklist);
 
-				Response POSTupdateUser_OAuthres = UpdateUser_OAuth.updateUser_OAuth(consumerKey, consumerSecret);
-				System.out.println("updateUser_OAuthres : " +POSTupdateUser_OAuthres);
-				//Response updateUser_captital_OAuthres =UpdateUser_captital_OAuth.updateUser_captital_OAuth(consumerKey, consumerSecret);
-				//System.out.println("updateUser_captital_OAuthres : "+updateUser_captital_OAuthres);
-
 				Response getSecureURLres =GetSecureURL.getSecureURL(userToken, "5489989","IPAD",type);
+				Validation.responseHeaderCodeValidation(getSecureURLres, HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(getSecureURLres, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(getSecureURLres);
+				Validation.responseKeyValidation_key(getSecureURLres,"responseMsg");
+				responseMsg = getSecureURLres.then().extract().path("responseMsg");
+				Validation.responseNOTKeyValidation_key(getSecureURLres, "URL_NOT_FORMED");
 				System.out.println("getSecureURLres : "+getSecureURLres);
 
 				System.out.println("startDate :: "+startDate); 
 				Response bookdetails_res =Bookdetails.bookdetails("2019/10/31 14:46:04",userToken, "5489989","IPAD",""+ebookID1+"",""+assetType+"");
+				Validation.responseHeaderCodeValidation(bookdetails_res, HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(bookdetails_res, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(bookdetails_res);
+				Validation.responseKeyValidation_key(bookdetails_res,"archiveDate");
+				Validation.responseKeyValidation_key(bookdetails_res,"assetType");
+				Validation.responseKeyValidation_key(bookdetails_res,"author");
+				Validation.responseKeyValidation_key(bookdetails_res,"bookCode");
+				Validation.responseKeyValidation_key(bookdetails_res,"bookId");
+				Validation.responseKeyValidation_key(bookdetails_res,"category");
+				Validation.responseKeyValidation_key(bookdetails_res,"categoryIdList");
+				Validation.responseKeyValidation_key(bookdetails_res,"categoryList");
+				Validation.responseKeyValidation_key(bookdetails_res,"collectionID");
+				Validation.responseKeyValidation_key(bookdetails_res,"collectionThumbnail");
+				Validation.responseKeyValidation_key(bookdetails_res,"collectionTitle");
+				Validation.responseKeyValidation_key(bookdetails_res,"collectionType");
 				System.out.println("bookdetails_res : "+bookdetails_res);
 
 				Response fetchCategoriesCollectionsres =FetchCategoriesCollections.fetchCategoriesCollections(userToken, "5489989","IPAD");
+				Validation.responseHeaderCodeValidation(fetchCategoriesCollectionsres, HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(fetchCategoriesCollectionsres, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(fetchCategoriesCollectionsres);
+				Validation.responseKeyValidation_key(fetchCategoriesCollectionsres,"categories");
+				Validation.responseKeyValidation_key(fetchCategoriesCollectionsres,"name");
+				Validation.responseKeyValidation_key(fetchCategoriesCollectionsres,"numberOfBooks");
+				Validation.responseKeyValidation_key(fetchCategoriesCollectionsres,"collections");
+				Validation.responseKeyValidation_key(fetchCategoriesCollectionsres,"name");
 				System.out.println("fetchCategoriesCollectionsres : "+fetchCategoriesCollectionsres);
 
 				Response fetchCategoriesCollectionsBooksres =FetchCategoriesCollectionsBooks.fetchCategoriesCollectionsBooks(userToken, "5489989","IPAD",catname1,collectionName1);
@@ -546,11 +717,24 @@ public class RestAssured {
 				Validation.responseHeaderCodeValidation(categoryBookListV1res, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(categoryBookListV1res, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(categoryBookListV1res);
+				Validation.responseKeyValidation_key(categoryBookListV1res,"archiveDate");
 				Validation.responseKeyValidation_key(categoryBookListV1res,"category");
+				Validation.responseKeyValidation_key(categoryBookListV1res,"assetType");
+				Validation.responseKeyValidation_key(categoryBookListV1res,"assignedOn");
+				Validation.responseKeyValidation_key(categoryBookListV1res,"author");
+				Validation.responseKeyValidation_key(categoryBookListV1res,"bookId");
+				Validation.responseKeyValidation_key(categoryBookListV1res,"bookLikeCount");
+				Validation.responseKeyValidation_key(categoryBookListV1res,"categoryIdList");
+				Validation.responseKeyValidation_key(categoryBookListV1res,"categoryList");
+				Validation.responseKeyValidation_key(categoryBookListV1res,"formats");
+				Validation.responseKeyValidation_key(categoryBookListV1res,"pages");
+				Validation.responseKeyValidation_key(categoryBookListV1res,"readingPercentage");
+				Validation.responseKeyValidation_key(categoryBookListV1res,"reflow");
+				Validation.responseKeyValidation_key(categoryBookListV1res,"thumbURL");
+				Validation.responseKeyValidation_key(categoryBookListV1res,"version");
 				Validation.responseKeyValidation_key(categoryBookListV1res,"isbn");
 				Validation.responseKeyValidation_key(categoryBookListV1res,"id");
-				Validation.responseKeyValidation_key(categoryBookListV1res,"title");
-				Validation.responseKeyValidation_key(categoryBookListV1res,"formats");		
+				Validation.responseKeyValidation_key(categoryBookListV1res,"title");					
 				System.out.println("categoryBookListV1res : " +categoryBookListV1res);
 
 
@@ -558,11 +742,24 @@ public class RestAssured {
 				Validation.responseHeaderCodeValidation(CategoryBookListV2Res, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(CategoryBookListV2Res, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(CategoryBookListV2Res);
+				Validation.responseKeyValidation_key(CategoryBookListV2Res,"archiveDate");
 				Validation.responseKeyValidation_key(CategoryBookListV2Res,"category");
+				Validation.responseKeyValidation_key(CategoryBookListV2Res,"assetType");
+				Validation.responseKeyValidation_key(CategoryBookListV2Res,"assignedOn");
+				Validation.responseKeyValidation_key(CategoryBookListV2Res,"author");
+				Validation.responseKeyValidation_key(CategoryBookListV2Res,"bookId");
+				Validation.responseKeyValidation_key(CategoryBookListV2Res,"bookLikeCount");
+				Validation.responseKeyValidation_key(CategoryBookListV2Res,"categoryIdList");
+				Validation.responseKeyValidation_key(CategoryBookListV2Res,"categoryList");
+				Validation.responseKeyValidation_key(CategoryBookListV2Res,"formats");
+				Validation.responseKeyValidation_key(CategoryBookListV2Res,"pages");
+				Validation.responseKeyValidation_key(CategoryBookListV2Res,"readingPercentage");
+				Validation.responseKeyValidation_key(CategoryBookListV2Res,"reflow");
+				Validation.responseKeyValidation_key(CategoryBookListV2Res,"thumbURL");
+				Validation.responseKeyValidation_key(CategoryBookListV2Res,"version");
 				Validation.responseKeyValidation_key(CategoryBookListV2Res,"isbn");
 				Validation.responseKeyValidation_key(CategoryBookListV2Res,"id");
 				Validation.responseKeyValidation_key(CategoryBookListV2Res,"title");
-				Validation.responseKeyValidation_key(CategoryBookListV2Res,"formats");
 				System.out.println("CategoryBookListV2Res : " +CategoryBookListV2Res);
 
 
@@ -570,9 +767,23 @@ public class RestAssured {
 				Validation.responseHeaderCodeValidation(FetchCategorybooksV1Res, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(FetchCategorybooksV1Res, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchCategorybooksV1Res);
+				Validation.responseKeyValidation_key(FetchCategorybooksV1Res, "assetType");
+				Validation.responseKeyValidation_key(FetchCategorybooksV1Res, "assignedOn");
+				Validation.responseKeyValidation_key(FetchCategorybooksV1Res, "author");
+				Validation.responseKeyValidation_key(FetchCategorybooksV1Res, "bookActive");
+				Validation.responseKeyValidation_key(FetchCategorybooksV1Res, "category");
+				Validation.responseKeyValidation_key(FetchCategorybooksV1Res, "categoryIdList");
+				Validation.responseKeyValidation_key(FetchCategorybooksV1Res, "categoryList");
+				Validation.responseKeyValidation_key(FetchCategorybooksV1Res, "collectionID");
+				Validation.responseKeyValidation_key(FetchCategorybooksV1Res, "collectionThumbnail");
+				Validation.responseKeyValidation_key(FetchCategorybooksV1Res, "collectionTitle");
+				Validation.responseKeyValidation_key(FetchCategorybooksV1Res, "collectionType");
+				Validation.responseKeyValidation_key(FetchCategorybooksV1Res, "description");
+				Validation.responseKeyValidation_key(FetchCategorybooksV1Res, "ebookID");
+				Validation.responseKeyValidation_key(FetchCategorybooksV1Res, "expiryDate");
 				System.out.println("FetchCategorybooksV1Res : " +FetchCategorybooksV1Res);
 
-				Response multiCategories_res = MultiCategories.multiCategories(catlevel,userToken,"fs445","IPAD");
+				/*Response multiCategories_res = MultiCategories.multiCategories(catlevel,userToken,"fs445","IPAD");
 				Validation.responseHeaderCodeValidation(multiCategories_res, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(multiCategories_res, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(multiCategories_res);
@@ -580,9 +791,9 @@ public class RestAssured {
 				Validation.responseKeyValidation_key(multiCategories_res, "collectionCount");
 				Validation.responseKeyValidation_key(multiCategories_res, "bookCount");
 				System.out.println("multiCategories_res : "+multiCategories_res);
-				int bookID=bookID1;
+				//int bookID=bookID1;
 
-				Response MultiCategoryBookList_res = MultiCategoryBookList.multiCategoryBookList(catlevel,bookID,sqlhost,sqlUsername,sqlPassword,userToken,"45564595","IPAD");
+				Response MultiCategoryBookList_res = MultiCategoryBookList.multiCategoryBookList(catlevel,bookID1,sqlhost,sqlUsername,sqlPassword,userToken,"45564595","IPAD");
 				Validation.responseHeaderCodeValidation(MultiCategoryBookList_res, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(MultiCategoryBookList_res, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(MultiCategoryBookList_res);
@@ -598,7 +809,7 @@ public class RestAssured {
 				Validation.responseKeyValidation_key(MultiCategoryCollection_BookList, "totalbooks");
 				Validation.responseKeyValidation_key(MultiCategoryCollection_BookList, "category");
 				Validation.responseKeyValidation_key(MultiCategoryCollection_BookList, "description");
-				System.out.println("MultiCategoryCollection_BookList : "+MultiCategoryCollection_BookList);
+				System.out.println("MultiCategoryCollection_BookList : "+MultiCategoryCollection_BookList);*/
 
 				Response books_OAuthres = Books_OAuth.books_OAuth(consumerKey, consumerSecret);
 				System.out.println("books_OAuthres : " +books_OAuthres);
@@ -736,17 +947,7 @@ public class RestAssured {
 				System.out.println("v1/v1refreshBookList_res : "+v1refreshBookList_res);
 
 
-				Response v1refreshBookList_withPagi_res = V1refreshBookList.v1refreshBookList_with_pagi(0,10,"archiveDate","NEW","UPDATE","bookID1","bookID2",userToken,"6565656","IPAD",clientID);
-				Validation.responseHeaderCodeValidation(v1refreshBookList_withPagi_res, HttpStatus.SC_OK);
-				Validation.responseCodeValidation1(v1refreshBookList_withPagi_res, HttpStatus.SC_OK);
-				Validation.responseTimeValidation(v1refreshBookList_withPagi_res);
-				Validation.responseKeyValidation_key(v1refreshBookList_withPagi_res, "archiveDate");
-				operation0=v1refreshBookList_res.then().extract().path("bookList.book.operation[0]");
-				operation1=v1refreshBookList_res.then().extract().path("bookList.book.operation[1]");
-				Validation.responseKeyAndValue(v1refreshBookList_res, "operation", operation0);
-				Validation.responseKeyAndValue(v1refreshBookList_res, "operation", operation1);
-				System.out.println("v1refreshBookList_withPagi_res : "+v1refreshBookList_withPagi_res);
-
+				
 				Response markAsFavourite_res = MarkAsFavourite.markAsFavourite(bookID1,userToken,"45564595","IPAD");
 				BookID_mark1 = bookID1;
 				Validation.responseHeaderCodeValidation(markAsFavourite_res, HttpStatus.SC_OK);
