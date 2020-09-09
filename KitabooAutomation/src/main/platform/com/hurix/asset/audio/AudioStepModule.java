@@ -16,6 +16,109 @@ public class AudioStepModule extends UIElements {
 
 	private static Properties prop = getProperty(System.getProperty("user.dir")+"/config/platform/audio.properties");
 	
+	public static void btnlogout(){
+		try {
+			elementFinderByID(prop.getProperty("profile_id"), "btnprofile").click();
+			elementFinderByID(prop.getProperty("logout_id"), "btnlogout").click();
+			} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	
+	public static void btnrevertAudioyes(){
+		try {
+			wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("loader_image")));
+			JavascriptExecutor js = ( JavascriptExecutor)Driver.driver;
+			WebElement revertyes = elementFinderByXpath(prop.getProperty("revertAudioyes_xpath"), "revertAudioyes");
+			threadHold_2Sec();
+			js.executeScript("arguments[0].scrollIntoView(true)",revertyes);
+			elementFinderByXpath(prop.getProperty("revertAudioyes_xpath"), "revertAudioyes").click();
+			} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void btnrevertAudiono(){
+		try {
+			wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("loader_image")));
+			JavascriptExecutor js = ( JavascriptExecutor)Driver.driver;
+			WebElement revertno = elementFinderByXpath(prop.getProperty("revertAudiono_xpath"), "revertAudiono");
+			threadHold_2Sec();
+			js.executeScript("arguments[0].scrollIntoView(true)",revertno);
+			elementFinderByXpath(prop.getProperty("revertAudiono_xpath"), "revertAudiono").click();
+			} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	
+	public static void btnupdateAudio(){
+		try {
+			wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("loader_image")));
+			JavascriptExecutor js = ( JavascriptExecutor)Driver.driver;
+			WebElement updateAudio = elementFinderByXpath(prop.getProperty("updateAudio_xpath"), "updateAudio_xpath");
+			threadHold_2Sec();
+			js.executeScript("arguments[0].scrollIntoView(true)",updateAudio);
+			elementFinderByXpath(prop.getProperty("updateAudio_xpath"), "updateAudio_xpath").click();
+			} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+		
+	
+	public static void dropdowninArchiveAudio(){
+		try {
+			wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("loader_image")));
+			JavascriptExecutor js = ( JavascriptExecutor)Driver.driver;
+			WebElement inArchive = elementFinderByXpath(prop.getProperty("inArchiveAudio_xpath"), "dropdowninArchiveAudio");
+			threadHold_2Sec();
+			js.executeScript("arguments[0].scrollIntoView(true)",inArchive);
+			elementFinderByXpath(prop.getProperty("inArchiveAudio_xpath"), "dropdowninArchiveAudio").click();
+			} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void btnarchiveAudio(){
+		try {
+			wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("loader_image")));
+			JavascriptExecutor js = ( JavascriptExecutor)Driver.driver;
+			WebElement archiveAudio = elementFinderByXpath(prop.getProperty("archiveAudio_Xpath"), "btnarchiveAudio");
+			threadHold_2Sec();
+			js.executeScript("arguments[0].scrollIntoView(true)",archiveAudio);
+			elementFinderByXpath(prop.getProperty("archiveAudio_Xpath"), "btnarchiveAudio").click();
+			} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void dropdowninprogressaudio(){
+		try {
+			/*wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("dropdowninprogressaudio")));
+			JavascriptExecutor js = ( JavascriptExecutor)Driver.driver;
+			WebElement inprogressaudio = elementFinderByID(prop.getProperty("inprogressaudio_id"), "btnarchiveAudio");
+			threadHold_2Sec();
+			js.executeScript("arguments[0].scrollIntoView(true)",inprogressaudio);*/
+			elementFinderByXpath(prop.getProperty("inprogressaudio_xpath"), "dropdowninprogressaudio").click();
+			} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void btnrevertAudio(){
+		try {
+			wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("loader_image")));
+			JavascriptExecutor js = ( JavascriptExecutor)Driver.driver;
+			WebElement revertAudio = elementFinderByXpath(prop.getProperty("revertAudio_xpath"), "btnrevertAudio");
+			threadHold_2Sec();
+			js.executeScript("arguments[0].scrollIntoView(true)",revertAudio);
+			elementFinderByXpath(prop.getProperty("revertAudio_xpath"), "btnrevertAudio").click();
+			} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
 	
 	
 	public static void msg_invalidevttValidation(){
@@ -166,11 +269,7 @@ public class AudioStepModule extends UIElements {
 
 	public static void btnEditaudio(){
 		try {
-			wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("loader_image")));
-			JavascriptExecutor js = ( JavascriptExecutor)Driver.driver;
-			WebElement Editaudio = elementFinderByID(prop.getProperty("Editaudio_xpath"), "btnEditaudio");
-			threadHold_2Sec();
-			js.executeScript("arguments[0].scrollIntoView(true)",Editaudio);
+		
 			elementFinderByXpath(prop.getProperty("Editaudio_xpath"), "btnEditaudio").click();
 			} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
