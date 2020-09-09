@@ -2,10 +2,6 @@ package com.hurix.api.externalAPIs;
 
 import static io.restassured.RestAssured.given;
 import io.restassured.response.Response;
-
-import org.apache.hc.core5.http.HttpStatus;
-
-import com.hurix.api.utility.Validation;
 import com.hurix.automation.utility.Log;
 
 public class UpDateEpub {
@@ -23,11 +19,11 @@ public class UpDateEpub {
 					.oauth(consumerKey, consumerSecret, "", "")
 					.header("Content-Type","application/json")
 					.body(uploadEpubBody)
-					.post("/DistributionServices/ext/api/"+epubId+"/updateEpub");
-			Validation.responseHeaderCodeValidation(jsonResponse, HttpStatus.SC_OK);
+					.put("/DistributionServices/ext/api/"+epubId+"/updateEpub");
+			/*Validation.responseHeaderCodeValidation(jsonResponse, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(jsonResponse, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(jsonResponse);
-			Validation.responseKeyValidation_key(jsonResponse, "Epub updated successfully.");
+			Validation.responseKeyValidation_key(jsonResponse, "Epub updated successfully.");*/
 
 			Log.info("UpDateEpub_OAuth Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 

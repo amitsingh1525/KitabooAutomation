@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
 
 import com.hurix.automation.utility.BrowserConfigure;
@@ -338,8 +339,12 @@ public class Reader_5Sanity{
 		BookShelfStepModule.btnAnalytics();
 		Log.endTestCase("End");
 	}
-	
-	
+
+	public static void termination(){
+		Driver.driver.quit();
+	}
+
+
 	//Book Player
 	public static  void TC_goToPage(){
 		Log.startTestCase("TC_goToPage");
@@ -354,7 +359,7 @@ public class Reader_5Sanity{
 		}
 		Log.endTestCase("End");
 	}
-	
+
 	public static  void TC_HistoryPrevious(){
 		Log.startTestCase("TC_HistoryPrevious");
 		BookPlayerModule.threadHold_5Sec();
@@ -372,7 +377,7 @@ public class Reader_5Sanity{
 		}
 		Log.endTestCase("End");
 	}
-	
+
 	public static  void TC_HistoryNext(){
 		Log.startTestCase("TC_HistoryNext");
 		BookPlayerModule.threadHold_5Sec();
@@ -392,21 +397,232 @@ public class Reader_5Sanity{
 		}
 		Log.endTestCase("End");
 	}
-	
+
 	public static  void TC_SinglePageView(){
 		Log.startTestCase("TC_SinglePageView");
-		BookPlayerModule.btnsinglepage();
-		Log.endTestCase("End");
-	}
-	
-	public static  void TC_DoublePageView(){
-		Log.startTestCase("TC_DoublePageView");
-		BookPlayerModule.btndoublepage();
+		BookplayerStepModule.btnsinglepage();
 		Log.endTestCase("End");
 	}
 
-	public static void termination(){
-		Driver.driver.quit();
+	public static  void TC_DoublePageView(){
+		Log.startTestCase("TC_DoublePageView");
+		BookplayerStepModule.btndoublepage();
+		Log.endTestCase("End");
+	}
+
+	public static  void TC_RightNavigation(){
+		Log.startTestCase("TC_RightNavigation");
+		String pageNum = BookPlayerModule.getCurrentPageNum();
+		Log.info("Current Page Num: "+pageNum);
+		BookplayerStepModule.btnNextPageNavigation();
+		int nextPage = 0;
+		if(UIElements.elementFinderByXpath(BookplayerStepModule.prop.getProperty("CommonbtnForSingleAndDbl_xpath"), 
+				"CommonbtnForSingleAndDbl_xpath").getAttribute("aria-label").contains("Single Page View")) {
+			nextPage = Integer.parseInt(pageNum) + 2;
+		}else if(UIElements.elementFinderByXpath(BookplayerStepModule.prop.getProperty("CommonbtnForSingleAndDbl_xpath"), 
+				"CommonbtnForSingleAndDbl_xpath").getAttribute("aria-label").contains("Double Page View")) {
+			nextPage = Integer.parseInt(pageNum) + 1;
+		}
+		String curtPage = BookPlayerModule.getCurrentPageNum();
+		if(Integer.toString(nextPage).equalsIgnoreCase(curtPage)){
+			Log.pass("After navigate page number: "+nextPage);
+		}else{
+			Log.fail("Expected Page Number: "+nextPage+" But Found :'"+curtPage+"'");
+		}
+		Log.endTestCase("End");
+	}
+
+	public static  void TC_LeftNavigation(){
+		Log.startTestCase("TC_LeftNavigation");
+		String pageNum = BookPlayerModule.getCurrentPageNum();
+		Log.info("Current Page Num: "+pageNum);
+		BookplayerStepModule.btnPreviousPageNavigation();
+		int nextPage = 0;
+		if(UIElements.elementFinderByXpath(BookplayerStepModule.prop.getProperty("CommonbtnForSingleAndDbl_xpath"), 
+				"CommonbtnForSingleAndDbl_xpath").getAttribute("aria-label").contains("Single Page View")) {
+			nextPage = Integer.parseInt(pageNum) - 2;
+		}else if(UIElements.elementFinderByXpath(BookplayerStepModule.prop.getProperty("CommonbtnForSingleAndDbl_xpath"), 
+				"CommonbtnForSingleAndDbl_xpath").getAttribute("aria-label").contains("Double Page View")) {
+			nextPage = Integer.parseInt(pageNum) - 1;
+		}
+		String curtPage = BookPlayerModule.getCurrentPageNum();
+		if(Integer.toString(nextPage).equalsIgnoreCase(curtPage)){
+			Log.pass("After navigate page number: "+nextPage);
+		}else{
+			Log.fail("Expected Page Number: "+nextPage+" But Found :'"+curtPage+"'");
+		}
+		Log.endTestCase("End");
+	}
+
+
+	public static void TC_Fit2widhtVerification() {
+		Log.startTestCase("TC_Fit2widhtVerification");
+		BookplayerStepModule.btnfittowidth();
+		Log.endTestCase("End");
+	}
+
+	public static void TC_Fit2heightVerification() {
+		Log.startTestCase("TC_Fit2heightVerification");
+		BookplayerStepModule.btnfittoheight();
+		Log.endTestCase("End");
+	}
+
+	public static void TC_ZoomIn() {
+		Log.startTestCase("TC_ZoomIn");
+		String zoomVal = BookplayerStepModule.getzoomValue();
+		BookPlayerModule.zoomIn(240);
+		Log.info("Current Zoom Percantage: "+zoomVal);
+		String curZoomVal = BookplayerStepModule.getzoomValue();
+		if(Integer.parseInt(zoomVal.replace("%", "")) < Integer.parseInt(curZoomVal.replace("%", ""))) {
+			Log.pass("After ZoomIn Percantage: "+curZoomVal);
+		}else {
+			Log.fail("Expected Increment by n number of current Percentage: "+zoomVal+" But Found :'"+curZoomVal+"'");
+		}
+		Log.endTestCase("End");
+	}
+
+	public static void TC_ZoomOut() {
+		Log.startTestCase("TC_ZoomOut");
+		String zoomVal = BookplayerStepModule.getzoomValue();
+		BookPlayerModule.zoomOut(120);
+		Log.info("Current Zoom Percantage: "+zoomVal);
+		String curZoomVal = BookplayerStepModule.getzoomValue();
+		if(Integer.parseInt(zoomVal.replace("%", "")) < Integer.parseInt(curZoomVal.replace("%", ""))) {
+			Log.pass("After ZoomIn Percantage: "+curZoomVal);
+		}else {
+			Log.fail("Expected Increment by n number of current Percentage: "+zoomVal+" But Found :'"+curZoomVal+"'");
+		}
+		Log.endTestCase("End");
+	}
+
+	public static void TC_SearchBooktext() {
+		Log.startTestCase("TC_SearchBooktext");
+		String pageNum = BookPlayerModule.searchBookText("the", 0);
+		System.out.println(">>>"+pageNum);
+		String curPageNum = BookPlayerModule.getCurrentPageNum();
+		if(pageNum.replace("Page ", "").equals(curPageNum)) {
+			Log.pass("Yes, it's redirect to the right page. Page Num: "+curPageNum);
+		}else {
+			Log.fail("Expected page number: "+pageNum.replace("Page ", "")+" But Found: "+curPageNum);
+		}
+		Log.endTestCase("End");
+	}
+
+	public static void TC_Full_DefaultScreen() {
+		Log.startTestCase("TC_Full_DefaultScreen");
+		int beforeFullscrSize = Driver.driver.manage().window().getSize().getHeight();
+		BookplayerStepModule.btnfull_DefaultScreen();
+		UIElements.threadHold_2Sec();
+		int afterFullscrSize = Driver.driver.manage().window().getSize().getHeight();
+		if(beforeFullscrSize < afterFullscrSize) {
+			Log.pass("Before full screen mode height: "+beforeFullscrSize+" and after full screen mode height: "+afterFullscrSize);
+		}else {
+			Log.fail("Expected Increment by n number of current height: "+beforeFullscrSize+ " But Found: "+afterFullscrSize);
+		}
+		BookplayerStepModule.btnfull_DefaultScreen();
+		UIElements.threadHold_2Sec();
+		int afterDefaultscrSize = Driver.driver.manage().window().getSize().getHeight();
+		if(afterFullscrSize > afterDefaultscrSize) {
+			Log.pass("Before full screen mode height: "+afterFullscrSize+" and after full screen mode height: "+afterDefaultscrSize);
+		}else {
+			Log.fail("Expected decrement by n number of current height: "+beforeFullscrSize+ " But Found: "+afterFullscrSize);
+		}
+		Log.endTestCase("End");
+	}
+
+	public static void TC_DefaultScreen() {
+		Log.startTestCase("TC_CollapseScreen");
+		UIElements.threadHold_2Sec();
+		BookplayerStepModule.btnfull_DefaultScreen();
+		Log.endTestCase("End");
+	}
+
+	public static void TC_AddingStickyNotes() {
+		Log.startTestCase("TC_AddingStickyNotes");
+		int countAfterNotes = BookPlayerModule.myDatanormalNotesCount("purple");
+		BookPlayerModule.stickyNotes("purple", "5", 70, 60);
+		int countBeforeNotes = BookPlayerModule.myDatanormalNotesCount("purple");
+		if(countAfterNotes < countBeforeNotes) {
+			Log.pass("Before adding sticky Notes Count: "+countAfterNotes+" After adding sticky notes Count: "+countBeforeNotes);
+		}else {
+			Log.fail("Expected increment by n number of current notes: "+countAfterNotes+ " But Found: "+countBeforeNotes);
+		}
+		Log.endTestCase("End");
+	}
+
+	public static void TC_DeleteStickyNotes() {
+		Log.startTestCase("TC_DeleteStickyNotes");
+		int countAfterNotes = BookPlayerModule.myDatanormalNotesCount("all");
+		BookPlayerModule.deleteStickyNotes("5", 70, 60);
+		int countBeforeNotes = BookPlayerModule.myDatanormalNotesCount("all");
+		if(countAfterNotes > countBeforeNotes) {
+			Log.pass("Before delete sticky Notes Count: "+countAfterNotes+" After adding sticky notes Count: "+countBeforeNotes);
+		}else {
+			Log.fail("Expected decrement by n number of current notes: "+countAfterNotes+ " But Found: "+countBeforeNotes);
+		}
+		Log.endTestCase("End");
+	}
+
+	public static void TC_Highlight() {
+		Log.startTestCase("TC_Highlight");
+		int countAfterNotes = BookPlayerModule.myDataHighlightCount("green");
+		BookPlayerModule.highlight("green");
+		int countBeforeNotes = BookPlayerModule.myDataHighlightCount("green");
+		if(countAfterNotes < countBeforeNotes) {
+			Log.pass("Before apply highlight Count: "+countAfterNotes+" After adding sticky notes Count: "+countBeforeNotes);
+		}else {
+			Log.fail("Expected increment by n number of current highlight: "+countAfterNotes+ " But Found: "+countBeforeNotes);
+		}
+		Log.endTestCase("End");
+	}
+
+	public static void TC_DeleteHighlight() {
+		Log.startTestCase("TC_DeleteHighlight");
+		int countAfterNotes = BookPlayerModule.myDataHighlightCount("green");
+		BookPlayerModule.deleteHighlight();
+		int countBeforeNotes = BookPlayerModule.myDataHighlightCount("green");
+		if(countAfterNotes > countBeforeNotes) {
+			Log.pass("Before delete highlight Count: "+countAfterNotes+" After adding sticky notes Count: "+countBeforeNotes);
+		}else {
+			Log.fail("Expected decrement by n number of current highlight: "+countAfterNotes+ " But Found: "+countBeforeNotes);
+		}
+		Log.endTestCase("End");
+	}
+
+	public static void TC_PenTool() {
+		Log.startTestCase("TC_PenTool");
+		BookPlayerModule.pentool("blue", "5", 70, 60);
+		Log.endTestCase("End");
+	}
+
+	public static void TC_ErasePenTool() {
+		Log.startTestCase("TC_ErasePenTool");
+		BookPlayerModule.erasepentool("5", 70, 60);
+		Log.endTestCase("End");
+		UIElements.threadHold_2Sec();
+		Log.startTestCase("TC_UndoPenTool");
+		BookPlayerModule.btnundo();
+		Log.endTestCase("End");
+		UIElements.threadHold_2Sec();
+		Log.startTestCase("TC_ClearAllPenTool");
+		BookPlayerModule.clearAllpentool();
+		Log.endTestCase("End");
+	}
+	
+	public static void TC_ContentResources() {
+		Log.startTestCase("TC_ContentResources");
+		int resourceSize = BookplayerStepModule.getResourcelst();
+		for(int i=0; i< resourceSize; i++) {
+			BookPlayerModule.threadHold_2Sec();
+			BookPlayerModule.contentResources(i);
+		}
+		Log.endTestCase("End");
+	}
+	
+	public static void TC_Content() {
+		Log.startTestCase("TC_Content");
+		
+		Log.endTestCase("End");
 	}
 
 	public static void main(String []args){
@@ -440,19 +656,40 @@ public class Reader_5Sanity{
 		TC_moreInfo();
 		TC_Analytics();*/
 
-		
-		LoginModule.userLogin("hurixreader5@gmail.com", "kitaboo@123");
+
+		/*LoginModule.userLogin("hurixreader5@gmail.com", "kitaboo@123");
 		BookShelfModule.catNavigationAndLaunch("Hurix Showcase");
+		LoginModule.userLogin("hurixreader5@gmail.com", "kitaboo@123");
+		BookShelfModule.catNavigationAndLaunch("Automation");
 		//TC_goToPage();
 		//TC_HistoryPrevious();
 		//TC_HistoryNext();
+		
 		BookPlayerModule.threadHold_5Sec();
 		BookPlayerModule.threadHold_5Sec();
-		TC_SinglePageView();
-		BookPlayerModule.threadHold_2Sec();
-		TC_DoublePageView();
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.threadHold_5Sec();*/
+		BookPlayerModule.threadHold_5Sec();
 		
-		
+		//TC_SinglePageView();
+		//BookPlayerModule.threadHold_2Sec();
+		//TC_DoublePageView();
+		//TC_RightNavigation();
+		//TC_LeftNavigation();
+		//TC_Fit2widhtVerification();
+		//TC_Fit2heightVerification();
+		//TC_ZoomIn();//need assertion
+		//TC_ZoomOut();//need assertion
+		//TC_SearchBooktext();
+		//TC_Full_DefaultScreen();
+		//TC_AddingStickyNotes();
+		//TC_DeleteStickyNotes();
+		//TC_Highlight();
+		//TC_DeleteHighlight();
+		//TC_PenTool();
+		//TC_ErasePenTool();
+		TC_ContentResources();
+
 		//BookPlayerModule.highlight();
 		//BookPlayerModule.goToPage("20");
 		/*LoginModule.threadHold_5Sec();
@@ -478,7 +715,7 @@ public class Reader_5Sanity{
 					System.out.println("present...");
 				}
 				Driver.driver.switchTo().frame("epub_5");
-				
+
 		}*/
 
 		//Driver.driver.findElement(By.id("highlight_0")).click();
@@ -495,36 +732,50 @@ public class Reader_5Sanity{
 
 
 		/*LoginModule.userLogin("sharing.teacher@yopmail.com", "kitaboo@123");
-		BookShelfModule.catNavigationAndLaunch("showcase");
-		BookPlayerModule.zoomIn();
+		BookShelfModule.catNavigationAndLaunch("showcase");*/
+		//BookPlayerModule.highlight("yellow");
+		//BookPlayerModule.searchAWord();
+		/*BookPlayerModule.backtoBookshelf();
+	     BookShelfModule.analytics();*/
+		LoginModule.userLogin("rajesha.sdk1@yopmail.com", "kitaboo@12345");
+		
+		/*
+		 * LoginModule.userLogin("sharing.teacher@yopmail.com", "kitaboo@123");
+		 * BookShelfModule.catNavigationAndLaunch("showcase");
+		 * 
+		 * BookPlayerModule.backtoBookshelf(); BookShelfModule.analytics();
+		 */
+		 
+		/*LoginModule.userLogin("rajesha.sdk1@yopmail.com", "kitaboo@123");
+	//	BookShelfModule.catNavigationAndLaunch("showcase");
+		BookPlayerModule.addbookmark();
+		BookPlayerModule.deletebookmark();
+		//LoginModule.userLogin("sharing.teacher@yopmail.com", "kitaboo@123");
+		//BookShelfModule.catNavigationAndLaunch("showcase");
+		/*BookPlayerModule.zoomIn();
 		BookPlayerModule.zoomOut();
 		BookPlayerModule.fitToWidth();
-		BookPlayerModule.searchBookText();
-		BookPlayerModule.myDataHighlight("yellow");*/
-		
-		
-		BookPlayerModule.searchBookText();
-		BookPlayerModule.myDataHighlight("yellow");
-		BookPlayerModule.myDatanormalNotes("yellow");
-		BookPlayerModule.myDatacontextualNotes("yellow");
-		
+		BookPlayerModule.searchBookText();*/
+		//BookPlayerModule.myDataHighlightCount("all");
+		//BookPlayerModule.myDatanormalNotesCount("all");//y
+		//	BookPlayerModule.myDatacontextualNotesCount("yellow,red");
+
+		//BookPlayerModule.myDatacontextualNotesCount("yellow,red");
+
 		/*LoginModule.userLogin("hurixreader5@gmail.com", "kitaboo@123");
 		BookShelfModule.catNavigationAndLaunch("Hurix Showcase");
 		//BookPlayerModule.highlight("blue");
 		//BookPlayerModule.deleteHighlight();
-		
+
 		//BookPlayerModule.pentool("black", "5", 50, 60);
 		//BookPlayerModule.pentool("blue", "5", 70, 60);
 		BookPlayerModule.goToPage("5");
-		//BookPlayerModule.stickyNotes("green", "5", 70, 60);
-		BookPlayerModule.DeletestickyNotes("5", 70, 60);
+		BookPlayerModule.stickyNotes("green", "5", 70, 60);
 		//BookPlayerModule.erasepentool("5", 50, 60);
-		//BookPlayerModule.highlight("blue");
-		//BookPlayerModule.deleteHighlight();
-		//BookPlayerModule.pentool("purple", "5", 50, 70);
-*/		
-		
-		
+		BookPlayerModule.highlight("blue");
+		BookPlayerModule.deleteHighlight();*/
+		//BookPlayerModule.pentool();
+
 		//termination();
 	}
 

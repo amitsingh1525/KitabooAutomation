@@ -13,7 +13,7 @@ public class DownloadBook {
 
 	public static int bookID;
 
-	public static Response downloadBookForANDROID_offline()
+	public static Response downloadBook(String userToken,String deviceID,String deviceType,int bookID1,String State)
 	{
 		System.out.println("bookID here: "+com.hurix.api.runner.RestAssured.bookID1);
 		//downloadBookPathANDROID = ""+com.hurix.api.utility.ExcelUtils.getbaseURI()+"/DistributionServices/services/api/reader/distribution/24Andr24/ANDROID/"+com.hurix.api.runner.RestAssured.bookID1+"/downloadBook?state=offline";
@@ -21,13 +21,13 @@ public class DownloadBook {
 		Response jsonResponse = null;
 		try {
 
-			Log.startTestCase("downloadBookForANDROID_offline");
+			Log.startTestCase("downloadBookFor."+deviceType+"_"+State+"");
 			//System.out.println("downloadBookPathANDROIDRequestURL:" +downloadBookPathANDROID);
 			jsonResponse = given()
-					.header("usertoken",com.hurix.api.runner.RestAssured.userToken)						
-					.get("/DistributionServices/services/api/reader/distribution/24Andr24/ANDROID/"+com.hurix.api.runner.RestAssured.bookID1+"/downloadBook?state=offline");
+					.header("usertoken",userToken)						
+					.get("/DistributionServices/services/api/reader/distribution/"+deviceID+"/"+deviceType+"/"+bookID1+"/downloadBook?state="+State+"");
 
-			Log.info("downloadBookForANDROID_offline Response: "+jsonResponse.then().extract().response().prettyPrint());
+			Log.info("downloadBookFor."+deviceType+"_"+State+" Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 
 		{
 			System.out.println(exp.getMessage());
@@ -37,79 +37,4 @@ public class DownloadBook {
 		Log.endTestCase("End");
 		return jsonResponse;
 	}
-	public static Response downloadBookForIPAD_offline()
-	{
-		System.out.println("bookID here: "+com.hurix.api.runner.RestAssured.bookID1);
-		//downloadBookPathIpad = ""+com.hurix.api.utility.ExcelUtils.getbaseURI()+";
-
-		Response jsonResponse = null;
-		try {
-
-			Log.startTestCase("downloadBookForIPAD_offline");
-			System.out.println("GETdownloadBookForIPAD_offlineRequestURL:" +downloadBookPathIpad);
-			jsonResponse = given()
-					.header("usertoken",com.hurix.api.runner.RestAssured.userToken)						
-					.get("/DistributionServices/services/api/reader/distribution/98ipad98/IPAD/"+com.hurix.api.runner.RestAssured.bookID1+"/downloadBook?state=offline");
-
-			Log.info("downloadBookForIPAD_offline Response : "+jsonResponse.then().extract().response().prettyPrint());
-		} catch (Exception exp) 
-		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
-			exp.printStackTrace();
-		}
-		Log.endTestCase("End");
-		return jsonResponse;
-	}
-
-	public static Response downloadBookForWindows_offline()
-	{
-		System.out.println("bookID here: "+com.hurix.api.runner.RestAssured.bookID1);
-		//downloadBookPathwindows = ""+com.hurix.api.utility.ExcelUtils.getbaseURI()+"/DistributionServices/services/api/reader/distribution/54wind54/WINDOWS/"+com.hurix.api.runner.RestAssured.bookID1+"/downloadBook?state=offline";
-
-		Response jsonResponse = null;
-		try {
-
-			Log.startTestCase("downloadBookForWindows_offline");
-			System.out.println("GETdownloadBookForWindows_offlineRequestURL:" +downloadBookPathwindows);
-			jsonResponse = given()
-					.header("usertoken",com.hurix.api.runner.RestAssured.userToken)
-					.get("/DistributionServices/services/api/reader/distribution/54wind54/WINDOWS/"+com.hurix.api.runner.RestAssured.bookID1+"/downloadBook?state=offline");
-
-			Log.info("downloadBookForWindows_offline Response : "+jsonResponse.then().extract().response().prettyPrint());
-		} catch (Exception exp) 
-		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
-			exp.printStackTrace();
-		}
-		Log.endTestCase("End");
-		return jsonResponse;
-	}
-
-	public static Response downloadBookForHTML5_offline()
-	{
-		System.out.println("bookID here: "+com.hurix.api.runner.RestAssured.bookID1);
-		//downloadBookPathHtml5 = ""+com.hurix.api.utility.ExcelUtils.getbaseURI()+"/DistributionServices/services/api/reader/distribution/54html54/HTML5/"+com.hurix.api.runner.RestAssured.bookID1+"/downloadBook?state=offline";
-
-		Response jsonResponse = null;
-		try {
-
-			Log.startTestCase("downloadBookForHTML5_offline");
-			System.out.println("GETdownloadBookForHTML5_offlineRequestURL:" +downloadBookPathHtml5);
-			jsonResponse = given()
-					.header("usertoken",com.hurix.api.runner.RestAssured.userToken)
-					.get("/DistributionServices/services/api/reader/distribution/54html54/HTML5/"+com.hurix.api.runner.RestAssured.bookID1+"/downloadBook?state=offline");
-
-			Log.info("downloadBookForHTML5_offline Response : "+jsonResponse.then().extract().response().prettyPrint());
-		} catch (Exception exp) 
-		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
-			exp.printStackTrace();
-		}
-		Log.endTestCase("End");
-		return jsonResponse;
-	}
-
 }

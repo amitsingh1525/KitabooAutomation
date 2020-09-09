@@ -13,7 +13,7 @@ public class SaveSessionHistory {
 
 	private static String POSTsaveSessionHistoryBody = "{\"sessionHistory\":[{\"collection_book_id\":\""+com.hurix.api.runner.RestAssured.bookID1+"\",\"time\":\"2017-12-28 18:43:20\"}]}";
 
-	public static Response saveSessionHistory()
+	public static Response saveSessionHistory(String userToken,String deviceID,String deviceType,int bookID1)
 	{
 		Response jsonResponse = null;
 		try {
@@ -23,9 +23,9 @@ public class SaveSessionHistory {
 			System.out.println("POSTsaveSessionHistoryBody: "+POSTsaveSessionHistoryBody);
 			jsonResponse = given()
 					.header("Content-Type","application/json")
-					.header("usertoken",com.hurix.api.runner.RestAssured.userToken)
+					.header("usertoken",userToken)
 					.body(POSTsaveSessionHistoryBody)				
-					.post("/DistributionServices/services/api/reader/distribution/123234234/PC/"+com.hurix.api.runner.RestAssured.bookID1+"/saveSessionHistory");
+					.post("/DistributionServices/services/api/reader/distribution/"+deviceID+"/"+deviceType+"/"+bookID1+"/saveSessionHistory");
 					
 							
 			Log.info("SaveSessionHistory Response: "+jsonResponse.then().extract().response().prettyPrint());

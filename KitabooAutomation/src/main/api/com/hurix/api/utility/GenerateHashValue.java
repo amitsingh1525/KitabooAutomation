@@ -2,11 +2,13 @@ package com.hurix.api.utility;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
+
 import java.util.Calendar;
 import java.util.Date;
 
 public class GenerateHashValue {
-	public static String GenerateHashValue(String hash ,String counter) throws Exception
+	@SuppressWarnings("restriction")
+	public static String generateHashValue(String hash ,String counter) throws Exception
 	{
 
 		Date now = new Date();
@@ -27,6 +29,7 @@ public class GenerateHashValue {
 		byte[] utf8 = str.getBytes("UTF8");
 		byte[] enc = ecipher.doFinal(utf8);
 		//return new sun.misc.BASE64Encoder().encode(enc);
+		@SuppressWarnings({ "unused" })
 		String hashValue= new sun.misc.BASE64Encoder().encode(enc);
 		return new sun.misc.BASE64Encoder().encode(enc);
 	}

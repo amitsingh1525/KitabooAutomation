@@ -9,11 +9,11 @@ import com.hurix.automation.utility.Log;
 public class ListBooks_OAuth {
 	
 
-	public static Response GETListBooks_OAuth(String consumerKey, String consumerSecret)
+	public static Response listBooks_OAuth_withoutpagi(String consumerKey, String consumerSecret)
 	{			
 		Response jsonResponse = null;
 		try {
-			Log.startTestCase("GETbooks_OAuth");
+			Log.startTestCase("ListBooks_OAuth");
 			jsonResponse = given()
 					.auth()
 					.oauth(consumerKey, consumerSecret, "", "")
@@ -23,7 +23,7 @@ public class ListBooks_OAuth {
 			Validation.responseCodeValidation1(jsonResponse, 200);
 			Validation.responseTimeValidation(jsonResponse);
 			
-			Log.info("GETListBooks_OAuth Response: "+jsonResponse.then().extract().response().prettyPrint());
+			Log.info("ListBooks_OAuth Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 
 		{
 			System.out.println(exp.getMessage());
@@ -34,11 +34,11 @@ public class ListBooks_OAuth {
 		return jsonResponse;
 		
 	}
-	public static Response GETListBooks_OAuth_With_Pagi(long startIndex, long endIndex,String consumerKey, String consumerSecret)
+	public static Response listBooks_OAuth_With_Pagi(int startIndex, int endIndex,String consumerKey, String consumerSecret)
 	{
 		Response jsonResponse = null;
 		try {
-			Log.startTestCase("GETListBooks_OAuth_With_Pagi");
+			Log.startTestCase("ListBooks_OAuth_With_Pagi");
 			jsonResponse = given()
 					.auth()
 					.oauth(consumerKey, consumerSecret, "", "")
@@ -50,7 +50,7 @@ public class ListBooks_OAuth {
 			Validation.responseCodeValidation1(jsonResponse, 200);
 			Validation.responseTimeValidation(jsonResponse);
 			
-			Log.info("GETListBooks_OAuth_With_Pagi Response: "+jsonResponse.then().assertThat().statusCode(200).extract().response().prettyPrint());
+			Log.info("ListBooks_OAuth_With_Pagi Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 
 		{
 			System.out.println(exp.getMessage());
@@ -62,4 +62,32 @@ public class ListBooks_OAuth {
 		
 	}
 
+	
+	public static Response listBooks_OAuth_With_PageNO(int pageno, int pageSize,String consumerKey, String consumerSecret)
+	{
+		Response jsonResponse = null;
+		try {
+			Log.startTestCase("listBooks_OAuth_With_PageNO Response.pageno="+pageno+"AND.pageSize="+pageSize+"");
+			jsonResponse = given()
+					.auth()
+					.oauth(consumerKey, consumerSecret, "", "")
+					.header("Content-Type","application/x-www-form-urlencoded")
+					.header("pageno",pageno)
+					.header("pageSize", pageSize)
+					.post("/DistributionServices/ext/api/ListBooks");
+			Validation.responseHeaderCodeValidation(jsonResponse, 200);
+			Validation.responseCodeValidation1(jsonResponse, 200);
+			Validation.responseTimeValidation(jsonResponse);
+			
+			Log.info("listBooks_OAuth_With_PageNO Response.pageno="+pageno+"AND.pageSize="+pageSize+": "+jsonResponse.then().extract().response().prettyPrint());
+		} catch (Exception exp) 
+		{
+			System.out.println(exp.getMessage());
+			System.out.println(exp.getCause());
+			exp.printStackTrace();
+		}
+		Log.endTestCase("End");
+		return jsonResponse;
+		
+	}
 }

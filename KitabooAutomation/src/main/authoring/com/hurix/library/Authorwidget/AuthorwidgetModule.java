@@ -24,7 +24,9 @@ public class AuthorwidgetModule extends AuthorwidgetStepModule {
 		btnsavewidget();
 		
 	// Change cover functionality
-		
+		btngridview();
+		btngridview_changeCover();
+		btngridview_changeCover();
 		
 	// share functionaliy
 		btnlistview_share();

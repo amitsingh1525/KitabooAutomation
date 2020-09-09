@@ -20,7 +20,7 @@ public class MD5Genration {
 		while (hashtext.length() < 32) { 
 			hashtext = "0" + hashtext; 
 		} 
-		System.out.println("HashValue##########################"+GenerateHashValue.GenerateHashValue(hashtext, counter));
-		return GenerateHashValue.GenerateHashValue(hashtext, counter);
+		System.out.println("HashValue##########################"+GenerateHashValue.generateHashValue(hashtext, counter));
+		return GenerateHashValue.generateHashValue(hashtext, counter);
 	}	
 }

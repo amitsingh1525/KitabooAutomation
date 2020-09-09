@@ -8,7 +8,7 @@ import com.hurix.automation.utility.Log;
 public class ClientUserID_books {
 	
 	
-	public static Response clientUserID_books(String consumerKey, String consumerSecret, String search)
+	public static Response clientUserID_books(String consumerKey, String consumerSecret, String search,String clientUserID)
 	{
 		//String GETclientUserID_booksPath=""+com.hurix.api.utility.ExcelUtils.getbaseURI()+"/DistributionServices/ext/api/"+com.hurix.api.runner.RestAssured.clientUserID+"/books?search="+search+"";
 
@@ -21,7 +21,7 @@ public class ClientUserID_books {
 					.auth()
 					.oauth(consumerKey, consumerSecret, "", "")
 					.header("Content-Type","application/json")								
-					.get("/DistributionServices/ext/api/"+com.hurix.api.runner.RestAssured.clientUserID+"/books?search="+search+"");
+					.get("/DistributionServices/ext/api/"+clientUserID+"/books?search="+search+"");
 					
 							
 			Log.info("ClientUserID_books Response: "+jsonResponse.then().extract().response().prettyPrint());

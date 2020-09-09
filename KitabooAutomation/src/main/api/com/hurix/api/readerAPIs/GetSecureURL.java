@@ -8,7 +8,7 @@ import com.hurix.automation.utility.Log;
 public class GetSecureURL {
 	
 	public static String GETgetSecureURLPath;
-	public static Response getSecureURL()
+	public static Response getSecureURL(String userToken,String deviceID,String deviceType,int type)
 	{
 		//GETgetSecureURLPath = ""+com.hurix.api.utility.ExcelUtils.getbaseURI()+"/DistributionServices/services/api/reader/secure/aasd/IPAD/getSecureURL?entryID&type=3";
 		
@@ -18,8 +18,8 @@ public class GetSecureURL {
 			Log.startTestCase("getSecureURL");
 			//System.out.println("GETfetBookListRequestURL:" +GETgetSecureURLPath);
 			jsonResponse = given()
-					.header("usertoken",com.hurix.api.runner.RestAssured.userToken)						
-					.get("/DistributionServices/services/api/reader/secure/aasd/IPAD/getSecureURL?entryID&type=3");
+					.header("usertoken",userToken)						
+					.get("/DistributionServices/services/api/reader/secure/"+deviceID+"/"+deviceType+"/getSecureURL?entryID&type="+type+"");
 			
 			Log.info("GetSecureURLResponse: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 

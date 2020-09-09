@@ -2,9 +2,6 @@ package com.hurix.api.readerAPIs;
 
 import static io.restassured.RestAssured.given;
 import io.restassured.response.Response;
-
-import com.hurix.api.runner.RestAssured;
-import com.hurix.api.utility.Validation;
 import com.hurix.automation.utility.Log;
 
 public class FetchBookCount {
@@ -22,10 +19,10 @@ public class FetchBookCount {
 					.header("usertoken",userToken)
 						
 					.get("/DistributionServices/services/api/reader/distribution/"+DeviceID+"/"+DeviceType+"/fetchBookCount");
-			Validation.responseHeaderCodeValidation(jsonResponse, 200);
+			/*Validation.responseHeaderCodeValidation(jsonResponse, 200);
 			Validation.responseCodeValidation1(jsonResponse, 200);
 			Validation.responseTimeValidation(jsonResponse);
-			Validation.responseKeyValidation_key(jsonResponse, "totalbooks");
+			Validation.responseKeyValidation_key(jsonResponse, "totalbooks");*/
 			
 			Log.info("fetchBookCount Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 

@@ -10,18 +10,18 @@ import com.hurix.automation.utility.Log;
 
 public class FetchRecentlyViewedBooksSecuredHash {
 
-	public static Response fetchRecentlyViewedBooksSecuredHash()
+	public static Response fetchRecentlyViewedBooksSecuredHash(String userToken,String deviceID,String deviceType,int bookID1)
 	{
 
 		Response jsonResponse = null;
 		try {
 
 			Log.startTestCase("FetchRecentlyViewedBooksSecuredHash");
-			System.out.println("Header HASH == " +MD5Genration.hashGenration(RestAssured.detail+"/DistributionServices/services/api/reader/books/145644544/PC/books/v2/categories"));
+			System.out.println("Header HASH == " +MD5Genration.hashGenration(RestAssured.detail+"/DistributionServices/services/api/reader/user/"+deviceID+"/"+deviceType+"/fetchRecentlyViewed?bookid="+bookID1+""));
 			jsonResponse = given()
-					.header("usertoken",com.hurix.api.runner.RestAssured.userToken)	
-					.header("hash",MD5Genration.hashGenration(RestAssured.detail+"/DistributionServices/services/api/reader/user/123/HTML5/fetchRecentlyViewed?bookid="+RestAssured.bookID1+""))
-					.get("/DistributionServices/services/api/reader/user/123/HTML5/fetchRecentlyViewed?bookid="+RestAssured.bookID1+"");
+					.header("usertoken",userToken)	
+					.header("hash",MD5Genration.hashGenration(RestAssured.detail+"/DistributionServices/services/api/reader/user/"+deviceID+"/"+deviceType+"/fetchRecentlyViewed?bookid="+bookID1+""))
+					.get("/DistributionServices/services/api/reader/user/"+deviceID+"/"+deviceType+"/fetchRecentlyViewed?bookid="+bookID1+"");
 			Validation.responseHeaderCodeValidation(jsonResponse, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(jsonResponse, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(jsonResponse);

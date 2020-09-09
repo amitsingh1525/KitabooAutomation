@@ -15,7 +15,7 @@ public class ListBooksV1_OAuth {
 	//public static String GETListBooksV1_OAuthPath=""+com.hurix.api.utility.ExcelUtils.getbaseURI()+"/DistributionServices/ext/api/v1/ListBooks";
 	
 
-	public static Response listBooksV1_OAuth(String consumerKey, String consumerSecret){
+	public static Response listBooksV1_OAuth_without_pagi(String consumerKey, String consumerSecret){
 		//System.out.println("POSTresetDevices_clientUserIDPath: " +GETListBooksV1_OAuthPath);
 		
 		Response jsonResponse = null;
@@ -65,5 +65,31 @@ public class ListBooksV1_OAuth {
 		return jsonResponse;
 		
 	}
+	
+	public static Response listBooksV1_OAuth_With_PageNO(long pageno, long pagesize,String consumerKey, String consumerSecret)
+	{
+		Response jsonResponse = null;
+		try {
+			Log.startTestCase("ListBooksV1_OAuth_With_PAGENO.pageno="+pageno+"AND.pagesize="+pagesize+"");
+			jsonResponse = given()
+					.auth()
+					.oauth(consumerKey, consumerSecret, "", "")
+					.header("Content-Type","application/x-www-form-urlencoded")
+					.header("pageno",pageno)
+					.header("pagesize",pagesize)
+					.post("/DistributionServices/ext/api/v1/ListBooks");
+			
+			Log.info("ListBooksV1_OAuth_With_PAGENO.pageno="+pageno+"AND.pagesize="+pagesize+" Response: "+jsonResponse.then().extract().response().prettyPrint());
+		} catch (Exception exp) 
+		{
+			System.out.println(exp.getMessage());
+			System.out.println(exp.getCause());
+			exp.printStackTrace();
+		}
+		Log.endTestCase("End");
+		return jsonResponse;
+		
+	}
+
 
 }
