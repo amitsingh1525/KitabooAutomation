@@ -21,11 +21,12 @@ public class UIElements {
 
 
 	public static long waitTiming = 60;
-	public static WebDriverWait wait = new WebDriverWait(Driver.driver, waitTiming);
+	public static WebDriverWait wait;
 
 	public static WebElement elementFinderByID(String elmentID, String elementName) {
 		try {
 			Thread.sleep(500);
+			wait = new WebDriverWait(Driver.driver, waitTiming);
 			wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(elmentID)));
 			Log.info("Element("+elementName+") is present on the DOM.");
 			return Driver.driver.findElement(By.id(elmentID));
@@ -59,6 +60,7 @@ public class UIElements {
 	public static WebElement elementFinderByXpath(String elmentXpath, String elementName) {
 		try {
 			Thread.sleep(500);
+			wait = new WebDriverWait(Driver.driver, waitTiming);
 			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(elmentXpath)));
 			Log.info("Element("+elementName+") is present on the DOM.");
 			return Driver.driver.findElement(By.xpath(elmentXpath));
@@ -92,6 +94,7 @@ public class UIElements {
 	public static WebElement elementFinderByLinkText(String elmentLinkText, String elementName) {
 		try {
 			Thread.sleep(500);
+			wait = new WebDriverWait(Driver.driver, waitTiming);
 			wait.until(ExpectedConditions.visibilityOfElementLocated(By.linkText(elmentLinkText)));
 			Log.info("Element("+elementName+") is present on the DOM.");
 			return Driver.driver.findElement(By.linkText(elmentLinkText));
@@ -126,6 +129,7 @@ public class UIElements {
 	public static List<WebElement> elementsFinderByIDs(String elmentID, String elementName) {
 		try {
 			Thread.sleep(500);
+			wait = new WebDriverWait(Driver.driver, waitTiming);
 			wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(elmentID)));
 			Log.info("Element("+elementName+") is present on the DOM.");
 			return Driver.driver.findElements(By.id(elmentID));
@@ -160,6 +164,7 @@ public class UIElements {
 	public static List<WebElement> elementsFinderByXpaths(String elmentXpath, String elementName) {
 		try {
 			Thread.sleep(500);
+			wait = new WebDriverWait(Driver.driver, waitTiming);
 			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(elmentXpath)));
 			Log.info("Element("+elementName+") is present on the DOM.");
 			return Driver.driver.findElements(By.xpath(elmentXpath));
@@ -194,6 +199,7 @@ public class UIElements {
 	public static List<WebElement> elementsFinderByLinkTexts(String elmentLinkText, String elementName) {
 		try {
 			Thread.sleep(500);
+			wait = new WebDriverWait(Driver.driver, waitTiming);
 			wait.until(ExpectedConditions.visibilityOfElementLocated(By.linkText(elmentLinkText)));
 			Log.info("Element("+elementName+") is present on the DOM.");
 			return Driver.driver.findElements(By.linkText(elmentLinkText));
