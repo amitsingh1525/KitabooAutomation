@@ -22,6 +22,7 @@ public class DownloadBook {
 		try {
 
 			Log.startTestCase("downloadBookFor."+deviceType+"_"+State+"");
+			Log.info("deviceType : "+deviceType);
 			//System.out.println("downloadBookPathANDROIDRequestURL:" +downloadBookPathANDROID);
 			jsonResponse = given()
 					.header("usertoken",userToken)						

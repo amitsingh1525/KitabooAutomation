@@ -5,7 +5,7 @@ import io.restassured.response.Response;
 import com.hurix.automation.utility.Log;
 
 public class BookList {	
-	
+
 	public static Response bookList(String userToken,String deviceID, String DeviceType)
 	{		
 		Response jsonResponse = null;
@@ -14,13 +14,51 @@ public class BookList {
 			jsonResponse = given()
 					.header("usertoken",userToken)						
 					.get("/DistributionServices/services/api/reader/books/"+deviceID+"/"+DeviceType+"/bookList");
-			/*Validation.responseHeaderCodeValidation(jsonResponse, HttpStatus.SC_OK);
-			Validation.responseCodeValidation1(jsonResponse, HttpStatus.SC_OK);
-			Validation.responseTimeValidation(jsonResponse);
-			Validation.responseKeyValidation_key(jsonResponse, "isbn");
-			Validation.responseKeyValidation_key(jsonResponse, "formats");
-			Validation.responseKeyValidation_key(jsonResponse, "id");*/
 			Log.info("bookListResponse: "+jsonResponse.then().extract().response().prettyPrint());
+		} catch (Exception exp) 
+		{
+			System.out.println(exp.getMessage());
+			System.out.println(exp.getCause());
+			exp.printStackTrace();
+		}
+		Log.endTestCase("End");
+		return jsonResponse;
+	}
+	
+	public static Response bookList_per(String SortBy,String orderBy,String userToken,String deviceID, String DeviceType)
+	{		
+		Response jsonResponse = null;
+		try {
+			Log.startTestCase("bookList.SortBy="+SortBy+".orderBy="+orderBy+"");
+			jsonResponse = given()
+					.header("usertoken",userToken)
+					.header("SortBy",SortBy)
+					.header("orderBy",orderBy)
+					.get("/DistributionServices/services/api/reader/books/"+deviceID+"/"+DeviceType+"/bookList");
+			Log.info("bookList.SortBy="+SortBy+".orderBy="+orderBy+" Response: "+jsonResponse.then().extract().response().prettyPrint());
+		} catch (Exception exp) 
+		{
+			System.out.println(exp.getMessage());
+			System.out.println(exp.getCause());
+			exp.printStackTrace();
+		}
+		Log.endTestCase("End");
+		return jsonResponse;
+	}
+	
+	public static Response bookList_per_withPagi(String SortBy,String orderBy,int startIndex,int endIndex,String userToken,String deviceID, String DeviceType)
+	{		
+		Response jsonResponse = null;
+		try {
+			Log.startTestCase("bookList.SortBy="+SortBy+".orderBy="+orderBy+".startIndex="+startIndex+".endIndex="+endIndex+"");
+			jsonResponse = given()
+					.header("usertoken",userToken)
+					.header("SortBy",SortBy)
+					.header("orderBy",orderBy)
+					.header("startIndex",startIndex)
+					.header("endIndex",endIndex)
+					.get("/DistributionServices/services/api/reader/books/"+deviceID+"/"+DeviceType+"/bookList");
+			Log.info("bookList.SortBy="+SortBy+".orderBy="+orderBy+".startIndex="+startIndex+".endIndex="+endIndex+" Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 
 		{
 			System.out.println(exp.getMessage());

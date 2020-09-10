@@ -12,7 +12,7 @@ public class IngestionStatus {
 		Response jsonResponse = null;
 		try {
 			Thread.sleep(8000);
-			Log.startTestCase("IngestionStatus");
+			Log.startTestCase("IngestionStatus.isbning="+isbning+"");
 					
 			//System.out.println("RequestURL:" +GETbookMetadataPath);
 			jsonResponse = given()
@@ -26,7 +26,7 @@ public class IngestionStatus {
 			Validation.responseCodeValidation1(jsonResponse , 200);			
 			Validation.responseTimeValidation(jsonResponse);			
 							
-			Log.info("IngestionStatus Response: "+jsonResponse.then().extract().response().prettyPrint());
+			Log.info("IngestionStatus.isbning="+isbning+" Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 
 		{
 			System.out.println(exp.getMessage());
