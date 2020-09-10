@@ -87,7 +87,7 @@ public class FetchBookList {
 		Response jsonResponse = null;
 		try {
 
-			Log.startTestCase("fetchBookList_SortBy="+SortBy+"orderBy="+orderBy+".start="+startIndex+".end="+endIndex+"");
+			Log.startTestCase("fetchBookList_SortBy="+SortBy+".orderBy="+orderBy+".start="+startIndex+".end="+endIndex+"");
 			//System.out.println("GETfetchBookList RequestURL:" +fetchBookListPath);
 			jsonResponse = given()
 					.header("usertoken",userToken)
@@ -96,7 +96,7 @@ public class FetchBookList {
 					.header("SortBy",SortBy)
 					.header("orderBy",orderBy)
 					.get("/DistributionServices/services/api/reader/distribution/"+DeviceID+"/"+DeviceType+"/fetchBookList");
-			Log.info("fetchBookList_SortBy="+SortBy+"orderBy="+orderBy+".start="+startIndex+".end="+endIndex+"="+SortBy+".orderBy="+orderBy+" Response: "+jsonResponse.then().extract().response().prettyPrint());
+			Log.info("fetchBookList_SortBy="+SortBy+".orderBy="+orderBy+".start="+startIndex+".end="+endIndex+"="+SortBy+".orderBy="+orderBy+" Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 
 		{
 			System.out.println(exp.getMessage());

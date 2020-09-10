@@ -14,13 +14,13 @@ public class Validation {
 	public static void responseHeaderCodeValidation(Response jsonResponse, int statusCode) 
 
 	{
-		Log.info("Expected statusCode : "+statusCode); 
+		Log.info("Expected StatusCode = "+statusCode); 
 		int jsonResponse1=0;
 		try {
 			if(jsonResponse!=null)
 			{
-				Log.info("HERE");
-				Log.info("Actual statusCode : "+jsonResponse.getStatusCode());
+				//Log.info("HERE");
+				Log.info("Actual StatusCode = "+jsonResponse.getStatusCode());
 				jsonResponse1 = jsonResponse.getStatusCode();
 			}
 		} catch (AssertionError e) {
@@ -30,12 +30,12 @@ public class Validation {
 		if(jsonResponse1 == statusCode)
 		{
 			//Assert.assertThat(statusCode, jsonResponse.then().extract().path("responseCode"));
-			Log.pass("successFull Header Validate, status code is :: " +jsonResponse.getStatusCode());
+			Log.pass("successFull Header Validate, status code is = " +jsonResponse.getStatusCode());
 		}
 		else if(jsonResponse1 != statusCode)
 		{
 			//Assert.assertThat(statusCode, jsonResponse.then().extract().path("responseCode"));
-			Log.fail("Fail Header Validated, status code is :: " +jsonResponse);
+			Log.fail("Fail Header Validated, status code is = " +jsonResponse);
 		}
 	}
 
@@ -43,7 +43,8 @@ public class Validation {
 	{
 		try {			
 			long time =jsonResponse.time();
-			Log.pass("API Reposne Time Is :: " +time);
+			//Log.pass("HERE "+jsonResponse+" API Reposne Time Is :: " +time);
+			Log.pass("API Reposne Time in MillSeconds Is = " +time);
 
 		} catch (Exception e) {
 			Log.fail(e.getMessage());
@@ -61,12 +62,12 @@ public class Validation {
 		if(act_responsecode == statusCode)
 		{
 			System.out.println("In the Pass Assertion");
-			Log.pass("successFull Actual Response code Validate, status code is :: " +jsonResponse.then().extract().path("responseCode"));
+			Log.pass("successFull Actual Response code Validate, status code is = " +jsonResponse.then().extract().path("responseCode"));
 		}
 		else
 		{
 			System.out.println("in the Fail Assertion");
-			Log.fail("Fail Actual Response code Validate, status code is :: " +jsonResponse);
+			Log.fail("Fail Actual Response code Validate, status code is = " +jsonResponse);
 		}
 		//Assert.assertSame(jsonResponse.then().extract().path("responseCode"),statusCode);
 		//Log.pass("successFull Validate, status code is :: " +jsonResponse.getStatusCode());
@@ -107,10 +108,10 @@ public class Validation {
 		Log.info("KEY string :: " +key);
 		try {
 			Assert.assertTrue(bodyStringValue.contains(key));
-			Log.pass("validation pass Parameter is Present are : " +key);
+			Log.pass("validation pass Parameter is Present are = " +key);
 		} catch (AssertionError e) {
 			e.printStackTrace();
-			Log.fail("validated Asserting for contails= 1 Not FOUND are : " +key);
+			Log.fail("validated Asserting for contails= 1 Not FOUND are = " +key);
 			//Log.fail("validated Not FOUND are : " +key+ "=" +value );
 		}	
 		}
@@ -120,20 +121,34 @@ public class Validation {
 		body = jsonResponse.getBody();
 		String bodyStringValue = body.asString();
 		Log.info("Whole string :: " +key);
-		Log.info("HERE we are-> "+" bodyStringValue: :"+bodyStringValue+" key ::"+key+"");
+		Log.info("HERE we are-> "+" bodyStringValue="+bodyStringValue+" key ="+key+"");
 		if(bodyStringValue != key)
 		{
 			//Assert.assertFalse(bodyStringValue.contains(key));
-			Log.pass("validation key Not Present pass Parameter is Present are : " +key);
+			Log.pass("validation key Not Present pass Parameter is Present are = " +key);
 		}
 		else if(bodyStringValue == key)
 		{
-			Log.fail("validated key Not Present Fails Asserting for contails= 1 Not FOUND are : " +key);
+			Log.fail("validated key Not Present Fails Asserting for contails= 1 Not FOUND are = " +key);
 
 		}	
 	}
 	public static void responseISGreater(String  variable , int key,int value)
 	{
+		if(key >= value)
+		{
+			Log.pass("size Validation pass is : " + ""+variable+""+" =$GREATER THEN EQUALS TO$: "+value);
+		}
+		else
+		{
+			Log.fail("size Validation pass is : " +""+variable+""+" =$GREATER THEN EQUALS TO$: "+value);
+		}
+	}
+	
+	public static void responseISGreater_String(String  variable , int key,int value)
+	{
+		//int key= Integer.parseInt(""+key1+"");	
+		
 		if(key >= value)
 		{
 			Log.pass("size Validation pass is : " + ""+variable+""+" =$GREATER THEN EQUALS TO$: "+value);
@@ -155,11 +170,11 @@ public class Validation {
 		Log.info("WHOLE STRING is key:value = "+chunk);
 		if(bodyStringValue.contains(chunk))
 		{
-			Log.pass("validation pass Parameter is Present are : " +chunk);
+			Log.pass("validation pass Parameter is Present are = " +chunk);
 		}
 		else
 		{
-			Log.fail("validated Asserting for contails= 1 Not FOUND are : " +chunk);
+			Log.fail("validated Asserting for contails= 1 Not FOUND are = " +chunk);
 		}			
 	}
 
@@ -176,11 +191,11 @@ public class Validation {
 		if(bodyStringValue.contains(chunk))
 		{
 			//Assert.assertTrue(bodyStringValue.contains(here1));
-			Log.pass("validation pass INTEGER Parameter is Present are : " +chunk);
+			Log.pass("validation pass INTEGER Parameter is Present are = " +chunk);
 		}
 		else
 		{
-			Log.fail("validated INTEGER Asserting for contails= 1 Not FOUND are : " +chunk);
+			Log.fail("validated INTEGER Asserting for contails= 1 Not FOUND are = " +chunk);
 		}				
 	}
 }
