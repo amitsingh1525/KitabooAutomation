@@ -377,6 +377,14 @@ public class BookShelfStepModule extends UIElements{
 		}
 	}
 	
+	public static void drpdwnStudentInfo(){
+		try {
+			elementFinderByXpath(prop.getProperty("studentInfo_xpath"), "drpdwnStudentInfo").click();
+		} catch (Exception e) {
+			System.out.println("Element not present.");
+		}
+	}
+	
 	public static String getBookOpenedAssigned(){
 		//String bookTitle = null;
 		

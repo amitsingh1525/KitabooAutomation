@@ -20,6 +20,12 @@ public class BookPlayerModule extends BookplayerStepModule
 		return Driver.driver.getCurrentUrl();
 	}
 
+	public static void bookPlayerLogout(){
+		btnBookPlayerProfileIcon();
+		btnBookPlayerProfileIcon_Signout();
+	}
+
+
 	public static void tableofContent(int chapterno){
 		btntableofcontentandresources();
 		btncontents();
@@ -33,7 +39,7 @@ public class BookPlayerModule extends BookplayerStepModule
 		btnthumbnail();
 		txtbxgotopage("5");
 		btnhighlight();
-		selectparagraph();
+		selectparagraph(0, 45);
 		if(color.equalsIgnoreCase("yellow")) {
 			bltyellow();
 		}
@@ -53,17 +59,10 @@ public class BookPlayerModule extends BookplayerStepModule
 	}
 
 	public static void deleteHighlight(){
-		btnhighlight();
+		//btnhighlight();
 		selectparagraph_delete();
 		btnhighlightdelete();
-		btnhighlight();
-	}
-	
-	public static void searchAWord(){
-		btnthumbnail();
-		txtbxgotopage("5");
-		btnhighlight();
-		selectparagraph();
+		//btnhighlight();
 	}
 
 	public static void pentool(String color, String pageNum, int x, int y){
@@ -102,14 +101,14 @@ public class BookPlayerModule extends BookplayerStepModule
 		drawLine(By.id("p5-textid50001"), x, y);
 		Driver.driver.switchTo().parentFrame();
 	}
-	
+
 	public static void clearAllpentool(){
 		btnclearall();
 		btnclearallAlertPopup_Yes();
 		btnsavePenTool();
 	}
-	
-	public static void stickyNotes(String color, String pageNum, int x, int y){
+
+	public static void stickyNotes(String color, String pageNum, int x, int y, String msg){
 		goToPage(pageNum);
 		threadHold_5Sec();
 		threadHold_2Sec();
@@ -134,21 +133,33 @@ public class BookPlayerModule extends BookplayerStepModule
 			btnStickyClr_blue();
 		}
 
-		txtStickyNotes("Hello Brother!");
+		txtStickyNotes(msg);
+		threadHold_2Sec();
 		btnSaveStickyNotes();
+		threadHold_2Sec();
 		Driver.driver.switchTo().parentFrame();
+		threadHold_2Sec();
 	}
 
-	public static void deleteStickyNotes(String pageNum, int x, int y){
+	public static void openStickyNotesWithCordinates(String color, String pageNum, int x, int y){
 		goToPage(pageNum);
 		threadHold_5Sec();
 		threadHold_2Sec();
 		Driver.driver.switchTo().frame("epub_"+pageNum);
-		btnStickyNotesInsidePage();
+		WebElement element = Driver.driver.findElement(By.id("p5-textid50001"));
+		Actions act=new Actions(Driver.driver);					
+		act.dragAndDropBy(element, x, y).click().build().perform();
 		Driver.driver.switchTo().parentFrame();
+	}
+
+	public static void deleteStickyNotes(String pageNum, int x, int y, int i){
+		goToPage(pageNum);
+		threadHold_5Sec();
+		threadHold_2Sec();
+		btnStickyNotesInsidePage(i, pageNum);
 		btnDeleteStickyNotes();
 	}
-	
+
 	public static void goToPage(String pageNum){
 		btnthumbnail();
 		txtbxgotopage(pageNum);
@@ -176,7 +187,7 @@ public class BookPlayerModule extends BookplayerStepModule
 		btnzoomout();
 		elementFinderByXpath(prop.getProperty("zoomsliderzoomout_xpath"), "Zoom slider xpath");
 		WebElement slider = elementFinderByXpath(prop.getProperty("zoomsliderzoomout_xpath"), "Zoom slider xpath");
-		moveToGivenPoint(slider, -zoomoutLevel, 0);
+		moveToGivenPoint(slider, zoomoutLevel, 0);
 		btnhighlight();
 	}
 
@@ -187,13 +198,30 @@ public class BookPlayerModule extends BookplayerStepModule
 		Log.info("Number of search found:"+ size);
 		String msg = null;
 		if(size>0){
-			
+
 			msg = searchResult(elementNum);
 			threadHold_5Sec();
 		}else{
 			msg = getinvalidsearchmsg();
 		}
 		return msg;
+	}
+	
+	public static void searchAWord(){
+		btnthumbnail();
+		txtbxgotopage("5");
+		btnhighlight();
+		selectparagraph(0, 0);
+		btnhighlightsearch();
+		int size= elementsFinderByXpaths(prop.getProperty("searchresult_lstview_xpath"), "Search result count").size();
+		Log.info("Number of search found:"+ size);
+		String msg = null;
+		if(size>0){
+			msg = searchResult(0);
+			threadHold_5Sec();
+		}else{
+			msg = getinvalidsearchmsg();
+		}
 	}
 
 	public static int myDataHighlightCount(String clrName){
@@ -265,8 +293,44 @@ public class BookPlayerModule extends BookplayerStepModule
 		return count;
 	}
 
+	public static void myDataSharedNotes(int i, boolean accept){
+		btnmyData();
+		String iconCount = getSharedNotesCountFromMyDataIcon();
+		btnMyDataNotificationIcon();
+		int sharedList = getSharedNotesCountFromlist();
+		if(accept) {
+			btnAcceptStickyNotes(i);
+		}else {
+			btnDeclinedStickyNotes(i);
+		}
+		if(iconCount.equals(Integer.toString(sharedList))) {
+			Log.pass("iconCount: "+iconCount+" sharedList: "+sharedList);
+		}else {
+			Log.error("iconCount: "+iconCount+" sharedList: "+sharedList);
+		}
+		btnmyData();
+	}
+
+	public static void myDataCommentOnSharedNotes(int i, String comment){
+		btnmyData();
+		btnmyDatanotes();
+		int beforeCommentCount = getCommentOnNotesCount(i);
+		btnCommentOnNotes(i);
+		txtCommentOnNotes(comment);
+		btnSendCommentOnNotes();
+		btnBackArrow();
+		int afterCommentCount = getCommentOnNotesCount(i);
+		if(beforeCommentCount < afterCommentCount) {
+			Log.pass("Comment Counts are matched. after Comment Count is: "+beforeCommentCount
+					+" Before Comment Count is: "+afterCommentCount);
+		}else {
+			Log.fail("Expected increment by n number of current Comment: "+beforeCommentCount+" But Found: "+afterCommentCount);
+		}
+		btnmyData();
+	}
+
 	public static int myDatacontextualNotesCount(String clrName){
-		
+
 		btnmyData();
 		btnmyDatanotes();
 		btnFilter();
@@ -299,7 +363,7 @@ public class BookPlayerModule extends BookplayerStepModule
 		int count = getNotesCounts();
 		btnmyData();
 		return count;
-	
+
 	}
 
 
@@ -325,40 +389,77 @@ public class BookPlayerModule extends BookplayerStepModule
 		return pageNum;
 
 	}
-	
-	public static void addbookmark(){
-		//txtbxgotopage("10");
+
+	public static void addbookmark(String bookMarkPageNo, String bookmark){
+		goToPage(bookMarkPageNo);
+		btntableofcontentandresources();
+		btntocbookmark();
+		int afterBookmark = getbookmarkCounts();
+		btntableofcontentandresources();
 		btnbookmark();
-		txtbookmark();
+		txtbookmark(bookmark);
 		btnaddbookmark();
-		btntableofcontentandresources();
-		btntocbookmark();
-		threadHold_5Sec();
-		btntableofcontentandresources();
 		threadHold_5Sec();
 		btntableofcontentandresources();
 		btntocbookmark();
-		getbookmarkCounts();
-		btnbookmarkpageno();
-		bookmarklist(0);
-		getCurrentPageNum();
+		btntableofcontentandresources();
+		threadHold_2Sec();
+		btntableofcontentandresources();
+		int beforeBookmark = getbookmarkCounts();
+		if(afterBookmark < beforeBookmark) {
+			Log.pass("After add bookmark count is: "+afterBookmark+" Before added Bookmark count is: "+beforeBookmark);
+		}else {
+			Log.fail("Expected increment of n number of current bookmark, current count: "+afterBookmark+" But found: "+beforeBookmark);
+		}
+
+		int pageNum = bookmarklist(0);
+		int redirectPageNum = Integer.parseInt(getCurrentPageNum());
+		if(pageNum == redirectPageNum) {
+			Log.pass("Bookmark added on pageNum: "+pageNum+" redirect pageNum: "+redirectPageNum+" Both are same.");
+		}else {
+			Log.fail("Bookmark added on pageNum: "+pageNum+" redirect pageNum: "+redirectPageNum+" Both are NOT same.");
+		}
 	}
-	
-	public static void deletebookmark(){
+
+	public static void deletebookmark(int i){
+		btntableofcontentandresources();
+		btntocbookmark();
+		int afterBookmarkDelete = getbookmarkCounts();
+		int pageNum = bookmarklist(i);
 		btnbookmark();
 		btndeletebookmark();
+		threadHold_5Sec();
 		btntableofcontentandresources();
 		btntocbookmark();
-		getbookmarkCounts();
+		int beforeBookmarkDelete = getbookmarkCounts();
+		btntableofcontentandresources();
+		if(afterBookmarkDelete > beforeBookmarkDelete) {
+			Log.pass("After delete bookmark count is: "+afterBookmarkDelete+" Before deleted Bookmark count is: "+beforeBookmarkDelete);
+		}else {
+			Log.fail("Expected decrement of n number of current bookmark, current count: "+afterBookmarkDelete+" But found: "+beforeBookmarkDelete);
+		}
+		int currentpage = Integer.parseInt(getCurrentPageNum());
+		if(pageNum == currentpage) {
+			Log.pass("Bookmark added on pageNum: "+pageNum+" redirect pageNum: "+currentpage+" Both are same.");
+		}else {
+			Log.fail("Bookmark added on pageNum: "+pageNum+" redirect pageNum: "+currentpage+" Both are NOT same.");
+		}
 	}
-	
+
 	public static void contentResources(int i){
 		btntableofcontentandresources();
 		btnresources();
 		btnResourceDrpdwn();
 		btnResourcelst(i);
-		
-		
+	}
+
+	public static void content(){
+		btntableofcontentandresources();
+		btncontents();
+		//We need to change inside it's a static method always click on first node
+		btncontentsdrpdwn();
+		btncontentsChildlist();
+
 	}
 
 }
