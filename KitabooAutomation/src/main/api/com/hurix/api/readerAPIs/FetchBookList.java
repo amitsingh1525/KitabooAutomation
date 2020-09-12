@@ -6,21 +6,21 @@ import com.hurix.automation.utility.Log;
 
 public class FetchBookList {
 	
-	public static Response fetchBookList_without_pagination(String userToken,String DeviceID,String DeviceType)
+	public static Response fetchBookList_without_pagination(String userToken,String deviceID,String deviceType)
 	{
 		Response jsonResponse = null;
 		try {
-			Log.startTestCase("fetchBookList_without_pagination");
+			Log.startTestCase("fetchBookList_without_pagination.Device:"+deviceType+"");
 			//System.out.println("GETfetchBookList RequestURL:" +fetchBookListPath);
 			jsonResponse = given()
 					.header("usertoken",userToken)
-					.get("/DistributionServices/services/api/reader/distribution/"+DeviceID+"/"+DeviceType+"/fetchBookList");
+					.get("/DistributionServices/services/api/reader/distribution/"+deviceID+"/"+deviceType+"/fetchBookList");
 			/*Validation.responseCodeValidation1(jsonResponse, 200);
 			Validation.responseHeaderCodeValidation(jsonResponse, 200);
 			Validation.responseTimeValidation(jsonResponse);
 			//Validation.responseKeyValidation_key(jsonResponse, Title);
 */
-			Log.info("fetchBookList Response: "+jsonResponse.then().extract().response().prettyPrint());
+			Log.info("fetchBookList.Device:"+deviceType+" Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 
 		{
 			System.out.println(exp.getMessage());

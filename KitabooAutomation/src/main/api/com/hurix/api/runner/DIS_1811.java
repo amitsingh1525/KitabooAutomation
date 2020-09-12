@@ -117,8 +117,10 @@ public class DIS_1811 {
 					break;
 				}				
 				io.restassured.RestAssured.baseURI = detail;
-
-				Response authenticateValue = Authenticate.authenticate(clientID, userName, password,"514185","IPAD");
+				
+				Log.startTestCase("Authenticate");
+				Response authenticateValue = Authenticate.authenticate(clientID, userName, password,"65454","IPAD");
+				Log.info("Authenticate Response: "+authenticateValue.then().extract().response().prettyPrint());
 				System.out.println("HERE_Before");
 				Validation.responseHeaderCodeValidation(authenticateValue, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(authenticateValue, HttpStatus.SC_OK);
@@ -134,6 +136,7 @@ public class DIS_1811 {
 				System.out.println("userToken:"+userToken);
 				clientUserID = authenticateValue.then().extract().path("user.clientUserID");
 				System.out.println("clientUserID:"+clientUserID);
+				Log.endTestCase("End");
 
 				Response fetchBookList_with_pagination = FetchBookList.fetchBookList_with_pagination(0,10,userToken,"45616452","IPAD");
 				Validation.responseCodeValidation1(fetchBookList_with_pagination, HttpStatus.SC_OK);

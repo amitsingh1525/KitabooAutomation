@@ -1,10 +1,8 @@
 package com.hurix.api.readerAPIs;
 
 import static io.restassured.RestAssured.given;
-import java.sql.SQLException;
 import io.restassured.response.Response;
-import com.hurix.api.utility.JDBC_category;
-import com.hurix.api.utility.Validation;
+import com.hurix.api.utility.*;
 import com.hurix.automation.utility.Log;
 
 public class MultiCategoryBookList {
