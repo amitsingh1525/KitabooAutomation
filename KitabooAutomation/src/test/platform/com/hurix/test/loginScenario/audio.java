@@ -28,18 +28,18 @@ public class audio {
 
 	public static void main(String[] args) throws Exception 
 	{
+			ExcelFile.setExcelFile("\\testData\\TestData.xlsx", "Create_Kitaboo_Credential");
+			String username = ExcelFile.getCellData(1, 0);
+			String password = ExcelFile.getCellData(1, 1);
+			String url = ExcelFile.getCellData(1, 2);
+			File file = new File("");
 			Log.initialization("AUDIO BOOK");
-			
+			Log.info(username);
+			Log.info(password);
+			Log.info(url);
 			for(int j=1;j<=1;j++)
 			{
-				ExcelFile.setExcelFile("\\testData\\TestData.xlsx", "Create_Kitaboo_Credential");
-				String username = ExcelFile.getCellData(j, 0);
-				String password = ExcelFile.getCellData(j, 1);
-				String url = ExcelFile.getCellData(1, 2);
-				Log.info(username);
-				Log.info(password);
-				Log.info(url);
-				File file = new File("");
+				
 				Log.startTestCase("Login");
 				BrowserConfigure.browserConfigure("Chrome");
 				Driver.driver.navigate().to(url);
