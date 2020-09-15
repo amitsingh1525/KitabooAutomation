@@ -1,18 +1,23 @@
 package com.hurix.api.runner;
 
 import io.restassured.response.Response;
+
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
 import org.apache.http.HttpStatus;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.JSONException;
+
 import com.hurix.api.readerAPIs.Authenticate;
 import com.hurix.api.readerAPIs.FetchBookList;
+import com.hurix.api.readerAPIs.MultiCategoryBookList;
+import com.hurix.api.readerAPIs.MultiCategoryCollectionBookList;
 import com.hurix.api.readerAPIs.RefreshCategory;
 import com.hurix.api.utility.ExcelUtils;
 import com.hurix.api.utility.ExtractCategory;
@@ -108,16 +113,20 @@ public class DIS_1838 {
 			String excelPath="./testData/DIS-1838.xlsx";
 			workbook = new XSSFWorkbook(excelPath);
 			sheet= workbook.getSheet("Sheet1");
-			for(int i=1;i<=1;i++)
+			for(int i=1;i<=2;i++)
 			{	
 				DataFormatter formatter = new DataFormatter();
 				environMent = formatter.formatCellValue(sheet.getRow(i).getCell(0));
-				userName=formatter.formatCellValue(sheet.getRow(i).getCell(1));			
-				password=formatter.formatCellValue(sheet.getRow(i).getCell(2));
-				consumerKey=formatter.formatCellValue(sheet.getRow(i).getCell(4));
-				consumerSecret=formatter.formatCellValue(sheet.getRow(i).getCell(5));
-				clientID=formatter.formatCellValue(sheet.getRow(i).getCell(3));	
-				catlevel=formatter.formatCellValue(sheet.getRow(i).getCell(6));	
+				userName = formatter.formatCellValue(sheet.getRow(i).getCell(1));			
+				password = formatter.formatCellValue(sheet.getRow(i).getCell(2));
+				consumerKey = formatter.formatCellValue(sheet.getRow(i).getCell(4));
+				consumerSecret = formatter.formatCellValue(sheet.getRow(i).getCell(5));
+				clientID = formatter.formatCellValue(sheet.getRow(i).getCell(3));	
+				catlevel = formatter.formatCellValue(sheet.getRow(i).getCell(6));
+				categoryIdList0 = formatter.formatCellValue(sheet.getRow(i).getCell(7));
+				categoryIdList1 = formatter.formatCellValue(sheet.getRow(i).getCell(8));
+				categoryIdList2 = formatter.formatCellValue(sheet.getRow(i).getCell(9));
+				categoryIdList3 = formatter.formatCellValue(sheet.getRow(i).getCell(10));
 
 				switch(environMent){
 				case "QC":
@@ -163,8 +172,8 @@ public class DIS_1838 {
 				clientUserID = authenticateValue.then().extract().path("user.clientUserID");
 				System.out.println("clientUserID:"+clientUserID);
 				Log.endTestCase("End");
-				
-				
+
+
 				Response fetchBookList_without_pagination = FetchBookList.fetchBookList_without_pagination(userToken,"45616452","IPAD");
 				Validation.responseCodeValidation1(fetchBookList_without_pagination, HttpStatus.SC_OK);
 				Validation.responseHeaderCodeValidation(fetchBookList_without_pagination, HttpStatus.SC_OK);
@@ -194,8 +203,8 @@ public class DIS_1838 {
 				System.out.println("bookID2: "+bookID2);
 				bookID3 = fetchBookList_without_pagination.then().extract().path("bookList.book.id[2]");			
 				System.out.println("bookID3: "+bookID3);
-				bookID6 = fetchBookList_without_pagination.then().extract().path("bookList.book.id[6]");
-				System.out.println("bookID6 :: "+bookID6);
+				//bookID6 = fetchBookList_without_pagination.then().extract().path("bookList.book.id[6]");
+				//System.out.println("bookID6 :: "+bookID6);
 				isbn = fetchBookList_without_pagination.then().extract().path("bookList.book.isbn[1]");
 				System.out.println("isbn: "+isbn);
 				type=fetchBookList_without_pagination.then().extract().path("bookList.book.type[0]");
@@ -216,460 +225,444 @@ public class DIS_1838 {
 				System.out.println("archiveDate:"+archiveDate);
 				archiveDate6=fetchBookList_without_pagination.then().extract().path("bookList.book.archiveDate[6]");
 				System.out.println("archiveDate:"+archiveDate);				
-				categoryIdList0 = fetchBookList_without_pagination.then().extract().path("bookList.book.categoryIdList[0]");
-				Log.info("categoryIdList0 : "+categoryIdList0);
-				
-		//IPAD		
-				Response Refreshcategory_Refl=RefreshCategory.refreshCategory(categoryIdList0, userToken, "fs313", "IPAD");
-				Validation.responseHeaderCodeValidation(Refreshcategory_Refl,HttpStatus.SC_OK);
-				Validation.responseCodeValidation1(Refreshcategory_Refl, HttpStatus.SC_OK);
-				Validation.responseTimeValidation(Refreshcategory_Refl);
-				responseMsg=Refreshcategory_Refl.then().extract().path("responseMsg");
-				Validation.responseKeyAndValue(Refreshcategory_Refl,"responseMsg","SUCCESS");
-				Validation.responseKeyValidation_key(Refreshcategory_Refl, "id");
-				Validation.responseKeyValidation_key(Refreshcategory_Refl, "name");
-				Validation.responseKeyValidation_key(Refreshcategory_Refl, "hash");
-				Validation.responseKeyValidation_key(Refreshcategory_Refl, "bookIdList");	
-				System.out.println("Refreshcategory_Refl : "+Refreshcategory_Refl);
-				
-				
-				Response FetchBookList_Refl=FetchBookList.fetchBookList_without_pagination(userToken, "ewe3242", "IPAD");
-				Validation.responseHeaderCodeValidation(FetchBookList_Refl,HttpStatus.SC_OK);
-				Validation.responseCodeValidation1(FetchBookList_Refl, HttpStatus.SC_OK);
-				Validation.responseTimeValidation(FetchBookList_Refl);
-				Validation.responseKeyValidation_key(FetchBookList_Refl, "154");
-				title=FetchBookList_Refl.then().extract().path("bookList.book.title[0]");
+				/*categoryIdList0 = fetchBookList_without_pagination.then().extract().path("bookList.book.categoryIdList[0]");
+				Log.info("categoryIdList0 : "+categoryIdList0);*/
+
+	//IPAD	
+				//System.out.println("@#$%^&*(*&^%$#@#$%^&*&^%$# HERE");
+				//String categoryIdList01=((String) categoryIdList0).replace("||", ",");
+				//Log.info("categoryIdList01 : "+categoryIdList01);
+				Response Refreshcategory_Nat=RefreshCategory.refreshCategory(""+categoryIdList0+"", userToken, "fs313", "IPAD");
+				Validation.responseHeaderCodeValidation(Refreshcategory_Nat,HttpStatus.SC_OK);//Native_cat2_UPD
+				Validation.responseCodeValidation1(Refreshcategory_Nat, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(Refreshcategory_Nat);
+				responseMsg=Refreshcategory_Nat.then().extract().path("responseMsg");
+				Validation.responseKeyAndValue(Refreshcategory_Nat,"responseMsg","SUCCESS");
+				Validation.responseKeyValidation_key(Refreshcategory_Nat, "id");
+				int id0=Refreshcategory_Nat.then().extract().path("categories.id[0]");
+				Log.info("id0 : "+id0);
+				Validation.responseKeyValidation_key(Refreshcategory_Nat, "name");
+				Validation.responseKeyValidation_key(Refreshcategory_Nat, "hash");
+				Validation.responseKeyValidation_key(Refreshcategory_Nat, "bookIdList");	
+				System.out.println("Refreshcategory_Nat : "+Refreshcategory_Nat);
+
+
+				Response FetchBookList_nat=FetchBookList.fetchBookList_without_pagination(userToken, "ewe3242", "IPAD");
+				Validation.responseHeaderCodeValidation(FetchBookList_nat,HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(FetchBookList_nat, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(FetchBookList_nat);
+				title=FetchBookList_nat.then().extract().path("bookList.book.title[0]");
 				Log.info("title : "+title);
-				category=FetchBookList_Refl.then().extract().path("bookList.book.category[0]");
+				category=FetchBookList_nat.then().extract().path("bookList.book.category[0]");
 				Log.info("category : "+category);
 				//Validation.responseKcount(FetchBookList_Refl, category);
-				//Validation.responseKcount1(FetchBookList_Refl, "08AUGDIS-1870");
-				categoryList=FetchBookList_Refl.then().extract().path("bookList.book.categoryList[0]");
+				//Validation.responseKcount1(FetchBookList_Refl, "New_ADHOC");
+				categoryList=FetchBookList_nat.then().extract().path("bookList.book.categoryList[0]");
 				Log.info("categoryList : "+categoryList);
-				categoryIdList=FetchBookList_Refl.then().extract().path("bookList.book.categoryIdList[0]");
+				categoryIdList=FetchBookList_nat.then().extract().path("bookList.book.categoryIdList[0]");
 				Log.info("categoryIdList : "+categoryIdList);
-				System.out.println("FetchBookList_Refl : "+FetchBookList_Refl);
-				Validation.responseKeyValidation_key(FetchBookList_Refl, "08AUGDIS-1870");
-				categoryIdList1=FetchBookList_Refl.then().extract().path("bookList.book.categoryIdList[17]");
-				
-				Response RefreshcategoryFixed=RefreshCategory.refreshCategory(categoryIdList1, userToken, "fs313", "IPAD");
-				Validation.responseHeaderCodeValidation(RefreshcategoryFixed,HttpStatus.SC_OK);
-				Validation.responseCodeValidation1(RefreshcategoryFixed, HttpStatus.SC_OK);
-				Validation.responseTimeValidation(RefreshcategoryFixed);
-				responseMsg=RefreshcategoryFixed.then().extract().path("responseMsg");
-				Validation.responseKeyAndValue(RefreshcategoryFixed,"responseMsg","SUCCESS");
-				Validation.responseKeyValidation_key(RefreshcategoryFixed, "id");
-				Validation.responseKeyValidation_key(RefreshcategoryFixed, "name");
-				Validation.responseKeyValidation_key(RefreshcategoryFixed, "hash");
-				Validation.responseKeyValidation_key(RefreshcategoryFixed, "bookIdList");	
-				System.out.println("RefreshCategory : "+RefreshcategoryFixed);
-				
-				Response FetchBookList_ver_fix=FetchBookList.fetchBookList_without_pagination(userToken, "ewe3242", "IPAD");
-				Validation.responseHeaderCodeValidation(FetchBookList_ver_fix,HttpStatus.SC_OK);
-				Validation.responseCodeValidation1(FetchBookList_ver_fix, HttpStatus.SC_OK);
-				Validation.responseTimeValidation(FetchBookList_ver_fix);				
-				Validation.responseKeyValidation_key(FetchBookList_ver_fix, "146");
-				title=FetchBookList_ver_fix.then().extract().path("bookList.book.title[17]");
+				System.out.println("FetchBookList_Refl : "+FetchBookList_nat);
+				Validation.responseKeyValidation_key(FetchBookList_nat, "New_ADHOC");
+				//categoryIdList1=FetchBookList_nat.then().extract().path("bookList.book.categoryIdList[17]");
+
+				Response RefreshcategoryRefl=RefreshCategory.refreshCategory(""+categoryIdList1+"", userToken, "fs313", "IPAD");
+				Validation.responseHeaderCodeValidation(RefreshcategoryRefl,HttpStatus.SC_OK);//Reflow_cat2_UPD
+				Validation.responseCodeValidation1(RefreshcategoryRefl, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(RefreshcategoryRefl);
+				responseMsg=RefreshcategoryRefl.then().extract().path("responseMsg");
+				Validation.responseKeyAndValue(RefreshcategoryRefl,"responseMsg","SUCCESS");
+				Validation.responseKeyValidation_key(RefreshcategoryRefl, "id");
+				Validation.responseKeyValidation_key(RefreshcategoryRefl, "name");
+				Validation.responseKeyValidation_key(RefreshcategoryRefl, "hash");
+				Validation.responseKeyValidation_key(RefreshcategoryRefl, "bookIdList");	
+				System.out.println("RefreshCategory : "+RefreshcategoryRefl);
+
+				Response FetchBookList_ver_Reflo=FetchBookList.fetchBookList_without_pagination(userToken,"ewe3242","IPAD");
+				Validation.responseHeaderCodeValidation(FetchBookList_ver_Reflo,HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(FetchBookList_ver_Reflo, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(FetchBookList_ver_Reflo);				
+				//Validation.responseKeyValidation_key(FetchBookList_ver_Reflo, "146");
+				title=FetchBookList_ver_Reflo.then().extract().path("bookList.book.title[2]");
 				Log.info("title : "+title);
-				category=FetchBookList_ver_fix.then().extract().path("bookList.book.category[17]");
+				category=FetchBookList_ver_Reflo.then().extract().path("bookList.book.category[2]");
 				Log.info("category : "+category);
-				categoryList=FetchBookList_ver_fix.then().extract().path("bookList.book.categoryList[17]");
+				categoryList=FetchBookList_ver_Reflo.then().extract().path("bookList.book.categoryList[2]");
 				Log.info("categoryList : "+categoryList);
-				categoryIdList=FetchBookList_ver_fix.then().extract().path("bookList.book.categoryIdList[17]");
+				categoryIdList=FetchBookList_ver_Reflo.then().extract().path("bookList.book.categoryIdList[2]");
 				Log.info("categoryIdList : "+categoryIdList);
-				System.out.println("FetchBookList_ver : "+FetchBookList_ver_fix);
-				Validation.responseKeyValidation_key(FetchBookList_ver_fix, "08AUGDIS-1870");
-				categoryIdList2=FetchBookList_ver_fix.then().extract().path("bookList.book.categoryIdList[18]");
-				
-				Response RefreshcategoryVideo=RefreshCategory.refreshCategory(categoryIdList2, userToken, "fs313", "IPAD");
-				Validation.responseHeaderCodeValidation(RefreshcategoryVideo,HttpStatus.SC_OK);
-				Validation.responseCodeValidation1(RefreshcategoryVideo, HttpStatus.SC_OK);
-				Validation.responseTimeValidation(RefreshcategoryVideo);
-				responseMsg=RefreshcategoryVideo.then().extract().path("responseMsg");
-				Validation.responseKeyAndValue(RefreshcategoryVideo,"responseMsg","SUCCESS");
-				Validation.responseKeyValidation_key(RefreshcategoryVideo, "id");
-				Validation.responseKeyValidation_key(RefreshcategoryVideo, "name");
-				Validation.responseKeyValidation_key(RefreshcategoryVideo, "hash");
-				Validation.responseKeyValidation_key(RefreshcategoryVideo, "bookIdList");	
-				System.out.println("RefreshCategory : "+RefreshcategoryVideo);
-				
-				Response FetchBookList_ver_video=FetchBookList.fetchBookList_without_pagination(userToken, "ewe3242", "IPAD");
-				Validation.responseHeaderCodeValidation(FetchBookList_ver_video,HttpStatus.SC_OK);
-				Validation.responseCodeValidation1(FetchBookList_ver_video, HttpStatus.SC_OK);
-				Validation.responseTimeValidation(FetchBookList_ver_video);				
-				Validation.responseKeyValidation_key(FetchBookList_ver_video, "206");
-				title=FetchBookList_ver_video.then().extract().path("bookList.book.title[18]");
+				System.out.println("FetchBookList_ver : "+FetchBookList_ver_Reflo);
+				Validation.responseKeyValidation_key(FetchBookList_ver_Reflo, "New_ADHOC");
+				//categoryIdList2=FetchBookList_ver_Reflo.then().extract().path("bookList.book.categoryIdList[18]");
+
+				Response RefreshcategoryAudio=RefreshCategory.refreshCategory(""+categoryIdList2+"", userToken, "fs313", "IPAD");
+				Validation.responseHeaderCodeValidation(RefreshcategoryAudio,HttpStatus.SC_OK);//Audio_cat2_UPD1
+				Validation.responseCodeValidation1(RefreshcategoryAudio, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(RefreshcategoryAudio);
+				responseMsg=RefreshcategoryAudio.then().extract().path("responseMsg");
+				Validation.responseKeyAndValue(RefreshcategoryAudio,"responseMsg","SUCCESS");
+				Validation.responseKeyValidation_key(RefreshcategoryAudio, "id");
+				Validation.responseKeyValidation_key(RefreshcategoryAudio, "name");
+				Validation.responseKeyValidation_key(RefreshcategoryAudio, "hash");
+				Validation.responseKeyValidation_key(RefreshcategoryAudio, "bookIdList");	
+				System.out.println("RefreshCategory : "+RefreshcategoryAudio);
+
+				Response FetchBookList_ver_audio=FetchBookList.fetchBookList_without_pagination(userToken,"ewe3242","IPAD");
+				Validation.responseHeaderCodeValidation(FetchBookList_ver_audio,HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(FetchBookList_ver_audio, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(FetchBookList_ver_audio);				
+				//Validation.responseKeyValidation_key(FetchBookList_ver_audio, "206");
+				title=FetchBookList_ver_audio.then().extract().path("bookList.book.title[3]");
 				Log.info("title : "+title);
-				category=FetchBookList_ver_video.then().extract().path("bookList.book.category[18]");
+				category=FetchBookList_ver_audio.then().extract().path("bookList.book.category[3]");
 				Log.info("category : "+category);
-				categoryList=FetchBookList_ver_video.then().extract().path("bookList.book.categoryList[18]");
+				categoryList=FetchBookList_ver_audio.then().extract().path("bookList.book.categoryList[3]");
 				Log.info("categoryList : "+categoryList);
-				categoryIdList=FetchBookList_ver_video.then().extract().path("bookList.book.categoryIdList[18]");
+				categoryIdList=FetchBookList_ver_audio.then().extract().path("bookList.book.categoryIdList[3]");
 				Log.info("categoryIdList : "+categoryIdList);
-				System.out.println("FetchBookList_ver : "+FetchBookList_ver_video);
-				Validation.responseKeyValidation_key(FetchBookList_ver_video, "08AUGDIS-1870");
-				categoryIdList3=FetchBookList_ver_video.then().extract().path("bookList.book.categoryIdList[2]");
-				
-				Response Refreshcategory_Native=RefreshCategory.refreshCategory(categoryIdList3, userToken, "fs313", "IPAD");
-				Validation.responseHeaderCodeValidation(Refreshcategory_Native,HttpStatus.SC_OK);
-				Validation.responseCodeValidation1(Refreshcategory_Native, HttpStatus.SC_OK);
-				Validation.responseTimeValidation(Refreshcategory_Native);
-				responseMsg =  Refreshcategory_Native.then().extract().path("responseMsg");
-				Validation.responseKeyAndValue(Refreshcategory_Native,"responseMsg","SUCCESS");
-				Validation.responseKeyValidation_key(Refreshcategory_Native, "id");
-				Validation.responseKeyValidation_key(Refreshcategory_Native, "name");
-				Validation.responseKeyValidation_key(Refreshcategory_Native, "hash");
-				Validation.responseKeyValidation_key(Refreshcategory_Native, "bookIdList");	
-				System.out.println("RefreshCategory : "+Refreshcategory_Native);
-				
-				Response FetchBookList_ver_Native=FetchBookList.fetchBookList_without_pagination(userToken, "ewe3242", "IPAD");
-				Validation.responseHeaderCodeValidation(FetchBookList_ver_Native,HttpStatus.SC_OK);
-				Validation.responseCodeValidation1(FetchBookList_ver_Native, HttpStatus.SC_OK);
-				Validation.responseTimeValidation(FetchBookList_ver_Native);				
-				Validation.responseKeyValidation_key(FetchBookList_ver_Native, "133");
-				title=FetchBookList_ver_Native.then().extract().path("bookList.book.title[2]");
+				System.out.println("FetchBookList_ver : "+FetchBookList_ver_audio);
+				Validation.responseKeyValidation_key(FetchBookList_ver_audio, "New_ADHOC");
+				//categoryIdList3=FetchBookList_ver_audio.then().extract().path("bookList.book.categoryIdList[2]");
+
+				Response Refreshcategory_Fixed=RefreshCategory.refreshCategory(""+categoryIdList3+"", userToken, "fs313", "IPAD");
+				Validation.responseHeaderCodeValidation(Refreshcategory_Fixed,HttpStatus.SC_OK);//Fixed_cat2_UPD
+				Validation.responseCodeValidation1(Refreshcategory_Fixed, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(Refreshcategory_Fixed);
+				responseMsg =  Refreshcategory_Fixed.then().extract().path("responseMsg");
+				Validation.responseKeyAndValue(Refreshcategory_Fixed,"responseMsg","SUCCESS");
+				Validation.responseKeyValidation_key(Refreshcategory_Fixed, "id");
+				Validation.responseKeyValidation_key(Refreshcategory_Fixed, "name");
+				Validation.responseKeyValidation_key(Refreshcategory_Fixed, "hash");
+				Validation.responseKeyValidation_key(Refreshcategory_Fixed, "bookIdList");	
+				System.out.println("RefreshCategory : "+Refreshcategory_Fixed);
+
+				Response FetchBookList_ver_Fix=FetchBookList.fetchBookList_without_pagination(userToken, "ewe3242", "IPAD");
+				Validation.responseHeaderCodeValidation(FetchBookList_ver_Fix,HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(FetchBookList_ver_Fix, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(FetchBookList_ver_Fix);				
+				//Validation.responseKeyValidation_key(FetchBookList_ver_Fix, "133");
+				title=FetchBookList_ver_Fix.then().extract().path("bookList.book.title[5]");
 				Log.info("title : "+title);
-				category=FetchBookList_ver_Native.then().extract().path("bookList.book.category[2]");
+				category=FetchBookList_ver_Fix.then().extract().path("bookList.book.category[5]");
 				Log.info("category : "+category);
-				categoryList=FetchBookList_ver_Native.then().extract().path("bookList.book.categoryList[2]");
+				categoryList=FetchBookList_ver_Fix.then().extract().path("bookList.book.categoryList[5]");
 				Log.info("categoryList : "+categoryList);
-				categoryIdList=FetchBookList_ver_Native.then().extract().path("bookList.book.categoryIdList[2]");
+				categoryIdList=FetchBookList_ver_Fix.then().extract().path("bookList.book.categoryIdList[5]");
 				Log.info("categoryIdList : "+categoryIdList);
-				System.out.println("FetchBookList_ver : "+FetchBookList_ver_Native);
-				Validation.responseKeyValidation_key(FetchBookList_ver_Native, "08AUGDIS-1870");
-				categoryIdList4=FetchBookList_ver_Native.then().extract().path("bookList.book.categoryIdList[19]");
+				System.out.println("FetchBookList_ver : "+FetchBookList_ver_Fix);
+				Validation.responseKeyValidation_key(FetchBookList_ver_Fix, "New_ADHOC");
+				//categoryIdList4=FetchBookList_ver_Fix.then().extract().path("bookList.book.categoryIdList[19]");
 				
-				Response Refreshcategory_Audio=RefreshCategory.refreshCategory(categoryIdList4, userToken, "fs313", "IPAD");
-				Validation.responseHeaderCodeValidation(Refreshcategory_Audio,HttpStatus.SC_OK);
-				Validation.responseCodeValidation1(Refreshcategory_Audio, HttpStatus.SC_OK);
-				Validation.responseTimeValidation(Refreshcategory_Audio);
-				responseMsg =  Refreshcategory_Audio.then().extract().path("responseMsg");
-				Validation.responseKeyAndValue(Refreshcategory_Audio,"responseMsg","SUCCESS");
-				Validation.responseKeyValidation_key(Refreshcategory_Audio, "id");
-				Validation.responseKeyValidation_key(Refreshcategory_Audio, "name");
-				Validation.responseKeyValidation_key(Refreshcategory_Audio, "hash");
-				Validation.responseKeyValidation_key(Refreshcategory_Audio, "bookIdList");	
-				System.out.println("RefreshCategory : "+Refreshcategory_Audio);
+				Response MultiCategorybookList=MultiCategoryBookList.multiCategoryBookList(catlevel, bookID1, "jdbc:mysql://172.18.10.147:3306","readonly","readonly@123", userToken, "dsd3231332", "IPAD");
+				Validation.responseHeaderCodeValidation(MultiCategorybookList,HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(MultiCategorybookList, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(MultiCategorybookList);
+				Validation.responseNOTKeyValidation_key(MultiCategorybookList, "category");
+				Validation.responseNOTKeyValidation_key(MultiCategorybookList, "categoryIdList");
+				Validation.responseNOTKeyValidation_key(MultiCategorybookList, "categoryList");
+				Validation.responseKeyValidation_key(MultiCategorybookList, "collectionID");
+				Validation.responseKeyValidation_key(MultiCategorybookList, "New_ADHOC");
+				System.out.println("MultiCategorybookList : "+MultiCategorybookList);
 				
-				Response FetchBookList_ver_Audio=FetchBookList.fetchBookList_without_pagination(userToken, "ewe3242", "IPAD");
-				Validation.responseHeaderCodeValidation(FetchBookList_ver_Audio,HttpStatus.SC_OK);
-				Validation.responseCodeValidation1(FetchBookList_ver_Audio, HttpStatus.SC_OK);
-				Validation.responseTimeValidation(FetchBookList_ver_Audio);				
-				Validation.responseKeyValidation_key(FetchBookList_ver_Audio, "133");
-				title=FetchBookList_ver_Audio.then().extract().path("bookList.book.title[19]");
+				Response multiCategoryCollectionBookList=MultiCategoryCollectionBookList.multiCategoryCollectionBookList(catlevel,bookID1,"jdbc:mysql://172.18.10.147:3306","readonly","readonly@123",userToken,"ds32323","IPAD",collectionName0);
+				Validation.responseHeaderCodeValidation(multiCategoryCollectionBookList,HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(multiCategoryCollectionBookList, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(multiCategoryCollectionBookList);
+				Validation.responseNOTKeyValidation_key(multiCategoryCollectionBookList, "category");
+				Validation.responseNOTKeyValidation_key(multiCategoryCollectionBookList, "categoryIdList");
+				Validation.responseNOTKeyValidation_key(multiCategoryCollectionBookList, "categoryList");
+				Validation.responseKeyValidation_key(multiCategoryCollectionBookList, "collectionID");
+				Validation.responseKeyValidation_key(multiCategoryCollectionBookList, "New_ADHOC");
+				Validation.responseKeyAndValue(multiCategoryCollectionBookList,"collectionTitle",collectionName0);
+				System.out.println("MultiCategoryCollectionBookList : "+multiCategoryCollectionBookList);
+
+	//ANDROID		
+				Refreshcategory_Nat=RefreshCategory.refreshCategory(""+categoryIdList0+"", userToken, "fs313", "ANDROID");
+				Validation.responseHeaderCodeValidation(Refreshcategory_Nat,HttpStatus.SC_OK);//Native_cat2_UPD
+				Validation.responseCodeValidation1(Refreshcategory_Nat, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(Refreshcategory_Nat);
+				responseMsg=Refreshcategory_Nat.then().extract().path("responseMsg");
+				Validation.responseKeyAndValue(Refreshcategory_Nat,"responseMsg","SUCCESS");
+				Validation.responseKeyValidation_key(Refreshcategory_Nat, "id");
+				id0=Refreshcategory_Nat.then().extract().path("categories.id[0]");
+				Log.info("id0 : "+id0);
+				Validation.responseKeyValidation_key(Refreshcategory_Nat, "name");
+				Validation.responseKeyValidation_key(Refreshcategory_Nat, "hash");
+				Validation.responseKeyValidation_key(Refreshcategory_Nat, "bookIdList");	
+				System.out.println("Refreshcategory_Nat : "+Refreshcategory_Nat);
+
+
+				FetchBookList_nat=FetchBookList.fetchBookList_without_pagination(userToken, "ewe3242", "ANDROID");
+				Validation.responseHeaderCodeValidation(FetchBookList_nat,HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(FetchBookList_nat, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(FetchBookList_nat);
+				title=FetchBookList_nat.then().extract().path("bookList.book.title[0]");
 				Log.info("title : "+title);
-				category=FetchBookList_ver_Audio.then().extract().path("bookList.book.category[19]");
+				category=FetchBookList_nat.then().extract().path("bookList.book.category[0]");
 				Log.info("category : "+category);
-				categoryList=FetchBookList_ver_Audio.then().extract().path("bookList.book.categoryList[19]");
+				//Validation.responseKcount(FetchBookList_Refl, category);
+				//Validation.responseKcount1(FetchBookList_Refl, "New_ADHOC");
+				categoryList=FetchBookList_nat.then().extract().path("bookList.book.categoryList[0]");
 				Log.info("categoryList : "+categoryList);
-				categoryIdList=FetchBookList_ver_Audio.then().extract().path("bookList.book.categoryIdList[19]");
+				categoryIdList=FetchBookList_nat.then().extract().path("bookList.book.categoryIdList[0]");
 				Log.info("categoryIdList : "+categoryIdList);
-				System.out.println("FetchBookList_ver : "+FetchBookList_ver_Audio);
-				Validation.responseKeyValidation_key(FetchBookList_ver_Audio, "08AUGDIS-1870");
-				//categoryIdList3=FetchBookList_ver_Audio.then().extract().path("bookList.book.categoryIdList[2]");
-				
-		//ANDROID		
-				Response Refreshcategory_Refl1=RefreshCategory.refreshCategory(categoryIdList0, userToken, "fs313", "ANDROID");
-				Validation.responseHeaderCodeValidation(Refreshcategory_Refl1,HttpStatus.SC_OK);
-				Validation.responseCodeValidation1(Refreshcategory_Refl1, HttpStatus.SC_OK);
-				Validation.responseTimeValidation(Refreshcategory_Refl1);
-				responseMsg=Refreshcategory_Refl1.then().extract().path("responseMsg");
-				Validation.responseKeyAndValue(Refreshcategory_Refl1,"responseMsg","SUCCESS");
-				Validation.responseKeyValidation_key(Refreshcategory_Refl1, "id");
-				Validation.responseKeyValidation_key(Refreshcategory_Refl1, "name");
-				Validation.responseKeyValidation_key(Refreshcategory_Refl1, "hash");
-				Validation.responseKeyValidation_key(Refreshcategory_Refl1, "bookIdList");	
-				System.out.println("Refreshcategory_Refl : "+Refreshcategory_Refl1);
-				
-				
-				Response FetchBookList_Refl1=FetchBookList.fetchBookList_without_pagination(userToken, "ewe3242", "ANDROID");
-				Validation.responseHeaderCodeValidation(FetchBookList_Refl1,HttpStatus.SC_OK);
-				Validation.responseCodeValidation1(FetchBookList_Refl1, HttpStatus.SC_OK);
-				Validation.responseTimeValidation(FetchBookList_Refl1);
-				Validation.responseKeyValidation_key(FetchBookList_Refl1, "154");
-				title=FetchBookList_Refl1.then().extract().path("bookList.book.title[0]");
+				System.out.println("FetchBookList_Refl : "+FetchBookList_nat);
+				Validation.responseKeyValidation_key(FetchBookList_nat, "New_ADHOC");
+				//categoryIdList1=FetchBookList_nat.then().extract().path("bookList.book.categoryIdList[17]");
+
+				RefreshcategoryRefl=RefreshCategory.refreshCategory(""+categoryIdList1+"", userToken, "fs313", "ANDROID");
+				Validation.responseHeaderCodeValidation(RefreshcategoryRefl,HttpStatus.SC_OK);//Reflow_cat2_UPD
+				Validation.responseCodeValidation1(RefreshcategoryRefl, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(RefreshcategoryRefl);
+				responseMsg=RefreshcategoryRefl.then().extract().path("responseMsg");
+				Validation.responseKeyAndValue(RefreshcategoryRefl,"responseMsg","SUCCESS");
+				Validation.responseKeyValidation_key(RefreshcategoryRefl, "id");
+				Validation.responseKeyValidation_key(RefreshcategoryRefl, "name");
+				Validation.responseKeyValidation_key(RefreshcategoryRefl, "hash");
+				Validation.responseKeyValidation_key(RefreshcategoryRefl, "bookIdList");	
+				System.out.println("RefreshCategory : "+RefreshcategoryRefl);
+
+				FetchBookList_ver_Reflo=FetchBookList.fetchBookList_without_pagination(userToken, "ewe3242", "ANDROID");
+				Validation.responseHeaderCodeValidation(FetchBookList_ver_Reflo,HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(FetchBookList_ver_Reflo, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(FetchBookList_ver_Reflo);				
+				//Validation.responseKeyValidation_key(FetchBookList_ver_Reflo, "146");
+				title=FetchBookList_ver_Reflo.then().extract().path("bookList.book.title[2]");
 				Log.info("title : "+title);
-				category=FetchBookList_Refl1.then().extract().path("bookList.book.category[0]");
+				category=FetchBookList_ver_Reflo.then().extract().path("bookList.book.category[2]");
 				Log.info("category : "+category);
-				categoryList=FetchBookList_Refl1.then().extract().path("bookList.book.categoryList[0]");
+				categoryList=FetchBookList_ver_Reflo.then().extract().path("bookList.book.categoryList[2]");
 				Log.info("categoryList : "+categoryList);
-				categoryIdList=FetchBookList_Refl1.then().extract().path("bookList.book.categoryIdList[0]");
+				categoryIdList=FetchBookList_ver_Reflo.then().extract().path("bookList.book.categoryIdList[2]");
 				Log.info("categoryIdList : "+categoryIdList);
-				System.out.println("FetchBookList_Refl : "+FetchBookList_Refl1);
-				Validation.responseKeyValidation_key(FetchBookList_Refl1, "08AUGDIS-1870");
-				categoryIdList1=FetchBookList_Refl1.then().extract().path("bookList.book.categoryIdList[17]");
+				System.out.println("FetchBookList_ver : "+FetchBookList_ver_Reflo);
+				Validation.responseKeyValidation_key(FetchBookList_ver_Reflo, "New_ADHOC");
+				//categoryIdList2=FetchBookList_ver_Reflo.then().extract().path("bookList.book.categoryIdList[18]");
 				
-				Response RefreshcategoryFixed1=RefreshCategory.refreshCategory(categoryIdList1, userToken, "fs313", "ANDROID");
-				Validation.responseHeaderCodeValidation(RefreshcategoryFixed1,HttpStatus.SC_OK);
-				Validation.responseCodeValidation1(RefreshcategoryFixed1, HttpStatus.SC_OK);
-				Validation.responseTimeValidation(RefreshcategoryFixed1);
-				responseMsg=RefreshcategoryFixed1.then().extract().path("responseMsg");
-				Validation.responseKeyAndValue(RefreshcategoryFixed1,"responseMsg","SUCCESS");
-				Validation.responseKeyValidation_key(RefreshcategoryFixed1, "id");
-				Validation.responseKeyValidation_key(RefreshcategoryFixed1, "name");
-				Validation.responseKeyValidation_key(RefreshcategoryFixed1, "hash");
-				Validation.responseKeyValidation_key(RefreshcategoryFixed1, "bookIdList");	
-				System.out.println("RefreshCategory : "+RefreshcategoryFixed1);
-				
-				Response FetchBookList_ver_fix1=FetchBookList.fetchBookList_without_pagination(userToken, "ewe3242", "ANDROID");
-				Validation.responseHeaderCodeValidation(FetchBookList_ver_fix1,HttpStatus.SC_OK);
-				Validation.responseCodeValidation1(FetchBookList_ver_fix1, HttpStatus.SC_OK);
-				Validation.responseTimeValidation(FetchBookList_ver_fix1);				
-				Validation.responseKeyValidation_key(FetchBookList_ver_fix1, "146");
-				title=FetchBookList_ver_fix1.then().extract().path("bookList.book.title[17]");
+
+				RefreshcategoryAudio=RefreshCategory.refreshCategory(""+categoryIdList2+"", userToken, "fs313", "ANDROID");
+				Validation.responseHeaderCodeValidation(RefreshcategoryAudio,HttpStatus.SC_OK);//Audio_cat2_UPD1
+				Validation.responseCodeValidation1(RefreshcategoryAudio, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(RefreshcategoryAudio);
+				responseMsg=RefreshcategoryAudio.then().extract().path("responseMsg");
+				Validation.responseKeyAndValue(RefreshcategoryAudio,"responseMsg","SUCCESS");
+				Validation.responseKeyValidation_key(RefreshcategoryAudio, "id");
+				Validation.responseKeyValidation_key(RefreshcategoryAudio, "name");
+				Validation.responseKeyValidation_key(RefreshcategoryAudio, "hash");
+				Validation.responseKeyValidation_key(RefreshcategoryAudio, "bookIdList");	
+				System.out.println("RefreshCategory : "+RefreshcategoryAudio);
+
+				FetchBookList_ver_audio=FetchBookList.fetchBookList_without_pagination(userToken, "ewe3242", "ANDROID");
+				Validation.responseHeaderCodeValidation(FetchBookList_ver_audio,HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(FetchBookList_ver_audio, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(FetchBookList_ver_audio);				
+				//Validation.responseKeyValidation_key(FetchBookList_ver_audio, "206");
+				title=FetchBookList_ver_audio.then().extract().path("bookList.book.title[3]");
 				Log.info("title : "+title);
-				category=FetchBookList_ver_fix1.then().extract().path("bookList.book.category[17]");
+				category=FetchBookList_ver_audio.then().extract().path("bookList.book.category[3]");
 				Log.info("category : "+category);
-				categoryList=FetchBookList_ver_fix1.then().extract().path("bookList.book.categoryList[17]");
+				categoryList=FetchBookList_ver_audio.then().extract().path("bookList.book.categoryList[3]");
 				Log.info("categoryList : "+categoryList);
-				categoryIdList=FetchBookList_ver_fix1.then().extract().path("bookList.book.categoryIdList[17]");
+				categoryIdList=FetchBookList_ver_audio.then().extract().path("bookList.book.categoryIdList[3]");
 				Log.info("categoryIdList : "+categoryIdList);
-				System.out.println("FetchBookList_ver : "+FetchBookList_ver_fix1);
-				Validation.responseKeyValidation_key(FetchBookList_ver_fix1, "08AUGDIS-1870");
-				categoryIdList2=FetchBookList_ver_fix1.then().extract().path("bookList.book.categoryIdList[18]");
+				System.out.println("FetchBookList_ver : "+FetchBookList_ver_audio);
+				Validation.responseKeyValidation_key(FetchBookList_ver_audio, "New_ADHOC");
+				//categoryIdList3=FetchBookList_ver_audio.then().extract().path("bookList.book.categoryIdList[2]");
 				
-				Response RefreshcategoryVideo1=RefreshCategory.refreshCategory(categoryIdList2, userToken, "fs313", "ANDROID");
-				Validation.responseHeaderCodeValidation(RefreshcategoryVideo1,HttpStatus.SC_OK);
-				Validation.responseCodeValidation1(RefreshcategoryVideo1, HttpStatus.SC_OK);
-				Validation.responseTimeValidation(RefreshcategoryVideo1);
-				responseMsg=RefreshcategoryVideo1.then().extract().path("responseMsg");
-				Validation.responseKeyAndValue(RefreshcategoryVideo1,"responseMsg","SUCCESS");
-				Validation.responseKeyValidation_key(RefreshcategoryVideo1, "id");
-				Validation.responseKeyValidation_key(RefreshcategoryVideo1, "name");
-				Validation.responseKeyValidation_key(RefreshcategoryVideo1, "hash");
-				Validation.responseKeyValidation_key(RefreshcategoryVideo1, "bookIdList");	
-				System.out.println("RefreshCategory : "+RefreshcategoryVideo1);
-				
-				Response FetchBookList_ver_video1=FetchBookList.fetchBookList_without_pagination(userToken, "ewe3242", "ANDROID");
-				Validation.responseHeaderCodeValidation(FetchBookList_ver_video1,HttpStatus.SC_OK);
-				Validation.responseCodeValidation1(FetchBookList_ver_video1, HttpStatus.SC_OK);
-				Validation.responseTimeValidation(FetchBookList_ver_video1);				
-				Validation.responseKeyValidation_key(FetchBookList_ver_video1, "206");
-				title=FetchBookList_ver_video1.then().extract().path("bookList.book.title[18]");
+
+				Refreshcategory_Fixed=RefreshCategory.refreshCategory(""+categoryIdList3+"", userToken, "fs313", "ANDROID");
+				Validation.responseHeaderCodeValidation(Refreshcategory_Fixed,HttpStatus.SC_OK);//Fixed_cat2_UPD
+				Validation.responseCodeValidation1(Refreshcategory_Fixed, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(Refreshcategory_Fixed);
+				responseMsg =  Refreshcategory_Fixed.then().extract().path("responseMsg");
+				Validation.responseKeyAndValue(Refreshcategory_Fixed,"responseMsg","SUCCESS");
+				Validation.responseKeyValidation_key(Refreshcategory_Fixed, "id");
+				Validation.responseKeyValidation_key(Refreshcategory_Fixed, "name");
+				Validation.responseKeyValidation_key(Refreshcategory_Fixed, "hash");
+				Validation.responseKeyValidation_key(Refreshcategory_Fixed, "bookIdList");	
+				System.out.println("RefreshCategory : "+Refreshcategory_Fixed);
+
+				FetchBookList_ver_Fix=FetchBookList.fetchBookList_without_pagination(userToken, "ewe3242", "ANDROID");
+				Validation.responseHeaderCodeValidation(FetchBookList_ver_Fix,HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(FetchBookList_ver_Fix, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(FetchBookList_ver_Fix);				
+				//Validation.responseKeyValidation_key(FetchBookList_ver_Fix, "133");
+				title=FetchBookList_ver_Fix.then().extract().path("bookList.book.title[5]");
 				Log.info("title : "+title);
-				category=FetchBookList_ver_video1.then().extract().path("bookList.book.category[18]");
+				category=FetchBookList_ver_Fix.then().extract().path("bookList.book.category[5]");
 				Log.info("category : "+category);
-				categoryList=FetchBookList_ver_video1.then().extract().path("bookList.book.categoryList[18]");
+				categoryList=FetchBookList_ver_Fix.then().extract().path("bookList.book.categoryList[5]");
 				Log.info("categoryList : "+categoryList);
-				categoryIdList=FetchBookList_ver_video1.then().extract().path("bookList.book.categoryIdList[18]");
+				categoryIdList=FetchBookList_ver_Fix.then().extract().path("bookList.book.categoryIdList[5]");
 				Log.info("categoryIdList : "+categoryIdList);
-				System.out.println("FetchBookList_ver : "+FetchBookList_ver_video1);
-				Validation.responseKeyValidation_key(FetchBookList_ver_video1, "08AUGDIS-1870");
-				categoryIdList3=FetchBookList_ver_video1.then().extract().path("bookList.book.categoryIdList[2]");
+				System.out.println("FetchBookList_ver : "+FetchBookList_ver_Fix);
+				Validation.responseKeyValidation_key(FetchBookList_ver_Fix, "New_ADHOC");
 				
-				Response Refreshcategory_Native1=RefreshCategory.refreshCategory(categoryIdList3, userToken, "fs313", "ANDROID");
-				Validation.responseHeaderCodeValidation(Refreshcategory_Native1,HttpStatus.SC_OK);
-				Validation.responseCodeValidation1(Refreshcategory_Native1, HttpStatus.SC_OK);
-				Validation.responseTimeValidation(Refreshcategory_Native1);
-				responseMsg =  Refreshcategory_Native1.then().extract().path("responseMsg");
-				Validation.responseKeyAndValue(Refreshcategory_Native1,"responseMsg","SUCCESS");
-				Validation.responseKeyValidation_key(Refreshcategory_Native1, "id");
-				Validation.responseKeyValidation_key(Refreshcategory_Native1, "name");
-				Validation.responseKeyValidation_key(Refreshcategory_Native1, "hash");
-				Validation.responseKeyValidation_key(Refreshcategory_Native1, "bookIdList");	
-				System.out.println("RefreshCategory : "+Refreshcategory_Native1);
+				MultiCategorybookList=MultiCategoryBookList.multiCategoryBookList(catlevel, bookID1, "jdbc:mysql://172.18.10.147:3306","readonly","readonly@123", userToken, "dsd3231332", "IPAD");
+				Validation.responseHeaderCodeValidation(MultiCategorybookList,HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(MultiCategorybookList, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(MultiCategorybookList);
+				Validation.responseNOTKeyValidation_key(MultiCategorybookList, "category");
+				Validation.responseNOTKeyValidation_key(MultiCategorybookList, "categoryIdList");
+				Validation.responseNOTKeyValidation_key(MultiCategorybookList, "categoryList");
+				Validation.responseKeyValidation_key(MultiCategorybookList, "collectionID");
+				Validation.responseKeyValidation_key(MultiCategorybookList, "New_ADHOC");
+				System.out.println("MultiCategorybookList : "+MultiCategorybookList);
 				
-				Response FetchBookList_ver_Native1=FetchBookList.fetchBookList_without_pagination(userToken, "ewe3242", "ANDROID");
-				Validation.responseHeaderCodeValidation(FetchBookList_ver_Native1,HttpStatus.SC_OK);
-				Validation.responseCodeValidation1(FetchBookList_ver_Native1, HttpStatus.SC_OK);
-				Validation.responseTimeValidation(FetchBookList_ver_Native1);				
-				Validation.responseKeyValidation_key(FetchBookList_ver_Native1, "133");
-				title=FetchBookList_ver_Native1.then().extract().path("bookList.book.title[2]");
+				multiCategoryCollectionBookList=MultiCategoryCollectionBookList.multiCategoryCollectionBookList(catlevel, bookID1,"jdbc:mysql://172.18.10.147:3306","readonly","readonly@123", userToken, "ds32323", "IPAD", collectionName0);
+				Validation.responseHeaderCodeValidation(multiCategoryCollectionBookList,HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(multiCategoryCollectionBookList, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(multiCategoryCollectionBookList);
+				Validation.responseNOTKeyValidation_key(multiCategoryCollectionBookList, "category");
+				Validation.responseNOTKeyValidation_key(multiCategoryCollectionBookList, "categoryIdList");
+				Validation.responseNOTKeyValidation_key(multiCategoryCollectionBookList, "categoryList");
+				Validation.responseKeyValidation_key(multiCategoryCollectionBookList, "collectionID");
+				Validation.responseKeyValidation_key(multiCategoryCollectionBookList, "New_ADHOC");
+				Validation.responseKeyAndValue(multiCategoryCollectionBookList, "collectionTitle", collectionName0);
+				System.out.println("MultiCategoryCollectionBookList : "+multiCategoryCollectionBookList);
+
+	//HTML5		
+				Refreshcategory_Nat=RefreshCategory.refreshCategory(""+categoryIdList0+"", userToken, "fs313", "HTML5");
+				Validation.responseHeaderCodeValidation(Refreshcategory_Nat,HttpStatus.SC_OK);//Native_cat2_UPD
+				Validation.responseCodeValidation1(Refreshcategory_Nat, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(Refreshcategory_Nat);
+				responseMsg=Refreshcategory_Nat.then().extract().path("responseMsg");
+				Validation.responseKeyAndValue(Refreshcategory_Nat,"responseMsg","SUCCESS");
+				Validation.responseKeyValidation_key(Refreshcategory_Nat, "id");
+				id0=Refreshcategory_Nat.then().extract().path("categories.id[0]");
+				Log.info("id0 : "+id0);
+				Validation.responseKeyValidation_key(Refreshcategory_Nat, "name");
+				Validation.responseKeyValidation_key(Refreshcategory_Nat, "hash");
+				Validation.responseKeyValidation_key(Refreshcategory_Nat, "bookIdList");	
+				System.out.println("Refreshcategory_Nat : "+Refreshcategory_Nat);
+
+
+				FetchBookList_nat=FetchBookList.fetchBookList_without_pagination(userToken, "ewe3242", "HTML5");
+				Validation.responseHeaderCodeValidation(FetchBookList_nat,HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(FetchBookList_nat, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(FetchBookList_nat);
+				title=FetchBookList_nat.then().extract().path("bookList.book.title[0]");
 				Log.info("title : "+title);
-				category=FetchBookList_ver_Native1.then().extract().path("bookList.book.category[2]");
+				category=FetchBookList_nat.then().extract().path("bookList.book.category[0]");
 				Log.info("category : "+category);
-				categoryList=FetchBookList_ver_Native1.then().extract().path("bookList.book.categoryList[2]");
+				//Validation.responseKcount(FetchBookList_Refl, category);
+				//Validation.responseKcount1(FetchBookList_Refl, "New_ADHOC");
+				categoryList=FetchBookList_nat.then().extract().path("bookList.book.categoryList[0]");
 				Log.info("categoryList : "+categoryList);
-				categoryIdList=FetchBookList_ver_Native1.then().extract().path("bookList.book.categoryIdList[2]");
+				categoryIdList=FetchBookList_nat.then().extract().path("bookList.book.categoryIdList[0]");
 				Log.info("categoryIdList : "+categoryIdList);
-				System.out.println("FetchBookList_ver : "+FetchBookList_ver_Native1);
-				Validation.responseKeyValidation_key(FetchBookList_ver_Native1, "08AUGDIS-1870");
-				categoryIdList4=FetchBookList_ver_Native1.then().extract().path("bookList.book.categoryIdList[19]");
-				
-				Response Refreshcategory_Audio1=RefreshCategory.refreshCategory(categoryIdList3, userToken, "fs313", "ANDROID");
-				Validation.responseHeaderCodeValidation(Refreshcategory_Audio1,HttpStatus.SC_OK);
-				Validation.responseCodeValidation1(Refreshcategory_Audio1, HttpStatus.SC_OK);
-				Validation.responseTimeValidation(Refreshcategory_Audio1);
-				responseMsg =  Refreshcategory_Audio1.then().extract().path("responseMsg");
-				Validation.responseKeyAndValue(Refreshcategory_Audio1,"responseMsg","SUCCESS");
-				Validation.responseKeyValidation_key(Refreshcategory_Audio1, "id");
-				Validation.responseKeyValidation_key(Refreshcategory_Audio1, "name");
-				Validation.responseKeyValidation_key(Refreshcategory_Audio1, "hash");
-				Validation.responseKeyValidation_key(Refreshcategory_Audio1, "bookIdList");	
-				System.out.println("RefreshCategory : "+Refreshcategory_Audio1);
-				
-				Response FetchBookList_ver_Audio1=FetchBookList.fetchBookList_without_pagination(userToken, "ewe3242", "ANDROID");
-				Validation.responseHeaderCodeValidation(FetchBookList_ver_Audio1,HttpStatus.SC_OK);
-				Validation.responseCodeValidation1(FetchBookList_ver_Audio1, HttpStatus.SC_OK);
-				Validation.responseTimeValidation(FetchBookList_ver_Audio1);				
-				Validation.responseKeyValidation_key(FetchBookList_ver_Audio1, "133");
-				title=FetchBookList_ver_Audio1.then().extract().path("bookList.book.title[19]");
+				System.out.println("FetchBookList_Refl : "+FetchBookList_nat);
+				Validation.responseKeyValidation_key(FetchBookList_nat, "New_ADHOC");
+				//categoryIdList1=FetchBookList_nat.then().extract().path("bookList.book.categoryIdList[17]");
+
+				RefreshcategoryRefl=RefreshCategory.refreshCategory(""+categoryIdList1+"", userToken, "fs313", "HTML5");
+				Validation.responseHeaderCodeValidation(RefreshcategoryRefl,HttpStatus.SC_OK);//Reflow_cat2_UPD
+				Validation.responseCodeValidation1(RefreshcategoryRefl, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(RefreshcategoryRefl);
+				responseMsg=RefreshcategoryRefl.then().extract().path("responseMsg");
+				Validation.responseKeyAndValue(RefreshcategoryRefl,"responseMsg","SUCCESS");
+				Validation.responseKeyValidation_key(RefreshcategoryRefl, "id");
+				Validation.responseKeyValidation_key(RefreshcategoryRefl, "name");
+				Validation.responseKeyValidation_key(RefreshcategoryRefl, "hash");
+				Validation.responseKeyValidation_key(RefreshcategoryRefl, "bookIdList");	
+				System.out.println("RefreshCategory : "+RefreshcategoryRefl);
+
+				FetchBookList_ver_Reflo=FetchBookList.fetchBookList_without_pagination(userToken, "ewe3242", "HTML5");
+				Validation.responseHeaderCodeValidation(FetchBookList_ver_Reflo,HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(FetchBookList_ver_Reflo, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(FetchBookList_ver_Reflo);				
+				//Validation.responseKeyValidation_key(FetchBookList_ver_Reflo, "146");
+				title=FetchBookList_ver_Reflo.then().extract().path("bookList.book.title[2]");
 				Log.info("title : "+title);
-				category=FetchBookList_ver_Audio1.then().extract().path("bookList.book.category[19]");
+				category=FetchBookList_ver_Reflo.then().extract().path("bookList.book.category[2]");
 				Log.info("category : "+category);
-				categoryList=FetchBookList_ver_Audio1.then().extract().path("bookList.book.categoryList[19]");
+				categoryList=FetchBookList_ver_Reflo.then().extract().path("bookList.book.categoryList[2]");
 				Log.info("categoryList : "+categoryList);
-				categoryIdList=FetchBookList_ver_Audio1.then().extract().path("bookList.book.categoryIdList[19]");
+				categoryIdList=FetchBookList_ver_Reflo.then().extract().path("bookList.book.categoryIdList[2]");
 				Log.info("categoryIdList : "+categoryIdList);
-				System.out.println("FetchBookList_ver : "+FetchBookList_ver_Audio1);
-				Validation.responseKeyValidation_key(FetchBookList_ver_Audio1, "08AUGDIS-1870");
-				//categoryIdList3=FetchBookList_ver_Audio1.then().extract().path("bookList.book.categoryIdList[2]");
-				
-		//HTML5		
-				Response Refreshcategory_Refl11=RefreshCategory.refreshCategory(categoryIdList0, userToken, "fs313", "HTML5");
-				Validation.responseHeaderCodeValidation(Refreshcategory_Refl11,HttpStatus.SC_OK);
-				Validation.responseCodeValidation1(Refreshcategory_Refl11, HttpStatus.SC_OK);
-				Validation.responseTimeValidation(Refreshcategory_Refl1);
-				responseMsg=Refreshcategory_Refl11.then().extract().path("responseMsg");
-				Validation.responseKeyAndValue(Refreshcategory_Refl11,"responseMsg","SUCCESS");
-				Validation.responseKeyValidation_key(Refreshcategory_Refl11, "id");
-				Validation.responseKeyValidation_key(Refreshcategory_Refl11, "name");
-				Validation.responseKeyValidation_key(Refreshcategory_Refl11, "hash");
-				Validation.responseKeyValidation_key(Refreshcategory_Refl11, "bookIdList");	
-				System.out.println("Refreshcategory_Refl : "+Refreshcategory_Refl11);
-				
-				
-				Response FetchBookList_Refl11=FetchBookList.fetchBookList_without_pagination(userToken, "ewe3242", "HTML5");
-				Validation.responseHeaderCodeValidation(FetchBookList_Refl11,HttpStatus.SC_OK);
-				Validation.responseCodeValidation1(FetchBookList_Refl11, HttpStatus.SC_OK);
-				Validation.responseTimeValidation(FetchBookList_Refl11);
-				Validation.responseKeyValidation_key(FetchBookList_Refl11, "154");
-				title=FetchBookList_Refl11.then().extract().path("bookList.book.title[0]");
+				System.out.println("FetchBookList_ver : "+FetchBookList_ver_Reflo);
+				Validation.responseKeyValidation_key(FetchBookList_ver_Reflo, "New_ADHOC");
+				//categoryIdList2=FetchBookList_ver_Reflo.then().extract().path("bookList.book.categoryIdList[18]");
+
+				RefreshcategoryAudio=RefreshCategory.refreshCategory(""+categoryIdList0+"", userToken, "fs313", "HTML5");
+				Validation.responseHeaderCodeValidation(RefreshcategoryAudio,HttpStatus.SC_OK);//Audio_cat2_UPD1
+				Validation.responseCodeValidation1(RefreshcategoryAudio, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(RefreshcategoryAudio);
+				responseMsg=RefreshcategoryAudio.then().extract().path("responseMsg");
+				Validation.responseKeyAndValue(RefreshcategoryAudio,"responseMsg","SUCCESS");
+				Validation.responseKeyValidation_key(RefreshcategoryAudio, "id");
+				Validation.responseKeyValidation_key(RefreshcategoryAudio, "name");
+				Validation.responseKeyValidation_key(RefreshcategoryAudio, "hash");
+				Validation.responseKeyValidation_key(RefreshcategoryAudio, "bookIdList");	
+				System.out.println("RefreshCategory : "+RefreshcategoryAudio);
+
+				FetchBookList_ver_audio=FetchBookList.fetchBookList_without_pagination(userToken, "ewe3242", "HTML5");
+				Validation.responseHeaderCodeValidation(FetchBookList_ver_audio,HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(FetchBookList_ver_audio, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(FetchBookList_ver_audio);				
+				//Validation.responseKeyValidation_key(FetchBookList_ver_audio, "206");
+				title=FetchBookList_ver_audio.then().extract().path("bookList.book.title[3]");
 				Log.info("title : "+title);
-				category=FetchBookList_Refl11.then().extract().path("bookList.book.category[0]");
+				category=FetchBookList_ver_audio.then().extract().path("bookList.book.category[3]");
 				Log.info("category : "+category);
-				categoryList=FetchBookList_Refl11.then().extract().path("bookList.book.categoryList[0]");
+				categoryList=FetchBookList_ver_audio.then().extract().path("bookList.book.categoryList[3]");
 				Log.info("categoryList : "+categoryList);
-				categoryIdList=FetchBookList_Refl11.then().extract().path("bookList.book.categoryIdList[0]");
+				categoryIdList=FetchBookList_ver_audio.then().extract().path("bookList.book.categoryIdList[3]");
 				Log.info("categoryIdList : "+categoryIdList);
-				System.out.println("FetchBookList_Refl : "+FetchBookList_Refl11);
-				Validation.responseKeyValidation_key(FetchBookList_Refl11, "08AUGDIS-1870");
-				categoryIdList1=FetchBookList_Refl11.then().extract().path("bookList.book.categoryIdList[17]");
-				
-				Response RefreshcategoryFixed11=RefreshCategory.refreshCategory(categoryIdList1, userToken, "fs313", "HTML5");
-				Validation.responseHeaderCodeValidation(RefreshcategoryFixed11,HttpStatus.SC_OK);
-				Validation.responseCodeValidation1(RefreshcategoryFixed11, HttpStatus.SC_OK);
-				Validation.responseTimeValidation(RefreshcategoryFixed11);
-				responseMsg=RefreshcategoryFixed11.then().extract().path("responseMsg");
-				Validation.responseKeyAndValue(RefreshcategoryFixed11,"responseMsg","SUCCESS");
-				Validation.responseKeyValidation_key(RefreshcategoryFixed11, "id");
-				Validation.responseKeyValidation_key(RefreshcategoryFixed11, "name");
-				Validation.responseKeyValidation_key(RefreshcategoryFixed11, "hash");
-				Validation.responseKeyValidation_key(RefreshcategoryFixed11, "bookIdList");	
-				System.out.println("RefreshCategory : "+RefreshcategoryFixed11);
-				
-				Response FetchBookList_ver_fix11=FetchBookList.fetchBookList_without_pagination(userToken, "ewe3242", "HTML5");
-				Validation.responseHeaderCodeValidation(FetchBookList_ver_fix11,HttpStatus.SC_OK);
-				Validation.responseCodeValidation1(FetchBookList_ver_fix11, HttpStatus.SC_OK);
-				Validation.responseTimeValidation(FetchBookList_ver_fix11);				
-				Validation.responseKeyValidation_key(FetchBookList_ver_fix11, "146");
-				title=FetchBookList_ver_fix11.then().extract().path("bookList.book.title[17]");
+				System.out.println("FetchBookList_ver : "+FetchBookList_ver_audio);
+				Validation.responseKeyValidation_key(FetchBookList_ver_audio, "New_ADHOC");
+				//categoryIdList3=FetchBookList_ver_audio.then().extract().path("bookList.book.categoryIdList[2]");
+
+				Refreshcategory_Fixed=RefreshCategory.refreshCategory(""+categoryIdList0+"", userToken, "fs313", "ANDROID");
+				Validation.responseHeaderCodeValidation(Refreshcategory_Fixed,HttpStatus.SC_OK);//Fixed_cat2_UPD
+				Validation.responseCodeValidation1(Refreshcategory_Fixed, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(Refreshcategory_Fixed);
+				responseMsg =  Refreshcategory_Fixed.then().extract().path("responseMsg");
+				Validation.responseKeyAndValue(Refreshcategory_Fixed,"responseMsg","SUCCESS");
+				Validation.responseKeyValidation_key(Refreshcategory_Fixed, "id");
+				Validation.responseKeyValidation_key(Refreshcategory_Fixed, "name");
+				Validation.responseKeyValidation_key(Refreshcategory_Fixed, "hash");
+				Validation.responseKeyValidation_key(Refreshcategory_Fixed, "bookIdList");	
+				System.out.println("RefreshCategory : "+Refreshcategory_Fixed);
+
+				FetchBookList_ver_Fix=FetchBookList.fetchBookList_without_pagination(userToken, "ewe3242", "HTML5");
+				Validation.responseHeaderCodeValidation(FetchBookList_ver_Fix,HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(FetchBookList_ver_Fix, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(FetchBookList_ver_Fix);				
+				//Validation.responseKeyValidation_key(FetchBookList_ver_Fix, "133");
+				title=FetchBookList_ver_Fix.then().extract().path("bookList.book.title[5]");
 				Log.info("title : "+title);
-				category=FetchBookList_ver_fix11.then().extract().path("bookList.book.category[17]");
+				category=FetchBookList_ver_Fix.then().extract().path("bookList.book.category[5]");
 				Log.info("category : "+category);
-				categoryList=FetchBookList_ver_fix11.then().extract().path("bookList.book.categoryList[17]");
+				categoryList=FetchBookList_ver_Fix.then().extract().path("bookList.book.categoryList[5]");
 				Log.info("categoryList : "+categoryList);
-				categoryIdList=FetchBookList_ver_fix11.then().extract().path("bookList.book.categoryIdList[17]");
+				categoryIdList=FetchBookList_ver_Fix.then().extract().path("bookList.book.categoryIdList[5]");
 				Log.info("categoryIdList : "+categoryIdList);
-				System.out.println("FetchBookList_ver : "+FetchBookList_ver_fix11);
-				Validation.responseKeyValidation_key(FetchBookList_ver_fix11, "08AUGDIS-1870");
-				categoryIdList2=FetchBookList_ver_fix11.then().extract().path("bookList.book.categoryIdList[18]");
+				System.out.println("FetchBookList_ver : "+FetchBookList_ver_Fix);
+				Validation.responseKeyValidation_key(FetchBookList_ver_Fix, "New_ADHOC");
 				
-				Response RefreshcategoryVideo11=RefreshCategory.refreshCategory(categoryIdList2, userToken, "fs313", "HTML5");
-				Validation.responseHeaderCodeValidation(RefreshcategoryVideo11,HttpStatus.SC_OK);
-				Validation.responseCodeValidation1(RefreshcategoryVideo11, HttpStatus.SC_OK);
-				Validation.responseTimeValidation(RefreshcategoryVideo11);
-				responseMsg=RefreshcategoryVideo11.then().extract().path("responseMsg");
-				Validation.responseKeyAndValue(RefreshcategoryVideo11,"responseMsg","SUCCESS");
-				Validation.responseKeyValidation_key(RefreshcategoryVideo11, "id");
-				Validation.responseKeyValidation_key(RefreshcategoryVideo11, "name");
-				Validation.responseKeyValidation_key(RefreshcategoryVideo11, "hash");
-				Validation.responseKeyValidation_key(RefreshcategoryVideo11, "bookIdList");	
-				System.out.println("RefreshCategory : "+RefreshcategoryVideo11);
+				MultiCategorybookList=MultiCategoryBookList.multiCategoryBookList(catlevel, bookID1, "jdbc:mysql://172.18.10.147:3306","readonly","readonly@123", userToken, "dsd3231332", "IPAD");
+				Validation.responseHeaderCodeValidation(MultiCategorybookList,HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(MultiCategorybookList, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(MultiCategorybookList);
+				Validation.responseNOTKeyValidation_key(MultiCategorybookList, "category");
+				Validation.responseNOTKeyValidation_key(MultiCategorybookList, "categoryIdList");
+				Validation.responseNOTKeyValidation_key(MultiCategorybookList, "categoryList");
+				Validation.responseKeyValidation_key(MultiCategorybookList, "collectionID");
+				Validation.responseKeyValidation_key(MultiCategorybookList, "New_ADHOC");
+				System.out.println("MultiCategorybookList : "+MultiCategorybookList);
 				
-				Response FetchBookList_ver_video11=FetchBookList.fetchBookList_without_pagination(userToken, "ewe3242", "HTML5");
-				Validation.responseHeaderCodeValidation(FetchBookList_ver_video11,HttpStatus.SC_OK);
-				Validation.responseCodeValidation1(FetchBookList_ver_video11, HttpStatus.SC_OK);
-				Validation.responseTimeValidation(FetchBookList_ver_video11);				
-				Validation.responseKeyValidation_key(FetchBookList_ver_video11, "206");
-				title=FetchBookList_ver_video11.then().extract().path("bookList.book.title[18]");
-				Log.info("title : "+title);
-				category=FetchBookList_ver_video11.then().extract().path("bookList.book.category[18]");
-				Log.info("category : "+category);
-				categoryList=FetchBookList_ver_video11.then().extract().path("bookList.book.categoryList[18]");
-				Log.info("categoryList : "+categoryList);
-				categoryIdList=FetchBookList_ver_video11.then().extract().path("bookList.book.categoryIdList[18]");
-				Log.info("categoryIdList : "+categoryIdList);
-				System.out.println("FetchBookList_ver : "+FetchBookList_ver_video11);
-				Validation.responseKeyValidation_key(FetchBookList_ver_video11, "08AUGDIS-1870");
-				categoryIdList3=FetchBookList_ver_video11.then().extract().path("bookList.book.categoryIdList[2]");
-				
-				Response Refreshcategory_Native12=RefreshCategory.refreshCategory(categoryIdList3, userToken, "fs313", "HTML5");
-				Validation.responseHeaderCodeValidation(Refreshcategory_Native12,HttpStatus.SC_OK);
-				Validation.responseCodeValidation1(Refreshcategory_Native12, HttpStatus.SC_OK);
-				Validation.responseTimeValidation(Refreshcategory_Native12);
-				responseMsg =  Refreshcategory_Native12.then().extract().path("responseMsg");
-				Validation.responseKeyAndValue(Refreshcategory_Native12,"responseMsg","SUCCESS");
-				Validation.responseKeyValidation_key(Refreshcategory_Native12, "id");
-				Validation.responseKeyValidation_key(Refreshcategory_Native12, "name");
-				Validation.responseKeyValidation_key(Refreshcategory_Native12, "hash");
-				Validation.responseKeyValidation_key(Refreshcategory_Native12, "bookIdList");	
-				System.out.println("RefreshCategory : "+Refreshcategory_Native12);
-				
-				Response FetchBookList_ver_Native11=FetchBookList.fetchBookList_without_pagination(userToken, "ewe3242", "HTML5");
-				Validation.responseHeaderCodeValidation(FetchBookList_ver_Native11,HttpStatus.SC_OK);
-				Validation.responseCodeValidation1(FetchBookList_ver_Native11, HttpStatus.SC_OK);
-				Validation.responseTimeValidation(FetchBookList_ver_Native11);				
-				Validation.responseKeyValidation_key(FetchBookList_ver_Native11, "133");
-				title=FetchBookList_ver_Native11.then().extract().path("bookList.book.title[2]");
-				Log.info("title : "+title);
-				category=FetchBookList_ver_Native11.then().extract().path("bookList.book.category[2]");
-				Log.info("category : "+category);
-				categoryList=FetchBookList_ver_Native11.then().extract().path("bookList.book.categoryList[2]");
-				Log.info("categoryList : "+categoryList);
-				categoryIdList=FetchBookList_ver_Native11.then().extract().path("bookList.book.categoryIdList[2]");
-				Log.info("categoryIdList : "+categoryIdList);
-				System.out.println("FetchBookList_ver : "+FetchBookList_ver_Native11);
-				Validation.responseKeyValidation_key(FetchBookList_ver_Native11, "08AUGDIS-1870");
-				categoryIdList3=FetchBookList_ver_Native11.then().extract().path("bookList.book.categoryIdList[19]");
-				
-				
-				Response Refreshcategory_Audio12=RefreshCategory.refreshCategory(categoryIdList3, userToken, "fs313", "HTML5");
-				Validation.responseHeaderCodeValidation(Refreshcategory_Audio12,HttpStatus.SC_OK);
-				Validation.responseCodeValidation1(Refreshcategory_Audio12, HttpStatus.SC_OK);
-				Validation.responseTimeValidation(Refreshcategory_Audio12);
-				responseMsg =  Refreshcategory_Audio12.then().extract().path("responseMsg");
-				Validation.responseKeyAndValue(Refreshcategory_Audio12,"responseMsg","SUCCESS");
-				Validation.responseKeyValidation_key(Refreshcategory_Audio12, "id");
-				Validation.responseKeyValidation_key(Refreshcategory_Audio12, "name");
-				Validation.responseKeyValidation_key(Refreshcategory_Audio12, "hash");
-				Validation.responseKeyValidation_key(Refreshcategory_Audio12, "bookIdList");	
-				System.out.println("RefreshCategory : "+Refreshcategory_Audio12);
-				
-				Response FetchBookList_ver_Audio11=FetchBookList.fetchBookList_without_pagination(userToken, "ewe3242", "HTML5");
-				Validation.responseHeaderCodeValidation(FetchBookList_ver_Audio11,HttpStatus.SC_OK);
-				Validation.responseCodeValidation1(FetchBookList_ver_Audio11, HttpStatus.SC_OK);
-				Validation.responseTimeValidation(FetchBookList_ver_Audio11);				
-				Validation.responseKeyValidation_key(FetchBookList_ver_Audio11, "133");
-				title=FetchBookList_ver_Audio11.then().extract().path("bookList.book.title[19]");
-				Log.info("title : "+title);
-				category=FetchBookList_ver_Audio11.then().extract().path("bookList.book.category[19]");
-				Log.info("category : "+category);
-				categoryList=FetchBookList_ver_Audio11.then().extract().path("bookList.book.categoryList[19]");
-				Log.info("categoryList : "+categoryList);
-				categoryIdList=FetchBookList_ver_Audio11.then().extract().path("bookList.book.categoryIdList[19]");
-				Log.info("categoryIdList : "+categoryIdList);
-				System.out.println("FetchBookList_ver : "+FetchBookList_ver_Audio11);
-				Validation.responseKeyValidation_key(FetchBookList_ver_Audio11, "08AUGDIS-1870");
-				//ArrayList<String> category[]=FetchBookList_ver_Audio11.then().extract().path("bookList.book.category");
-				//Object category = FetchBookList_ver_Audio11.then().extract().path("bookList.book.category");
-				List<String> category = FetchBookList_ver_Audio11.then().extract().path("bookList.book.category");
-				//boolean count=category.contains("08AUGDIS-1870");
-				Log.info("category AS WHOLE LIST  : "+category);
-				Log.info("category SIZE IS : "+category.size());
-		//Validation.responseKcount_Str(category, "08AUGDIS-1870");
-				//categoryIdList3=FetchBookList_ver_Audio11.then().extract().path("bookList.book.categoryIdList[19]");
-				
+				multiCategoryCollectionBookList=MultiCategoryCollectionBookList.multiCategoryCollectionBookList(catlevel, bookID1,"jdbc:mysql://172.18.10.147:3306","readonly","readonly@123", userToken, "ds32323", "IPAD", collectionName0);
+				Validation.responseHeaderCodeValidation(multiCategoryCollectionBookList,HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(multiCategoryCollectionBookList, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(multiCategoryCollectionBookList);
+				Validation.responseNOTKeyValidation_key(multiCategoryCollectionBookList, "category");
+				Validation.responseNOTKeyValidation_key(multiCategoryCollectionBookList, "categoryIdList");
+				Validation.responseNOTKeyValidation_key(multiCategoryCollectionBookList, "categoryList");
+				Validation.responseKeyValidation_key(multiCategoryCollectionBookList, "collectionID");
+				Validation.responseKeyValidation_key(multiCategoryCollectionBookList, "New_ADHOC");
+				Validation.responseKeyAndValue(multiCategoryCollectionBookList, "collectionTitle", collectionName0);
+				System.out.println("MultiCategoryCollectionBookList : "+multiCategoryCollectionBookList);
+
 			}
 		}catch (Exception exp) 
 		{

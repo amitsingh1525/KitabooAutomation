@@ -7,7 +7,7 @@ import com.hurix.automation.utility.Log;
 
 public class ReadingSpeed {
 	
-	public static Response readingSpeed(int bookID1,int bookID2,int bookID3,int bookID4,int bookID5,String usertoken,String deviceID,String deviceType)
+	public static Response readingSpeed(int bookID1,int bookID2,int bookID3,int bookID4,int bookID5,int bookID6,int bookID7,int bookID8,int bookID9,String usertoken,String deviceID,String deviceType)
 	{
 		Response jsonResponse = null;
 		try {
@@ -15,7 +15,7 @@ public class ReadingSpeed {
 			jsonResponse = given()
 					.header("Content-Type","application/json")
 					.queryParam("usertoken", usertoken)
-					.body("{\"bookIds\":["+bookID1+","+bookID2+","+bookID3+","+bookID4+","+bookID5+"]}")					
+					.body("{\"bookIds\":["+bookID1+","+bookID2+","+bookID3+","+bookID4+","+bookID5+","+bookID6+","+bookID7+","+bookID8+","+bookID9+"]}")					
 					.post("/DistributionServices/services/api/readerExt/user/"+deviceID+"/"+deviceType+"/fetchReadingPercentage");
 			Log.info("ReadingSpeed URL : "+"/DistributionServices/services/api/readerExt/user/"+deviceID+"/"+deviceType+"/fetchReadingPercentage");
 			Log.info("usertoken : "+usertoken);

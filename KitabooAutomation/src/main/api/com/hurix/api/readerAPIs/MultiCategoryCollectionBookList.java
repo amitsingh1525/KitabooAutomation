@@ -14,6 +14,7 @@ public class MultiCategoryCollectionBookList {
 		try {
 
 			Log.startTestCase("MultiCategoryCollectionBookList"+catLevel+"");
+			Log.info("collectName : " +collectName);
 			if(catLevel.contains ("4"))
 			{
 				Log.info("collectName Before string : "+collectName);

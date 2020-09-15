@@ -30,5 +30,4 @@ public class RefreshCategory {
 		Log.endTestCase("End");
 		return jsonResponse;
 	}
-
 }

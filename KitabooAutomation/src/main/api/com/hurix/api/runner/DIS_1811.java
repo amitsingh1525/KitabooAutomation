@@ -176,7 +176,40 @@ public class DIS_1811 {
 				Validation.responseKeyValidation_key(GETfetchBookCount_res, "totalbooks");
 				System.out.println("fetchBookCount_res : "+GETfetchBookCount_res);
 				nowEpochTime = Instant.now().toEpochMilli();
-
+				
+				Response UploadEpub_res3 = UploadEpub.uploadEpub_OAuth(consumerKey, consumerSecret,"/Thirdepub/JMeterTesting.epub","Title","Title","level4",""+nowEpochTime+"","@#$%$#^&@*(#*$&^#&@*##$%^*((");
+				epubId = UploadEpub_res3.then().extract().path("epubId");
+				System.out.println("epubId: "+epubId);
+				Thread.sleep(40000);
+				Response EpubStatus_res13 = EpubStatus.epubStatus(consumerKey, consumerSecret,epubId);
+				Validation.responseHeaderCodeValidation(EpubStatus_res13, HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(EpubStatus_res13, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(EpubStatus_res13);
+				Validation.responseKeyValidation_key(EpubStatus_res13, "status");
+				Validation.responseKeyValidation_key(EpubStatus_res13, "100");
+				System.out.println("EpubStatus_res : "+EpubStatus_res13);
+				
+				Response UploadEpub_res2 = UploadEpub.uploadEpub_OAuth(consumerKey, consumerSecret,"/Thirdepub/JMeterTesting.epub","Title","Title","level4",""+nowEpochTime+"","5PEt24UoprwYB2wjEBdnchZuU1XfV5paO9X8SW52OHjbsCc90ywZl9JFN5lQkNE8xGkWHo5SD4BJPzGiE88x85rHNczvrjQki9xf9H2f8LFol8i22eEkVm4EVmjLTgswIsDBvutumCLRuJplxFVKIcOp3fCJqy1B40DzDyzsSgwAmUcASHjlHOaUb8EHRrwmTgBIDzKuIXsR7Zdf4zkPzv6OXHaiAuzXlVaGIWen1scifhaWqh67B5ilLuJONCG8hU7OKqUYribHiwyr4m3SLwJT8DrTeaUAEPAWjNzD80Sax1ncKBHEdIwu0PIWKjLumLfY3X9goyFKANhZX1lfmZmjxXKmGBk3Skuffgl1Tmiy92jX9jIpMN4Kd1OW4U9Hf916XAJEFnEy6qzN5bx2tkGp4Q2xZ24IrMwoEGqkxhYTyRoLS9M6v3oSDdx6Hn8cp2Flmxoij4J69rLAj5OuyjWjj1pKCos8LZYWTt7aJvWBknIT8MGz537");
+				Validation.responseHeaderCodeValidation(UploadEpub_res2, HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(UploadEpub_res2, HttpStatus.SC_BAD_REQUEST);
+				Validation.responseTimeValidation(UploadEpub_res2);
+				Validation.responseINTEGERKeyAndValue(UploadEpub_res2, "Description", 101);
+				Validation.responseINTEGERKeyAndValue(UploadEpub_res2, "Mode", 100);
+				System.out.println("UploadEpub_res2 : "+UploadEpub_res2);
+				
+				
+				Response UploadEpub_res1 = UploadEpub.uploadEpub_OAuth(consumerKey, consumerSecret,"/Thirdepub/JMeterTesting.epub","Title","Title","level4",""+nowEpochTime+"","5PEt24UoprwYB2wjEBdnchZuU1XfV5paO9X8SW52OHjbsCc90ywZl9JFN5lQkNE8xGkWHo5SD4BJPzGiE88x85rHNczvrjQki9xf9H2f8LFol8i22eEkVm4EVmjLTgswIsDBvutumCLRuJplxFVKIcOp3fCJqy1B40DzDyzsSgwAmUcASHjlHOaUb8EHRrwmTgBIDzKuIXsR7Zdf4zkPzv6OXHaiAuzXlVaGIWen1scifhaWqh67B5ilLuJONCG8hU7OKqUYribHiwyr4m3SLwJT8DrTeaUAEPAWjNzD80Sax1ncKBHEdIwu0PIWKjLumLfY3X9goyFKANhZX1lfmZmjxXKmGBk3Skuffgl1Tmiy92jX9jIpMN4Kd1OW4U9Hf916XAJEFnEy6qzN5bx2tkGp4Q2xZ24IrMwoEGqkxhYTyRoLS9M6v3oSDdx6Hn8cp2Flmxoij4J69rLAj5OuyjWjj1pKCos8LZYWTt7aJvWBknIT8MGz");
+				epubId = UploadEpub_res1.then().extract().path("epubId");
+				System.out.println("epubId: "+epubId);
+				Thread.sleep(40000);
+				Response EpubStatus_res1 = EpubStatus.epubStatus(consumerKey, consumerSecret,epubId);
+				Validation.responseHeaderCodeValidation(EpubStatus_res1, HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(EpubStatus_res1, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(EpubStatus_res1);
+				Validation.responseKeyValidation_key(EpubStatus_res1, "status");
+				Validation.responseKeyValidation_key(EpubStatus_res1, "100");
+				System.out.println("EpubStatus_res : "+EpubStatus_res1);
+				
 				Title ="Reflow_epub_"+nowEpochTime+"";
 				Log.info("Title : " +Title);
 				Response UploadEpub_res = UploadEpub.uploadEpub_OAuth(consumerKey, consumerSecret,"/Thirdepub/JMeterTesting.epub","Title","Title","level4",""+nowEpochTime+"","Title");
@@ -214,7 +247,7 @@ public class DIS_1811 {
 				Validation.responseCodeValidation1(fetchBookList_without_pagination_again, HttpStatus.SC_OK);
 				Validation.responseHeaderCodeValidation(fetchBookList_without_pagination_again,HttpStatus.SC_OK);
 				Validation.responseTimeValidation(fetchBookList_without_pagination_again);
-				Validation.responseKeyValidation_key(fetchBookList_without_pagination_again,"level4_Upd");
+				Validation.responseKeyValidation_key(fetchBookList_without_pagination_again,"level4_upd");
 				System.out.println("fetchBookList_without_pagination_again :: " +fetchBookList_without_pagination_again);	
 				
 				

@@ -18,7 +18,7 @@ public class Validation {
 		}
 		else if(responseCode != statusCode)
 		{
-			Log.fail("Expected statusCode: " +statusCode+"But found: "+jsonResponse+". Both are not mathed");
+			Log.fail("Expected HeaderCode: " +statusCode+" But found: "+jsonResponse.getStatusCode()+". Both are not matched");
 		}
 	}
 
@@ -108,7 +108,8 @@ public class Validation {
 		ResponseBody<?> body = jsonResponse.getBody();
 		String bodyStringValue = body.asString();
 		Log.info("Whole string :: " +key);
-		Log.info("HERE we are-> "+" bodyStringValue="+bodyStringValue+" key ="+key+"");
+		// bodyStringValue="+bodyStringValue+"
+		Log.info("HERE we are-> "+" key ="+key+"");
 		if(bodyStringValue != key)
 		{
 			//Assert.assertFalse(bodyStringValue.contains(key));
@@ -184,7 +185,7 @@ public class Validation {
 		}
 		else
 		{
-			Log.fail("validated INTEGER Asserting for contails= 1 Not FOUND are = " +chunk);
+			Log.fail("validation pass INTEGER Parameter is NOT are= " +chunk);
 		}				
 	}
 
