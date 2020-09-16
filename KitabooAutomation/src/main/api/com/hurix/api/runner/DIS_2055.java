@@ -1,16 +1,20 @@
 package com.hurix.api.runner;
 
 import io.restassured.response.Response;
+
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
 import org.apache.http.HttpStatus;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.JSONException;
+
+import com.hurix.api.externalAPIs.SearchV2_OAuth;
 import com.hurix.api.readerAPIs.*;
 import com.hurix.api.utility.*;
 import com.hurix.automation.utility.Log;
@@ -101,7 +105,7 @@ public class DIS_2055 {
 		//List<String> detail =  ExcelUtils.getuserDetails();
 		try {
 			//startDate=EpochTime.getEpochTime(""+startDate+"");
-			String excelPath="./testData/DIS-1838.xlsx";
+			String excelPath="./testData/DIS-2055.xlsx";
 			workbook = new XSSFWorkbook(excelPath);
 			sheet= workbook.getSheet("Sheet1");
 			for(int i=1;i<=4;i++)
@@ -224,16 +228,17 @@ public class DIS_2055 {
 				Validation.responseKeyValidation_key(searchv2, "_index");
 				Validation.responseKeyValidation_key(searchv2, "_score");
 				Validation.responseKeyValidation_key(searchv2, "ISBN");
+				Validation.responseKeyValidation_key(searchv2, "bookReferenceId");
 				Validation.responseKeyValidation_key(searchv2, "bookThumbnail");
 				Validation.responseKeyValidation_key(searchv2, "bookTitle");
 				Validation.responseKeyValidation_key(searchv2, "description");
-				Validation.responseKeyValidation_key(searchv2, "ref_Id");
+				Validation.responseKeyValidation_key(searchv2, "bookReferenceId");
 				Validation.responseKeyValidation_key(searchv2, "_type");
 				Validation.responseKeyValidation_key(searchv2, "bookId");
 				Validation.responseKeyValidation_key(searchv2, "bookTitle");
 				Validation.responseKeyValidation_key(searchv2, "description");
 				Validation.responseKeyValidation_key(searchv2, "total");
-				Validation.responseKeyValidation_key(searchv2, "took");
+				//Validation.responseKeyValidation_key(searchv2, "took");
 				System.out.println("searchv2 : "+searchv2);
 				
 				searchv2 = SearchV2.searchV2("Reflow", userToken, "bdhsbdhs213131", "IPAD");
@@ -247,15 +252,33 @@ public class DIS_2055 {
 				Validation.responseKeyValidation_key(searchv2, "bookThumbnail");
 				Validation.responseKeyValidation_key(searchv2, "bookTitle");
 				Validation.responseKeyValidation_key(searchv2, "description");
-				Validation.responseKeyValidation_key(searchv2, "ref_Id");
+				Validation.responseKeyValidation_key(searchv2, "bookReferenceId");
 				Validation.responseKeyValidation_key(searchv2, "_type");
 				Validation.responseKeyValidation_key(searchv2, "bookId");
 				Validation.responseKeyValidation_key(searchv2, "bookTitle");
 				Validation.responseKeyValidation_key(searchv2, "description");
 				Validation.responseKeyValidation_key(searchv2, "total");
-				Validation.responseKeyValidation_key(searchv2, "took");
 				System.out.println("searchv2 : "+searchv2);
-
+				
+				//GetSecureURL.getSecureURL(userToken, "dsjd4242", "IPAD", type);
+				Response searchv2_ext =SearchV2_OAuth.searchV2_OAuth("Native", consumerKey,consumerSecret,clientUserID);
+				Validation.responseCodeValidation1(searchv2_ext, HttpStatus.SC_OK);
+				Validation.responseHeaderCodeValidation(searchv2_ext, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(searchv2_ext);
+				Validation.responseKeyValidation_key(searchv2_ext, "_id");
+				Validation.responseKeyValidation_key(searchv2_ext, "_index");
+				Validation.responseKeyValidation_key(searchv2_ext, "_score");
+				Validation.responseKeyValidation_key(searchv2_ext, "ISBN");
+				Validation.responseKeyValidation_key(searchv2_ext, "bookThumbnail");
+				Validation.responseKeyValidation_key(searchv2_ext, "bookTitle");
+				Validation.responseKeyValidation_key(searchv2_ext, "description");
+				Validation.responseKeyValidation_key(searchv2_ext, "bookReferenceId");
+				Validation.responseKeyValidation_key(searchv2_ext, "_type");
+				Validation.responseKeyValidation_key(searchv2_ext, "bookId");
+				Validation.responseKeyValidation_key(searchv2_ext, "bookTitle");
+				Validation.responseKeyValidation_key(searchv2_ext, "description");
+				Validation.responseKeyValidation_key(searchv2_ext, "total");
+				System.out.println("searchv2_ext : "+searchv2_ext);
 
 			}
 		}catch (Exception exp) 

@@ -1,7 +1,13 @@
 package com.hurix.api.readerAPIs;
 
 import static io.restassured.RestAssured.given;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import io.restassured.response.Response;
+
 import com.hurix.api.utility.EpochTime;
 import com.hurix.automation.utility.Log;
 
@@ -16,12 +22,15 @@ public class Bookdetails {
 			Log.startTestCase("bookdetails");
 			System.out.println("assetType : " +assetType);
 			System.out.println("ebookID1 : " +ebookID1);
-			startDate=EpochTime.getEpochTime(""+startDate+"");
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			Date datenew = df.parse(""+startDate+"");
+			long epoch = datenew.getTime();
+			epoch=epoch/1000;
 			jsonResponse = given()
 					.header("usertoken",userToken)						
-					.get("/DistributionServices/services/api/reader/distribution/"+deviceID+"/"+DeviceType+"/book/details?bookID="+ebookID1+"&type="+assetType+"&t="+startDate+"");
-			
-			Log.info("/DistributionServices/services/api/reader/distribution/"+deviceID+"/"+DeviceType+"/book/details?bookID="+ebookID1+"&type="+assetType+"&t="+startDate+"");
+					.get("/DistributionServices/services/api/reader/distribution/"+deviceID+"/"+DeviceType+"/book/details?bookID="+ebookID1+"&type="+assetType+"&t="+epoch+"");
+
+			Log.info("/DistributionServices/services/api/reader/distribution/"+deviceID+"/"+DeviceType+"/book/details?bookID="+ebookID1+"&type="+assetType+"&t="+epoch+"");
 			/*Validation.responseHeaderCodeValidation(jsonResponse, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(jsonResponse, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(jsonResponse);

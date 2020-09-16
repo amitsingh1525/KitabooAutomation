@@ -272,4 +272,27 @@ public class CategoryBookListV1 {
 		Log.endTestCase("End");
 		return jsonResponse;
 	}
+
+	public static Response categoryBookListV1_cat(String catname,String userToken,String DeviceID,String DeviceType,int bookID, String catLevel, String sqlhost, String sqlUsername, String sqlPassword)
+	{
+		//String Fcatname=null;
+		Response jsonResponse = null;
+		try {			
+			Log.startTestCase("categoryBookListV1.catname="+catname+"");
+
+			Log.info("catname  : "+catname);
+			System.out.println("GETcategoryBookListV1 RequestURL:" +GETcategoryBookListV1Path);
+			jsonResponse = given()
+					.header("usertoken",userToken)	
+					.get("/DistributionServices/services/api/reader/books/"+DeviceID+"/"+DeviceType+"/books/"+catname+"");
+
+			Log.info("categoryBookListV1.catname="+catname+" Response: "+jsonResponse.then().extract().response().prettyPrint());
+	} catch (Exception exp) 
+	{
+		System.out.println(exp.getMessage());
+		System.out.println(exp.getCause());
+		exp.printStackTrace();
+	}
+	return jsonResponse;
+}
 }
