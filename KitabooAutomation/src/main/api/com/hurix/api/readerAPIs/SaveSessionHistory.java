@@ -11,13 +11,12 @@ public class SaveSessionHistory {
 	
 	//public static String POSTsaveSessionHistoryPath=""+com.hurix.api.utility.ExcelUtils.getbaseURI()+"/DistributionServices/services/api/reader/distribution/123234234/PC/"+com.hurix.api.runner.RestAssured.bookID1+"/saveSessionHistory";
 
-	private static String POSTsaveSessionHistoryBody = "{\"sessionHistory\":[{\"collection_book_id\":\""+com.hurix.api.runner.RestAssured.bookID1+"\",\"time\":\"2017-12-28 18:43:20\"}]}";
-
-	public static Response saveSessionHistory(String userToken,String deviceID,String deviceType,int bookID1)
+	private static String POSTsaveSessionHistoryBody;
+	public static Response saveSessionHistory(String userToken,String deviceID,String deviceType,int bookID1,String time)
 	{
 		Response jsonResponse = null;
 		try {
-			
+			POSTsaveSessionHistoryBody = "{\"sessionHistory\":[{\"collection_book_id\":\""+bookID1+"\",\"time\":\""+time+"\"}]}";
 			Log.startTestCase("saveSessionHistory");
 			//System.out.println("POSTsaveSessionHistoryRequestURL:" +POSTsaveSessionHistoryPath);
 			System.out.println("POSTsaveSessionHistoryBody: "+POSTsaveSessionHistoryBody);

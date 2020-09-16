@@ -85,12 +85,12 @@ public class audio {
 					audiofile = ExcelFile.getCellData(i,6);	
 					AudioModule.audio(audiofile,"CreateAudiothird"+nowEpochTime,description,tags,subject,transcriptfile,coverpath,invalidaudiofilepath,wrongtranscriptfile);
 				}
-				
+				*/
 				for(i=5;i<=5;i++)
 				{
 					audiofile = ExcelFile.getCellData(i,6);	
 					AudioModule.Editaudio(audiofile,"editaudio"+nowEpochTime,"edit"+description,"edit"+tags,"edit"+subject,transcriptfile,coverpath,invalidaudiofilepath,wrongtranscriptfile);
-				}*/
+				}
 				
 				for(i=6;i<=6;i++)
 				{

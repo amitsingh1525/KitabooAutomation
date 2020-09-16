@@ -27,6 +27,22 @@ public class BookplayerStepModule extends UIElements {
 		}
 	}
 	
+	public static void btnBookPlayerProfileIcon(){
+		try {
+			elementFinderByXpath(prop.getProperty("bookPlayerProfileIcon_Xpath"), "btnBookPlayerProfileIcon").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void btnBookPlayerProfileIcon_Signout(){
+		try {
+			elementFinderByXpath(prop.getProperty("bookPlayerProfileIconSignout_Xpath"), "btnBookPlayerProfileIcon_Signout").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
 	public static void btnNextPageNavigation(){
 		try {
 			elementFinderByXpath(prop.getProperty("nextPageNavigation_xpath"), "btn_backtobookshelf").click();
@@ -104,6 +120,7 @@ public class BookplayerStepModule extends UIElements {
 			
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
+			Driver.driver.switchTo().defaultContent();
 		}
 	}
 	
@@ -127,24 +144,34 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void btncontents(){
 		try {
-			elementFinderByID(prop.getProperty("contents_ID"), "btn_contents").click();
+			elementFinderByXpath(prop.getProperty("contents_xpath"), "btncontents").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
 	}
-
+	
+	public static void btncontentsdrpdwn(){
+		try {
+			List<WebElement> ele = elementsFinderByXpaths(prop.getProperty("content_drpdwn_lstview_xpath"), "btncontentsdrpdwn");
+			ele.get(0).click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void btncontentsChildlist(){
+		try {
+			List<WebElement> ele = elementsFinderByXpaths(prop.getProperty("content_childList_lstview_xpath"), "btn_contents");
+			ele.get(0).click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
 	public static void lstcontent_list(int chapterno){
 		try {
 			List<WebElement> element= elementsFinderByXpaths(prop.getProperty("content_list_lstview_xpath"), "lst_content_list");
 			element.get(chapterno).click();
-		} catch (Exception e) {
-			System.out.println("Element not present."+e.getMessage());
-		}
-	}
-
-	public static void btnmydata(){
-		try {
-			elementFinderByID(prop.getProperty("mydata_ID"), "btn_mydata").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -621,15 +648,142 @@ public class BookplayerStepModule extends UIElements {
 		}
 	}
 	
-	//If there any sticky notes apply on page then use this method for open sticky notes pop-up
-	public static void btnStickyNotesInsidePage(){
+	public static void btnSharedStickyNotes(){
 		try {
-			elementFinderByXpath(prop.getProperty("StickyNote_Xpath"), "btnStickyNotesInsidePage").click();
+			elementFinderByXpath(prop.getProperty("sharedStickyNotes_xpath"), "btnSharedStickyNotes").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static String getSharedStickyNotesCommentmsg(){
+		String msg = "NA";
+		try {
+			msg = elementFinderByXpath(prop.getProperty("SharedStickyNotesCommentmsg_xpath"), "btnSharedStickyNotes").getText();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+		return msg;
+	}
+	public static void chkbxSharedNotesToAllTeacher(){
+		try {
+			elementFinderByXpath(prop.getProperty("sharedAllTeacherStickyNoteschkbx_xpath"), "chkbxAllTeacher").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void btndoneSharedStickyNotes(){
+		try {
+			elementFinderByXpath(prop.getProperty("DoneSharedStickyNotes_xpath"), "chkbxAllTeacher").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	//If there any sticky notes apply on page then use this method for open sticky notes pop-up
+	public static void btnStickyNotesInsidePage(int i, String pageNum){
+		try {
+			Driver.driver.switchTo().frame("epub_"+pageNum);
+			List<WebElement> element = elementsFinderByXpaths(prop.getProperty("StickyNote_lstView_Xpath"), "btnStickyNotesInsidePage");
+			element.get(i).click();
+			Driver.driver.switchTo().parentFrame();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void btnMyDataNotificationIcon(){
+		try {
+			elementFinderByID(prop.getProperty("teacherNotification_id"), "btnMyDataNotificationIcon").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
 	}
 
+	public static void btnAcceptStickyNotes(int i){
+		try {
+			List<WebElement> ele = elementsFinderByXpaths(prop.getProperty("sharedNotesAccept_lstview_xpath"), "btnAcceptStickyNotes");
+			ele.get(i).click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void btnDeclinedStickyNotes(int i){
+		try {
+			List<WebElement> ele = elementsFinderByXpaths(prop.getProperty("sharedNotesDecline_lstview_xpath"), "btnDeclinedStickyNotes");
+			ele.get(i).click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void btnCommentOnNotes(int i){
+		try {
+			List<WebElement> ele = elementsFinderByXpaths(prop.getProperty("sharedNotesCommentbtn_lstview_xpath"), "btnCommentOnNotes");
+			ele.get(i).click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static int getCommentOnNotesCount(int i){
+		int count = 0;
+		try {
+			List<WebElement> ele = elementsFinderByXpaths(prop.getProperty("sharedNotesCommentbtn_lstview_xpath"), "btnCommentOnNotes");
+			count = Integer.parseInt(ele.get(i).getText().replaceAll("Comments ", ""));
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+		return count;
+	}
+	
+	public static void txtCommentOnNotes(String comment){
+		try {
+			elementFinderByXpath(prop.getProperty("sharedNotesCommenttxt_xpath"), "txtCommentOnNotes").sendKeys(comment);
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void btnSendCommentOnNotes(){
+		try {
+			elementFinderByXpath(prop.getProperty("sharedNotesSendCommentbtn_xpath"), "btnSendCommentOnNotes").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void btnBackArrow(){
+		try {
+			elementFinderByXpath(prop.getProperty("sharedNotesBackArrowbtn_xpath"), "btnBackArrow").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static String getSharedNotesCountFromMyDataIcon(){
+		String count = "0";
+		try {
+			count = elementFinderByXpath(prop.getProperty("getCountFromMyDataIcon_xpath"), "getSharedNotesCountFromMyDataIcon").getText();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+		return count;
+	}
+	
+	//return number of accept button count
+	public static int getSharedNotesCountFromlist(){
+		int count = 0;
+		try {
+			count = elementsFinderByXpaths(prop.getProperty("sharedNotesAccept_lstview_xpath"), "getSharedNotesCountFromlist").size();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+		return count;
+	}
+	
 	public static void btnhighlight(){
 		try {
 			elementFinderByID(prop.getProperty("highlight_ID"), "btn_highlight").click();
@@ -873,7 +1027,7 @@ public class BookplayerStepModule extends UIElements {
 		}
 	}
 
-	public static void selectparagraph(){
+	public static void selectparagraph(int x, int y){
 		try {
 			Thread.sleep(1000);
 			Driver.driver.switchTo().frame(elementFinderByID(prop.getProperty("highlightfram_ID"), "highlight frame id"));
@@ -884,7 +1038,8 @@ public class BookplayerStepModule extends UIElements {
 			js.executeScript("arguments[0].click();", from);
 			Thread.sleep(500);
 			System.out.println("mouse movement");
-			dragAndDrop(from, 0, 45);
+			dragAndDrop(from, x, y);
+			//dragAndDrop(from, 0, 45);
 			Thread.sleep(1000);
 			Driver.driver.switchTo().defaultContent();
 		} catch (Exception e) {
@@ -899,6 +1054,14 @@ public class BookplayerStepModule extends UIElements {
 			System.out.println("Element not present."+e.getMessage());
 		}
 	}
+	
+	public static void btnhighlightsearch(){
+		try {
+			elementFinderByID(prop.getProperty("highlightsearch_id"), "btnhighlightsearch").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
 
 	public static void selectparagraph_delete(){
 		try {
@@ -907,10 +1070,9 @@ public class BookplayerStepModule extends UIElements {
 			Thread.sleep(500);
 			elementFinderByID(prop.getProperty("highlightword_id"), "highlight word id");
 			WebElement from = elementFinderByID(prop.getProperty("highlightword_id"), "highlight word id");
+			from.click();
 			JavascriptExecutor js = (JavascriptExecutor)Driver.driver;
 			js.executeScript("arguments[0].click();", from);
-			Thread.sleep(500);
-			System.out.println("mouse movement");
 			Thread.sleep(1000);
 			Driver.driver.switchTo().defaultContent();
 		} catch (Exception e) {
@@ -975,33 +1137,23 @@ public class BookplayerStepModule extends UIElements {
 	
 	public static void btnbookmark(){
 		try {
-			Thread.sleep(8000);
+			threadHold_5Sec();
 			Driver.driver.switchTo().frame(elementFinderByID(prop.getProperty("bookmarkfram_ID"), "bookmark frame id"));
-			Thread.sleep(500);
-			System.out.println("Frame Switch");
-			Thread.sleep(9000);
-			Thread.sleep(9000);
-			
-	//	elementFinderByID(prop.getProperty("bookmarkThisPage_ID"), "bookmark this page").sendKeys(Keys.ENTER);
-			//elementFinderByID(prop.getProperty("bookmarkThisPage_ID"), "bookmark this page").click();
-			
+			threadHold_2Sec();
 			WebElement element0 = elementFinderByID(prop.getProperty("bookmarkThisPage_ID"), "bookmark this page"); 
 			JavascriptExecutor executor = (JavascriptExecutor)Driver.driver;
 			executor.executeScript("arguments[0].click();", element0);
-			System.out.println("Clicked on bookmark");
 			Driver.driver.switchTo().defaultContent();
-			System.out.println("Default content Switch");
-			
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
 	}
 	
-	public static void txtbookmark(){
+	public static void txtbookmark(String msg){
 		try {
-			Thread.sleep(8000);
+			threadHold_2Sec();
 			elementFinderByXpath(prop.getProperty("bookmarkTitle_xpath"), "bookmark title").clear();
-			elementFinderByXpath(prop.getProperty("bookmarkTitle_xpath"), "bookmark title").sendKeys("Bookmark title");
+			elementFinderByXpath(prop.getProperty("bookmarkTitle_xpath"), "bookmark title").sendKeys(msg);
 			
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
@@ -1010,7 +1162,6 @@ public class BookplayerStepModule extends UIElements {
 	
 	public static void btnaddbookmark(){
 		try {
-		
 			elementFinderByXpath(prop.getProperty("addBookmark_xpath"), "add bookmark").click();	
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
@@ -1019,7 +1170,6 @@ public class BookplayerStepModule extends UIElements {
 	
 	public static void btntocbookmark(){
 		try {
-		
 			elementFinderByXpath(prop.getProperty("bookmarks_xpath"), "bookmark").click();	
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
@@ -1030,30 +1180,33 @@ public class BookplayerStepModule extends UIElements {
 		int size = 0;
 		try {
 			size= Driver.driver.findElements(By.xpath(prop.getProperty("bookmark_list_lstview_xpath"))).size();
-			System.out.println("List Count:"+ size);
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
 		return size;
 	}
 	
-	public static void btnbookmarkpageno(){
+	public static String btnbookmarkpageno(int i){
+		String pageno = "NA";
 		try {
-			String pageno = null;
-			pageno =elementFinderByXpath(prop.getProperty("bookmarkpageno_xpath"), "bookmark page number").getText();	
-			System.out.println("bookmark page number: "+ pageno );
+			List<WebElement> element= elementsFinderByXpaths(prop.getProperty("bookmarkpageno_lstView_xpath"), "bookmark page number");
+			pageno = element.get(i).getText();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
+		return pageno;
 	}
 	
-	public static void bookmarklist(int i){
+	public static int bookmarklist(int i){
+		int pageNum = 0;
 		try {
 			List<WebElement> element= elementsFinderByXpaths(prop.getProperty("bookmark_list_lstview_xpath"), "bookmark_lstview_xpath");
+			pageNum = Integer.parseInt(btnbookmarkpageno(i));
 			element.get(i).click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
+		return pageNum;
 	}
 	
 	/*public static int getbookmarkCount(){

@@ -17,6 +17,7 @@ import com.hurix.reader.bookPlayer.BookplayerStepModule;
 import com.hurix.reader.bookShelf.BookShelfModule;
 import com.hurix.reader.bookShelf.BookShelfStepModule;
 import com.hurix.reader.loginPage.LoginModule;
+import com.hurix.reader.loginPage.LoginStepModule;
 
 public class Reader_5Sanity{
 
@@ -117,7 +118,7 @@ public class Reader_5Sanity{
 
 	public static  void TC_AccessCodeSignupByUsedEmailID(String accesscode, String fullname, String emailid, String password, String confirmpassword){
 		Log.startTestCase("TC_AccessCodeSignupByUsedEmailID");
-		LoginModule.accessCodeSignup("3195071661782080", "hello Tester_4324", "helloTester4324@yopmail.com", 
+		LoginModule.accessCodeSignup(accesscode, "hello Tester_4324", "helloTester4324@yopmail.com", 
 				"kitaboo@123", "kitaboo@123");
 		String msg = LoginModule.getexistsemailidmsg();
 		if(msg.contains("Entered Email Id already exists")){
@@ -132,7 +133,7 @@ public class Reader_5Sanity{
 	public static  void TC_AccessCodeSignup(String accesscode, String fullname, String emailid, String password, String confirmpassword){
 		Log.startTestCase("TC_AccessCodeSignup");
 		long nowEpochTime = Instant.now().toEpochMilli();
-		String msg = LoginModule.accessCodeSignup("3195071661782080", "hello Tester_4334", "helloTester"+nowEpochTime+"@yopmail.com", 
+		String msg = LoginModule.accessCodeSignup(accesscode, "hello Tester_4334", "helloTester"+nowEpochTime+"@yopmail.com", 
 				"kitaboo@123", "kitaboo@123");
 		if(msg == null){
 			LoginModule.threadHold_5Sec();
@@ -293,9 +294,9 @@ public class Reader_5Sanity{
 		Log.endTestCase("End");
 	}
 
-	public static  void TC_SearchAndLaunchBook(){
+	public static  void TC_SearchAndLaunchBook(String title){
 		Log.startTestCase("TC_SearchAndLaunchBook");
-		BookShelfModule.searchAndLaunchBook("Showcase eBook");
+		BookShelfModule.searchAndLaunchBook(title);
 		LoginModule.threadHold_5Sec();
 		BookplayerStepModule.btnbacktobookshelf();
 		Log.endTestCase("End");
@@ -323,7 +324,7 @@ public class Reader_5Sanity{
 
 	public static  void TC_moreInfo(){
 		Log.startTestCase("TC_moreInfo");
-		BookShelfModule.catNavigationAndLaunch("All");
+		BookShelfModule.linkHorizontalCatName("All");
 		BookShelfStepModule.btnMoreInfo(0);
 		Log.pass("Title Found: "+BookShelfStepModule.getBookTitleMoreInfo());
 		Log.pass("Discription Found: "+BookShelfStepModule.getBookDiscriptionMoreInfo());
@@ -334,9 +335,8 @@ public class Reader_5Sanity{
 
 	public static  void TC_Analytics(){
 		Log.startTestCase("TC_Analytics");
-		BookShelfModule.catNavigationAndLaunch("Showcase");
-		BookShelfStepModule.btnMoreInfo(1);
-		BookShelfStepModule.btnAnalytics();
+		BookShelfModule.linkHorizontalCatName("Showcase");
+		BookShelfModule.analytics(0);
 		Log.endTestCase("End");
 	}
 
@@ -367,6 +367,7 @@ public class Reader_5Sanity{
 		BookPlayerModule.threadHold_2Sec();
 		BookPlayerModule.goToPage("10");
 		BookPlayerModule.threadHold_2Sec();
+		BookPlayerModule.btnthumbnail();
 		BookplayerStepModule.btnhistoryprevious();
 		BookPlayerModule.threadHold_2Sec();
 		String pageNum = BookPlayerModule.getCurrentPageNum();
@@ -385,8 +386,10 @@ public class Reader_5Sanity{
 		BookPlayerModule.threadHold_2Sec();
 		BookPlayerModule.goToPage("13");
 		BookPlayerModule.threadHold_2Sec();
+		BookPlayerModule.btnthumbnail();
 		BookplayerStepModule.btnhistoryprevious();
 		BookPlayerModule.threadHold_2Sec();
+		BookPlayerModule.btnthumbnail();
 		BookplayerStepModule.btnhistorynext();
 		BookPlayerModule.threadHold_2Sec();
 		String pageNum = BookPlayerModule.getCurrentPageNum();
@@ -469,29 +472,31 @@ public class Reader_5Sanity{
 
 	public static void TC_ZoomIn() {
 		Log.startTestCase("TC_ZoomIn");
-		String zoomVal = BookplayerStepModule.getzoomValue();
+		//String zoomVal = BookplayerStepModule.getzoomValue();
 		BookPlayerModule.zoomIn(240);
-		Log.info("Current Zoom Percantage: "+zoomVal);
-		String curZoomVal = BookplayerStepModule.getzoomValue();
-		if(Integer.parseInt(zoomVal.replace("%", "")) < Integer.parseInt(curZoomVal.replace("%", ""))) {
-			Log.pass("After ZoomIn Percantage: "+curZoomVal);
-		}else {
-			Log.fail("Expected Increment by n number of current Percentage: "+zoomVal+" But Found :'"+curZoomVal+"'");
-		}
+		//Log.info("Current Zoom Percantage: "+zoomVal);
+		//String curZoomVal = BookplayerStepModule.getzoomValue();
+		/*
+		 * if(Integer.parseInt(zoomVal.replace("%", "")) <
+		 * Integer.parseInt(curZoomVal.replace("%", ""))) {
+		 * Log.pass("After ZoomIn Percantage: "+curZoomVal); }else {
+		 * Log.fail("Expected Increment by n number of current Percentage: "
+		 * +zoomVal+" But Found :'"+curZoomVal+"'"); }
+		 */
 		Log.endTestCase("End");
 	}
 
 	public static void TC_ZoomOut() {
 		Log.startTestCase("TC_ZoomOut");
-		String zoomVal = BookplayerStepModule.getzoomValue();
+		//String zoomVal = BookplayerStepModule.getzoomValue();
 		BookPlayerModule.zoomOut(120);
-		Log.info("Current Zoom Percantage: "+zoomVal);
-		String curZoomVal = BookplayerStepModule.getzoomValue();
-		if(Integer.parseInt(zoomVal.replace("%", "")) < Integer.parseInt(curZoomVal.replace("%", ""))) {
-			Log.pass("After ZoomIn Percantage: "+curZoomVal);
-		}else {
-			Log.fail("Expected Increment by n number of current Percentage: "+zoomVal+" But Found :'"+curZoomVal+"'");
-		}
+		//Log.info("Current Zoom Percantage: "+zoomVal);
+		//String curZoomVal = BookplayerStepModule.getzoomValue();
+		//if(Integer.parseInt(zoomVal.replace("%", "")) < Integer.parseInt(curZoomVal.replace("%", ""))) {
+		//	Log.pass("After ZoomIn Percantage: "+curZoomVal);
+		//}else {
+		//	Log.fail("Expected Increment by n number of current Percentage: "+zoomVal+" But Found :'"+curZoomVal+"'");
+		//}
 		Log.endTestCase("End");
 	}
 
@@ -540,7 +545,7 @@ public class Reader_5Sanity{
 	public static void TC_AddingStickyNotes() {
 		Log.startTestCase("TC_AddingStickyNotes");
 		int countAfterNotes = BookPlayerModule.myDatanormalNotesCount("purple");
-		BookPlayerModule.stickyNotes("purple", "5", 70, 60);
+		BookPlayerModule.stickyNotes("purple", "5", 70, 60, "How are you?");
 		int countBeforeNotes = BookPlayerModule.myDatanormalNotesCount("purple");
 		if(countAfterNotes < countBeforeNotes) {
 			Log.pass("Before adding sticky Notes Count: "+countAfterNotes+" After adding sticky notes Count: "+countBeforeNotes);
@@ -553,7 +558,8 @@ public class Reader_5Sanity{
 	public static void TC_DeleteStickyNotes() {
 		Log.startTestCase("TC_DeleteStickyNotes");
 		int countAfterNotes = BookPlayerModule.myDatanormalNotesCount("all");
-		BookPlayerModule.deleteStickyNotes("5", 70, 60);
+		BookPlayerModule.openStickyNotesWithCordinates("purple", "5", 70, 60);
+		BookPlayerModule.btnDeleteStickyNotes();
 		int countBeforeNotes = BookPlayerModule.myDatanormalNotesCount("all");
 		if(countAfterNotes > countBeforeNotes) {
 			Log.pass("Before delete sticky Notes Count: "+countAfterNotes+" After adding sticky notes Count: "+countBeforeNotes);
@@ -565,7 +571,7 @@ public class Reader_5Sanity{
 
 	public static void TC_Highlight() {
 		Log.startTestCase("TC_Highlight");
-		int countAfterNotes = BookPlayerModule.myDataHighlightCount("green");
+		int countAfterNotes = BookPlayerModule.myDataHighlightCount("green,yellow,blue");
 		BookPlayerModule.highlight("green");
 		int countBeforeNotes = BookPlayerModule.myDataHighlightCount("green");
 		if(countAfterNotes < countBeforeNotes) {
@@ -582,7 +588,7 @@ public class Reader_5Sanity{
 		BookPlayerModule.deleteHighlight();
 		int countBeforeNotes = BookPlayerModule.myDataHighlightCount("green");
 		if(countAfterNotes > countBeforeNotes) {
-			Log.pass("Before delete highlight Count: "+countAfterNotes+" After adding sticky notes Count: "+countBeforeNotes);
+			Log.pass("Before delete highlight Count: "+countAfterNotes+" After delete highlight Count: "+countBeforeNotes);
 		}else {
 			Log.fail("Expected decrement by n number of current highlight: "+countAfterNotes+ " But Found: "+countBeforeNotes);
 		}
@@ -608,7 +614,7 @@ public class Reader_5Sanity{
 		BookPlayerModule.clearAllpentool();
 		Log.endTestCase("End");
 	}
-	
+
 	public static void TC_ContentResources() {
 		Log.startTestCase("TC_ContentResources");
 		int resourceSize = BookplayerStepModule.getResourcelst();
@@ -618,16 +624,106 @@ public class Reader_5Sanity{
 		}
 		Log.endTestCase("End");
 	}
-	
-	public static void TC_Content() {
-		Log.startTestCase("TC_Content");
-		
+
+	public static void TC_AddBookmark() {
+		Log.startTestCase("TC_AddBookmark");
+		BookPlayerModule.addbookmark("10", "Important Page!");
+		Log.endTestCase("End");
+	}
+
+	public static void TC_DeleteBookmark() {
+		Log.startTestCase("TC_DeleteBookmark");
+		BookPlayerModule.deletebookmark(0);
+		Log.endTestCase("End");
+	}
+
+
+	public static void TC_NoteSharing() {
+		Log.startTestCase("TC_NoteSharing");
+		LoginModule.userLogin("hurixlearner@gmail.com", "kitaboo@123");
+		BookShelfModule.catNavigationAndLaunch("Automation");
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.stickyNotes("purple", "5", 70, 60, "I noted down my text.");
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.stickyNotes("blue", "5", 195, 75, "If you read this message please comment us.");
+		BookPlayerModule.openStickyNotesWithCordinates("purple", "5", 70, 60);
+		BookPlayerModule.btnSharedStickyNotes();
+		BookPlayerModule.chkbxSharedNotesToAllTeacher();
+		BookPlayerModule.btndoneSharedStickyNotes();
+
+		BookPlayerModule.openStickyNotesWithCordinates("blue", "5", 195, 75);
+		BookPlayerModule.btnSharedStickyNotes();
+		BookPlayerModule.chkbxSharedNotesToAllTeacher();
+		BookPlayerModule.btndoneSharedStickyNotes();
+
+		BookPlayerModule.bookPlayerLogout();
+		LoginModule.userLogin("hurixteacher5@gmail.com", "kitaboo@123");
+		BookShelfModule.catNavigationAndLaunch("Automation");
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.myDataSharedNotes(0, true);
+		BookPlayerModule.myDataSharedNotes(1, false);
+		BookPlayerModule.myDataCommentOnSharedNotes(0, "Yes, I found your message!");
+		BookPlayerModule.bookPlayerLogout();
+		LoginModule.userLogin("hurixlearner@gmail.com", "kitaboo@123");
+		BookShelfModule.catNavigationAndLaunch("Automation");
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.openStickyNotesWithCordinates("purple", "5", 70, 60);
+		BookPlayerModule.btnDeleteStickyNotes();
+		BookPlayerModule.openStickyNotesWithCordinates("blue", "5", 195, 75);
+		String msg = BookPlayerModule.getSharedStickyNotesCommentmsg();
+		if(msg.equals("Yes, I found you message!")) {
+			Log.pass("Teacher comment found in a student login. msg was: '"+msg+"'");
+		}else {
+			Log.fail("Teacher comment NOT found in a student login. msg was: '"+msg+"'");
+		}
+		BookPlayerModule.btnDeleteStickyNotes();
+		Log.endTestCase("End");
+	}
+
+	public static void TC_SerachA_word() {
+		Log.startTestCase("TC_SerachA_word");
+		BookPlayerModule.searchAWord();
+		Log.endTestCase("End");
+	}
+
+	public static void TC_Contents() {
+		Log.startTestCase("TC_Contents");
+		BookPlayerModule.content();
+		Log.endTestCase("End");
+	}
+	public static void TC_NavigationWithChapter() {
+		Log.startTestCase("TC_NavigationWithChapter");
+		String currentpage = BookPlayerModule.getCurrentPageNum();
+		BookPlayerModule.btnnextchapter();
+		String nextpage = BookPlayerModule.getCurrentPageNum();
+
+		if(Integer.parseInt(currentpage) < Integer.parseInt(nextpage)) {
+			Log.pass("Increment by current pageNum: "+currentpage+" Next pageNum: "+nextpage);
+		}else {
+			Log.fail("Expected it's increment by current pageNum: "+currentpage+" but Found pageNum: "+nextpage);
+		}
+		BookPlayerModule.btnpreviouschapter();
+		String previouspage = BookPlayerModule.getCurrentPageNum();
+		if(Integer.parseInt(nextpage) > Integer.parseInt(previouspage)){
+			Log.pass("Decrement by current pageNum: "+nextpage+" previous pageNum: "+previouspage);
+		}else {
+			Log.fail("Expected it's decrement by current pageNum: "+nextpage+" but Found pageNum: "+previouspage);
+		}
 		Log.endTestCase("End");
 	}
 
 	public static void main(String []args){
 		setup();
-		/*TC_InvalidUserNameANDPassword("", "");
+		TC_InvalidUserNameANDPassword("", "");
 		TC_DownloadForDesktop();
 		TC_AvailableOnTheAppleStore();
 		TC_GetItOnGooglePlay();
@@ -635,8 +731,10 @@ public class Reader_5Sanity{
 		TC_LoginWithValidUserNameANDPassword("", "");
 		TC_RememberMe("", "");
 		TC_InvalidAccessCodeSignup("");
-		TC_AccessCodeSignupByUsedEmailID("", "", "", "", "");
-		TC_AccessCodeSignup("", "", "", "", "");
+		TC_AccessCodeSignupByUsedEmailID("7731231213558515", "", "", "", "");
+		TC_AccessCodeSignup("7731231213558515", "", "", "", "");
+
+
 		TC_InvalidForgetPassword("");
 		TC_ForgetPassword("");
 		TC_ChangePassword("", "");
@@ -652,129 +750,60 @@ public class Reader_5Sanity{
 		TC_MarkAsFav();
 		TC_unmarkAsFav();
 		TC_redeemAccessCode("");
-		TC_SearchAndLaunchBook();
 		TC_moreInfo();
-		TC_Analytics();*/
+		TC_Analytics();
 
-
-		/*LoginModule.userLogin("hurixreader5@gmail.com", "kitaboo@123");
-		BookShelfModule.catNavigationAndLaunch("Hurix Showcase");
+		BookShelfModule.userLogOut();
+		//LoginModule.userLogin("hurixlearner@gmail.com", "kitaboo@123");
+		//BookShelfModule.catNavigationAndLaunch("Automation");
 		LoginModule.userLogin("hurixreader5@gmail.com", "kitaboo@123");
 		BookShelfModule.catNavigationAndLaunch("Automation");
-		//TC_goToPage();
-		//TC_HistoryPrevious();
-		//TC_HistoryNext();
-		
+
+
+
 		BookPlayerModule.threadHold_5Sec();
 		BookPlayerModule.threadHold_5Sec();
 		BookPlayerModule.threadHold_5Sec();
-		BookPlayerModule.threadHold_5Sec();*/
 		BookPlayerModule.threadHold_5Sec();
-		
-		//TC_SinglePageView();
-		//BookPlayerModule.threadHold_2Sec();
-		//TC_DoublePageView();
-		//TC_RightNavigation();
-		//TC_LeftNavigation();
-		//TC_Fit2widhtVerification();
-		//TC_Fit2heightVerification();
-		//TC_ZoomIn();//need assertion
-		//TC_ZoomOut();//need assertion
-		//TC_SearchBooktext();
-		//TC_Full_DefaultScreen();
-		//TC_AddingStickyNotes();
-		//TC_DeleteStickyNotes();
-		//TC_Highlight();
-		//TC_DeleteHighlight();
-		//TC_PenTool();
-		//TC_ErasePenTool();
+		BookPlayerModule.threadHold_5Sec();
+
+		TC_goToPage();
+		TC_HistoryPrevious();
+		TC_HistoryNext();
+		TC_SinglePageView();
+		BookPlayerModule.threadHold_2Sec();
+		TC_DoublePageView();
+		TC_RightNavigation();
+		TC_LeftNavigation();
+		TC_ZoomIn();//need assertion
+		TC_ZoomOut();//need assertion
+		TC_Fit2widhtVerification();
+		TC_Fit2heightVerification();
+		TC_SearchBooktext();
+		TC_Full_DefaultScreen();
+		TC_AddingStickyNotes();
+		TC_DeleteStickyNotes();
+		TC_Highlight();
+		TC_DeleteHighlight();
+		TC_PenTool();
+		TC_ErasePenTool();
 		TC_ContentResources();
-
-		//BookPlayerModule.highlight();
-		//BookPlayerModule.goToPage("20");
-		/*LoginModule.threadHold_5Sec();
-		LoginModule.threadHold_5Sec();
-		LoginModule.threadHold_5Sec();
-		LoginModule.threadHold_5Sec();
-		//BookPlayerModule.getPageNum();
-		BookplayerStepModule.btnhighlight();
-		Driver.driver.switchTo().frame("epub_5");
-		System.out.println(UIElements.elementFinderByID("p5-textid50001", "").getText());*/
-		//Driver.driver.findElement(By.cssSelector("body.disable-user-selection")).click();
-		//WebElement elem = UIElements.elementFinderByID("p5-textid50001", "");
-
-		/*List <WebElement> list = Driver.driver.findElements(By.tagName("span"));
-		System.out.println("Number of links: "+list.size());
-		List <WebElement> ele = null;
-		for(int i = 0; i < list.size(); i++){
-				System.out.println(list.get(i).getText());
-				list.get(i).click();
-				Driver.driver.switchTo().defaultContent();
-				int size = Driver.driver.findElements(By.id("highlight_0")).size();
-				if(size <= 1){
-					System.out.println("present...");
-				}
-				Driver.driver.switchTo().frame("epub_5");
-
-		}*/
-
-		//Driver.driver.findElement(By.id("highlight_0")).click();
-		//int width = elem.getSize().getWidth();
-		//int height = elem.getSize().getHeight();
-		//Actions act = new Actions(Driver.driver);
-		//System.out.println(width);
-		//Point location = elem.getLocation();
-		// int x = location.getX();
-		//int y = location.getY();
-		// System.out.println("Coordinates of an element is : " + x + " and " + y);
-		//act.moveToElement(elem).moveByOffset(width, height).click().perform();
-		//act.moveToElement(from).click().perform();
-
-
-		/*LoginModule.userLogin("sharing.teacher@yopmail.com", "kitaboo@123");
-		BookShelfModule.catNavigationAndLaunch("showcase");*/
-		//BookPlayerModule.highlight("yellow");
-		//BookPlayerModule.searchAWord();
-		/*BookPlayerModule.backtoBookshelf();
-	     BookShelfModule.analytics();*/
-		LoginModule.userLogin("rajesha.sdk1@yopmail.com", "kitaboo@12345");
-		
-		/*
-		 * LoginModule.userLogin("sharing.teacher@yopmail.com", "kitaboo@123");
-		 * BookShelfModule.catNavigationAndLaunch("showcase");
-		 * 
-		 * BookPlayerModule.backtoBookshelf(); BookShelfModule.analytics();
-		 */
-		 
-		/*LoginModule.userLogin("rajesha.sdk1@yopmail.com", "kitaboo@123");
-	//	BookShelfModule.catNavigationAndLaunch("showcase");
-		BookPlayerModule.addbookmark();
-		BookPlayerModule.deletebookmark();
-		//LoginModule.userLogin("sharing.teacher@yopmail.com", "kitaboo@123");
-		//BookShelfModule.catNavigationAndLaunch("showcase");
-		/*BookPlayerModule.zoomIn();
-		BookPlayerModule.zoomOut();
-		BookPlayerModule.fitToWidth();
-		BookPlayerModule.searchBookText();*/
-		//BookPlayerModule.myDataHighlightCount("all");
-		//BookPlayerModule.myDatanormalNotesCount("all");//y
-		//	BookPlayerModule.myDatacontextualNotesCount("yellow,red");
-
-		//BookPlayerModule.myDatacontextualNotesCount("yellow,red");
-
-		/*LoginModule.userLogin("hurixreader5@gmail.com", "kitaboo@123");
-		BookShelfModule.catNavigationAndLaunch("Hurix Showcase");
-		//BookPlayerModule.highlight("blue");
-		//BookPlayerModule.deleteHighlight();
-
-		//BookPlayerModule.pentool("black", "5", 50, 60);
-		//BookPlayerModule.pentool("blue", "5", 70, 60);
-		BookPlayerModule.goToPage("5");
-		BookPlayerModule.stickyNotes("green", "5", 70, 60);
-		//BookPlayerModule.erasepentool("5", 50, 60);
-		BookPlayerModule.highlight("blue");
-		BookPlayerModule.deleteHighlight();*/
-		//BookPlayerModule.pentool();
+		TC_Contents();
+		BookPlayerModule.bookPlayerLogout();
+		TC_NoteSharing();
+		BookPlayerModule.bookPlayerLogout();
+		LoginModule.userLogin("rajesha.sdk@yopmail.com", "kitaboo@123");
+		//TC_SearchAndLaunchBook("Porto raw Tracking");
+		BookShelfModule.catNavigationAndLaunch("SDK Testing");
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.threadHold_5Sec();
+		TC_AddBookmark();
+		TC_DeleteBookmark();
+		TC_NavigationWithChapter();
+		TC_SerachA_word();
 
 		//termination();
 	}

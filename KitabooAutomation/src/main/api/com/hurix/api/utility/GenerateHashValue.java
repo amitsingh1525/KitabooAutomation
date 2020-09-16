@@ -7,16 +7,15 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class GenerateHashValue {
-	@SuppressWarnings("restriction")
+	
 	public static String generateHashValue(String hash ,String counter) throws Exception
 	{
-
 		Date now = new Date();
 		Calendar c = Calendar.getInstance(); 
 		c.setTime(now);
 		long mycurrentdate = c.getTimeInMillis();
 		String epochTime = Long.toString(mycurrentdate);
-		String MD5Generation =hash;
+		String MD5Generation = hash;
 		String str = MD5Generation+":"+epochTime;
 		Cipher ecipher;
 		String keyCountString =  counter;
@@ -28,9 +27,9 @@ public class GenerateHashValue {
 		ecipher.init(Cipher.ENCRYPT_MODE, skeySpec);
 		byte[] utf8 = str.getBytes("UTF8");
 		byte[] enc = ecipher.doFinal(utf8);
-		//return new sun.misc.BASE64Encoder().encode(enc);
-		@SuppressWarnings({ "unused" })
-		String hashValue= new sun.misc.BASE64Encoder().encode(enc);
-		return new sun.misc.BASE64Encoder().encode(enc);
+		 //return new sun.misc.BASE64Encoder().encode(enc);
+		@SuppressWarnings("restriction")
+		String hashValue = new sun.misc.BASE64Encoder().encode(enc);
+		return hashValue;
 	}
 }

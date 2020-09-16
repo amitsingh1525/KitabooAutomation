@@ -23,6 +23,7 @@ public class LoginModule extends LoginStepModule {
 		btnAccesscode();
 		txtAccesscodeUsername(accesscode);
 		btnSend();
+		threadHold_5Sec();
 		threadHold_2Sec();
 		if(Driver.driver.findElement(By.xpath(prop.getProperty("fullname_txt_xpath"))).isDisplayed()){
 			txtfullname(fullname);
