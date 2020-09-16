@@ -29,10 +29,10 @@ public class audio {
 	public static void main(String[] args) throws Exception 
 	{
 			Log.initialization("AUDIO BOOK");
-			
+			ExcelFile.setExcelFile("\\testData\\TestData.xlsx", "Create_Kitaboo_Credential");
+			int size = ExcelFile.getRowCount();
 			for(int j=1;j<=1;j++)
 			{
-				ExcelFile.setExcelFile("\\testData\\TestData.xlsx", "Create_Kitaboo_Credential");
 				String username = ExcelFile.getCellData(j, 0);
 				String password = ExcelFile.getCellData(j, 1);
 				String url = ExcelFile.getCellData(1, 2);
@@ -63,12 +63,12 @@ public class audio {
 			/*	for(i=7;i<=7;i++)
 				{
 					audiofile = ExcelFile.getCellData(i,6);	
-					AudioModule.audio(audiofile,"CreateAudio"+nowEpochTime,description,tags,subject,transcriptfile,coverpath,invalidaudiofilepath,wrongtranscriptfile);
-				}
-				for(i=1;i<=1;i++)
+					AudioModule.audio(audiofile,"CreateAudiofirst"+nowEpochTime,description,tags,subject,transcriptfile,coverpath,invalidaudiofilepath,wrongtranscriptfile);
+				}*/
+				/*for(i=1;i<=1;i++)
 				{
 					audiofile = ExcelFile.getCellData(i,6);	
-					AudioModule.audio(audiofile,"CreateAudio"+nowEpochTime,description,tags,subject,transcriptfile,coverpath,invalidaudiofilepath,wrongtranscriptfile);
+					AudioModule.audio(audiofile,"CreateAudiosecond"+nowEpochTime,description,tags,subject,transcriptfile,coverpath,invalidaudiofilepath,wrongtranscriptfile);
 				}
 				for(i=1;i<=1;i++)
 				{
@@ -83,20 +83,19 @@ public class audio {
 				for(i=1;i<=1;i++)
 				{
 					audiofile = ExcelFile.getCellData(i,6);	
-					AudioModule.audio(audiofile,"CreateAudio"+nowEpochTime,description,tags,subject,transcriptfile,coverpath,invalidaudiofilepath,wrongtranscriptfile);
+					AudioModule.audio(audiofile,"CreateAudiothird"+nowEpochTime,description,tags,subject,transcriptfile,coverpath,invalidaudiofilepath,wrongtranscriptfile);
 				}
 				
 				for(i=5;i<=5;i++)
 				{
 					audiofile = ExcelFile.getCellData(i,6);	
-					AudioModule.Editaudio(audiofile,"editaudio400mb"+nowEpochTime,"edit"+description,"edit"+tags,"edit"+subject,transcriptfile,coverpath,invalidaudiofilepath,wrongtranscriptfile);
+					AudioModule.Editaudio(audiofile,"editaudio"+nowEpochTime,"edit"+description,"edit"+tags,"edit"+subject,transcriptfile,coverpath,invalidaudiofilepath,wrongtranscriptfile);
 				}*/
 				
 				for(i=6;i<=6;i++)
 				{
 					audiofile = ExcelFile.getCellData(i,6);	
 					AudioModule.revertaudio(audiofile,"Revert"+nowEpochTime,description,tags,subject,transcriptfile,coverpath,invalidaudiofilepath,wrongtranscriptfile);
-					
 				}
 				
 				/*for(i=7;i<=7;i++)
@@ -108,9 +107,9 @@ public class audio {
 				{
 					audiofile = ExcelFile.getCellData(i,6);	
 					AudioModule.audio(audiofile,"revert"+nowEpochTime,description,tags,subject,transcriptfile,coverpath,invalidaudiofilepath,wrongtranscriptfile);
-				}
+				}*/
+				ExcelFile.setExcelFile("\\testData\\TestData.xlsx", "Create_Kitaboo_Credential");
 				
-				*/
 				Log.endTestCase("End Audio");
 				}
 				AudioModule.logout();
