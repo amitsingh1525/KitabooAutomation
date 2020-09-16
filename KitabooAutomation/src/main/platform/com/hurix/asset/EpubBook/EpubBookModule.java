@@ -1,4 +1,4 @@
-package com.hurix.asset.audio;
+package com.hurix.asset.EpubBook;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -9,7 +9,7 @@ import com.hurix.automation.utility.Driver;
 import com.hurix.automation.utility.Log;
 import com.hurix.automation.utility.UIElements;
 
-public class AudioModule extends AudioStepModule
+public class EpubBookModule extends EpubBookStepModule
 {
 	
 	public static void logout()

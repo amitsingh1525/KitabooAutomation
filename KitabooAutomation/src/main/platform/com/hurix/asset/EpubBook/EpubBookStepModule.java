@@ -1,4 +1,4 @@
-package com.hurix.asset.audio;
+package com.hurix.asset.EpubBook;
 
 import java.util.Properties;
 
@@ -12,7 +12,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import com.hurix.automation.utility.Driver;
 import com.hurix.automation.utility.UIElements;
 
-public class AudioStepModule extends UIElements {
+public class EpubBookStepModule extends UIElements {
 
 	private static Properties prop = getProperty(System.getProperty("user.dir")+"/config/platform/audio.properties");
 
