@@ -13,7 +13,9 @@ public class Metadata {
 			if(cat4 .contains("2"))
 			{
 				MetadataBody = "{\"title\":\""+title+"\",\"author\":\""+author+"\",\"isbn\":\""+isbnstring+"\",\"coverImage\":\"https://wks.com/thumbnail/1237564746577.png\",\"metadata\":{\"keyOfMedataStr\":\"value for the metadata\",\"publisher\":\"testwk\"},\"categories\":[{\"category\":\"india\",\"child\":[{\"category\":\"india\",\"child\":[]},{\"category\":\"goa\",\"child\":[]},{\"category\":\"goa\",\"child\":[]}]},{\"category\":\"maharashtra\",\"child\":[{\"category\":\"bihar\",\"child\":[]},{\"category\":\"nagpur\",\"child\":[]},{\"category\":\"panjab\",\"child\":[]}]}]}";
+				
 				Log.startTestCase("Metadata");
+				Log.info("MetadataBody : "+MetadataBody);
 				jsonResponse = given()
 						.auth()
 						.oauth(consumerKey, consumerSecret, "", "")

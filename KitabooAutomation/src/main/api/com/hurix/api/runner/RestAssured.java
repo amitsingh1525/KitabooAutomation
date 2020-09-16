@@ -10,10 +10,8 @@ import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.JSONException;
-
 //import static org.hamcrest.Matchers.*;
 import io.restassured.response.Response;
-
 import com.hurix.api.externalAPIs.*;
 import com.hurix.api.hashAPIs.*;
 import com.hurix.api.readerAPIs.*;
@@ -596,7 +594,7 @@ public class RestAssured {
 
 
 				//"2019/10/31 14:46:04"
-				Response V1RefreshBooks_hash = V1RefreshBooksHash.v1refreshBooks(archiveDate,bookID1,bookID2,userToken,"56454","IPAD");
+				Response V1RefreshBooks_hash = V1RefreshBooksHash.v1refreshBooks(""+archiveDate+"",bookID1,bookID2,userToken,"56454","IPAD");
 				Validation.responseHeaderCodeValidation(V1RefreshBooks_hash, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(V1RefreshBooks_hash, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(V1RefreshBooks_hash);
@@ -607,7 +605,7 @@ public class RestAssured {
 				Validation.responseKeyValidation_key(V1RefreshBooks_hash, "collectionThumbnail");
 				System.out.println("V1RefreshBooks_hash: "+V1RefreshBooks_hash);
 
-				Response V1RefreshBooks_hash2 = V1RefreshBooksHash.v1refreshBooks_op("2020/08/20 10:52:23",bookID6,bookID2,"UPDATE","NEW",userToken,"56454","IPAD");
+				Response V1RefreshBooks_hash2 = V1RefreshBooksHash.v1refreshBooks_op(""+archiveDate+"",bookID6,bookID2,"UPDATE","NEW",userToken,"56454","IPAD");
 				Validation.responseHeaderCodeValidation(V1RefreshBooks_hash2, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(V1RefreshBooks_hash2, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(V1RefreshBooks_hash2);
@@ -1843,7 +1841,7 @@ public class RestAssured {
 				Validation.responseKeyValidation_key(bookMetadata_res, "isbn");
 				Validation.responseKeyValidation_key(bookMetadata_res, "title");
 				Validation.responseKeyValidation_key(bookMetadata_res, "thumbnail");
-				Validation.responseKeyValidation_key(bookMetadata_res, "mimeType");
+				//Validation.responseKeyValidation_key(bookMetadata_res, "mimeType");
 				Validation.responseKeyValidation_key(bookMetadata_res, "pages");
 				Validation.responseKeyValidation_key(bookMetadata_res, "version");
 				Validation.responseKeyValidation_key(bookMetadata_res, "formats");
@@ -1939,7 +1937,7 @@ public class RestAssured {
 
 
 				//2019/10/31 14:46:04
-				Response v1refreshBookList_res =V1refreshBookList.v1refreshBookList("archiveDate","NEW","UPDATE",""+bookID1+"",""+bookID2+"",userToken,"56454", "IPAD",clientID);
+				Response v1refreshBookList_res =V1refreshBookList.v1refreshBookList(""+archiveDate+"","NEW","UPDATE",""+bookID1+"",""+bookID2+"",userToken,"56454", "IPAD",clientID);
 				Validation.responseHeaderCodeValidation(v1refreshBookList_res, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(v1refreshBookList_res, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(v1refreshBookList_res);

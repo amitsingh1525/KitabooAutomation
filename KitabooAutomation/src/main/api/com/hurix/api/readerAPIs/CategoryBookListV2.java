@@ -42,7 +42,20 @@ public class CategoryBookListV2 {
 			if(catLevel .contains("1"))
 			{
 				//catname=catname;
-				Log.info("catname  : "+catname);
+				/*Log.info("catname  : "+catname);
+				con = DriverManager.getConnection(sqlhost,sqlUsername,sqlPassword);
+				stmt = con.createStatement();
+				result = null;
+				result= stmt.executeQuery("SELECT schemaNAme FROM cloudCore.CLIENT WHERE Id IN (SELECT client_id FROM cloudCore.BOOKS WHERE ID IN (SELECT book_id FROM cloudCore.COLLECTION_BOOK_MAP WHERE ID = "+bookID+"))");
+				result.next();
+				schemaNAme = result.getString("schemaNAme");
+				System.out.println("schemaNAme : " +schemaNAme);
+				//String schemaNAme="client18";
+				result= stmt.executeQuery("SELECT `TITLE` C1 FROM "+schemaNAme+".`CATEGORY_METADATA` WHERE ID IN (SELECT `CATEGORY` FROM "+schemaNAme+".`BOOKS_CATEGORY_MAP`WHERE book_id IN (SELECT book_id FROM cloudCore.COLLECTION_BOOK_MAP WHERE ID = "+bookID+"))");
+				System.out.println("**************Results1**************");
+				result.next();
+				c1 = result.getString("c1");
+				catname=c1;*/
 				//System.out.println("GETcategoryBookListV1 RequestURL:" +GETcategoryBookListV1Path);
 				jsonResponse = given()
 						.header("usertoken",userToken)
@@ -95,7 +108,7 @@ public class CategoryBookListV2 {
 		Log.endTestCase("End");
 		return jsonResponse;
 	}
-	
+
 	public static Response categoryBookListV2_withpagi(int startIndex,int endIndex,String catname,String userToken,String deviceId,String deviceType,int bookID, String catLevel, String sqlhost, String sqlUsername, String sqlPassword)
 	{
 		//GETfetchBookCountPath = ""+com.hurix.api.utility.ExcelUtils.getbaseURI()+"/DistributionServices/services/api/reader/distribution/145644544/PC/fetchBookCount";
@@ -182,4 +195,29 @@ public class CategoryBookListV2 {
 		Log.endTestCase("End");
 		return jsonResponse;
 	}
+
+	public static Response categoryBookListV2_cat(String catname,String userToken,String deviceId,String deviceType,int bookID, String catLevel, String sqlhost, String sqlUsername, String sqlPassword)
+	{
+		//GETfetchBookCountPath = ""+com.hurix.api.utility.ExcelUtils.getbaseURI()+"/DistributionServices/services/api/reader/distribution/145644544/PC/fetchBookCount";
+
+		Response jsonResponse = null;
+		try {
+
+			jsonResponse = given()
+					.header("usertoken",userToken)
+					.header("category",catname)				
+					.get("/DistributionServices/services/api/reader/books/"+deviceId+"/"+deviceType+"/books/v2/categoryBookList");
+
+			Log.info("CategoryBookListV2 Response: "+jsonResponse.then().extract().response().prettyPrint());
+		}catch (Exception exp) 
+		{
+			System.out.println(exp.getMessage());
+			System.out.println(exp.getCause());
+			exp.printStackTrace();
+		}
+		Log.endTestCase("End");
+		return jsonResponse;
+	}
+
+
 }

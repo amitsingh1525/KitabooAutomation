@@ -13,7 +13,9 @@ public class UpDateEpub {
 		Response jsonResponse = null;
 		try {
 			Log.startTestCase("UpDateEpub_OAuth");
-
+			Log.info("title : "+title);
+			Log.info("author : "+author);
+			Log.info("category : "+category);
 			jsonResponse = given()
 					.auth()
 					.oauth(consumerKey, consumerSecret, "", "")

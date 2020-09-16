@@ -113,7 +113,7 @@ public class DIS_1838 {
 			String excelPath="./testData/DIS-1838.xlsx";
 			workbook = new XSSFWorkbook(excelPath);
 			sheet= workbook.getSheet("Sheet1");
-			for(int i=1;i<=2;i++)
+			for(int i=1;i<=5;i++)
 			{	
 				DataFormatter formatter = new DataFormatter();
 				environMent = formatter.formatCellValue(sheet.getRow(i).getCell(0));
@@ -190,19 +190,19 @@ public class DIS_1838 {
 				Validation.responseKeyValidation_key(fetchBookList_without_pagination, "category");
 				Validation.responseKeyValidation_key(fetchBookList_without_pagination, "categoryIdList");
 				Validation.responseKeyValidation_key(fetchBookList_without_pagination, "categoryList");
-				Validation.responseKeyValidation_key(fetchBookList_without_pagination, "locale");
+				//Validation.responseKeyValidation_key(fetchBookList_without_pagination, "locale");
 				Validation.responseKeyValidation_key(fetchBookList_without_pagination, "collectionThumbnail");
 				Validation.responseKeyValidation_key(fetchBookList_without_pagination, "collectionType");
 				Validation.responseKeyValidation_key(fetchBookList_without_pagination, "formats");
 				Validation.responseKeyValidation_key(fetchBookList_without_pagination, "readingPercentage");
-				Validation.responseKeyValidation_key(fetchBookList_without_pagination, "classID");
+				//Validation.responseKeyValidation_key(fetchBookList_without_pagination, "classID");
 				//Validation.responseKeyValidation_key(jsonResponse, Title)
 				bookID1 = fetchBookList_without_pagination.then().extract().path("bookList.book.id[0]");
 				System.out.println("bookID_1: "+bookID1);
 				bookID2 = fetchBookList_without_pagination.then().extract().path("bookList.book.id[1]");			
 				System.out.println("bookID2: "+bookID2);
-				bookID3 = fetchBookList_without_pagination.then().extract().path("bookList.book.id[2]");			
-				System.out.println("bookID3: "+bookID3);
+				/*bookID3 = fetchBookList_without_pagination.then().extract().path("bookList.book.id[2]");			
+				System.out.println("bookID3: "+bookID3);*/
 				//bookID6 = fetchBookList_without_pagination.then().extract().path("bookList.book.id[6]");
 				//System.out.println("bookID6 :: "+bookID6);
 				isbn = fetchBookList_without_pagination.then().extract().path("bookList.book.isbn[1]");

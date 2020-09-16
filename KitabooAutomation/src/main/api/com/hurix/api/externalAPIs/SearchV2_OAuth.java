@@ -19,6 +19,10 @@ public class SearchV2_OAuth {
 		try {
 			
 			Log.startTestCase("SearchV2_OAuth");
+			Log.info("searchTEXT : "+searchTEXT);
+			Log.info("searchV2Body : "+searchV2Body);
+			Log.info("URL : "+"/DistributionServices/ext/api/searchV2");
+			
 			//System.out.println("RequestURL:" +POSTsearchV2Path);
 			System.out.println("searchV2Body: "+searchV2Body);
 			jsonResponse = given()

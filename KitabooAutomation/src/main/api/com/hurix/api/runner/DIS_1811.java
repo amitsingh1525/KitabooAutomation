@@ -1,6 +1,5 @@
 package com.hurix.api.runner;
 
-
 import io.restassured.response.*;
 
 import java.sql.SQLException;
@@ -117,7 +116,7 @@ public class DIS_1811 {
 					break;
 				}				
 				io.restassured.RestAssured.baseURI = detail;
-				
+
 				Log.startTestCase("Authenticate");
 				Response authenticateValue = Authenticate.authenticate(clientID, userName, password,"65454","IPAD");
 				Log.info("Authenticate Response: "+authenticateValue.then().extract().response().prettyPrint());
@@ -150,7 +149,7 @@ public class DIS_1811 {
 				Validation.responseHeaderCodeValidation(fetchBookList_without_pagination, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(fetchBookList_without_pagination);
 				Validation.responseKeyValidation_key(fetchBookList_without_pagination, "title");
-				bookID1 = fetchBookList_without_pagination.then().extract().path("bookList.book.id[0]");
+				bookID1 = fetchBookList_without_pagination.then().extract().path("bookList.book.id[220]");
 				System.out.println("bookID_1: "+bookID1);
 				bookID2 = fetchBookList_without_pagination.then().extract().path("bookList.book.id[1]");
 				System.out.println("bookID: "+bookID2);
@@ -164,10 +163,14 @@ public class DIS_1811 {
 				System.out.println("assetType: "+assetType);
 				category1 = fetchBookList_without_pagination.then().extract().path("bookList.book.category[0]");
 				System.out.println("category1: "+category1);
-				collectionName1 = fetchBookList_without_pagination.then().extract().path("bookList.book.collectionTitle[0]");
+				collectionName1 = fetchBookList_without_pagination.then().extract().path("bookList.book.collectionTitle[220]");
 				System.out.println("collectionName1: "+collectionName1);
 				catname = ExtractCategory.extractCategory(category1);
 				System.out.println("catname: " +catname);
+				String archiveDate = fetchBookList_without_pagination.then().extract().path("bookList.book.archiveDate[220]");
+				System.out.println("archiveDate:"+archiveDate);
+				String archiveDate1=fetchBookList_without_pagination.then().extract().path("bookList.book.archiveDate[1]");
+				System.out.println("archiveDate:"+archiveDate);
 
 				Response GETfetchBookCount_res = FetchBookCount.fetchBookCount(userToken,"45616452","IPAD");
 				Validation.responseHeaderCodeValidation(GETfetchBookCount_res, HttpStatus.SC_OK);
@@ -176,7 +179,23 @@ public class DIS_1811 {
 				Validation.responseKeyValidation_key(GETfetchBookCount_res, "totalbooks");
 				System.out.println("fetchBookCount_res : "+GETfetchBookCount_res);
 				nowEpochTime = Instant.now().toEpochMilli();
+/*
+				//SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+				//Date date = new Date();
+				//sdf.setTimeZone(TimeZone.getTimeZone("GMT-7"));
+				//String value = sdf.format(date);
+				//System.out.println(value);
+				//Date date2 = sdf.parse(value);
+				//long result = date2.getTime();
+				//Log.info("Time "+result);//1600267004000
+				//Response metadata = Metadata.metadata(consumerKey, consumerSecret,""+EpochTime.current()+"","NEW_meta","NEW_meta",catlevel);
+				//Validation.responseHeaderCodeValidation(metadata, HttpStatus.SC_OK);
+				//Validation.responseCodeValidation1(metadata, HttpStatus.SC_OK);
+				//Validation.responseTimeValidation(metadata);
+				//System.out.println("metadata : "+metadata);
 				
+				//Response ingestEpub = IngectEpub.ingectEpub_ext(consumerKey, consumerSecret, filePath);
+
 				Response UploadEpub_res3 = UploadEpub.uploadEpub_OAuth(consumerKey, consumerSecret,"/Thirdepub/JMeterTesting.epub","Title","Title","level4",""+nowEpochTime+"","@#$%$#^&@*(#*$&^#&@*##$%^*((");
 				epubId = UploadEpub_res3.then().extract().path("epubId");
 				System.out.println("epubId: "+epubId);
@@ -188,18 +207,18 @@ public class DIS_1811 {
 				Validation.responseKeyValidation_key(EpubStatus_res13, "status");
 				Validation.responseKeyValidation_key(EpubStatus_res13, "100");
 				System.out.println("EpubStatus_res : "+EpubStatus_res13);
-				
-				Response UploadEpub_res2 = UploadEpub.uploadEpub_OAuth(consumerKey, consumerSecret,"/Thirdepub/JMeterTesting.epub","Title","Title","level4",""+nowEpochTime+"","5PEt24UoprwYB2wjEBdnchZuU1XfV5paO9X8SW52OHjbsCc90ywZl9JFN5lQkNE8xGkWHo5SD4BJPzGiE88x85rHNczvrjQki9xf9H2f8LFol8i22eEkVm4EVmjLTgswIsDBvutumCLRuJplxFVKIcOp3fCJqy1B40DzDyzsSgwAmUcASHjlHOaUb8EHRrwmTgBIDzKuIXsR7Zdf4zkPzv6OXHaiAuzXlVaGIWen1scifhaWqh67B5ilLuJONCG8hU7OKqUYribHiwyr4m3SLwJT8DrTeaUAEPAWjNzD80Sax1ncKBHEdIwu0PIWKjLumLfY3X9goyFKANhZX1lfmZmjxXKmGBk3Skuffgl1Tmiy92jX9jIpMN4Kd1OW4U9Hf916XAJEFnEy6qzN5bx2tkGp4Q2xZ24IrMwoEGqkxhYTyRoLS9M6v3oSDdx6Hn8cp2Flmxoij4J69rLAj5OuyjWjj1pKCos8LZYWTt7aJvWBknIT8MGz537");
-				Validation.responseHeaderCodeValidation(UploadEpub_res2, HttpStatus.SC_OK);
-				Validation.responseCodeValidation1(UploadEpub_res2, HttpStatus.SC_BAD_REQUEST);
-				Validation.responseTimeValidation(UploadEpub_res2);
-				Validation.responseINTEGERKeyAndValue(UploadEpub_res2, "Description", 101);
-				Validation.responseINTEGERKeyAndValue(UploadEpub_res2, "Mode", 100);
-				System.out.println("UploadEpub_res2 : "+UploadEpub_res2);
-				
-				
-				Response UploadEpub_res1 = UploadEpub.uploadEpub_OAuth(consumerKey, consumerSecret,"/Thirdepub/JMeterTesting.epub","Title","Title","level4",""+nowEpochTime+"","5PEt24UoprwYB2wjEBdnchZuU1XfV5paO9X8SW52OHjbsCc90ywZl9JFN5lQkNE8xGkWHo5SD4BJPzGiE88x85rHNczvrjQki9xf9H2f8LFol8i22eEkVm4EVmjLTgswIsDBvutumCLRuJplxFVKIcOp3fCJqy1B40DzDyzsSgwAmUcASHjlHOaUb8EHRrwmTgBIDzKuIXsR7Zdf4zkPzv6OXHaiAuzXlVaGIWen1scifhaWqh67B5ilLuJONCG8hU7OKqUYribHiwyr4m3SLwJT8DrTeaUAEPAWjNzD80Sax1ncKBHEdIwu0PIWKjLumLfY3X9goyFKANhZX1lfmZmjxXKmGBk3Skuffgl1Tmiy92jX9jIpMN4Kd1OW4U9Hf916XAJEFnEy6qzN5bx2tkGp4Q2xZ24IrMwoEGqkxhYTyRoLS9M6v3oSDdx6Hn8cp2Flmxoij4J69rLAj5OuyjWjj1pKCos8LZYWTt7aJvWBknIT8MGz");
-				epubId = UploadEpub_res1.then().extract().path("epubId");
+
+				Response UploadEpub_500more = UploadEpub.uploadEpub_OAuth(consumerKey, consumerSecret,"/Thirdepub/JMeterTesting.epub","Title","Title","level4",""+nowEpochTime+"","5PEt24UoprwYB2wjEBdnchZuU1XfV5paO9X8SW52OHjbsCc90ywZl9JFN5lQkNE8xGkWHo5SD4BJPzGiE88x85rHNczvrjQki9xf9H2f8LFol8i22eEkVm4EVmjLTgswIsDBvutumCLRuJplxFVKIcOp3fCJqy1B40DzDyzsSgwAmUcASHjlHOaUb8EHRrwmTgBIDzKuIXsR7Zdf4zkPzv6OXHaiAuzXlVaGIWen1scifhaWqh67B5ilLuJONCG8hU7OKqUYribHiwyr4m3SLwJT8DrTeaUAEPAWjNzD80Sax1ncKBHEdIwu0PIWKjLumLfY3X9goyFKANhZX1lfmZmjxXKmGBk3Skuffgl1Tmiy92jX9jIpMN4Kd1OW4U9Hf916XAJEFnEy6qzN5bx2tkGp4Q2xZ24IrMwoEGqkxhYTyRoLS9M6v3oSDdx6Hn8cp2Flmxoij4J69rLAj5OuyjWjj1pKCos8LZYWTt7aJvWBknIT8MGz537");
+				Validation.responseHeaderCodeValidation(UploadEpub_500more, HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(UploadEpub_500more, HttpStatus.SC_BAD_REQUEST);
+				Validation.responseTimeValidation(UploadEpub_500more);
+				Validation.responseINTEGERKeyAndValue(UploadEpub_500more, "Description", 101);
+				Validation.responseINTEGERKeyAndValue(UploadEpub_500more, "Mode", 100);
+				System.out.println("UploadEpub_res2 : "+UploadEpub_500more);
+
+
+				Response UploadEpub_res500ch = UploadEpub.uploadEpub_OAuth(consumerKey, consumerSecret,"/Thirdepub/JMeterTesting.epub","Title","Title","level4",""+nowEpochTime+"","5PEt24UoprwYB2wjEBdnchZuU1XfV5paO9X8SW52OHjbsCc90ywZl9JFN5lQkNE8xGkWHo5SD4BJPzGiE88x85rHNczvrjQki9xf9H2f8LFol8i22eEkVm4EVmjLTgswIsDBvutumCLRuJplxFVKIcOp3fCJqy1B40DzDyzsSgwAmUcASHjlHOaUb8EHRrwmTgBIDzKuIXsR7Zdf4zkPzv6OXHaiAuzXlVaGIWen1scifhaWqh67B5ilLuJONCG8hU7OKqUYribHiwyr4m3SLwJT8DrTeaUAEPAWjNzD80Sax1ncKBHEdIwu0PIWKjLumLfY3X9goyFKANhZX1lfmZmjxXKmGBk3Skuffgl1Tmiy92jX9jIpMN4Kd1OW4U9Hf916XAJEFnEy6qzN5bx2tkGp4Q2xZ24IrMwoEGqkxhYTyRoLS9M6v3oSDdx6Hn8cp2Flmxoij4J69rLAj5OuyjWjj1pKCos8LZYWTt7aJvWBknIT8MGz");
+				epubId = UploadEpub_res500ch.then().extract().path("epubId");
 				System.out.println("epubId: "+epubId);
 				Thread.sleep(40000);
 				Response EpubStatus_res1 = EpubStatus.epubStatus(consumerKey, consumerSecret,epubId);
@@ -208,8 +227,8 @@ public class DIS_1811 {
 				Validation.responseTimeValidation(EpubStatus_res1);
 				Validation.responseKeyValidation_key(EpubStatus_res1, "status");
 				Validation.responseKeyValidation_key(EpubStatus_res1, "100");
-				System.out.println("EpubStatus_res : "+EpubStatus_res1);
-				
+				System.out.println("EpubStatus_res : "+EpubStatus_res1);*/
+
 				Title ="Reflow_epub_"+nowEpochTime+"";
 				Log.info("Title : " +Title);
 				Response UploadEpub_res = UploadEpub.uploadEpub_OAuth(consumerKey, consumerSecret,"/Thirdepub/JMeterTesting.epub","Title","Title","level4",""+nowEpochTime+"","Title");
@@ -231,31 +250,35 @@ public class DIS_1811 {
 				Validation.responseKeyValidation_key(EpubStatus_res, "100");
 				System.out.println("EpubStatus_res : "+EpubStatus_res);
 				//Log.info(Validation.responseCodeValidation1(EpubStatus_res, HttpStatus.SC_OK));
-				
 
-				Response upDateEpub_res = UpDateEpub.upDateEpub_OAuth(consumerKey, consumerSecret,"/Thirdepub/Reflow_epub.epub","Reflow_epub_UPD_"+nowEpochTime+"","Reflow_epub_02","level4_Upd",""+nowEpochTime+"","Reflow_epub_"+nowEpochTime+"",""+epubId+"");
-				String updateTitle="Reflow_epub_UPD_"+nowEpochTime+"";
+				String title12112 = "Reflow_epub_UPD_"+nowEpochTime+"";
+				Response upDateEpub_res = UpDateEpub.upDateEpub_OAuth(consumerKey, consumerSecret,"/Thirdepub/Reflow_epub.epub",title12112,"Reflow_epub_02","level4_Upd",""+nowEpochTime+"","Reflow_epub_"+nowEpochTime+"",""+epubId+"");
+				//String updateTitle="Reflow_epub_UPD_"+nowEpochTime+"";
 				Validation.responseHeaderCodeValidation(upDateEpub_res, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(upDateEpub_res, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(upDateEpub_res);
 				Validation.responseKeyValidation_key(upDateEpub_res, "Epub updated successfully.");
 				System.out.println("upDateEpub_res : "+upDateEpub_res);
-				
-				
+
+
+				Thread.sleep(9000);
+				String splitStr = title12112.substring(0,15);
 				Response fetchBookList_without_pagination_again = FetchBookList.fetchBookList_without_pagination(userToken,"45616452","IPAD");
-				Validation.responseKeyValidation_key(fetchBookList_without_pagination_again,""+updateTitle+"");
+				Validation.responseKeyValidation_key(fetchBookList_without_pagination_again,""+splitStr+"");
 				Validation.responseCodeValidation1(fetchBookList_without_pagination_again, HttpStatus.SC_OK);
 				Validation.responseHeaderCodeValidation(fetchBookList_without_pagination_again,HttpStatus.SC_OK);
 				Validation.responseTimeValidation(fetchBookList_without_pagination_again);
-				Validation.responseKeyValidation_key(fetchBookList_without_pagination_again,"level4_upd");
+				Validation.responseKeyValidation_key(fetchBookList_without_pagination_again,"level4");
 				System.out.println("fetchBookList_without_pagination_again :: " +fetchBookList_without_pagination_again);	
-				
-				
-				Response CategoryBookListV1s = CategoryBookListV1.categoryBookListV1(""+category1+"",userToken,"56454", "IPAD",bookID1,catlevel,"jdbc:mysql://172.18.10.147:3306","readonly","readonly@123");
+
+				String sqlhost="jdbc:mysql://hurix-staging-db.cbum2u9r6xyc.us-east-1.rds.amazonaws.com";
+				String sqlUsername="qcteam";
+				String sqlPassword="JB88F-WT2Q3-DPXTT";		
+				Response CategoryBookListV1s = CategoryBookListV1.categoryBookListV1_cat("level4_Upd",userToken,"56454", "IPAD",bookID1,catlevel,sqlhost,sqlUsername,sqlPassword);
 				Validation.responseHeaderCodeValidation(CategoryBookListV1s, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(CategoryBookListV1s, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(CategoryBookListV1s);
-				Validation.responseKeyValidation_key(CategoryBookListV1s,""+updateTitle+"");
+				Validation.responseKeyValidation_key(CategoryBookListV1s,""+splitStr+"");
 				Validation.responseKeyValidation_key(CategoryBookListV1s,"category");
 				Validation.responseKeyValidation_key(CategoryBookListV1s,"level4_Upd");
 				Validation.responseKeyValidation_key(CategoryBookListV1s,"isbn");
@@ -263,33 +286,34 @@ public class DIS_1811 {
 				Validation.responseKeyValidation_key(CategoryBookListV1s,"title");
 				Validation.responseKeyValidation_key(CategoryBookListV1s,"formats");				
 				System.out.println("CategoryBookListV1_res : "+CategoryBookListV1s);
-				
 
-				Response CategoryBook_ListV2 = CategoryBookListV2.categoryBookListV2(""+category1+"",userToken,"56454", "IPAD",bookID1,catlevel,"jdbc:mysql://172.18.10.147:3306","readonly","readonly@123");
+
+
+				Response CategoryBook_ListV2 = CategoryBookListV2.categoryBookListV2_cat("level4_Upd",userToken,"56454", "IPAD",bookID1,catlevel,sqlhost,sqlUsername,sqlPassword);
 				Validation.responseHeaderCodeValidation(CategoryBook_ListV2, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(CategoryBook_ListV2, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(CategoryBook_ListV2);
-				Validation.responseKeyValidation_key(CategoryBook_ListV2,""+updateTitle+"");
+				Validation.responseKeyValidation_key(CategoryBook_ListV2,""+splitStr+"");
 				Validation.responseKeyValidation_key(CategoryBook_ListV2,"category");
 				Validation.responseKeyValidation_key(CategoryBook_ListV2,"isbn");
 				Validation.responseKeyValidation_key(CategoryBook_ListV2,"id");
 				Validation.responseKeyValidation_key(CategoryBook_ListV2,"title");
 				Validation.responseKeyValidation_key(CategoryBook_ListV2,"formats");	
 				System.out.println("CategoryBookListV2_res : "+CategoryBook_ListV2);
-						
+
 
 				Response markAsFav= MarkAsFavourite.markAsFavourite(bookID1,userToken,"8742685","IPAD");
 				Validation.responseHeaderCodeValidation(markAsFav, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(markAsFav, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(markAsFav);
-				Validation.responseKeyValidation_key(markAsFav, "isbn");
+				Validation.responseKeyValidation_key(markAsFav, "OK");
 				System.out.println("markAsFav : "+markAsFav);
 
 				Response FetchFavouriteBooks_res = FetchFavouriteBooks.fetchFavouriteBooks(userToken,"8742685","IPAD");
 				Validation.responseHeaderCodeValidation(FetchFavouriteBooks_res, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(FetchFavouriteBooks_res, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchFavouriteBooks_res);
-				Validation.responseKeyValidation_key(FetchFavouriteBooks_res, "isbn");
+				Validation.responseKeyValidation_key(FetchFavouriteBooks_res, "OK");
 				Validation.responseKeyValidation_key(FetchFavouriteBooks_res, ""+bookID1+"");
 				System.out.println("FetchFavouriteBooks_res :: "+FetchFavouriteBooks_res);
 
@@ -299,20 +323,24 @@ public class DIS_1811 {
 				Validation.responseTimeValidation(unMarkFav);
 				//Validation.responseKeyValidation_key(unMarkFav, "isbn");
 				System.out.println("unMarkFav : "+unMarkFav);
-				
-				
+
+
 				Response FetchFavouriteBooks_res1 = FetchFavouriteBooks.fetchFavouriteBooks(userToken,"8742685","IPAD");
 				Validation.responseHeaderCodeValidation(FetchFavouriteBooks_res1, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(FetchFavouriteBooks_res1, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchFavouriteBooks_res1);
-				Validation.responseKeyValidation_key(FetchFavouriteBooks_res1, "isbn");
-				Validation.responseKeyValidation_key(FetchFavouriteBooks_res1, "id");
 				Validation.responseNOTKeyValidation_key(FetchFavouriteBooks_res1, ""+bookID1+"");
 				System.out.println("FetchFavouriteBooks_res :: "+FetchFavouriteBooks_res1);
 
 
 				//startDate=EpochTime.getEpochTime(""+startDate+"");
-				Response Bookdetails_Res = Bookdetails.bookdetails("2019/10/31 14:46:04", userToken, "5489989","IPAD",""+ebookID1+"",""+assetType+"");
+				ebookID1 = fetchBookList_without_pagination.then().extract().path("bookList.book.ebookID[220]");
+				Log.info("bookID_1: "+bookID1);
+				archiveDate=fetchBookList_without_pagination.then().extract().path("bookList.book.archiveDate[220]");
+				Log.info("archiveDate: "+archiveDate);
+				assetType = fetchBookList_without_pagination.then().extract().path("bookList.book.assetType[220]");
+				Log.info("assetType: "+assetType);
+				Response Bookdetails_Res = Bookdetails.bookdetails(""+archiveDate+"", userToken, "5489989","IPAD",""+ebookID1+"",""+assetType+"");
 				Validation.responseHeaderCodeValidation(Bookdetails_Res, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(Bookdetails_Res, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(Bookdetails_Res);
@@ -326,7 +354,7 @@ public class DIS_1811 {
 				Validation.responseHeaderCodeValidation(Refresh_BookList, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(Refresh_BookList, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(Refresh_BookList);
-				Validation.responseKeyValidation_key(Refresh_BookList,""+updateTitle+"");
+				Validation.responseKeyValidation_key(Refresh_BookList,""+splitStr+"");
 				Validation.responseKeyValidation_key(Refresh_BookList,"category");
 				Validation.responseKeyValidation_key(Refresh_BookList,"isbn");
 				Validation.responseKeyValidation_key(Refresh_BookList,"id");
@@ -334,10 +362,11 @@ public class DIS_1811 {
 				Validation.responseKeyValidation_key(Refresh_BookList,"formats");	
 				System.out.println("RefreshBookList_res : "+Refresh_BookList);
 
-				Response V1refresh_BookList = V1refreshBookList.v1refreshBookList("2019/10/31 14:46:04","NEW","UPDATE",""+bookID1+"",""+bookID2+"",userToken,"56454", "IPAD",clientID);
+				Response V1refresh_BookList = V1refreshBookList.v1refreshBookList(""+archiveDate+"","NEW","UPDATE",""+bookID1+"",""+bookID2+"",userToken,"56454", "IPAD",clientID);
 				Validation.responseHeaderCodeValidation(V1refresh_BookList, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(V1refresh_BookList, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(V1refresh_BookList);
+				Validation.responseKeyValidation_key(V1refresh_BookList,""+splitStr+"");
 				Validation.responseKeyValidation_key(V1refresh_BookList,"category");
 				Validation.responseKeyValidation_key(V1refresh_BookList,"isbn");
 				Validation.responseKeyValidation_key(V1refresh_BookList,"id");
@@ -351,7 +380,7 @@ public class DIS_1811 {
 				Validation.responseHeaderCodeValidation(BookList_Res, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(BookList_Res, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(BookList_Res);
-				Validation.responseKeyValidation_key(BookList_Res,""+updateTitle+"");
+				Validation.responseKeyValidation_key(BookList_Res,""+splitStr+"");
 				Validation.responseKeyValidation_key(BookList_Res,"category");
 				Validation.responseKeyValidation_key(BookList_Res,"isbn");
 				Validation.responseKeyValidation_key(BookList_Res,"id");
@@ -361,10 +390,11 @@ public class DIS_1811 {
 				System.out.println("BookList_Res : "+BookList_Res);
 
 
-				Response MultiCategory_BookList = MultiCategoryBookList.multiCategoryBookList(catlevel, bookID1,"jdbc:mysql://172.18.10.147:3306","readonly","readonly@123",userToken,"8545748","IPAD");
+				Response MultiCategory_BookList = MultiCategoryBookList.multiCategoryBookList(catlevel, bookID1,sqlhost,sqlUsername,sqlPassword,userToken,"8545748","IPAD");
 				Validation.responseHeaderCodeValidation(MultiCategory_BookList, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(MultiCategory_BookList, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(MultiCategory_BookList);
+				Validation.responseKeyValidation_key(MultiCategory_BookList,""+splitStr+"");
 				Validation.responseKeyValidation_key(MultiCategory_BookList,"category");
 				Validation.responseKeyValidation_key(MultiCategory_BookList,"isbn");
 				Validation.responseKeyValidation_key(MultiCategory_BookList,"id");
@@ -373,7 +403,7 @@ public class DIS_1811 {
 				Validation.responseKeyValidation_key(MultiCategory_BookList, "Reflow_epub_02");
 				System.out.println("MultiCategoryBookList_Res : "+MultiCategory_BookList);
 
-				Response MultiCategory_CollectionBookList = MultiCategoryCollectionBookList.multiCategoryCollectionBookList(catlevel, bookID1, "jdbc:mysql://172.18.10.147:3306","readonly","readonly@123", userToken, "8545748", "IPAD", ""+collectionName1+"");
+				Response MultiCategory_CollectionBookList = MultiCategoryCollectionBookList.multiCategoryCollectionBookList(catlevel, bookID1, sqlhost,sqlUsername,sqlPassword, userToken, "8545748", "IPAD", ""+collectionName1+"");
 				Validation.responseHeaderCodeValidation(MultiCategory_CollectionBookList, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(MultiCategory_CollectionBookList, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(MultiCategory_CollectionBookList);
@@ -388,12 +418,16 @@ public class DIS_1811 {
 				Validation.responseHeaderCodeValidation(UserAssigned_Books, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(UserAssigned_Books, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(UserAssigned_Books);
-				Validation.responseKeyValidation_key(UserAssigned_Books,""+updateTitle+"");
+				Validation.responseKeyValidation_key(UserAssigned_Books,""+splitStr+"");
 				Validation.responseKeyValidation_key(UserAssigned_Books, "isbn");
 				Validation.responseKeyValidation_key(UserAssigned_Books, "formats");
 				Validation.responseKeyValidation_key(UserAssigned_Books, "id");
 				Validation.responseKeyValidation_key(UserAssigned_Books, "Reflow_epub_02");
 				System.out.println("UserAssigned_res : "+UserAssigned_Books);
+
+
+
+
 			}
 		}catch (Exception exp) 
 		{

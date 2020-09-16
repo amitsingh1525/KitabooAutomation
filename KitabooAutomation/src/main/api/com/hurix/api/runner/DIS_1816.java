@@ -109,7 +109,7 @@ public class DIS_1816 {
 					detail = "http://qc.kitaboo.com";
 					break;
 				case "Staging":
-					detail = "http://qacloud.kitaboo.com";
+					detail = "https://qacloud.kitaboo.com";
 					break;
 				case "BASE_US":
 					detail = "http://localhost:12346";
@@ -327,6 +327,27 @@ public class DIS_1816 {
 				Log.info("readingPercentage_speed9 : "+readingPercentage_speed9);
 				Validation.responseKeyAndValue(Readingspeed, ""+bookID9+"", readingPercentage9);
 				
+				saveReadingPercentage1 = SaveReadingPercentage.saveReadingPercentage(bookID2, 40, userToken, "wss2132", "IPAD");
+				Validation.responseCodeValidation1(saveReadingPercentage1, HttpStatus.SC_OK);
+				Validation.responseHeaderCodeValidation(saveReadingPercentage1, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(saveReadingPercentage1);
+				System.out.println("saveReadingPercentage: "+saveReadingPercentage1);
+				
+				Readingspeed = ReadingSpeed.readingSpeed(bookID1, bookID2, bookID3,bookID4,bookID5,bookID6,bookID7,bookID8,bookID9, userToken, "ds313131", "IPAD");
+				Validation.responseCodeValidation1(Readingspeed, HttpStatus.SC_OK);
+				Validation.responseHeaderCodeValidation(Readingspeed, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(Readingspeed);
+				Validation.responseKeyValidation_key(Readingspeed, "redingPercentage");
+				System.out.println("Readingspeed : "+Readingspeed);
+				readingPercentage_speed1=Readingspeed.then().extract().path("redingPercentage."+bookID1+"");
+				Log.info("readingPercentage_speed1 : "+readingPercentage_speed1);
+				Validation.responseKeyAndValue(Readingspeed, ""+bookID1+"", readingPercentage1);
+
+				readingPercentage_speed2=Readingspeed.then().extract().path("redingPercentage."+bookID2+"");
+				Log.info("readingPercentage_speed2 : "+readingPercentage_speed2);
+				Validation.responseKeyAndValue(Readingspeed, ""+bookID2+"", "40");
+
+				
 		//ANDROID
 				fetchBookList_without_pagination = FetchBookList.fetchBookList_without_pagination(userToken,"45616452","ANDROID");
 				Validation.responseCodeValidation1(fetchBookList_without_pagination, HttpStatus.SC_OK);
@@ -503,6 +524,26 @@ public class DIS_1816 {
 				readingPercentage_speed9 = Readingspeed.then().extract().path("redingPercentage."+bookID9+"");
 				Log.info("readingPercentage_speed9 : "+readingPercentage_speed9);
 				Validation.responseKeyAndValue(Readingspeed, ""+bookID9+"", readingPercentage9);
+				
+				saveReadingPercentage1 = SaveReadingPercentage.saveReadingPercentage(bookID2, 40, userToken, "wss2132", "ANDROID");
+				Validation.responseCodeValidation1(saveReadingPercentage1, HttpStatus.SC_OK);
+				Validation.responseHeaderCodeValidation(saveReadingPercentage1, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(saveReadingPercentage1);
+				System.out.println("saveReadingPercentage: "+saveReadingPercentage1);
+				
+				Readingspeed = ReadingSpeed.readingSpeed(bookID1, bookID2, bookID3,bookID4,bookID5,bookID6,bookID7,bookID8,bookID9, userToken, "ds313131", "ANDROID");
+				Validation.responseCodeValidation1(Readingspeed, HttpStatus.SC_OK);
+				Validation.responseHeaderCodeValidation(Readingspeed, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(Readingspeed);
+				Validation.responseKeyValidation_key(Readingspeed, "redingPercentage");
+				System.out.println("Readingspeed : "+Readingspeed);
+				readingPercentage_speed1=Readingspeed.then().extract().path("redingPercentage."+bookID1+"");
+				Log.info("readingPercentage_speed1 : "+readingPercentage_speed1);
+				Validation.responseKeyAndValue(Readingspeed, ""+bookID1+"", readingPercentage1);
+
+				readingPercentage_speed2=Readingspeed.then().extract().path("redingPercentage."+bookID2+"");
+				Log.info("readingPercentage_speed2 : "+readingPercentage_speed2);
+				Validation.responseKeyAndValue(Readingspeed, ""+bookID2+"", "40");
 				
 		//WINDOWS
 				fetchBookList_without_pagination = FetchBookList.fetchBookList_without_pagination(userToken,"45616452","WINDOWS");
@@ -681,6 +722,27 @@ public class DIS_1816 {
 				Log.info("readingPercentage_speed9 : "+readingPercentage_speed9);
 				Validation.responseKeyAndValue(Readingspeed, ""+bookID9+"", readingPercentage9);
 				
+				
+				saveReadingPercentage1 = SaveReadingPercentage.saveReadingPercentage(bookID2, 40, userToken, "wss2132", "WINDOWS");
+				Validation.responseCodeValidation1(saveReadingPercentage1, HttpStatus.SC_OK);
+				Validation.responseHeaderCodeValidation(saveReadingPercentage1, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(saveReadingPercentage1);
+				System.out.println("saveReadingPercentage: "+saveReadingPercentage1);
+				
+				Readingspeed = ReadingSpeed.readingSpeed(bookID1, bookID2, bookID3,bookID4,bookID5,bookID6,bookID7,bookID8,bookID9, userToken, "ds313131", "WINDOWS");
+				Validation.responseCodeValidation1(Readingspeed, HttpStatus.SC_OK);
+				Validation.responseHeaderCodeValidation(Readingspeed, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(Readingspeed);
+				Validation.responseKeyValidation_key(Readingspeed, "redingPercentage");
+				System.out.println("Readingspeed : "+Readingspeed);
+				readingPercentage_speed1=Readingspeed.then().extract().path("redingPercentage."+bookID1+"");
+				Log.info("readingPercentage_speed1 : "+readingPercentage_speed1);
+				Validation.responseKeyAndValue(Readingspeed, ""+bookID1+"", readingPercentage1);
+
+				readingPercentage_speed2=Readingspeed.then().extract().path("redingPercentage."+bookID2+"");
+				Log.info("readingPercentage_speed2 : "+readingPercentage_speed2);
+				Validation.responseKeyAndValue(Readingspeed, ""+bookID2+"", "40");
+				
 			//HTML5
 				fetchBookList_without_pagination = FetchBookList.fetchBookList_without_pagination(userToken,"45616452","HTML5");
 				Validation.responseCodeValidation1(fetchBookList_without_pagination, HttpStatus.SC_OK);
@@ -857,6 +919,26 @@ public class DIS_1816 {
 				readingPercentage_speed9 = Readingspeed.then().extract().path("redingPercentage."+bookID9+"");
 				Log.info("readingPercentage_speed9 : "+readingPercentage_speed9);
 				Validation.responseKeyAndValue(Readingspeed, ""+bookID9+"", readingPercentage9);
+				
+				saveReadingPercentage1 = SaveReadingPercentage.saveReadingPercentage(bookID2, 40, userToken, "wss2132", "HTML5");
+				Validation.responseCodeValidation1(saveReadingPercentage1, HttpStatus.SC_OK);
+				Validation.responseHeaderCodeValidation(saveReadingPercentage1, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(saveReadingPercentage1);
+				System.out.println("saveReadingPercentage: "+saveReadingPercentage1);
+				
+				Readingspeed = ReadingSpeed.readingSpeed(bookID1, bookID2, bookID3,bookID4,bookID5,bookID6,bookID7,bookID8,bookID9, userToken, "ds313131", "HTML5");
+				Validation.responseCodeValidation1(Readingspeed, HttpStatus.SC_OK);
+				Validation.responseHeaderCodeValidation(Readingspeed, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(Readingspeed);
+				Validation.responseKeyValidation_key(Readingspeed, "redingPercentage");
+				System.out.println("Readingspeed : "+Readingspeed);
+				readingPercentage_speed1=Readingspeed.then().extract().path("redingPercentage."+bookID1+"");
+				Log.info("readingPercentage_speed1 : "+readingPercentage_speed1);
+				Validation.responseKeyAndValue(Readingspeed, ""+bookID1+"", readingPercentage1);
+
+				readingPercentage_speed2=Readingspeed.then().extract().path("redingPercentage."+bookID2+"");
+				Log.info("readingPercentage_speed2 : "+readingPercentage_speed2);
+				Validation.responseKeyAndValue(Readingspeed, ""+bookID2+"", "40");
 				
 			}
 		}catch (Exception exp) 

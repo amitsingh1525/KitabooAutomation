@@ -14,8 +14,9 @@ public class GetSecureURL {
 		
 		Response jsonResponse = null;
 		try {
-			
 			Log.startTestCase("getSecureURL");
+			Log.info("URL : "+"/DistributionServices/services/api/reader/secure/"+deviceID+"/"+deviceType+"/getSecureURL?entryID&type="+type+"");
+			Log.info("userToken : "+userToken);
 			//System.out.println("GETfetBookListRequestURL:" +GETgetSecureURLPath);
 			jsonResponse = given()
 					.header("usertoken",userToken)						
