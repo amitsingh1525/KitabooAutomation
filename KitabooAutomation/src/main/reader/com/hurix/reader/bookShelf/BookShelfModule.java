@@ -86,6 +86,8 @@ public class BookShelfModule extends BookShelfStepModule {
 	}
 
 	public static void changePassword(String currentPassword, String newPassword, String confirmPassword){
+		Driver.driver.navigate().refresh();
+		threadHold_5Sec();
 		btnProfileIcon();
 		linkChangePassword();
 		txtCurrentPassword(currentPassword);

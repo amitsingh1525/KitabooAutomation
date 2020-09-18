@@ -45,7 +45,7 @@ public class LoginModule extends LoginStepModule {
 
 		linkForgotPassword();
 		txtForgotUsername(username);
-		threadHold_2Sec();
+		threadHold_5Sec();
 		btnForgetSubmit();
 	}
 

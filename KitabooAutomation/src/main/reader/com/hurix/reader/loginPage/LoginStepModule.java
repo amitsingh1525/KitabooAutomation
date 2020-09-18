@@ -15,8 +15,8 @@ public class LoginStepModule extends UIElements {
 
 	public static void txtUsername(String username){
 		try {
-			elementFinderByID(prop.getProperty("username_id"), "txtUserName").clear();
-			elementFinderByID(prop.getProperty("username_id"), "txtUserName").sendKeys(username);
+			elementFinderByID(prop.getProperty("username_id"), "Clear username textbox.").clear();
+			elementFinderByID(prop.getProperty("username_id"), "Entered username in the textbox i.e: '"+username+"'.").sendKeys(username);
 		} catch (Exception e) {
 			System.out.println("Element not present.");
 		}
@@ -24,8 +24,8 @@ public class LoginStepModule extends UIElements {
 
 	public static void txtPassword(String password){
 		try {
-			elementFinderByID(prop.getProperty("password_id"), "txtPassword").clear();
-			elementFinderByID(prop.getProperty("password_id"), "txtPassword").sendKeys(password);
+			elementFinderByID(prop.getProperty("password_id"), "Clear password textbox.").clear();
+			elementFinderByID(prop.getProperty("password_id"), "Entered password in the textbox i.e: '"+password+"'.").sendKeys(password);
 		} catch (Exception e) {
 			System.out.println("Element not present.");
 		}
@@ -33,7 +33,7 @@ public class LoginStepModule extends UIElements {
 
 	public static void btnShowpassword(){
 		try {
-			elementFinderByID(prop.getProperty("showPAssword_btn_id"), "Show Password").click();
+			elementFinderByID(prop.getProperty("showPAssword_btn_id"), "Click on show password.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present.");
 		}
@@ -41,7 +41,7 @@ public class LoginStepModule extends UIElements {
 
 	public static void btnLogin(){
 		try {
-			elementFinderByXpath(prop.getProperty("loginbtn_xpath"), "Login btn").click();
+			elementFinderByXpath(prop.getProperty("loginbtn_xpath"), "Click on login").click();
 		} catch (Exception e) {
 			System.out.println("Element not present.");
 		}
@@ -50,7 +50,7 @@ public class LoginStepModule extends UIElements {
 	public static String getinvalidusernamePasswordmsg(){
 		String msg = null;
 		try {
-			msg = elementFinderByXpath(prop.getProperty("invalidusernamePassword_visibletext_xpath"), "invalid username password massage").getText();
+			msg = elementFinderByXpath(prop.getProperty("invalidusernamePassword_visibletext_xpath"), "Getting invalid username message.").getText();
 
 		} catch (Exception e) {
 			System.out.println("Element not present.");
@@ -60,7 +60,7 @@ public class LoginStepModule extends UIElements {
 
 	public static void chkRememberme(){
 		try {
-			elementFinderByXpath(prop.getProperty("remebermechk_xpath"), "Rememberme chk").click();
+			elementFinderByXpath(prop.getProperty("remebermechk_xpath"), "Click on remember me.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present.");
 		}
@@ -68,9 +68,9 @@ public class LoginStepModule extends UIElements {
 
 	public static void btnDesktopInstaller(){
 		try {
-			elementFinderByXpath(prop.getProperty("desktopInstaller_btn_xpath"), "desktop installer").click();
-			elementFinderByXpath(prop.getProperty("downloadzip_visibletext_xpath"), "Download .zip").click();
-			elementFinderByID(prop.getProperty("installerCancel_btn_id"), "Installer cancel btn").click();
+			elementFinderByXpath(prop.getProperty("desktopInstaller_btn_xpath"), "Click on desktop installer.").click();
+			elementFinderByXpath(prop.getProperty("downloadzip_visibletext_xpath"), "Click on Download .zip").click();
+			elementFinderByID(prop.getProperty("installerCancel_btn_id"), "Click on Installer cancel").click();
 		} catch (Exception e) {
 			System.out.println("Element not present.");
 		}
@@ -79,9 +79,9 @@ public class LoginStepModule extends UIElements {
 	public static void btnIOSInstaller(){
 		try {
 			String parent_Window = Driver.driver.getWindowHandle();
-			elementFinderByXpath(prop.getProperty("IOSInstaller_btn_xpath"), "IOS installer").click();
+			elementFinderByXpath(prop.getProperty("IOSInstaller_btn_xpath"), "Click on IOS installer").click();
 			windowhandle();
-			String ebookreader = elementFinderByXpath(prop.getProperty("IOSebookreader_xpath"), "IOS kitaboo ebookreader").getText();
+			String ebookreader = elementFinderByXpath(prop.getProperty("IOSebookreader_xpath"), "Getting text IOS kitaboo ebookreader").getText();
 			if(ebookreader.equalsIgnoreCase("Kitaboo eBook Reader 4+")) {
 				Log.pass("Kitaboo eBook reader is found on Apple store");
 			}
@@ -99,9 +99,9 @@ public class LoginStepModule extends UIElements {
 	public static void btnAndroidInstaller(){
 		try {
 			String parent_Window = Driver.driver.getWindowHandle();
-			elementFinderByXpath(prop.getProperty("androidInstaller_btn_xpath"), "Android installer").click();
+			elementFinderByXpath(prop.getProperty("androidInstaller_btn_xpath"), "Clickk on Android installe.r").click();
 			windowhandle();
-			String ebookreader = elementFinderByXpath(prop.getProperty("androideBookreader_xpath"), "Apple store kitaboo ebookreader").getText();
+			String ebookreader = elementFinderByXpath(prop.getProperty("androideBookreader_xpath"), "Getting text Apple store kitaboo ebookreader.").getText();
 			if(ebookreader.equalsIgnoreCase("Kitaboo eBook Reader")) {
 				Log.pass("Kitaboo eBook reader is found on Google play store");
 			}
@@ -118,10 +118,10 @@ public class LoginStepModule extends UIElements {
 	public static void btnWindowsInstaller(){
 		try {
 			String parent_Window = Driver.driver.getWindowHandle();
-			elementFinderByXpath(prop.getProperty("windowsInstaller_btn_xpath"), "Windows installer").click();
+			elementFinderByXpath(prop.getProperty("windowsInstaller_btn_xpath"), "Click on Windows installer.").click();
 			windowhandle();
-			elementFinderByXpath(prop.getProperty("windowsCancelbtn_xpath"), "Popup cancel btn").click();
-			String ebookreader = elementFinderByID(prop.getProperty("windowsebookreader_id"), "windows installer kitaboo ebookreader").getText();
+			elementFinderByXpath(prop.getProperty("windowsCancelbtn_xpath"), "Click on Popup close.").click();
+			String ebookreader = elementFinderByID(prop.getProperty("windowsebookreader_id"), "Getting text windows installer kitaboo ebookreader.").getText();
 			if(ebookreader.equalsIgnoreCase("Kitaboo eBook Reader")) {
 				Log.pass("Kitaboo eBook reader is found on Windows store");
 			}
@@ -138,7 +138,7 @@ public class LoginStepModule extends UIElements {
 
 	public static void linkForgotPassword(){
 		try {
-			elementFinderByXpath(prop.getProperty("forgetpassword_visiblelink_xpath"), "Forgot Password").click();
+			elementFinderByXpath(prop.getProperty("forgetpassword_visiblelink_xpath"), "Click on Forgot Password").click();
 		} catch (Exception e) {
 			System.out.println("Element not present.");
 		}
@@ -146,8 +146,8 @@ public class LoginStepModule extends UIElements {
 
 	public static void txtForgotUsername(String username){
 		try {
-			elementFinderByID(prop.getProperty("forgetusername_txt_id"), "Forgot username").clear();
-			elementFinderByID(prop.getProperty("forgetusername_txt_id"), "Forgot username").sendKeys(username);
+			elementFinderByID(prop.getProperty("forgetusername_txt_id"), "Clear Forgot username textbox.").clear();
+			elementFinderByID(prop.getProperty("forgetusername_txt_id"), "Entered Forgot username i.e '"+username+"'.").sendKeys(username);
 		} catch (Exception e) {
 			System.out.println("Element not present.");
 		}
@@ -155,7 +155,7 @@ public class LoginStepModule extends UIElements {
 
 	public static void btnForgetSubmit(){
 		try {
-			elementFinderByXpath(prop.getProperty("forgetSubmitbtn_xpath"), "Submit btn").click();
+			elementFinderByXpath(prop.getProperty("forgetSubmitbtn_xpath"), "Click on submit.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present.");
 		}
@@ -163,7 +163,7 @@ public class LoginStepModule extends UIElements {
 
 	public static void btnCancel(){
 		try {
-			elementFinderByXpath(prop.getProperty("cancelbtn_xpath"), "Cancel btn").click();
+			elementFinderByXpath(prop.getProperty("cancelbtn_xpath"), "Click on cancel.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present.");
 		}
@@ -171,7 +171,7 @@ public class LoginStepModule extends UIElements {
 
 	public static void btnOk(){
 		try {
-			elementFinderByXpath(prop.getProperty("okbtn_xpath"), "Ok btn").click();
+			elementFinderByXpath(prop.getProperty("okbtn_xpath"), "Click on Ok.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present.");
 		}
@@ -179,7 +179,7 @@ public class LoginStepModule extends UIElements {
 
 	public static void btnAccesscode(){
 		try {
-			elementFinderByXpath(prop.getProperty("accesscode_xpath"), "btnAccesscode").click();
+			elementFinderByXpath(prop.getProperty("accesscode_xpath"), "Click on accesscode.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present.");
 		}
@@ -187,8 +187,8 @@ public class LoginStepModule extends UIElements {
 
 	public static void txtAccesscodeUsername(String accesscode){
 		try {
-			elementFinderByID(prop.getProperty("accesscode_txt_id"), "Accesscode username").clear();
-			elementFinderByID(prop.getProperty("accesscode_txt_id"), "Accesscode username").sendKeys(accesscode);
+			elementFinderByID(prop.getProperty("accesscode_txt_id"), "Clear accesscode textbox.").clear();
+			elementFinderByID(prop.getProperty("accesscode_txt_id"), "Entered accesscode in the textbox i.e '"+accesscode+"").sendKeys(accesscode);
 		} catch (Exception e) {
 			System.out.println("Element not present.");
 		}
@@ -196,7 +196,7 @@ public class LoginStepModule extends UIElements {
 
 	public static void btnSend(){
 		try {
-			elementFinderByXpath(prop.getProperty("sendbtn_xpath"), "Send btn").click();
+			elementFinderByXpath(prop.getProperty("sendbtn_xpath"), "Click on send.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present.");
 		}
@@ -205,7 +205,7 @@ public class LoginStepModule extends UIElements {
 	public static String getinvalidacccesscodemsg(){
 		String msg = null;
 		try {
-			msg = elementFinderByID(prop.getProperty("invalidaccesscode_visibletext_id"), "invalid Access code massage").getText();
+			msg = elementFinderByID(prop.getProperty("invalidaccesscode_visibletext_id"), "Getting text invalid Access code massage").getText();
 		} catch (Exception e) {
 			System.out.println("Element not present.");
 		}
@@ -214,8 +214,8 @@ public class LoginStepModule extends UIElements {
 
 	public static void txtfullname(String fullname){
 		try {
-			elementFinderByXpath(prop.getProperty("fullname_txt_xpath"), "Fullname txt").clear();
-			elementFinderByXpath(prop.getProperty("fullname_txt_xpath"), "Fullname txt").sendKeys(fullname);
+			elementFinderByXpath(prop.getProperty("fullname_txt_xpath"), "Clear full name textbox.").clear();
+			elementFinderByXpath(prop.getProperty("fullname_txt_xpath"), "Entered fullname i.e '"+fullname+"'.").sendKeys(fullname);
 		} catch (Exception e) {
 			System.out.println("Element not present.");
 		}
@@ -223,8 +223,8 @@ public class LoginStepModule extends UIElements {
 
 	public static void txtemailid(String emailid){
 		try {
-			elementFinderByXpath(prop.getProperty("emailid_txt_xpath"), "emailid txt").clear();
-			elementFinderByXpath(prop.getProperty("emailid_txt_xpath"), "emailid txt").sendKeys(emailid);
+			elementFinderByXpath(prop.getProperty("emailid_txt_xpath"), "Clear emailid textbox.").clear();
+			elementFinderByXpath(prop.getProperty("emailid_txt_xpath"), "Entered email id i.e '"+emailid+"'.").sendKeys(emailid);
 		} catch (Exception e) {
 			System.out.println("Element not present.");
 		}
@@ -232,8 +232,8 @@ public class LoginStepModule extends UIElements {
 
 	public static void txtNewUserPassword(String password){
 		try {
-			elementFinderByXpath(prop.getProperty("password_txt_xpath"), "password txt").clear();
-			elementFinderByXpath(prop.getProperty("password_txt_xpath"), "password txt").sendKeys(password);
+			elementFinderByXpath(prop.getProperty("password_txt_xpath"), "Clear password textbox.").clear();
+			elementFinderByXpath(prop.getProperty("password_txt_xpath"), "Entered password i.e '"+password+"'.").sendKeys(password);
 		} catch (Exception e) {
 			System.out.println("Element not present.");
 		}
@@ -241,8 +241,8 @@ public class LoginStepModule extends UIElements {
 
 	public static void txtconfirmpassword(String password){
 		try {
-			elementFinderByXpath(prop.getProperty("confirmpassword_txt_xpath"), "confirmpassword txt").clear();
-			elementFinderByXpath(prop.getProperty("confirmpassword_txt_xpath"), "confirmpassword txt").sendKeys(password);
+			elementFinderByXpath(prop.getProperty("confirmpassword_txt_xpath"), "Clear confirm password textbox.").clear();
+			elementFinderByXpath(prop.getProperty("confirmpassword_txt_xpath"), "Entered confirm password i.e '"+password+"'.").sendKeys(password);
 		} catch (Exception e) {
 			System.out.println("Element not present.");
 		}
@@ -250,7 +250,7 @@ public class LoginStepModule extends UIElements {
 
 	public static void btncancel(){
 		try {
-			elementFinderByLinkText(prop.getProperty("cancelbtn_linktext"), "cancel btn").click();
+			elementFinderByLinkText(prop.getProperty("cancelbtn_linktext"), "Click on cancel.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present.");
 		}
@@ -258,7 +258,7 @@ public class LoginStepModule extends UIElements {
 
 	public static void btnsubmitaccesscode(){
 		try {
-			elementFinderByXpath(prop.getProperty("submitbtn_xpath"), "btnsubmitaccesscode").click();
+			elementFinderByXpath(prop.getProperty("submitbtn_xpath"), "Click on submit.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present.");
 		}
@@ -267,7 +267,7 @@ public class LoginStepModule extends UIElements {
 	public static String getexistsemailidmsg(){
 		String msg = null;
 		try {
-			msg = elementFinderByXpath(prop.getProperty("emailidexists_visibletext_xpath"), "email id already exists").getText();
+			msg = elementFinderByXpath(prop.getProperty("emailidexists_visibletext_xpath"), "Getting text email id already exists.").getText();
 		} catch (Exception e) {
 			System.out.println("Element not present.");
 		}
@@ -277,7 +277,7 @@ public class LoginStepModule extends UIElements {
 	public static String getinvalidForgetEmailmsg(){
 		String msg = null;
 		try {
-			msg = elementFinderByID(prop.getProperty("invalidForgetEmailID_id"), "Forget Email ID entered is incorrect.").getText();
+			msg = elementFinderByID(prop.getProperty("invalidForgetEmailID_id"), "Getting text Forget Email ID entered is incorrect.").getText();
 		} catch (Exception e) {
 			System.out.println("Element not present.");
 		}
@@ -296,7 +296,7 @@ public class LoginStepModule extends UIElements {
 
 	public static void chkacceptcondition(){
 		try {
-			elementFinderByXpath(prop.getProperty("acceptcondition_chk_xpath"), "Accept condition").click();
+			elementFinderByXpath(prop.getProperty("acceptcondition_chk_xpath"), "Click on accept condition checkbox.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present.");
 		}
@@ -304,7 +304,7 @@ public class LoginStepModule extends UIElements {
 
 	public static void linktermsandCondition(){
 		try {
-			elementFinderByXpath(prop.getProperty("termsandcondition_link_xpath"), "Terms and condition").click();
+			elementFinderByXpath(prop.getProperty("termsandcondition_link_xpath"), "Click on Terms and condition.").click();
 			windowhandle();
 			if(Driver.driver.getCurrentUrl().contains("https://kitaboo.com/terms-and-conditions/")){
 				Log.pass("After click on Terms and condition redirect to this page"+Driver.driver.getCurrentUrl());
@@ -320,7 +320,7 @@ public class LoginStepModule extends UIElements {
 
 	public static void linkprivacypolicy(){ //
 		try {
-			elementFinderByXpath(prop.getProperty("privacypolicy_link_xpath"), "Privacy Policy").click();
+			elementFinderByXpath(prop.getProperty("privacypolicy_link_xpath"), "Click on Privacy Policy.").click();
 			windowhandle();
 			if(Driver.driver.getCurrentUrl().contains("https://kitaboo.com/privacy-policy/")){
 				Log.pass("After click on privacy policy redirect to this page"+Driver.driver.getCurrentUrl());
