@@ -199,10 +199,9 @@ public class CategoryBookListV2 {
 	public static Response categoryBookListV2_cat(String catname,String userToken,String deviceId,String deviceType,int bookID, String catLevel, String sqlhost, String sqlUsername, String sqlPassword)
 	{
 		//GETfetchBookCountPath = ""+com.hurix.api.utility.ExcelUtils.getbaseURI()+"/DistributionServices/services/api/reader/distribution/145644544/PC/fetchBookCount";
-
+		Log.startTestCase("CategoryBookListV2");
 		Response jsonResponse = null;
 		try {
-
 			jsonResponse = given()
 					.header("usertoken",userToken)
 					.header("category",catname)				

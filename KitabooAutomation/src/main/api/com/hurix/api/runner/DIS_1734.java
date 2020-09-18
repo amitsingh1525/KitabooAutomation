@@ -15,12 +15,16 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.JSONException;
 
 import com.hurix.api.externalAPIs.SearchV2_OAuth;
-import com.hurix.api.readerAPIs.*;
-import com.hurix.api.utility.*;
+import com.hurix.api.readerAPIs.Authenticate;
+import com.hurix.api.readerAPIs.FetchBookList;
+import com.hurix.api.readerAPIs.SearchV2;
+import com.hurix.api.utility.ExcelUtils;
+import com.hurix.api.utility.ExtractCategory;
+import com.hurix.api.utility.Validation;
 import com.hurix.automation.utility.Log;
 
-public class DIS_2055 {
-	
+public class DIS_1734 {
+
 	public static List<String> detailisbn =  ExcelUtils.getisbn();
 	DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
 	Date dateobj = new Date();
@@ -71,9 +75,6 @@ public class DIS_2055 {
 	public static String userName;
 	public static String password;
 	public static String detail;
-	static String sqlUsername;
-	 static String sqlPassword;
-	 static String sqlhost;
 	public static String externalURI;
 	public static String clientID;
 	public static String catlevel;
@@ -101,18 +102,19 @@ public class DIS_2055 {
 	public static Object categoryIdList;
 	public static String title1;
 	public static String title2;
+	public static String author;
 	//public static String consumerKey=ExcelUtils.Consumer_key;
 	//public static String consumerSecret=ExcelUtils.secret_key;
 
-	public static void   main(String []args) throws SQLException, JSONException{
-		Log.initialization("DIS_2055");	
+	public static void main(String []args) throws SQLException, JSONException{
+		Log.initialization("DIS_1734");	
 		//List<String> detail =  ExcelUtils.getuserDetails();
 		try {
 			//startDate=EpochTime.getEpochTime(""+startDate+"");
-			String excelPath="./testData/DIS-2055.xlsx";
+			String excelPath="./testData/DIS-1734.xlsx";
 			workbook = new XSSFWorkbook(excelPath);
 			sheet= workbook.getSheet("Sheet1");
-			for(int i=1;i<=4;i++)
+			for(int i=1;i<=1;i++)
 			{	
 				DataFormatter formatter = new DataFormatter();
 				environMent = formatter.formatCellValue(sheet.getRow(i).getCell(0));
@@ -122,54 +124,33 @@ public class DIS_2055 {
 				consumerSecret = formatter.formatCellValue(sheet.getRow(i).getCell(5));
 				clientID = formatter.formatCellValue(sheet.getRow(i).getCell(3));	
 				catlevel = formatter.formatCellValue(sheet.getRow(i).getCell(6));
-				categoryIdList0 = formatter.formatCellValue(sheet.getRow(i).getCell(7));
-				categoryIdList1 = formatter.formatCellValue(sheet.getRow(i).getCell(8));
-				categoryIdList2 = formatter.formatCellValue(sheet.getRow(i).getCell(9));
-				categoryIdList3 = formatter.formatCellValue(sheet.getRow(i).getCell(10));
-
+				
 				switch(environMent){
 				case "QC":
 					detail = "http://qc.kitaboo.com";
-					sqlhost = "jdbc:mysql://172.18.10.147:3306";
-					sqlUsername = "readonly";
-					sqlPassword = "readonly@123";
 					break;
 				case "Staging":
-					detail = "http://qacloud.kitaboo.com";
-					sqlhost="jdbc:mysql://hurix-staging-db.cbum2u9r6xyc.us-east-1.rds.amazonaws.com";
-					sqlUsername="qcteam";
-					sqlPassword="JB88F-WT2Q3-DPXTT";	
+					detail = "https://qacloud.kitaboo.com";
 					break;
 				case "BASE_US":
 					detail = "http://localhost:12346";
-					sqlhost="jdbc:mysql://localhost:12345";
-					sqlUsername="shweta-katare";
-					sqlPassword="J&P@O4A7HV";	
-					
 					break;
 				case "BASE_EU":
 					detail = "http://localhost:12347";
-					sqlhost="jdbc:mysql://localhost:56789";
-					sqlUsername="shweta-katare";
-					sqlPassword="J&P@O4A7HV";
 					break;
 				case "PROD_US":
 					detail = "http://cloud.kitaboo.com";
-					sqlhost="jdbc:mysql://localhost:12345";
-					sqlUsername="shweta-katare";
-					sqlPassword="J&P@O4A7HV";
 					break;
 				case "PROD_EU":
 					detail = "http://cloud.kitaboo.eu";
-					sqlhost="jdbc:mysql://localhost:56789";
-					sqlUsername="shweta-katare";
-					sqlPassword="J&P@O4A7HV";
 					break;
 				}				
 				io.restassured.RestAssured.baseURI = detail;
 				System.out.println("detail : "+detail);
 				System.out.println("userName : "+userName);
 				System.out.println("password : "+password);
+
+
 				Log.startTestCase("Authenticate");
 				Response authenticateValue = Authenticate.authenticate(clientID, userName, password,"514185","IPAD");
 				Log.info("Authenticate Response: "+authenticateValue.then().extract().response().prettyPrint());				
@@ -183,7 +164,7 @@ public class DIS_2055 {
 				System.out.println("HERE_After");
 				System.out.println("here");
 				userName = authenticateValue.then().extract().path("user.userName");
-				//userID = authenticateValue.then().extract().path("user.id");
+				userID = authenticateValue.then().extract().path("user.id");
 				System.out.println("userID: "+userID);
 				userToken = authenticateValue.then().extract().path("userToken");
 				System.out.println("userToken:"+userToken);
@@ -191,8 +172,9 @@ public class DIS_2055 {
 				System.out.println("clientUserID:"+clientUserID);
 				Log.endTestCase("End");
 
+				
 
-				Response fetchBookList_without_pagination = FetchBookList.fetchBookList_without_pagination(userToken,"45616452","IPAD");
+				Response fetchBookList_without_pagination = FetchBookList.fetchBookList_without_pagination(userToken,"jsgjs362746","IPAD");
 				Validation.responseCodeValidation1(fetchBookList_without_pagination, HttpStatus.SC_OK);
 				Validation.responseHeaderCodeValidation(fetchBookList_without_pagination, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(fetchBookList_without_pagination);
@@ -208,21 +190,17 @@ public class DIS_2055 {
 				Validation.responseKeyValidation_key(fetchBookList_without_pagination, "category");
 				Validation.responseKeyValidation_key(fetchBookList_without_pagination, "categoryIdList");
 				Validation.responseKeyValidation_key(fetchBookList_without_pagination, "categoryList");
-				Validation.responseKeyValidation_key(fetchBookList_without_pagination, "locale");
+				//Validation.responseKeyValidation_key(fetchBookList_without_pagination, "locale");
 				Validation.responseKeyValidation_key(fetchBookList_without_pagination, "collectionThumbnail");
 				Validation.responseKeyValidation_key(fetchBookList_without_pagination, "collectionType");
 				Validation.responseKeyValidation_key(fetchBookList_without_pagination, "formats");
 				Validation.responseKeyValidation_key(fetchBookList_without_pagination, "readingPercentage");
-				Validation.responseKeyValidation_key(fetchBookList_without_pagination, "classID");
+				//Validation.responseKeyValidation_key(fetchBookList_without_pagination, "classID");
 				//Validation.responseKeyValidation_key(jsonResponse, Title)
 				bookID1 = fetchBookList_without_pagination.then().extract().path("bookList.book.id[0]");
 				System.out.println("bookID_1: "+bookID1);
 				bookID2 = fetchBookList_without_pagination.then().extract().path("bookList.book.id[1]");			
 				System.out.println("bookID2: "+bookID2);
-				title1=fetchBookList_without_pagination.then().extract().path("bookList.book.title[0]");
-				System.out.println("title: "+title1);
-				title2=fetchBookList_without_pagination.then().extract().path("bookList.book.title[1]");
-				System.out.println("title: "+title2);
 				//bookID3 = fetchBookList_without_pagination.then().extract().path("bookList.book.id[2]");			
 				//System.out.println("bookID3: "+bookID3);
 				//bookID6 = fetchBookList_without_pagination.then().extract().path("bookList.book.id[6]");
@@ -231,6 +209,12 @@ public class DIS_2055 {
 				System.out.println("isbn: "+isbn);
 				type=fetchBookList_without_pagination.then().extract().path("bookList.book.type[0]");
 				System.out.println("type: "+type);
+				title1=fetchBookList_without_pagination.then().extract().path("bookList.book.title[0]");
+				System.out.println("title: "+title1);
+				title2=fetchBookList_without_pagination.then().extract().path("bookList.book.title[1]");
+				System.out.println("title: "+title2);
+				author=fetchBookList_without_pagination.then().extract().path("bookList.book.author[0]");
+				System.out.println("author: "+author);
 				ebookID1 = fetchBookList_without_pagination.then().extract().path("bookList.book.ebookID[0]");
 				System.out.println("ebookID: "+ebookID1);
 				assetType = fetchBookList_without_pagination.then().extract().path("bookList.book.assetType[0]");
@@ -245,24 +229,197 @@ public class DIS_2055 {
 				System.out.println("archiveDate:"+archiveDate);
 				archiveDate6=fetchBookList_without_pagination.then().extract().path("bookList.book.archiveDate[6]");
 				System.out.println("archiveDate:"+archiveDate);				
+
 				
-				
-				String[] TITLE = title1.trim().split("_");
+			//Title		
+				String[] TITLE = title1.trim().split("-");
 				Response searchv2=SearchV2.searchV2(""+TITLE[0]+"", userToken, "bdhsbdhs213131", "IPAD");
 				//Validation.responseCodeValidation1(searchv2, HttpStatus.SC_OK);
-				//Validation.responseHeaderCodeValidation(searchv2, HttpStatus.SC_OK);
+				Validation.responseHeaderCodeValidation(searchv2, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(searchv2);
 				Validation.responseKeyValidation_key(searchv2, "_id");
 				Validation.responseKeyValidation_key(searchv2, "_index");
 				Validation.responseKeyValidation_key(searchv2, "_score");
 				Validation.responseKeyValidation_key(searchv2, "ISBN");
-				Validation.responseKeyValidation_key(searchv2, "bookReferenceId");
+				//Validation.responseKeyValidation_key(searchv2, "bookReferenceId");
 				Validation.responseKeyValidation_key(searchv2, "bookThumbnail");
 				Validation.responseKeyValidation_key(searchv2, "bookTitle");
 				Validation.responseKeyValidation_key(searchv2, "description");
-				Validation.responseKeyValidation_key(searchv2, "bookReferenceId");
+				//Validation.responseKeyValidation_key(searchv2, "bookReferenceId");
 				Validation.responseKeyValidation_key(searchv2, "_type");
-				Validation.responseKeyValidation_key(searchv2, "bookId");
+				//Validation.responseKeyValidation_key(searchv2, "bookId");
+				Validation.responseKeyValidation_key(searchv2, "bookTitle");
+				Validation.responseKeyValidation_key(searchv2, "description");
+				Validation.responseKeyValidation_key(searchv2, "total");
+				//Validation.responseKeyValidation_key(searchv2, "took");
+				System.out.println("searchv2 : "+searchv2);
+
+
+
+				TITLE = title1.trim().split("_");
+				Log.info("trimAndSplit:"+TITLE[0]);
+				Response searchv2_ext = SearchV2_OAuth.searchV2_OAuth(""+TITLE[0]+"", consumerKey,consumerSecret,clientUserID);
+				//Validation.responseCodeValidation1(searchv2_ext, HttpStatus.SC_OK);
+				Validation.responseHeaderCodeValidation(searchv2_ext, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(searchv2_ext);
+				Validation.responseKeyValidation_key(searchv2_ext, "_id");
+				Validation.responseKeyValidation_key(searchv2_ext, "_index");
+				Validation.responseKeyValidation_key(searchv2_ext, "_score");
+				Validation.responseKeyValidation_key(searchv2_ext, "ISBN");
+				Validation.responseKeyValidation_key(searchv2_ext, "bookThumbnail");
+				Validation.responseKeyValidation_key(searchv2_ext, "bookTitle");
+				Validation.responseKeyValidation_key(searchv2_ext, "description");
+				//Validation.responseKeyValidation_key(searchv2_ext, "bookReferenceId");
+				Validation.responseKeyValidation_key(searchv2_ext, "_type");
+				//Validation.responseKeyValidation_key(searchv2_ext, "bookId");
+				Validation.responseKeyValidation_key(searchv2_ext, "bookTitle");
+				Validation.responseKeyValidation_key(searchv2_ext, "description");
+				Validation.responseKeyValidation_key(searchv2_ext, "total");
+				System.out.println("searchv2_ext : "+searchv2_ext);
+
+				//Author
+				String[] AUTHOR = author.trim().split(" ");
+				Log.info("trimAndSplit:"+AUTHOR[0]);
+				searchv2=SearchV2.searchV2(""+AUTHOR[0]+"", userToken, "bdhsbdhs213131", "IPAD");
+				//Validation.responseCodeValidation1(searchv2, HttpStatus.SC_OK);
+				Validation.responseHeaderCodeValidation(searchv2, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(searchv2);
+				Validation.responseKeyValidation_key(searchv2, "_id");
+				Validation.responseKeyValidation_key(searchv2, "_index");
+				Validation.responseKeyValidation_key(searchv2, "_score");
+				Validation.responseKeyValidation_key(searchv2, "ISBN");
+				//Validation.responseKeyValidation_key(searchv2, "bookReferenceId");
+				Validation.responseKeyValidation_key(searchv2, "bookThumbnail");
+				Validation.responseKeyValidation_key(searchv2, "bookTitle");
+				Validation.responseKeyValidation_key(searchv2, "description");
+				//Validation.responseKeyValidation_key(searchv2, "bookReferenceId");
+				Validation.responseKeyValidation_key(searchv2, "_type");
+				//Validation.responseKeyValidation_key(searchv2, "bookId");
+				Validation.responseKeyValidation_key(searchv2, "bookTitle");
+				Validation.responseKeyValidation_key(searchv2, "description");
+				Validation.responseKeyValidation_key(searchv2, "total");
+				//Validation.responseKeyValidation_key(searchv2, "took");
+				System.out.println("searchv2 : "+searchv2);
+
+				searchv2 = SearchV2.searchV2(""+AUTHOR[0]+"", userToken, "bdhsbdhs213131", "IPAD");
+				//Validation.responseCodeValidation1(searchv2, HttpStatus.SC_OK);
+				Validation.responseHeaderCodeValidation(searchv2, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(searchv2);
+				Validation.responseKeyValidation_key(searchv2, "_id");
+				Validation.responseKeyValidation_key(searchv2, "_index");
+				Validation.responseKeyValidation_key(searchv2, "_score");
+				Validation.responseKeyValidation_key(searchv2, "ISBN");
+				//Validation.responseKeyValidation_key(searchv2, "bookReferenceId");
+				Validation.responseKeyValidation_key(searchv2, "bookThumbnail");
+				Validation.responseKeyValidation_key(searchv2, "bookTitle");
+				Validation.responseKeyValidation_key(searchv2, "description");
+				//Validation.responseKeyValidation_key(searchv2, "bookReferenceId");
+				Validation.responseKeyValidation_key(searchv2, "_type");
+				//Validation.responseKeyValidation_key(searchv2, "bookId");
+				Validation.responseKeyValidation_key(searchv2, "bookTitle");
+				Validation.responseKeyValidation_key(searchv2, "description");
+				Validation.responseKeyValidation_key(searchv2, "total");
+				//Validation.responseKeyValidation_key(searchv2, "took");
+				System.out.println("searchv2 : "+searchv2);
+
+				searchv2 = SearchV2.searchV2(""+AUTHOR[1]+"", userToken, "bdhsbdhs213131", "IPAD");
+				//Validation.responseCodeValidation1(searchv2, HttpStatus.SC_OK);
+				Validation.responseHeaderCodeValidation(searchv2, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(searchv2);
+				Validation.responseKeyValidation_key(searchv2, "_id");
+				Validation.responseKeyValidation_key(searchv2, "_index");
+				Validation.responseKeyValidation_key(searchv2, "_score");
+				Validation.responseKeyValidation_key(searchv2, "ISBN");
+				//Validation.responseKeyValidation_key(searchv2, "bookReferenceId");
+				Validation.responseKeyValidation_key(searchv2, "bookThumbnail");
+				Validation.responseKeyValidation_key(searchv2, "bookTitle");
+				Validation.responseKeyValidation_key(searchv2, "description");
+				//Validation.responseKeyValidation_key(searchv2, "bookReferenceId");
+				Validation.responseKeyValidation_key(searchv2, "_type");
+				//Validation.responseKeyValidation_key(searchv2, "bookId");
+				Validation.responseKeyValidation_key(searchv2, "bookTitle");
+				Validation.responseKeyValidation_key(searchv2, "description");
+				Validation.responseKeyValidation_key(searchv2, "total");
+				//Validation.responseKeyValidation_key(searchv2, "took");
+				System.out.println("searchv2 : "+searchv2);
+
+
+				searchv2_ext = SearchV2_OAuth.searchV2_OAuth(""+AUTHOR[1]+"", consumerKey,consumerSecret,clientUserID);
+				Validation.responseCodeValidation1(searchv2_ext, HttpStatus.SC_OK);
+				Validation.responseHeaderCodeValidation(searchv2_ext, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(searchv2_ext);
+				Validation.responseKeyValidation_key(searchv2_ext, "_id");
+				Validation.responseKeyValidation_key(searchv2_ext, "_index");
+				Validation.responseKeyValidation_key(searchv2_ext, "_score");
+				Validation.responseKeyValidation_key(searchv2_ext, "ISBN");
+				Validation.responseKeyValidation_key(searchv2_ext, "bookThumbnail");
+				Validation.responseKeyValidation_key(searchv2_ext, "bookTitle");
+				Validation.responseKeyValidation_key(searchv2_ext, "description");
+				//Validation.responseKeyValidation_key(searchv2_ext, "bookReferenceId");
+				Validation.responseKeyValidation_key(searchv2_ext, "_type");
+				//Validation.responseKeyValidation_key(searchv2_ext, "bookId");
+				Validation.responseKeyValidation_key(searchv2_ext, "bookTitle");
+				Validation.responseKeyValidation_key(searchv2_ext, "description");
+				Validation.responseKeyValidation_key(searchv2_ext, "total");
+				System.out.println("searchv2_ext : "+searchv2_ext);
+
+
+				searchv2 = SearchV2.searchV2(""+AUTHOR[2]+"", userToken, "bdhsbdhs213131", "IPAD");
+				//Validation.responseCodeValidation1(searchv2, HttpStatus.SC_OK);
+				Validation.responseHeaderCodeValidation(searchv2, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(searchv2);
+				Validation.responseKeyValidation_key(searchv2, "_id");
+				Validation.responseKeyValidation_key(searchv2, "_index");
+				Validation.responseKeyValidation_key(searchv2, "_score");
+				Validation.responseKeyValidation_key(searchv2, "ISBN");
+				//Validation.responseKeyValidation_key(searchv2, "bookReferenceId");
+				Validation.responseKeyValidation_key(searchv2, "bookThumbnail");
+				Validation.responseKeyValidation_key(searchv2, "bookTitle");
+				Validation.responseKeyValidation_key(searchv2, "description");
+				//Validation.responseKeyValidation_key(searchv2, "bookReferenceId");
+				Validation.responseKeyValidation_key(searchv2, "_type");
+				//Validation.responseKeyValidation_key(searchv2, "bookId");
+				Validation.responseKeyValidation_key(searchv2, "bookTitle");
+				Validation.responseKeyValidation_key(searchv2, "description");
+				Validation.responseKeyValidation_key(searchv2, "total");
+				//Validation.responseKeyValidation_key(searchv2, "took");
+				System.out.println("searchv2 : "+searchv2);
+
+
+				searchv2_ext = SearchV2_OAuth.searchV2_OAuth(""+AUTHOR[2]+"", consumerKey,consumerSecret,clientUserID);
+				Validation.responseCodeValidation1(searchv2_ext, HttpStatus.SC_OK);
+				Validation.responseHeaderCodeValidation(searchv2_ext, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(searchv2_ext);
+				Validation.responseKeyValidation_key(searchv2_ext, "_id");
+				Validation.responseKeyValidation_key(searchv2_ext, "_index");
+				Validation.responseKeyValidation_key(searchv2_ext, "_score");
+				Validation.responseKeyValidation_key(searchv2_ext, "ISBN");
+				Validation.responseKeyValidation_key(searchv2_ext, "bookThumbnail");
+				Validation.responseKeyValidation_key(searchv2_ext, "bookTitle");
+				Validation.responseKeyValidation_key(searchv2_ext, "description");
+				//Validation.responseKeyValidation_key(searchv2_ext, "bookReferenceId");
+				Validation.responseKeyValidation_key(searchv2_ext, "_type");
+				//Validation.responseKeyValidation_key(searchv2_ext, "bookId");
+				Validation.responseKeyValidation_key(searchv2_ext, "bookTitle");
+				Validation.responseKeyValidation_key(searchv2_ext, "description");
+				Validation.responseKeyValidation_key(searchv2_ext, "total");
+				System.out.println("searchv2_ext : "+searchv2_ext);
+
+				searchv2 = SearchV2.searchV2(""+AUTHOR[2]+"", userToken, "bdhsbdhs213131", "IPAD");
+				//Validation.responseCodeValidation1(searchv2, HttpStatus.SC_OK);
+				Validation.responseHeaderCodeValidation(searchv2, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(searchv2);
+				Validation.responseKeyValidation_key(searchv2, "_id");
+				Validation.responseKeyValidation_key(searchv2, "_index");
+				Validation.responseKeyValidation_key(searchv2, "_score");
+				Validation.responseKeyValidation_key(searchv2, "ISBN");
+				//Validation.responseKeyValidation_key(searchv2, "bookReferenceId");
+				Validation.responseKeyValidation_key(searchv2, "bookThumbnail");
+				Validation.responseKeyValidation_key(searchv2, "bookTitle");
+				Validation.responseKeyValidation_key(searchv2, "description");
+				//Validation.responseKeyValidation_key(searchv2, "bookReferenceId");
+				Validation.responseKeyValidation_key(searchv2, "_type");
+				//Validation.responseKeyValidation_key(searchv2, "bookId");
 				Validation.responseKeyValidation_key(searchv2, "bookTitle");
 				Validation.responseKeyValidation_key(searchv2, "description");
 				Validation.responseKeyValidation_key(searchv2, "total");
@@ -270,33 +427,14 @@ public class DIS_2055 {
 				System.out.println("searchv2 : "+searchv2);
 				
 				
-				title2=fetchBookList_without_pagination.then().extract().path("bookList.book.title[1]");
-				System.out.println("title: "+title2);
-				System.out.println("@#$$#%^@&*(@#*&$^#& title2 : "+title2);
-				String[] TITLE1 = title2.trim().split("_");
-				searchv2 = SearchV2.searchV2(""+TITLE1[0]+"", userToken, "bdhsbdhs213131", "IPAD");
-				Validation.responseCodeValidation1(searchv2, HttpStatus.SC_OK);
-				Validation.responseHeaderCodeValidation(searchv2, HttpStatus.SC_OK);
-				Validation.responseTimeValidation(searchv2);
-				Validation.responseKeyValidation_key(searchv2, "_id");
-				Validation.responseKeyValidation_key(searchv2, "_index");
-				Validation.responseKeyValidation_key(searchv2, "_score");
-				Validation.responseKeyValidation_key(searchv2, "ISBN");
-				Validation.responseKeyValidation_key(searchv2, "bookThumbnail");
-				Validation.responseKeyValidation_key(searchv2, "bookTitle");
-				Validation.responseKeyValidation_key(searchv2, "description");
-				Validation.responseKeyValidation_key(searchv2, "bookReferenceId");
-				Validation.responseKeyValidation_key(searchv2, "_type");
-				Validation.responseKeyValidation_key(searchv2, "bookId");
-				Validation.responseKeyValidation_key(searchv2, "bookTitle");
-				Validation.responseKeyValidation_key(searchv2, "description");
-				Validation.responseKeyValidation_key(searchv2, "total");
-				System.out.println("searchv2 : "+searchv2);
-				
-				//GetSecureURL.getSecureURL(userToken, "dsjd4242", "IPAD", type);
-				Response searchv2_ext =SearchV2_OAuth.searchV2_OAuth(""+TITLE[0]+"", consumerKey,consumerSecret,clientUserID);
-				//Validation.responseCodeValidation1(searchv2_ext, HttpStatus.SC_OK);
-				//Validation.responseHeaderCodeValidation(searchv2_ext, HttpStatus.SC_OK);
+				Log.info("origibnal str  : "+AUTHOR[2]);
+				String splitStr = AUTHOR[2].substring(0,3);
+				Log.info("After split : "+splitStr);
+				//String[] here = AUTHOR[2].trim().split(AUTHOR[2], 3);
+				//Log.info("here : "+here[0]);
+				searchv2_ext = SearchV2_OAuth.searchV2_OAuth(""+splitStr+"", consumerKey,consumerSecret,clientUserID);
+				Validation.responseCodeValidation1(searchv2_ext, HttpStatus.SC_OK);
+				Validation.responseHeaderCodeValidation(searchv2_ext, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(searchv2_ext);
 				Validation.responseKeyValidation_key(searchv2_ext, "_id");
 				Validation.responseKeyValidation_key(searchv2_ext, "_index");
@@ -305,32 +443,14 @@ public class DIS_2055 {
 				Validation.responseKeyValidation_key(searchv2_ext, "bookThumbnail");
 				Validation.responseKeyValidation_key(searchv2_ext, "bookTitle");
 				Validation.responseKeyValidation_key(searchv2_ext, "description");
-				Validation.responseKeyValidation_key(searchv2_ext, "bookReferenceId");
+				//Validation.responseKeyValidation_key(searchv2_ext, "bookReferenceId");
 				Validation.responseKeyValidation_key(searchv2_ext, "_type");
-				Validation.responseKeyValidation_key(searchv2_ext, "bookId");
+				//Validation.responseKeyValidation_key(searchv2_ext, "bookId");
 				Validation.responseKeyValidation_key(searchv2_ext, "bookTitle");
 				Validation.responseKeyValidation_key(searchv2_ext, "description");
 				Validation.responseKeyValidation_key(searchv2_ext, "total");
 				System.out.println("searchv2_ext : "+searchv2_ext);
-				
-				searchv2_ext =SearchV2_OAuth.searchV2_OAuth(""+TITLE1[0]+"", consumerKey,consumerSecret,clientUserID);
-				//Validation.responseCodeValidation1(searchv2_ext, HttpStatus.SC_OK);
-				//Validation.responseHeaderCodeValidation(searchv2_ext, HttpStatus.SC_OK);
-				Validation.responseTimeValidation(searchv2_ext);
-				Validation.responseKeyValidation_key(searchv2_ext, "_id");
-				Validation.responseKeyValidation_key(searchv2_ext, "_index");
-				Validation.responseKeyValidation_key(searchv2_ext, "_score");
-				Validation.responseKeyValidation_key(searchv2_ext, "ISBN");
-				Validation.responseKeyValidation_key(searchv2_ext, "bookThumbnail");
-				Validation.responseKeyValidation_key(searchv2_ext, "bookTitle");
-				Validation.responseKeyValidation_key(searchv2_ext, "description");
-				Validation.responseKeyValidation_key(searchv2_ext, "bookReferenceId");
-				Validation.responseKeyValidation_key(searchv2_ext, "_type");
-				Validation.responseKeyValidation_key(searchv2_ext, "bookId");
-				Validation.responseKeyValidation_key(searchv2_ext, "bookTitle");
-				Validation.responseKeyValidation_key(searchv2_ext, "description");
-				Validation.responseKeyValidation_key(searchv2_ext, "total");
-				System.out.println("searchv2_ext : "+searchv2_ext);
+
 
 			}
 		}catch (Exception exp) 
@@ -341,3 +461,4 @@ public class DIS_2055 {
 		}
 	}
 }
+

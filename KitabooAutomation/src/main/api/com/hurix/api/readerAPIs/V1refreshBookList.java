@@ -17,7 +17,7 @@ import com.hurix.automation.utility.*;
 public class V1refreshBookList {
 
 	private static String v1refreshBookListBody;
-	public static Response v1refreshBookList(String startDate,String operation1,String operation2,String bookID1,String bookID2,String userToken,String deviceID ,String DiviceType,String clientID)
+	public static Response v1refreshBookList(Object startDate,String operation1,String operation2,String bookID1,String bookID2,String userToken,String deviceID ,String DiviceType,String clientID)
 	{
 		Response jsonResponse = null;
 		try {

@@ -14,7 +14,6 @@ public class SearchV2_OAuth {
 	public static Response searchV2_OAuth(String searchTEXT,String consumerKey, String consumerSecret,String clientUserID)
 	{
 		searchV2Body = "{\"searchText\":\""+searchTEXT+"\",\"searchOn\":\"both\",\"searchType\":\"partial\",\"books\":[],\"searchField\":[\"author\",\"ISBN\",\"description\",\"bookTitle\",\"subject\",\"Publisher\",\"Book content\"],\"from\":0,\"size\":50,\"userId\":\""+clientUserID+"\"}";
-		
 		Response jsonResponse = null;
 		try {
 			
