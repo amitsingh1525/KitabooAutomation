@@ -738,7 +738,8 @@ public class Reader_5Sanity{
 		/*BookPlayerModule.backtoBookshelf();
 	     BookShelfModule.analytics();*/
 		LoginModule.userLogin("rajesha.sdk1@yopmail.com", "kitaboo@12345");
-		
+		BookPlayerModule.addbookmark();
+		BookPlayerModule.deletebookmark();
 		/*
 		 * LoginModule.userLogin("sharing.teacher@yopmail.com", "kitaboo@123");
 		 * BookShelfModule.catNavigationAndLaunch("showcase");

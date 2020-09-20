@@ -1,6 +1,7 @@
 package com.hurix.library.Authorwidget;
 
 import com.hurix.automation.utility.Driver;
+import com.hurix.automation.utility.UploadImage;
 
 public class AuthorwidgetModule extends AuthorwidgetStepModule {
 	
@@ -48,6 +49,16 @@ public class AuthorwidgetModule extends AuthorwidgetStepModule {
 		drpdwnselect();
 		drpdwncreatewidget();
 		drpdwnselectall();
+		
+	//Change cover
+		btngridview_changeCover();
+		UploadImage.uploadImage("\\TestData\\photo.jpg");
+		
+	//publish author widget (list view)
+		Driver.driver.navigate().refresh(); 
+		Driver.driver.switchTo().frame("iframeBody");
+		
+		
 	}
 
 }
