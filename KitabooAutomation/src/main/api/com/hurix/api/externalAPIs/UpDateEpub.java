@@ -13,7 +13,9 @@ public class UpDateEpub {
 		Response jsonResponse = null;
 		try {
 			Log.startTestCase("UpDateEpub_OAuth");
-
+			Log.info("title : "+title);
+			Log.info("author : "+author);
+			Log.info("category : "+category);
 			jsonResponse = given()
 					.auth()
 					.oauth(consumerKey, consumerSecret, "", "")
@@ -28,8 +30,8 @@ public class UpDateEpub {
 			Log.info("UpDateEpub_OAuth Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
+			Log.info(exp.getMessage());
+			Log.info("here"+exp.getCause());
 			exp.printStackTrace();
 		}
 		Log.endTestCase("End");

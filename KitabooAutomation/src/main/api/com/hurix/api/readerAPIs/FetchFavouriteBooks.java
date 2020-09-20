@@ -28,5 +28,54 @@ public class FetchFavouriteBooks {
 		Log.endTestCase("End");
 		return jsonResponse;
 	}
+	
+	public static Response fetchFavouriteBooks_per(String SortBy,String orderBy,String userToken,String devideId,String DeviceType)
+	{
+		Response jsonResponse = null;
+		try {
+			
+			Log.startTestCase("FetchFavouriteBooks.SortBy="+SortBy+"orderBy="+orderBy+"");		
+			//System.out.println("GETfetchCategoriesCollectionsBooksRequestURL:" +GETfetchCategoriesCollectionsBooksPath);
+			jsonResponse = given()
+					.header("usertoken",userToken)
+					.header("SortBy",SortBy)
+					.header("orderBy",orderBy)
+					.get("/DistributionServices/services/api/reader/user/"+devideId+"/"+DeviceType+"/fetchFavouriteBooks");
+			
+			Log.info("FetchFavouriteBooks.SortBy="+SortBy+"orderBy="+orderBy+" Response: "+jsonResponse.then().extract().response().prettyPrint());
+		} catch (Exception exp) 
+		{
+			System.out.println(exp.getMessage());
+			System.out.println(exp.getCause());
+			exp.printStackTrace();
+		}
+		Log.endTestCase("End");
+		return jsonResponse;
+	}
+	public static Response fetchFavouriteBooks_per_withPagi(String SortBy,String orderBy,int startIndex,int endIndex,String userToken,String devideId,String DeviceType)
+	{
+		Response jsonResponse = null;
+		try {
+			
+			Log.startTestCase("FetchFavouriteBooks.SortBy="+SortBy+"orderBy="+orderBy+"");		
+			//System.out.println("GETfetchCategoriesCollectionsBooksRequestURL:" +GETfetchCategoriesCollectionsBooksPath);
+			jsonResponse = given()
+					.header("usertoken",userToken)
+					.header("startIndex",startIndex)
+					.header("endIndex",endIndex)
+					.header("SortBy",SortBy)
+					.header("orderBy",orderBy)
+					.get("/DistributionServices/services/api/reader/user/"+devideId+"/"+DeviceType+"/fetchFavouriteBooks");
+			
+			Log.info("FetchFavouriteBooks.SortBy="+SortBy+"orderBy="+orderBy+" Response: "+jsonResponse.then().extract().response().prettyPrint());
+		} catch (Exception exp) 
+		{
+			System.out.println(exp.getMessage());
+			System.out.println(exp.getCause());
+			exp.printStackTrace();
+		}
+		Log.endTestCase("End");
+		return jsonResponse;
+	}
 
 }

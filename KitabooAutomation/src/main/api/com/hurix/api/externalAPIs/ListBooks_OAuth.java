@@ -62,4 +62,32 @@ public class ListBooks_OAuth {
 		
 	}
 
+	
+	public static Response listBooks_OAuth_With_PageNO(int pageno, int pageSize,String consumerKey, String consumerSecret)
+	{
+		Response jsonResponse = null;
+		try {
+			Log.startTestCase("listBooks_OAuth_With_PageNO Response.pageno="+pageno+"AND.pageSize="+pageSize+"");
+			jsonResponse = given()
+					.auth()
+					.oauth(consumerKey, consumerSecret, "", "")
+					.header("Content-Type","application/x-www-form-urlencoded")
+					.header("pageno",pageno)
+					.header("pageSize", pageSize)
+					.post("/DistributionServices/ext/api/ListBooks");
+			Validation.responseHeaderCodeValidation(jsonResponse, 200);
+			Validation.responseCodeValidation1(jsonResponse, 200);
+			Validation.responseTimeValidation(jsonResponse);
+			
+			Log.info("listBooks_OAuth_With_PageNO Response.pageno="+pageno+"AND.pageSize="+pageSize+": "+jsonResponse.then().extract().response().prettyPrint());
+		} catch (Exception exp) 
+		{
+			System.out.println(exp.getMessage());
+			System.out.println(exp.getCause());
+			exp.printStackTrace();
+		}
+		Log.endTestCase("End");
+		return jsonResponse;
+		
+	}
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import org.openqa.selenium.WebElement;
 
 import com.hurix.automation.utility.Driver;
+import com.hurix.automation.utility.Log;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -31,25 +32,25 @@ public class BookShelfModule extends BookShelfStepModule {
 		btnUploadPic(System.getProperty("user.dir")+"/resources/einstein.jpg");
 		btnSaveProfile();
 	}
-	
+
 	public static void catNavigationAndLaunch(String catName){
 		linkHorizontalCatName(catName);
 		btnThumbnails();
 	}
-	
+
 	public static String userLogOut(){
 		btnProfileIcon();
 		btnSignOut();
 		threadHold_2Sec();
 		return Driver.driver.getCurrentUrl();
 	}
-	
+
 	public static void redeemAccessCode(String accessCode){
 		btnAccessCode();
 		txtAccessCode(accessCode);
 		btnAccessCodeSubmit();
 	}
-	
+
 	public static String privacyPolicy(){
 		btnProfileIcon();
 		linkPrivacyPolicy();
@@ -61,7 +62,7 @@ public class BookShelfModule extends BookShelfStepModule {
 		btnProfileIcon();
 		return url;
 	}
-	
+
 	public static String termAndCondition(){
 		btnProfileIcon();
 		linkTermsAndCondition();
@@ -73,7 +74,7 @@ public class BookShelfModule extends BookShelfStepModule {
 		btnProfileIcon();
 		return url;
 	}
-	
+
 	public static String aboutUS(){
 		btnProfileIcon();
 		linkAboutUS();
@@ -81,10 +82,12 @@ public class BookShelfModule extends BookShelfStepModule {
 		threadHold_2Sec();
 		Driver.driver.navigate().refresh();
 		return msg;
-		
+
 	}
-	
+
 	public static void changePassword(String currentPassword, String newPassword, String confirmPassword){
+		Driver.driver.navigate().refresh();
+		threadHold_5Sec();
 		btnProfileIcon();
 		linkChangePassword();
 		txtCurrentPassword(currentPassword);
@@ -92,22 +95,22 @@ public class BookShelfModule extends BookShelfStepModule {
 		txtConfirmPassword(confirmPassword);
 		btnSaveChangePassword();
 	}
-	
+
 	public static void uploadProfilePic(String path){
 		btnProfileIcon();
 		btnEditProfile();
 		btnUploadPic(path);
 	}
-	
+
 	public static void markAsFav(int bookNum){
 		linkHorizontalCatName("ALL");
 		BookShelfStepModule.btnMarkAsFav(bookNum);
 	}
-	
+
 	public static void unmarkAsFav(int bookNum){
 		BookShelfStepModule.btnUnmarkAsFav(bookNum);
 	}
-	
+
 	public static void changefirstNameAndLastName(String firstName, String lastName, boolean clickOnSave){
 		btnProfileIcon();
 		btnEditProfile();
@@ -118,32 +121,34 @@ public class BookShelfModule extends BookShelfStepModule {
 		}else{
 			btnCancelProfile();
 		}
-		
+
 	}
-	
-	public static void analytics(){
-		 btnMoreInfo(0);
-		 btnAnalytics();
-		 threadHold_2Sec();
+
+	public static void analytics(int i){
+		btnMoreInfo(i);
+		btnAnalytics();
+		threadHold_2Sec();
+		drpdwnStudentInfo();
+		threadHold_2Sec();
 		String msg1 = getBookOpenedAssigned();
-		System.out.println("Book Opened/Assigned: " + msg1);
+		Log.info("Book Opened/Assigned: " + msg1);
 		String msg2 = getAverageReadingTime();
-		System.out.println("Average Reading Time: " + msg2);
+		Log.info("Average Reading Time: " + msg2);
 		String msg3 = getAveragePagesRead();
-		System.out.println("Average Pages Read: " + msg3);
+		Log.info("Average Pages Read: " + msg3);
 		String msg4 = getAverageReadingSession();
-		System.out.println("Average Reading Session: " + msg4);
+		Log.info("Average Reading Session: " + msg4);
 		String msg5 = getAverageReadingTimeSession();
-		System.out.println("Average Reading Time/Session: " + msg5);
+		Log.info("Average Reading Time/Session: " + msg5);
 		String msg6 = getAveragePagesReadSessionCount();
-		System.out.println("Average Pages Read/Session: " + msg6);
+		Log.info("Average Pages Read/Session: " + msg6);
 		String msg7 = getAverageNotesSharedCreatedCount();
-		System.out.println("Average Notes Shared/Created: " + msg7);
+		Log.info("Average Notes Shared/Created: " + msg7);
 		String msg8 = getAverageHighlightSharedCreatedCount();
-		System.out.println("Average Highlight Shared/Created: " + msg8);
+		Log.info("Average Highlight Shared/Created: " + msg8);
 		String msg9 = getAvgResourceViewedAvailableCount();
-		System.out.println("Avg. Resource Viewed/Available: " + msg9);
-	
+		Log.info("Avg. Resource Viewed/Available: " + msg9);
+
 	}
-	
+
 }

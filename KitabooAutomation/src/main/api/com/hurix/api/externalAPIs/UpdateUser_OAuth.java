@@ -11,14 +11,16 @@ public class UpdateUser_OAuth {
 	//public static String consumerSecret = ""+com.hurix.api.utility.ExcelUtils.getsecret_key()+"";
 	
 	//public static String updateUser_OAuthPath=""+com.hurix.api.utility.ExcelUtils.getbaseURI()+"/DistributionServices/ext/api/updateUser";
-	private static String updateUserBody = "{\"user\":{\"firstName\":\"ent_learner\",\"lastName\":\"cat4\",\"userName\":\"ent_lear_cat4@yopmail.com\",\"password\":\"kitaboo!123\",\"clientUserID\":\"95750033\",\"email\":\"ent_lear_cat4@yopmail.com\"}}";
+	private static String updateUserBody ;//= "{\"user\":{\"firstName\":\"ent_learner\",\"lastName\":\"cat4\",\"userName\":\"ent_lear_cat4@yopmail.com\",\"password\":\"kitaboo!123\",\"clientUserID\":\"95750033\",\"email\":\"ent_lear_cat4@yopmail.com\"}}";
 
 
-	public static Response updateUser_OAuth(String consumerKey, String consumerSecret)
+	public static Response updateUser_OAuth(String consumerKey, String consumerSecret,String userName,String password,String firstName,String lastName,String clientUserID)
 	{
 		//System.out.println("POSTresetDevices_clientUserIDPath: " +updateUser_OAuthPath);		
 		Response jsonResponse = null;
 		try {
+			updateUserBody = "{\"user\":{\"firstName\":\"ent_learner\",\"lastName\":\"cat4\",\"userName\":\""+userName+"\",\"password\":\""+password+"\",\"clientUserID\":\""+clientUserID+"\",\"email\":\"ent_lear_cat4@yopmail.com\"}}";
+
 			Log.startTestCase("updateUser_OAuth");
 			jsonResponse = given()
 					.auth()

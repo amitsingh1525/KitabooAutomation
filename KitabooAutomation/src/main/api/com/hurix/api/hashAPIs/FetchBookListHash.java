@@ -20,7 +20,7 @@ public class FetchBookListHash {
 			jsonResponse = given()
 					.header("usertoken",userToken)	
 					.header("hash",MD5Genration.hashGenration(RestAssured.detail+"/DistributionServices/services/api/reader/distribution/145644544/PC/fetchBookList"))
-					.get("/DistributionServices/services/api/reader/distribution/"+deviceID+"/"+deviceType+"/fetchBookList");
+					.get("/DistributionServices/services/api/reader/distribution/145644544/PC/fetchBookList");
 			Validation.responseHeaderCodeValidation(jsonResponse, 200);
 			Validation.responseCodeValidation1(jsonResponse, 200);
 			Validation.responseTimeValidation(jsonResponse);		

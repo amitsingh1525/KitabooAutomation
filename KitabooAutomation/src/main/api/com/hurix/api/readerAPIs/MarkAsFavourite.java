@@ -16,7 +16,7 @@ public class MarkAsFavourite {
 		Response jsonResponse = null;
 		try {
 			POSTmarkAsFavouriteBody = "{\"bookId\":\""+bookID1+"\"}";
-			Log.startTestCase("markAsFavourite");
+			Log.startTestCase("markAsFavourite.bookID1="+bookID1+"");
 			//System.out.println("POSTmarkAsFavouriteRequestURL:" +POSTmarkAsFavouritePath);
 			System.out.println("POSTmarkAsFavouriteBody: "+POSTmarkAsFavouriteBody);
 			jsonResponse = given()
@@ -25,7 +25,7 @@ public class MarkAsFavourite {
 					.body(POSTmarkAsFavouriteBody)					
 					.post("/DistributionServices/services/api/reader/user/"+deviceID+"/"+deviceType+"/markAsFavourite");					
 							
-			Log.info("MarkAsFavourite Response: "+jsonResponse.then().extract().response().prettyPrint());
+			Log.info("MarkAsFavourite.bookID1="+bookID1+" Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 
 		{
 			System.out.println(exp.getMessage());

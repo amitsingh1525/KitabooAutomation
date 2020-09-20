@@ -2,18 +2,14 @@ package com.hurix.api.hashAPIs;
 
 import static io.restassured.RestAssured.given;
 import io.restassured.response.Response;
-
 import com.hurix.api.runner.RestAssured;
 import com.hurix.api.utility.MD5Genration;
-import com.hurix.api.utility.Validation;
 import com.hurix.automation.utility.Log;
 
 public class CategoriesV1Hash {
 
-
 	public static Response categoriesV1Hash(String userToken,String deviceID,String deviceType)
 	{
-
 		Response jsonResponse = null;
 		try {
 
@@ -23,9 +19,7 @@ public class CategoriesV1Hash {
 					.header("usertoken",userToken)	
 					.header("hash",MD5Genration.hashGenration(RestAssured.detail+"/DistributionServices/services/api/reader/books/"+deviceID+"/"+deviceType+"/books/categories"))
 					.get("/DistributionServices/services/api/reader/books/"+deviceID+"/"+deviceType+"/books/categories");
-			Validation.responseHeaderCodeValidation(jsonResponse, 200);
-			Validation.responseCodeValidation1(jsonResponse, 200);
-			Validation.responseTimeValidation(jsonResponse);		
+					
 
 			Log.info("CategoriesV1_Hash Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 

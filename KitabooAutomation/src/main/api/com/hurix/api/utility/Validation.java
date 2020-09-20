@@ -1,220 +1,287 @@
 package com.hurix.api.utility;
 
+import java.util.List;
 import org.junit.Assert;
-
 import com.relevantcodes.extentreports.ExtentReports;
 import com.hurix.automation.utility.*;
-
-import io.restassured.path.json.JsonPath;
-import io.restassured.response.Response;
-import io.restassured.response.ResponseBody;
-
+import io.restassured.response.*;
 
 public class Validation {
 	static ExtentReports extent;
-	static ResponseBody<?> body;
-	public static void responseHeaderCodeValidation(Response jsonResponse, int statusCode) {
-
-		try {
-			try {
-				Assert.assertEquals(statusCode, jsonResponse.getStatusCode());
-				//Assert.assertThat(statusCode, jsonResponse.then().extract().path("responseCode"));
-				Log.pass("successFull Header Validate, status code is :: " +jsonResponse.getStatusCode());
-			} catch (AssertionError e) {
-				//Assert.assertNotSame(statusCode, jsonResponse.getStatusCode());
-				Log.fail("Fail Header Validated, status code is :: " +jsonResponse.getStatusCode());
-				e.printStackTrace();
-			}
-
-		} catch (AssertionError e) {
-			Log.fail(e.getMessage());		
-			//test.log(LogStatus.FAIL,"Expected Status code Is ::" +statusCode+ ", instead of getting  :: " +jsonResponse.getStatusCode());
-		}
-		catch(Exception e)
+	public static void responseHeaderCodeValidation(Response jsonResponse, int statusCode) 
+	{
+		int responseCode = jsonResponse.getStatusCode();
+		
+		if(responseCode == statusCode)
 		{
-			Log.fail(e.getMessage());
-			//test.log(LogStatus.FAIL, e.fillInStackTrace());
+			Log.pass("Expected and actual statusCode: " +jsonResponse.getStatusCode()+" is matched.");
 		}
-	}	
+		else if(responseCode != statusCode)
+		{
+			Log.fail("Expected HeaderCode: " +statusCode+" But found: "+jsonResponse.getStatusCode()+". Both are not matched");
+		}
+	}
+
 
 	public static void responseTimeValidation(Response jsonResponse)
 	{
 		try {			
 			long time =jsonResponse.time();
-			Log.pass("API Reposne Time Is :: " +time);
+			//Log.pass("HERE "+jsonResponse+" API Reposne Time Is :: " +time);
+			Log.pass("API Reposne Time in MilliSeconds Is = " +time);
 
 		} catch (Exception e) {
-			//test.log(LogStatus.FAIL, e.fillInStackTrace());
 			Log.fail(e.getMessage());
 		}
 	}
 
-	public static void responseCodeValidation1(Response jsonResponse, int statusCode) {
-
-		try {
-			try {
-				int act_responsecode = jsonResponse.then().extract().path("responseCode");
-				System.out.println("response ="+act_responsecode);//200
-				System.out.println("statusCode = " +statusCode);//200
-				if(act_responsecode == statusCode)
-				{
-					System.out.println("In the Pass Assertion");
-					Log.pass("successFull Actual Response code Validate, status code is :: " +jsonResponse.then().extract().path("responseCode"));
-				}
-				else
-				{
-					System.out.println("in the Fail Assertion");
-					Log.fail("Fail Actual Response code Validate, status code is :: " +jsonResponse.then().extract().path("responseCode"));
-				}
-				//Assert.assertSame(jsonResponse.then().extract().path("responseCode"),statusCode);
-				//Log.pass("successFull Validate, status code is :: " +jsonResponse.getStatusCode());
-			} catch (AssertionError e) {
-				//Assert.assertNotSame(jsonResponse.then().extract().path("responseCode"),statusCode);
-				Log.fail("Fail Validated, status code is :: " +jsonResponse.getStatusCode());
-				e.printStackTrace();
-			}
-
-		} catch (AssertionError e) {
-			Log.fail(e.getMessage());		
-			//test.log(LogStatus.FAIL,"Expected Status code Is ::" +statusCode+ ", instead of getting  :: " +jsonResponse.getStatusCode());
-		}
-		catch(Exception e)
-		{
-			Log.fail(e.getMessage());
-			//test.log(LogStatus.FAIL, e.fillInStackTrace());
-		}
-	}	
-
-
-	public static void responseKeyValidation(Response jsonResponse, String key,String value)
+	public static void responseCodeValidation1(Response jsonResponse, int statusCode) 
 	{
-		try {			
-			//JSONObject array = new JSONObject(jsonResponse .getBody().asString());
-			//for(String i=0;i<array.length();i++)
-
-			body = jsonResponse.getBody();
-			String bodyStringValue = body.asString();
-			Log.info("Whole string :: " +key+ "=" +value);
-			try {
-				Assert.assertTrue(bodyStringValue.contains(key));
-				Log.pass("validation pass Parameter is Present are : " +key);
-			} catch (AssertionError e) {
-				e.printStackTrace();
-				Log.fail("validated Asserting for contails= 1 Not FOUND are : " +key);
-				//Log.fail("validated Not FOUND are : " +key+ "=" +value );
-			}		    
-			JsonPath jsonPathEvaluator = jsonResponse.jsonPath();
-			String key1 = jsonPathEvaluator.getString(""+key+"");
-			Log.info("Here We are");
-			Log.info("key :: "+key1);
-			try {
-				Log.info("Assertion string"+key1.equals(value));
-				Assert.assertTrue(key1.equals(value));
-				//Log.info("Whole string :: " +keyv.equals(value));
-				Log.pass("validated value are : " +key1.equals(value));
-			}catch (AssertionError e) {				
-				e.printStackTrace();
-				Log.fail("validated Not FOUND are : " +key1+ "=" +value);
-			}
-		} catch (Exception e) 
-		{			
-			Log.fail(e.getMessage());
+		int act_responsecode=0;
+		System.out.println("response ="+act_responsecode);//200
+		if(jsonResponse!=null){
+			act_responsecode = jsonResponse.then().extract().path("responseCode");
+			System.out.println("statusCode = " +statusCode);//200
 		}
-	}
+		if(act_responsecode == statusCode)
+		{
+			System.out.println("In the Pass Assertion");
+			Log.pass("successFull Actual Response code Validate, status code is = " +jsonResponse.then().extract().path("responseCode"));
+		}
+		else
+		{
+			System.out.println("in the Fail Assertion");
+			Log.fail("Fail Actual Response code Validate, status code is = " +jsonResponse);
+		}
+		//Assert.assertSame(jsonResponse.then().extract().path("responseCode"),statusCode);
+		//Log.pass("successFull Validate, status code is :: " +jsonResponse.getStatusCode());
+	} 
 
+
+	/*public static void responseKeyValidation(Response jsonResponse, String key,String value)
+	{
+		body = jsonResponse.getBody();
+		String bodyStringValue = body.asString();
+		Log.info("Whole string :: " +key+ "=" +value);
+		try {
+			Assert.assertTrue(bodyStringValue.contains(key));
+			Log.pass("validation pass Parameter is Present are : " +key);
+		} catch (AssertionError e) {
+			e.printStackTrace();
+			Log.fail("validated Asserting for contails= 1 Not FOUND are : " +key);
+			//Log.fail("validated Not FOUND are : " +key+ "=" +value );
+		}		    
+		JsonPath jsonPathEvaluator = jsonResponse.jsonPath();
+		String key1 = jsonPathEvaluator.getString(""+key+"");
+		Log.info("Here We are");
+		Log.info("key :: "+key1);
+		try {
+			Log.info("Assertion string"+key1.equals(value));
+			Assert.assertTrue(key1.equals(value));
+			Log.pass("validated value are : " +key1.equals(value));
+		}catch (AssertionError e) {				
+			e.printStackTrace();
+			Log.fail("validated Not FOUND are : " +key1+ "=" +value);
+		}
+	} */
 	public static void responseKeyValidation_key(Response jsonResponse, String key)
 	{
-		try {			
-			//JSONObject array = new JSONObject(jsonResponse .getBody().asString());
-			//for(String i=0;i<array.length();i++)
-			body = jsonResponse.getBody();
+		ResponseBody<?> body = jsonResponse.getBody();
+		if(body!=null)
+		{
 			String bodyStringValue = body.asString();
-			Log.info("Whole string :: " +key);
 			try {
 				Assert.assertTrue(bodyStringValue.contains(key));
-				Log.pass("validation pass Parameter is Present are : " +key);
+				
+				Log.pass("Parameter is Present= "+key+"  .inside response body.");
 			} catch (AssertionError e) {
 				e.printStackTrace();
-				Log.fail("validated Asserting for contails= 1 Not FOUND are : " +key);
+				Log.fail("Expected Parameter is NOT Present= "+key+" .inside response body.");
 				//Log.fail("validated Not FOUND are : " +key+ "=" +value );
-			}
-		} catch (Exception e) 
-		{			
-			Log.fail(e.getMessage());
+			}	
+		}else{
+			Log.warn("Response null found!");
 		}
 	}
 	public static void responseNOTKeyValidation_key(Response jsonResponse, String key)
 	{
-		try {			
-			//JSONObject array = new JSONObject(jsonResponse .getBody().asString());
-			//for(String i=0;i<array.length();i++)
-			body = jsonResponse.getBody();
-			String bodyStringValue = body.asString();
-			Log.info("Whole string :: " +key);
+		ResponseBody<?> body = jsonResponse.getBody();
+		String bodyStringValue = body.asString();
+		Log.info("Whole string :: " +key);
+		// bodyStringValue="+bodyStringValue+"
+		Log.info("HERE we are-> "+" key ="+key+"");
+		if(bodyStringValue != key)
+		{
+			//Assert.assertFalse(bodyStringValue.contains(key));
+			Log.pass("validation key Not Present pass Parameter is Present are = " +key);
+		}
+		else if(bodyStringValue == key)
+		{
+			Log.fail("validated key Not Present Fails Asserting for contails= 1 Not FOUND are = " +key);
 
+		}	
+	}
+	public static void responseISGreater(String  variable , int key,int value)
+	{
+		if(key >= value)
+		{
+			Log.pass("size Validation pass is : " + ""+variable+""+" =$GREATER THEN EQUALS TO$: "+value);
+		}
+		else
+		{
+			Log.fail("size Validation pass is : " +""+variable+""+" =$GREATER THEN EQUALS TO$: "+value);
+		}
+	}
+
+	public static void responseISGreater_String(String  variable , int key,int value)
+	{
+		//int key= Integer.parseInt(""+key1+"");	
+
+		if(key >= value)
+		{
+			Log.pass("size Validation pass is : " + ""+variable+""+" =$GREATER THEN EQUALS TO$: "+value);
+		}
+		else
+		{
+			Log.fail("size Validation pass is : " +""+variable+""+" =$GREATER THEN EQUALS TO$: "+value);
+		}
+	}
+	public static void responseKeyAndValue(Response jsonResponse, String key,String value)
+	{
+		//JSONObject array = new JSONObject(jsonResponse .getBody().asString());
+		//for(String i=0;i<array.length();i++)
+		ResponseBody<?> body = jsonResponse.getBody();
+		//body = jsonResponse.getBody();
+		String bodyStringValue = body.asString();
+		Log.info("Whole string :: " +key);
+		String chunk=null;
+		chunk = "\""+key+"\": "+"\""+value+"\"";
+		Log.info("WHOLE STRING is key:value = "+chunk);
+		if(bodyStringValue.contains(chunk))
+		{
+			Log.pass("validation pass Parameter is Present are = " +chunk);
+		}
+		else
+		{
+			Log.fail("validated Asserting for contails= 1 Not FOUND are = " +chunk);
+		}			
+	}
+
+	public static void responseINTEGERKeyAndValue(Response jsonResponse, String key,Object  value)
+	{
+		//body = jsonResponse.getBody();
+		ResponseBody<?> body = jsonResponse.getBody();
+		String bodyStringValue = body.asString();
+		Log.info("Whole string :: " +key);
+		String chunk=null;
+
+		chunk = "\""+key+"\": "+""+value+"";
+		Log.info("WHOLE STRING INTEGER is key:value = "+chunk);
+
+		if(bodyStringValue.contains(chunk))
+		{
+			//Assert.assertTrue(bodyStringValue.contains(here1));
+			Log.pass("validation pass INTEGER Parameter is Present are = " +chunk);
+		}
+		else
+		{
+			Log.fail("validation pass INTEGER Parameter is NOT are= " +chunk);
+		}				
+	}
+
+	/*public static void responseKeyAndValue_obj(Response jsonResponse, String key,Object value)
+	{
+		//JSONObject array = new JSONObject(jsonResponse .getBody().asString());
+		//for(String i=0;i<array.length();i++)
+		ResponseBody<?> body = jsonResponse.getBody();
+		//body = jsonResponse.getBody();
+		String bodyStringValue = body.asString();
+		Log.info("Whole string :: " +key);
+		String chunk=null;
+		chunk = "\""+key+"\": "+"\""+value+"\"";
+		Log.info("WHOLE STRING is key:value = "+chunk);
+		if(bodyStringValue.contains(chunk))
+		{
+			Log.pass("validation pass Parameter is Present are = " +chunk);
+		}
+		else
+		{
+			Log.fail("validated Asserting for contails= 1 Not FOUND are = " +chunk);
+		}			
+	}*/
+
+	public static void responseKcount(Response jsonResponse, String key)
+	{
+		/*int total = 0;
+		String[] here2=null;
+		String here1=null;*/
+		//JSONObject array = new JSONObject(jsonResponse .getBody().asString());
+		//for(String i=0;i<array.length();i++)
+		//ResponseBody<?> body = jsonResponse.getBody();
+		//body = jsonResponse.getBody();
+		//String bodyStringValue = body.asString();
+		List<String>  key1 =jsonResponse.then().extract().path("bookList.book."+key+"");
+
+		Log.info("key1="+key+" :"+key1.size());
+
+		Log.pass("TOTAL COUNT Present are = " +key1.size());
+
+	}
+
+	public static void responseKcount1(Response jsonResponse, String key)
+	{
+		int total = 0;
+		//String[] here2=null;
+		//String here1=null;
+		total = Integer.parseInt(""+key+"");	
+		
+		//JSONObject array = new JSONObject(jsonResponse .getBody().asString());
+		//for(String i=0;i<array.length();i++)
+		
+		Log.pass("TOTAL TOTALS Present are = " +total);
+
+	}
+	
+	public static void responseKeyValidation_Str(Object jsonResponse, String key)
+	{
+		//ResponseBody<?> body = jsonResponse.getBody();
+		if(jsonResponse!=null)
+		{
+			String bodyStringValue = jsonResponse.toString();
 			try {
-				Log.info("HERE we are-> "+" bodyStringValue: :"+bodyStringValue+" key: :"+key+"");
-				if(bodyStringValue != key)
-				{
-					//Assert.assertFalse(bodyStringValue.contains(key));
-					Log.pass("validation Not Present pass Parameter is Present are : " +key);
-				}
-				else if(bodyStringValue == key)
-				{
-					Log.fail("validated Not Present Fails Asserting for contails= 1 Not FOUND are : " +key);
-
-				}
+				Assert.assertTrue(bodyStringValue.contains(key));
+				
+				Log.pass("String Parameter is Present= "+key+"  .inside response body.");
 			} catch (AssertionError e) {
 				e.printStackTrace();
-				Log.fail("validated Not Present Fails Asserting for contails= 1 Not FOUND are : " +key);
-
+				Log.fail("String Expected Parameter is NOT Present= "+key+" .inside response body.");
 				//Log.fail("validated Not FOUND are : " +key+ "=" +value );
-			}
-		} catch (Exception e) 
-		{			
-			Log.fail(e.getMessage());
+			}	
+		}else{
+			Log.warn("Response null found!");
 		}
 	}
-	public static void responseIntGreater3(int VariThatTobeTested ,int statusCode) {
-		try {
-			if(VariThatTobeTested >= 2)
-			{
-				//Assert.assertEquals(VariThatTobeTested, 6);
-				Log.pass(""+VariThatTobeTested+" : parameter is grater than 3");
-			}
-			else if(VariThatTobeTested <= 2)
-			{
-				Log.fail(""+VariThatTobeTested+" : Parameter is NOT grater than 3");
-			}
-
-		} catch (Exception e) {
-
-			e.printStackTrace();
-		}
-
-	}
-
-	public static void responseKeyAndValue(Response jsonResponse ,String key ,Object value) {
-		try {	
-			/*JsonPath jsonPathEvaluator = jsonResponse.jsonPath();
-			key= jsonPathEvaluator.get(key);*/
-			Assert.assertEquals(key, value);
-			Log.pass("Assertion key="+key+" and value="+value+" is EQUAL");
-
-		} catch (AssertionError e) {
-			Log.fail("Assertion key="+key+" and value="+value+" is NOT EQUAL");
-			e.printStackTrace();
-		}
-
-	}
-	/*public static void   main(String []args) throws SQLException
+	
+	/*public static void responseKcount_Str(List<String> jsonResponse, String key)
 	{
-		Response jsonResponse=given()
-		.auth()
-		.oauth("LTE6Y2xpZW50MTg6MTg=", "d94a49fbd80d931984ccfc9eaad7ae6323e3112a", "", "")
-		.header("Content-Type","application/json")								
-		.get("/DistributionServices/ext/api/book/ingestionStatus/2424242424241");
-		//Response responseCode=jsonResponse.then().extract().path("responseCode");
-		responseCodeValidation1(jsonResponse.then().extract().path("responseCode"), 200);
+		int total = 0;
+		String[] here2=null;
+		String here1=null;
+		//JSONObject array = new JSONObject(jsonResponse .getBody().asString());
+		//for(String i=0;i<array.length();i++)
+		//ResponseBody<?> body = jsonResponse.getBody();
+		//body = jsonResponse.getBody();
+		//String bodyStringValue = jsonResponse.toString();
+		//List<String>  key1 =bodyStringValue.substring(key);
+
+		List<String> category = ((Validatable<ValidatableResponse, Response>) jsonResponse).then().extract().path("bookList.book."+key+"");
+		//boolean count = (jsonResponse.contains(key));
+		Object key1 =  ((Validatable<ValidatableResponse, Response>) jsonResponse).then().extract().path(""+key+"");
+		
+		
+		Log.info("key1="+key+" :"+((List<String>) key1).size());
+
+		Log.pass("TOTAL COUNT Present are = " +((List<String>) key1).size());
+
 	}*/
 }
