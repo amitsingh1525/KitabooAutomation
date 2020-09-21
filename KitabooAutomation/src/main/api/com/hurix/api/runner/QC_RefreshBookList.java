@@ -186,7 +186,7 @@ public class QC_RefreshBookList {
 				nowEpochTime = Instant.now().toEpochMilli();
 
 				//2019-12-31 12:50:23.0
-				Response v1refreshBookList_res =V1refreshBookList.v1refreshBookList(""+archiveDate1+"","NEW","UPDATE",""+bookID1+"",""+bookID2+"",userToken,"56454", "IPAD",clientID);
+				Response v1refreshBookList_res =V1refreshBookList.v1refreshBookList(""+archiveDate1+"","NEW","UPDATE",bookID1,bookID2,userToken,"56454", "IPAD",clientID);
 				Validation.responseHeaderCodeValidation(v1refreshBookList_res, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(v1refreshBookList_res, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(v1refreshBookList_res);

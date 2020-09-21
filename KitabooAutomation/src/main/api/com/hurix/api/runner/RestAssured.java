@@ -1971,7 +1971,7 @@ public class RestAssured {
 
 
 				//2019/10/31 14:46:04
-				Response v1refreshBookList_res =V1refreshBookList.v1refreshBookList(""+archiveDate+"","NEW","UPDATE",""+bookID1+"",""+bookID2+"",userToken,"56454", "IPAD",clientID);
+				Response v1refreshBookList_res =V1refreshBookList.v1refreshBookList(""+archiveDate+"","NEW","UPDATE",bookID1,bookID2,userToken,"56454", "IPAD",clientID);
 				Validation.responseHeaderCodeValidation(v1refreshBookList_res, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(v1refreshBookList_res, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(v1refreshBookList_res);

@@ -16,7 +16,7 @@ public class UpdateMetadata {
 				//MetadataBody = "{\"title\":\""+title+"\",\"author\":\""+author+"\",\"isbn\":\""+isbnstring+"\",\"coverImage\":\"https://wks.com/thumbnail/1237564746577.png\",\"metadata\":{\"keyOfMedataStr\":\"value for the metadata\",\"publisher\":\"testwk\"},\"categories\":[{\"category\":\"india\",\"child\":[{\"category\":\"india\",\"child\":[]},{\"category\":\"goa\",\"child\":[]},{\"category\":\"goa\",\"child\":[]}]},{\"category\":\"maharashtra\",\"child\":[{\"category\":\"bihar\",\"child\":[]},{\"category\":\"nagpur\",\"child\":[]},{\"category\":\"panjab\",\"child\":[]}]}]}";
 				
 				MetadataBody ="{\"title\":\""+title+"\",\"author\":\""+author+"\",\"isbn\":\""+isbnstring+"\",\"coverImage\":\"https://wks.com/thumbnail/1237564746577.png\",\"description\":\""+description+"\",\"metadata\":{\"keyOfMedataStr\":\"value for the metadata\",\"publisher\":\"mill and boons\"},\"categories\":[{\"category\":\"india\",\"child\":[{\"category\":\"india\",\"child\":[]},{\"category\":\"goa\",\"child\":[]},{\"category\":\"goa\",\"child\":[]}]},{\"category\":\"maharashtra\",\"child\":[{\"category\":\"bihar\",\"child\":[]},{\"category\":\"nagpur\",\"child\":[]},{\"category\":\"panjab\",\"child\":[]}]}]}";
-				Log.startTestCase("UpdateMetadata");
+				Log.startTestCase("UpdateMetadata.title = "+title+"");
 				Log.info("MetadataBody : "+MetadataBody);
 				jsonResponse = given()
 						.auth()
@@ -26,7 +26,7 @@ public class UpdateMetadata {
 						.put("DistributionServices/ext/api/book/metadata/"+isbnstring+"");
 
 
-				Log.info("UpdateMetadata Response: "+jsonResponse.then().extract().response().prettyPrint());
+				Log.info("UpdateMetadata.title = "+title+" Response: "+jsonResponse.then().extract().response().prettyPrint());
 			}
 			else if(cat4 .contains("3"))
 			{

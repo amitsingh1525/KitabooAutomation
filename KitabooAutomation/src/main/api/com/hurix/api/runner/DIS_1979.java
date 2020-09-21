@@ -1,13 +1,18 @@
 package com.hurix.api.runner;
 
 import io.restassured.response.Response;
+
 import java.time.Instant;
 import java.util.List;
+
 import org.apache.http.HttpStatus;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 import com.hurix.api.externalAPIs.*;
+import com.hurix.api.readerAPIs.Authenticate;
+import com.hurix.api.readerAPIs.FetchBookList;
 import com.hurix.api.utility.*;
 import com.hurix.automation.utility.*;
 
@@ -42,21 +47,20 @@ public class DIS_1979 {
 			excelPath="./testData/DIS-1979.xlsx";
 			workbook = new XSSFWorkbook(excelPath);
 			sheet= workbook.getSheet("Sheet1");
-			for(int i=1;i<=1;i++)
-			{	
-				DataFormatter formatter = new DataFormatter();
-				environMent = formatter.formatCellValue(sheet.getRow(i).getCell(0));
-				userName=formatter.formatCellValue(sheet.getRow(i).getCell(1));			
-				password=formatter.formatCellValue(sheet.getRow(i).getCell(2));
-				consumerKey=formatter.formatCellValue(sheet.getRow(i).getCell(4));
-				System.out.println("HEREE GHGHDGHDDGGG consumerKey : "+consumerKey);
-				consumerKey=formatter.formatCellValue(sheet.getRow(1).getCell(4));
-				System.out.println("HEREE &^%#$%^&^%$%^&^ consumerKey2 : "+consumerKey);
-				consumerSecret=formatter.formatCellValue(sheet.getRow(i).getCell(5));
-				clientID=formatter.formatCellValue(sheet.getRow(i).getCell(3));	
-				catlevel=formatter.formatCellValue(sheet.getRow(i).getCell(6));	
+			for(int i=1;i<=sheet.getLastRowNum();i++)
+			{DataFormatter formatter = new DataFormatter();
+			environMent = formatter.formatCellValue(sheet.getRow(i).getCell(0));
+			userName = formatter.formatCellValue(sheet.getRow(i).getCell(1));			
+			password = formatter.formatCellValue(sheet.getRow(i).getCell(2));				
+			catlevel = formatter.formatCellValue(sheet.getRow(i).getCell(4));
+			String deviceT = formatter.formatCellValue(sheet.getRow(i).getCell(4));
+			String runY_N = formatter.formatCellValue(sheet.getRow(i).getCell(5));
+			clientID = formatter.formatCellValue(sheet.getRow(i).getCell(3));
 
-				switch(environMent){
+			Log.info("runY_N : "+runY_N);
+			if(runY_N.contains("NO")){Log.info("Permission to Run that Row is Denied!!..Please change YES in Ith row in Respective Sheet of Yours, Thank You");}
+			else if(runY_N.contains("YES"))
+			{switch(environMent){
 				case "QC":
 					detail = "http://qc.kitaboo.com";
 					sqlhost = "jdbc:mysql://172.18.10.147:3306";
@@ -102,11 +106,43 @@ public class DIS_1979 {
 				String title = KitabooBooksModule.bookCreationPDF("hello", "World", "level2", "For automation Testing", "Hello, World");
 				KitabooBooksModule.bookPublishAndArchivePDF(title);*/
 
+				Log.startTestCase("Authenticate");
+				Log.info("detail : "+detail);
+				Log.info("userName : "+userName);
+				Log.info("password : "+password);
+				Log.info("ReaderKey : "+clientID);
+				Response authenticateValue = Authenticate.authenticate(clientID, userName, password,"514185",deviceT);
+				Log.info("Authenticate Response: "+authenticateValue.then().extract().response().prettyPrint());				
+				System.out.println("HERE_Before");
+				Log.info("clientID : "+clientID);
+				Validation.responseHeaderCodeValidation(authenticateValue, HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(authenticateValue, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(authenticateValue);
+				Validation.responseKeyValidation_key(authenticateValue, "userName");
+				Validation.responseKeyValidation_key(authenticateValue, userName);
+				System.out.println("HERE_After");
+				System.out.println("here");
+				userName = authenticateValue.then().extract().path("user.userName");
+				int userID = authenticateValue.then().extract().path("user.id");
+				System.out.println("userID: "+userID);
+				String userToken = authenticateValue.then().extract().path("userToken");
+				System.out.println("userToken:"+userToken);
+				String clientUserID = authenticateValue.then().extract().path("user.clientUserID");
+				System.out.println("clientUserID:"+clientUserID);
+				int client_Id = authenticateValue.then().extract().path("user.clientID");
+				System.out.println("client_Id:"+client_Id);
+				Log.endTestCase("End");
 
+				consumerKey = JDBC_category.getCK(client_Id, sqlhost, sqlUsername, sqlPassword);
+				consumerSecret =JDBC_category.getSK(client_Id, sqlhost, sqlUsername, sqlPassword);
+				
+				consumerKey = JDBC_category.getCK(client_Id, sqlhost, sqlUsername, sqlPassword);
+				consumerSecret =JDBC_category.getSK(client_Id, sqlhost, sqlUsername, sqlPassword);
+				Log.info("URL : "+detail);
 				nowEpochTime = Instant.now().toEpochMilli();
 				Title ="Reflow_epub_"+nowEpochTime+"";
 				Log.info("Title : " +Title);
-				Response UploadEpub_res = UploadEpub.uploadEpub_OAuth(consumerKey, consumerSecret,"/Thirdepub/JMeterTesting.epub","Title","Title","level4",""+nowEpochTime+"","Title");
+				Response UploadEpub_res = UploadEpub.uploadEpub_OAuth(consumerKey, consumerSecret,"/Thirdepub/JMeterTesting.epub",""+Title+"",""+Title+"","level4_upd",""+nowEpochTime+"",""+Title+"");
 				Validation.responseHeaderCodeValidation(UploadEpub_res, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(UploadEpub_res, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(UploadEpub_res);
@@ -116,7 +152,7 @@ public class DIS_1979 {
 				System.out.println("epubId: "+epubId);
 
 
-				//Thread.sleep(40000);
+				Thread.sleep(9000);
 				Response EpubStatus_res = EpubStatus.epubStatus(consumerKey, consumerSecret,epubId);
 				Validation.responseHeaderCodeValidation(EpubStatus_res, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(EpubStatus_res, HttpStatus.SC_OK);
@@ -126,11 +162,9 @@ public class DIS_1979 {
 				System.out.println("EpubStatus_res : "+EpubStatus_res);
 				//Log.info(Validation.responseCodeValidation1(EpubStatus_res, HttpStatus.SC_OK));
 				//2 qand 3 success
-/*
-				for(int i1=0;i1<=9;i1++)
-				{
-					//isbnMeta=formatter.formatCellValue(sheet.getRow(5).getCell(i1));
-					
+
+				/*for(int i1=0;i1<=9;i1++)
+				{//isbnMeta=formatter.formatCellValue(sheet.getRow(5).getCell(i1));					
 					isbnMeta=formatter.formatCellValue(sheet.getRow(2).getCell(i1));
 					System.out.println("isbnMeta: "+isbnMeta);
 					Log.info("isbnMeta: "+isbnMeta);
@@ -147,7 +181,8 @@ public class DIS_1979 {
 					//isbnMeta=detailisbn.get(i1);
 					//isbnMeta=formatter.formatCellValue(sheet.getRow(6).getCell(i1));
 				}*/
-			
+				
+
 				/*isbnMeta=formatter.formatCellValue(sheet.getRow(2).getCell(i));
 				Response Metadata_res = Metadata.metadata(consumerKey, consumerSecret,isbnMeta,"Reflow_"+isbnMeta+"","Reflow_"+isbnMeta+"",catlevel,"description");
 				Validation.responseHeaderCodeValidation(Metadata_res, HttpStatus.SC_OK);
@@ -163,6 +198,7 @@ public class DIS_1979 {
 
 				String isbnURL=formatter.formatCellValue(sheet.getRow(3).getCell(0));
 				Response IngectEpub_res1 = IngectEpub.ingectEpub_ext(consumerKey, consumerSecret,""+isbnURL+"");
+				Log.info("URL : "+detail);
 				Validation.responseHeaderCodeValidation(IngectEpub_res1, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(IngectEpub_res1, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(IngectEpub_res1);
@@ -171,6 +207,7 @@ public class DIS_1979 {
 
 				isbnURL=formatter.formatCellValue(sheet.getRow(3).getCell(1));
 				Response IngectEpub_res2 = IngectEpub.ingectEpub_ext(consumerKey, consumerSecret,""+isbnURL+"");
+				Log.info("URL : "+detail);
 				Validation.responseHeaderCodeValidation(IngectEpub_res2, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(IngectEpub_res2, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(IngectEpub_res2);
@@ -179,6 +216,7 @@ public class DIS_1979 {
 
 				isbnURL=formatter.formatCellValue(sheet.getRow(3).getCell(2));
 				Response IngectEpub_res3 = IngectEpub.ingectEpub_ext(consumerKey, consumerSecret,""+isbnURL+"");
+				Log.info("URL : "+detail);
 				Validation.responseHeaderCodeValidation(IngectEpub_res3, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(IngectEpub_res3, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(IngectEpub_res3);
@@ -187,6 +225,7 @@ public class DIS_1979 {
 
 				isbnURL=formatter.formatCellValue(sheet.getRow(3).getCell(3));
 				Response IngectEpub_res4 = IngectEpub.ingectEpub_ext(consumerKey, consumerSecret,""+isbnURL+"");
+				Log.info("URL : "+detail);
 				Validation.responseHeaderCodeValidation(IngectEpub_res4, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(IngectEpub_res4, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(IngectEpub_res4);
@@ -195,6 +234,7 @@ public class DIS_1979 {
 
 				isbnURL=formatter.formatCellValue(sheet.getRow(3).getCell(4));
 				Response IngectEpub_res5 = IngectEpub.ingectEpub_ext(consumerKey, consumerSecret,""+isbnURL+"");
+				Log.info("URL : "+detail);
 				Validation.responseHeaderCodeValidation(IngectEpub_res5, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(IngectEpub_res5, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(IngectEpub_res5);
@@ -203,6 +243,7 @@ public class DIS_1979 {
 
 				isbnURL=formatter.formatCellValue(sheet.getRow(3).getCell(5));
 				Response IngectEpub_res6 = IngectEpub.ingectEpub_ext(consumerKey, consumerSecret,""+isbnURL+"");
+				Log.info("URL : "+detail);
 				Validation.responseHeaderCodeValidation(IngectEpub_res6, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(IngectEpub_res6, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(IngectEpub_res6);
@@ -211,6 +252,7 @@ public class DIS_1979 {
 
 				isbnURL=formatter.formatCellValue(sheet.getRow(3).getCell(6));
 				Response IngectEpub_res7 = IngectEpub.ingectEpub_ext(consumerKey, consumerSecret,""+isbnURL+"");
+				Log.info("URL : "+detail);
 				Validation.responseHeaderCodeValidation(IngectEpub_res7, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(IngectEpub_res7, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(IngectEpub_res7);
@@ -219,6 +261,7 @@ public class DIS_1979 {
 
 				isbnURL=formatter.formatCellValue(sheet.getRow(3).getCell(7));
 				Response IngectEpub_res8= IngectEpub.ingectEpub_ext(consumerKey, consumerSecret,""+isbnURL+"");
+				Log.info("URL : "+detail);
 				Validation.responseHeaderCodeValidation(IngectEpub_res8, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(IngectEpub_res8, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(IngectEpub_res8);
@@ -227,6 +270,7 @@ public class DIS_1979 {
 
 				isbnURL=formatter.formatCellValue(sheet.getRow(3).getCell(8));
 				Response IngectEpub_res9 = IngectEpub.ingectEpub_ext(consumerKey, consumerSecret,""+isbnURL+"");
+				Log.info("URL : "+detail);
 				Validation.responseHeaderCodeValidation(IngectEpub_res9, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(IngectEpub_res9, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(IngectEpub_res9);
@@ -235,6 +279,7 @@ public class DIS_1979 {
 
 				isbnURL=formatter.formatCellValue(sheet.getRow(3).getCell(9));
 				Response IngectEpub_res10 = IngectEpub.ingectEpub_ext(consumerKey, consumerSecret,""+isbnURL+"");
+				Log.info("URL : "+detail);
 				Validation.responseHeaderCodeValidation(IngectEpub_res10, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(IngectEpub_res10, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(IngectEpub_res10);
@@ -249,104 +294,163 @@ public class DIS_1979 {
 				Validation.responseKeyValidation_key(IngectEpub_res11, "The request for the uploadEpub taken successfully.");
 				System.out.println("IngectEpub_res : "+IngectEpub_res11);*/
 
+				Thread.sleep(9000);
 				isbnIng = IngectEpub_res1.then().extract().path("isbn");			
 				System.out.println("isbnIng: "+isbnIng);
-				Thread.sleep(6000);
+				Thread.sleep(4000);
 				Response IngestionStatus_res = IngestionStatus.ingestionStatus(consumerKey, consumerSecret, isbnIng);
+				Validation.responseHeaderCodeValidation(IngestionStatus_res, HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(IngestionStatus_res, HttpStatus.SC_OK);
+				Validation.responseINTEGERKeyAndValue(IngestionStatus_res, "status", 100);	
 				System.out.println("IngestionStatus_res : "+IngestionStatus_res);
+
+				Response updatemeta = UpdateMetadata.updateMetadata(consumerKey, consumerSecret,isbnIng,"Reflow_"+isbnIng+"_UPD","Reflow_"+isbnIng+"_UPD",catlevel,"description");
+				System.out.println("updatemeta : "+updatemeta);
 
 				isbnIng = IngectEpub_res2.then().extract().path("isbn");			
 				System.out.println("isbnIng: "+isbnIng);
-				Thread.sleep(6000);
+				Thread.sleep(4000);
 				Response IngestionStatus_res2 = IngestionStatus.ingestionStatus(consumerKey, consumerSecret, isbnIng);
+				Validation.responseHeaderCodeValidation(IngestionStatus_res2, HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(IngestionStatus_res2, HttpStatus.SC_OK);
+				Validation.responseINTEGERKeyAndValue(IngestionStatus_res2, "status", 100);					
 				System.out.println("IngestionStatus_res : "+IngestionStatus_res2);
+
+				updatemeta = UpdateMetadata.updateMetadata(consumerKey, consumerSecret,isbnIng,"Reflow_"+isbnIng+"_UPD","Reflow_"+isbnIng+"_UPD",catlevel,"description");
+				System.out.println("updatemeta : "+updatemeta);
 
 
 				isbnIng = IngectEpub_res3.then().extract().path("isbn");			
 				System.out.println("isbnIng: "+isbnIng);
-				Thread.sleep(6000);
+				Thread.sleep(4000);
 				Response IngestionStatus_res3 = IngestionStatus.ingestionStatus(consumerKey, consumerSecret, isbnIng);
+				Validation.responseHeaderCodeValidation(IngestionStatus_res3, HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(IngestionStatus_res3, HttpStatus.SC_OK);
+				Validation.responseINTEGERKeyAndValue(IngestionStatus_res3, "status", 100);	
 				System.out.println("IngestionStatus_res : "+IngestionStatus_res3);
-				
-				Response updatemeta = UpdateMetadata.updateMetadata(consumerKey, consumerSecret,isbnMeta,"Reflow_"+isbnIng+"_UPD","Reflow_"+isbnMeta+"_UPD",catlevel,"description");
+
+				updatemeta = UpdateMetadata.updateMetadata(consumerKey, consumerSecret,isbnIng,"Reflow_"+isbnIng+"_UPD","Reflow_"+isbnIng+"_UPD",catlevel,"description");
 				System.out.println("updatemeta : "+updatemeta);
 
 
 				isbnIng = IngectEpub_res4.then().extract().path("isbn");			
 				System.out.println("isbnIng: "+isbnIng);
-				Thread.sleep(6000);
+				Thread.sleep(4000);
 				Response IngestionStatus_res4 = IngestionStatus.ingestionStatus(consumerKey, consumerSecret, isbnIng);
+				Validation.responseHeaderCodeValidation(IngestionStatus_res4, HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(IngestionStatus_res4, HttpStatus.SC_OK);
+				Validation.responseINTEGERKeyAndValue(IngestionStatus_res4, "status", 100);	
 				System.out.println("IngestionStatus_res : "+IngestionStatus_res4);
-				updatemeta = UpdateMetadata.updateMetadata(consumerKey, consumerSecret,isbnMeta,"Reflow_"+isbnIng+"_UPD","Reflow_"+isbnMeta+"_UPD",catlevel,"description");
+				updatemeta = UpdateMetadata.updateMetadata(consumerKey, consumerSecret,isbnIng,"Reflow_"+isbnIng+"_UPD","Reflow_"+isbnIng+"_UPD",catlevel,"description");
 				System.out.println("updatemeta : "+updatemeta);
 
 
 				isbnIng = IngectEpub_res5.then().extract().path("isbn");			
 				System.out.println("isbnIng: "+isbnIng);
-				Thread.sleep(6000);
+				Thread.sleep(4000);
 				Response IngestionStatus_res5 = IngestionStatus.ingestionStatus(consumerKey, consumerSecret, isbnIng);
+				Validation.responseHeaderCodeValidation(IngestionStatus_res5, HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(IngestionStatus_res5, HttpStatus.SC_OK);
+				Validation.responseINTEGERKeyAndValue(IngestionStatus_res5, "status", 100);	
 				System.out.println("IngestionStatus_res : "+IngestionStatus_res5);
-				updatemeta = UpdateMetadata.updateMetadata(consumerKey, consumerSecret,isbnMeta,"Reflow_"+isbnIng+"_UPD","Reflow_"+isbnMeta+"_UPD",catlevel,"description");
+				updatemeta = UpdateMetadata.updateMetadata(consumerKey, consumerSecret,isbnIng,"Reflow_"+isbnIng+"_UPD","Reflow_"+isbnIng+"_UPD",catlevel,"description");
 				System.out.println("updatemeta : "+updatemeta);
 
 
 
 				isbnIng = IngectEpub_res6.then().extract().path("isbn");			
 				System.out.println("isbnIng: "+isbnIng);
-				Thread.sleep(6000);
+				Thread.sleep(4000);
 				Response IngestionStatus_res6 = IngestionStatus.ingestionStatus(consumerKey, consumerSecret, isbnIng);
+				Validation.responseHeaderCodeValidation(IngestionStatus_res6, HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(IngestionStatus_res6, HttpStatus.SC_OK);
+				Validation.responseINTEGERKeyAndValue(IngestionStatus_res6, "status", 100);	
 				System.out.println("IngestionStatus_res : "+IngestionStatus_res6);
-				updatemeta = UpdateMetadata.updateMetadata(consumerKey, consumerSecret,isbnMeta,"Reflow_"+isbnIng+"_UPD","Reflow_"+isbnMeta+"_UPD",catlevel,"description");
+				updatemeta = UpdateMetadata.updateMetadata(consumerKey, consumerSecret,isbnIng,"Reflow_"+isbnIng+"_UPD","Reflow_"+isbnIng+"_UPD",catlevel,"description");
 				System.out.println("updatemeta : "+updatemeta);
 
 
 
 				isbnIng = IngectEpub_res7.then().extract().path("isbn");			
 				System.out.println("isbnIng: "+isbnIng);
-				Thread.sleep(6000);
+				Thread.sleep(4000);
 				Response IngestionStatus_res7 = IngestionStatus.ingestionStatus(consumerKey, consumerSecret, isbnIng);
+				Validation.responseHeaderCodeValidation(IngestionStatus_res7, HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(IngestionStatus_res7, HttpStatus.SC_OK);
+				Validation.responseINTEGERKeyAndValue(IngestionStatus_res7, "status", 100);	
 				System.out.println("IngestionStatus_res : "+IngestionStatus_res7);
-				updatemeta = UpdateMetadata.updateMetadata(consumerKey, consumerSecret,isbnMeta,"Reflow_"+isbnIng+"_UPD","Reflow_"+isbnMeta+"_UPD",catlevel,"description");
+				updatemeta = UpdateMetadata.updateMetadata(consumerKey, consumerSecret,isbnIng,"Reflow_"+isbnIng+"_UPD","Reflow_"+isbnIng+"_UPD",catlevel,"description");
 				System.out.println("updatemeta : "+updatemeta);
 
 
 
 				isbnIng = IngectEpub_res8.then().extract().path("isbn");			
 				System.out.println("isbnIng: "+isbnIng);
-				Thread.sleep(6000);
+				Thread.sleep(4000);
 				Response IngestionStatus_res8 = IngestionStatus.ingestionStatus(consumerKey, consumerSecret, isbnIng);
+				Validation.responseHeaderCodeValidation(IngestionStatus_res8, HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(IngestionStatus_res8, HttpStatus.SC_OK);
+				Validation.responseINTEGERKeyAndValue(IngestionStatus_res8, "status", 100);	
 				System.out.println("IngestionStatus_res : "+IngestionStatus_res8);
-				updatemeta = UpdateMetadata.updateMetadata(consumerKey, consumerSecret,isbnMeta,"Reflow_"+isbnIng+"_UPD","Reflow_"+isbnMeta+"_UPD",catlevel,"description");
+				updatemeta = UpdateMetadata.updateMetadata(consumerKey, consumerSecret,isbnIng,"Reflow_"+isbnIng+"_UPD","Reflow_"+isbnIng+"_UPD",catlevel,"description");
 				System.out.println("updatemeta : "+updatemeta);
 
 
 
 				isbnIng = IngectEpub_res9.then().extract().path("isbn");			
 				System.out.println("isbnIng: "+isbnIng);
-				Thread.sleep(6000);
+				Thread.sleep(4000);
 				Response IngestionStatus_res9 = IngestionStatus.ingestionStatus(consumerKey, consumerSecret, isbnIng);
+				Validation.responseHeaderCodeValidation(IngestionStatus_res9, HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(IngestionStatus_res9, HttpStatus.SC_OK);
+				Validation.responseINTEGERKeyAndValue(IngestionStatus_res9, "status", 100);	
 				System.out.println("IngestionStatus_res : "+IngestionStatus_res9);
-				updatemeta = UpdateMetadata.updateMetadata(consumerKey, consumerSecret,isbnMeta,"Reflow_"+isbnIng+"_UPD","Reflow_"+isbnMeta+"_UPD",catlevel,"description");
+				updatemeta = UpdateMetadata.updateMetadata(consumerKey, consumerSecret,isbnIng,"Reflow_"+isbnIng+"_UPD","Reflow_"+isbnIng+"_UPD",catlevel,"description");
 				System.out.println("updatemeta : "+updatemeta);
 
 
 				isbnIng = IngectEpub_res10.then().extract().path("isbn");			
 				System.out.println("isbnIng: "+isbnIng);
-				Thread.sleep(6000);
+				Thread.sleep(4000);
 				Response IngestionStatus_res10 = IngestionStatus.ingestionStatus(consumerKey, consumerSecret, isbnIng);
+				Validation.responseHeaderCodeValidation(IngestionStatus_res10, HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(IngestionStatus_res10, HttpStatus.SC_OK);
+				Validation.responseINTEGERKeyAndValue(IngestionStatus_res10, "status", 100);	
 				System.out.println("IngestionStatus_res : "+IngestionStatus_res10);
-				updatemeta = UpdateMetadata.updateMetadata(consumerKey, consumerSecret,isbnMeta,"Reflow_"+isbnIng+"_UPD","Reflow_"+isbnMeta+"_UPD",catlevel,"description");
+				updatemeta = UpdateMetadata.updateMetadata(consumerKey, consumerSecret,isbnIng,"Reflow_"+isbnIng+"_UPD","Reflow_"+isbnIng+"_UPD",catlevel,"description");
 				System.out.println("updatemeta : "+updatemeta);
 
 
-
+				Response fetchBookList_without_pagination = FetchBookList.fetchBookList_without_pagination(userToken,"45616452",deviceT);
+				Validation.responseCodeValidation1(fetchBookList_without_pagination, HttpStatus.SC_OK);
+				Validation.responseHeaderCodeValidation(fetchBookList_without_pagination, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(fetchBookList_without_pagination);
+				Validation.responseKeyAndValue(fetchBookList_without_pagination, "title", "Reflow_"+isbnIng+"_UPD");
+				Validation.responseKeyValidation_key(fetchBookList_without_pagination, "isbn");
+				Validation.responseKeyValidation_key(fetchBookList_without_pagination, "title");
+				Validation.responseKeyValidation_key(fetchBookList_without_pagination, "id");
+				Validation.responseKeyValidation_key(fetchBookList_without_pagination, "archiveDate");
+				Validation.responseKeyValidation_key(fetchBookList_without_pagination, "assetType");
+				Validation.responseKeyValidation_key(fetchBookList_without_pagination, "assignedOn");
+				Validation.responseKeyValidation_key(fetchBookList_without_pagination, "bookActive");
+				Validation.responseKeyValidation_key(fetchBookList_without_pagination, "bookCode");
+				Validation.responseKeyValidation_key(fetchBookList_without_pagination, "bookId");
+				Validation.responseKeyValidation_key(fetchBookList_without_pagination, "category");
+				Validation.responseKeyValidation_key(fetchBookList_without_pagination, "categoryIdList");
+				Validation.responseKeyValidation_key(fetchBookList_without_pagination, "categoryList");
+				Validation.responseKeyValidation_key(fetchBookList_without_pagination, "locale");
+				Validation.responseKeyValidation_key(fetchBookList_without_pagination, "collectionThumbnail");
+				Validation.responseKeyValidation_key(fetchBookList_without_pagination, "collectionType");
+				Validation.responseKeyValidation_key(fetchBookList_without_pagination, "formats");
+				Validation.responseKeyValidation_key(fetchBookList_without_pagination, "readingPercentage");
+				Validation.responseKeyValidation_key(fetchBookList_without_pagination, "classID");
 				/*isbnIng = IngectEpub_res11.then().extract().path("isbn");			
 				System.out.println("isbnIng: "+isbnIng);
 				Thread.sleep(6000);
 				Response IngestionStatus_res11 = IngestionStatus.ingestionStatus(consumerKey, consumerSecret, isbnIng);
 				System.out.println("IngestionStatus_res : "+IngestionStatus_res11);*/
 
-				
+
 				/*		
 		//SELENIUM		
 					BrowserConfigure.browserConfigure("Chrome");
@@ -491,6 +595,7 @@ public class DIS_1979 {
 				Thread.sleep(6000);
 				Response IngestionStatus_res33 = IngestionStatus.ingestionStatus(consumerKey, consumerSecret, isbnIng);
 				System.out.println("IngestionStatus_res : "+IngestionStatus_res33);*/
+			}
 			}
 		}catch (Exception exp) 
 		{

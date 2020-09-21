@@ -11,8 +11,10 @@ public class BulkDownloadBook {
 	public static Response bulkDownloadBook(String userToken,String deviceID,String deviceType,int bookID1,int bookID2,int bookID3,String State)
 	{
 		System.out.println("bookID here: "+bookID1);
+		
 		//downloadBookPathANDROID = ""+com.hurix.api.utility.ExcelUtils.getbaseURI()+"/DistributionServices/services/api/reader/distribution/24Andr24/ANDROID/"+com.hurix.api.runner.RestAssured.bookID1+"/downloadBook?state=offline";
 		bulkDownload="{\"bookIds\":[\""+bookID1+"\",\""+bookID2+"\",\""+bookID3+"\"]}";
+		Log.info("bookID1: "+bookID1+ "bookID2: " +bookID2+  "bookID3: " +bookID3);
 		Response jsonResponse = null;
 		try {
 

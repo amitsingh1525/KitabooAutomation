@@ -476,7 +476,7 @@ public class DIS_1811_newdemo {
 				Validation.responseTimeValidation(downloadBookForANDROID_online);
 				System.out.println("bulkDonlaod : "+bulkDownlaod);
 
-				Response V1refresh_BookList = V1refreshBookList.v1refreshBookList(archiveDate,"NEW","UPDATE",""+bookID1+"",""+bookID2+"",userToken,"56454", "IPAD",clientID);
+				Response V1refresh_BookList = V1refreshBookList.v1refreshBookList(archiveDate,"NEW","UPDATE",bookID1,bookID2,userToken,"56454", "IPAD",clientID);
 				Validation.responseHeaderCodeValidation(V1refresh_BookList, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(V1refresh_BookList, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(V1refresh_BookList);
