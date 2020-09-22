@@ -14,126 +14,105 @@ import com.hurix.automation.utility.UIElements;
 
 public class EpubBookStepModule extends UIElements {
 
-	private static Properties prop = getProperty(System.getProperty("user.dir")+"/config/platform/audio.properties");
+	private static Properties prop = getProperty(System.getProperty("user.dir")+"/config/platform/EpubBook.properties");
 
-
-
-	public static void btndeleteaudioinarchive(){
+	public static void linkepub(){
 		try {
-			elementFinderByXpath(prop.getProperty("deleteaudioinarchive_xpath"), "btndeleteaudioinarchive").click();
-		} catch (Exception e) {
+			elementFinderByID(prop.getProperty("epublinkepubbook_id"), "linkepub").click();
+			} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
 	}
 
-
-	public static void btnsoftdeteleaudio(){
+	
+	public static void btnaddnewbuttonepubbook(){
 		try {
-			elementFinderByXpath(prop.getProperty("softdeteleaudio_xpath"), "btnsoftdeteleaudio").click();
-		} catch (Exception e) {
+			elementFinderByXpath(prop.getProperty("addnewbuttonepubbook_xpath"), "btnaddnewbuttonepubbook").click();
+			} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
-	}			
+	}
+	
 
-	public static void btnharddeleteaudio(){
+	public static void btnhtmlcreatebookepubbook(){
 		try {
-			elementFinderByXpath(prop.getProperty("harddeleteaudio_xpath"), "btnharddeleteaudio").click();
-		} catch (Exception e) {
+			elementFinderByLinkText(prop.getProperty("htmlcreatebookepubbook_link"), "btnhtmlcreatebookepubbook").click();
+			} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
-	}	
-
-
-	public static void btndeleteaudioinprogress(){
+	}
+		
+	public static void txtisbnepubbook(){
 		try {
-			elementFinderByXpath(prop.getProperty("deleteaudioinprogress_xpath"), "deleteaudioinprogress").click();
-		} catch (Exception e) {
+			elementFinderByXpath(prop.getProperty("isbnepubbook_xpath"), "txtisbnepubbook").click();
+			} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	
+	public static void txttitleepubbook(){
+		try {
+			elementFinderByXpath(prop.getProperty("titleepubbook_xpath"), "txttitleepubbook").click();
+			} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	
+	public static void drplanguagedropdownepubbook(){
+		try {
+			elementFinderByXpath(prop.getProperty("languagedropdownepubbook_xpath"), "drplanguagedropdownepubbook").click();
+			} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	
+	public static void drpbookorientationPortraitepubbook(){
+		try {
+			elementFinderByXpath(prop.getProperty("bookorientationPortraitepubbook_xpath"), "drpbookorientationPortraitepubbook").click();
+			} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	
+	public static void drpbookorientationLandscapeepubbook(){
+		try {
+			elementFinderByXpath(prop.getProperty("bookorientationLandscapeepubbook_xpath"), "drpbookorientationLandscapeepubbook").click();
+			} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
 	}
 
-
-	public static void btnaudioyes(){
+	public static void drpepubtypefixedepubbook(){
 		try {
-			elementFinderByXpath(prop.getProperty("audioyes_xpath"), "btnaudioyes").click();
-		} catch (Exception e) {
+			elementFinderByXpath(prop.getProperty("epubtypefixedepubbook_xpath"), "drpepubtypefixedepubbook").click();
+			} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
 	}
 
-
-	public static void btnaudiono(){
+	
+	public static void coverpageepubbook(){
 		try {
-			elementFinderByXpath(prop.getProperty("audiono_xpath"), "btnaudiono").click();
-		} catch (Exception e) {
+			elementFinderByXpath(prop.getProperty("coverpageepubbook_xpath"), "coverpageepubbook").click();
+			} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
 	}
-
-	public static void msgaudiodeletemsg(){
+		
+	public static void btnfinishbuttonepubbook(){
 		try {
-			elementFinderByXpath(prop.getProperty("msgaudiodeletemsg_xpath"), "msgaudiodeletemsg").click();
-		} catch (Exception e) {
+			elementFinderByXpath(prop.getProperty("finishbuttonepubbook_xpath"), "btnfinishbuttonepubbook").click();
+			} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
 	}
-
-	public static void msgaudioarchive(){
-		try {
-			elementFinderByXpath(prop.getProperty("msgaudioarchive_xpath"), "msgaudioarchive").click();
-		} catch (Exception e) {
-			System.out.println("Element not present."+e.getMessage());
-		}
-	}
-
-	public static void msgaudiorevert(){
-		try {
-			elementFinderByXpath(prop.getProperty("msgaudiorevert_xpath"), "msgaudiorevert").click();
-		} catch (Exception e) {
-			System.out.println("Element not present."+e.getMessage());
-		}
-	}
-
-	public static void msgaudioupdate(){
-		try {
-			elementFinderByXpath(prop.getProperty("msgaudioupdate_xpath"), "msgaudioupdate").click();
-		} catch (Exception e) {
-			System.out.println("Element not present."+e.getMessage());
-		}
-	}
-
-	public static void msgaudioupload(){
-		try {
-			elementFinderByXpath(prop.getProperty("msgaudioupload_xpath"), "msgaudioupload").click();
-		} catch (Exception e) {
-			System.out.println("Element not present."+e.getMessage());
-		}
-	}
-
-
-	public static void btnlogout(){
-		try {
-			elementFinderByID(prop.getProperty("profile_id"), "btnprofile").click();
-			elementFinderByID(prop.getProperty("logout_id"), "btnlogout").click();
-		} catch (Exception e) {
-			System.out.println("Element not present."+e.getMessage());
-		}
-	}
-
-
-	public static void btnrevertAudioyes(){
-		try {
-			wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("loader_image")));
-			JavascriptExecutor js = ( JavascriptExecutor)Driver.driver;
-			WebElement revertyes = elementFinderByXpath(prop.getProperty("revertAudioyes_xpath"), "revertAudioyes");
-			threadHold_2Sec();
-			js.executeScript("arguments[0].scrollIntoView(true)",revertyes);
-			elementFinderByXpath(prop.getProperty("revertAudioyes_xpath"), "revertAudioyes").click();
-		} catch (Exception e) {
-			System.out.println("Element not present."+e.getMessage());
-		}
-	}
-
+	
+	
+	
 	public static void btnrevertAudiono(){
 		try {
 			wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("loader_image")));
