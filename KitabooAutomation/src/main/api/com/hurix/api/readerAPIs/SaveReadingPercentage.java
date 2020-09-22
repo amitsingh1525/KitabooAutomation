@@ -11,6 +11,9 @@ public class SaveReadingPercentage {
 		Response jsonResponse = null;
 		try {
 			Log.startTestCase("SaveReadingPercentage.device:"+deviceType+".id:"+bookID1+"percntge:"+percentge+"");
+			Log.info("usertoken : "+usertoken);
+			Log.info("URL : "+"/DistributionServices/services/api/reader/user/"+deviceID+"/"+deviceType+"/saveReadingPercentage");
+			Log.info("BODY "+"[{\"bookId\":"+bookID1+",\"percentage\":"+percentge+"}]");
 			jsonResponse = given()
 					.header("Content-Type","application/json")
 					.queryParam("usertoken", usertoken)

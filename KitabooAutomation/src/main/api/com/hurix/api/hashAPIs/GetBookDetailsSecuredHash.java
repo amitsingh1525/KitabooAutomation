@@ -5,10 +5,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import io.restassured.response.Response;
-import org.apache.http.HttpStatus;
 import com.hurix.api.runner.RestAssured;
-import com.hurix.api.utility.MD5Genration;
-import com.hurix.api.utility.Validation;
+import com.hurix.api.utility.*;
 import com.hurix.automation.utility.Log;
 
 public class GetBookDetailsSecuredHash {

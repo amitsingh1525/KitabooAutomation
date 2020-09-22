@@ -1,23 +1,16 @@
 package com.hurix.api.readerAPIs;
 
 import static io.restassured.RestAssured.given;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.TimeZone;
-
 import io.restassured.response.Response;
-
-import com.hurix.api.utility.*;
 import com.hurix.automation.utility.*;
 
 public class V1refreshBookList {
 
 	private static String v1refreshBookListBody;
-	public static Response v1refreshBookList(Object startDate,String operation1,String operation2,String bookID1,String bookID2,String userToken,String deviceID ,String DiviceType,String clientID)
+	public static Response v1refreshBookList(Object startDate,String operation1,String operation2,int bookID1,int bookID2,String userToken,String deviceID ,String DiviceType,String clientID)
 	{
 		Response jsonResponse = null;
 		try {
@@ -44,7 +37,11 @@ public class V1refreshBookList {
 			Log.info("After startDate : "+startDate);
 			Log.info("URL : "+"/DistributionServices/services/api/reader/distribution/"+deviceID+"/"+DiviceType+"/v1/refreshBookList?t="+epoch+"&clientID="+clientID+"");
 			//System.out.println("v1refreshBookListBodyRequestURL:" +POSTv1refreshBookListath);
-			System.out.println("searchV2Body: "+v1refreshBookListBody);
+			Log.info("v1refreshBookListBody: "+v1refreshBookListBody);
+			Log.info("operation1: "+operation1);
+			Log.info("operation2: "+operation2);
+			Log.info("bookID1: "+bookID1);
+			Log.info("bookID2: "+bookID2);
 			jsonResponse = given()
 					.header("Content-Type","application/json")
 					.header("usertoken",userToken)

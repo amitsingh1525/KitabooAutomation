@@ -1,14 +1,8 @@
 package com.hurix.api.readerAPIs;
 
 import static io.restassured.RestAssured.given;
-
-import java.util.List;
-
-import junit.framework.Assert;
 import io.restassured.response.Response;
-
 import com.hurix.automation.utility.Log;
-import com.google.common.collect.Ordering;
 
 
 public class FetchBookList {
@@ -101,10 +95,6 @@ public class FetchBookList {
 	}
 
 	
-	private static void assertTrue(boolean ordered) {
-		// TODO Auto-generated method stub
-		
-	}
 	public static Response fetchBookList_withPAGI_permutation(String SortBy,String orderBy,int startIndex,int endIndex,String userToken,String DeviceID,String DeviceType)
 	{
 

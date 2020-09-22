@@ -13,10 +13,13 @@ public class IngectEpub {
 		Response jsonResponse = null;
 		try {
 			IngectEpubBody = "{\"filePath\":\""+filePath+"\"}";
-			
+			Log.startTestCase("IngectEpub");
 			Log.info("filePath: "+IngectEpubBody);
 			Log.info("consumerKey : "+consumerKey);
-			Log.startTestCase("IngectEpub");
+			Log.info("consumerSecret : "+consumerSecret);
+			Log.info("filePath : "+filePath);
+			Log.info("URL : "+"/DistributionServices/ext/api/book/ingestEpubFile");
+			
 			jsonResponse = given()
 					.auth()
 					.oauth(consumerKey, consumerSecret, "", "")

@@ -35,7 +35,8 @@ public class CategoryBookListV1 {
 			c1 = result.getString("c1");
 			Fcatname=c1;
 			Log.info("catname  : "+Fcatname);
-
+			Log.info("userToken  : "+userToken);
+			Log.info("URL  : "+"/DistributionServices/services/api/reader/books/"+DeviceID+"/"+DeviceType+"/books/"+catname+"");
 			if(catLevel .contains("1"))
 			{
 				//catname=catname;
@@ -83,6 +84,8 @@ public class CategoryBookListV1 {
 
 				Log.info("categoryBookListV1 Response: "+jsonResponse.then().extract().response().prettyPrint());
 			}
+			stmt.close();
+			con.close();
 		} catch (Exception exp) 
 		{
 			System.out.println(exp.getMessage());
@@ -169,6 +172,8 @@ public class CategoryBookListV1 {
 
 				Log.info("categoryBookListV1.catname="+catname+".SortBy="+SortBy+".orderBy="+orderBy+" Response: "+jsonResponse.then().extract().response().prettyPrint());
 			}
+			stmt.close();
+			con.close();
 		} catch (Exception exp) 
 		{
 			System.out.println(exp.getMessage());
@@ -263,6 +268,8 @@ public class CategoryBookListV1 {
 
 				Log.info("categoryBookListV1.catname="+catname+".SortBy="+SortBy+".orderBy="+orderBy+" Response: "+jsonResponse.then().extract().response().prettyPrint());
 			}
+			stmt.close();
+			con.close();
 		} catch (Exception exp) 
 		{
 			System.out.println(exp.getMessage());

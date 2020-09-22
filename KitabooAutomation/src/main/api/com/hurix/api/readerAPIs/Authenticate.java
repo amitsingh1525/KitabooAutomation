@@ -9,6 +9,7 @@ public class Authenticate {
 	public static Response authenticate(String clientID, String username, String password,String deviceID,String deviceType)
 	{
 		Response jsonResponse = null;
+		Log.info("URL : "+"/DistributionServices/services/api/reader/user/"+deviceID+"/"+deviceType+"/authenticateUser");
 		try {
 			
 			jsonResponse = given()
