@@ -177,16 +177,16 @@ public class BookPlayerModule extends BookplayerStepModule
 
 	public static void zoomIn(int zoomInLevel){
 		btnzoomin();
-		elementFinderByXpath(prop.getProperty("zoomsliderzoomin_xpath"), "Zoom sliderin xpath");
-		WebElement slider = elementFinderByXpath(prop.getProperty("zoomsliderzoomin_xpath"), "Zoom sliderin xpath");
+		elementFinderByXpath(prop.getProperty("zoomsliderzoomin_xpath"), "Waiting for zoom slider..");
+		WebElement slider = elementFinderByXpath(prop.getProperty("zoomsliderzoomin_xpath"), "Click on zoom slider.");
 		moveToGivenPoint(slider, zoomInLevel, 0);
 		btnhighlight();
 	}
 
 	public static void zoomOut(int zoomoutLevel){
 		btnzoomout();
-		elementFinderByXpath(prop.getProperty("zoomsliderzoomout_xpath"), "Zoom slider xpath");
-		WebElement slider = elementFinderByXpath(prop.getProperty("zoomsliderzoomout_xpath"), "Zoom slider xpath");
+		elementFinderByXpath(prop.getProperty("zoomsliderzoomout_xpath"), "Waiting for zoom slider..");
+		WebElement slider = elementFinderByXpath(prop.getProperty("zoomsliderzoomout_xpath"), "Click on zoom slider.");
 		moveToGivenPoint(slider, zoomoutLevel, 0);
 		btnhighlight();
 	}
@@ -194,7 +194,7 @@ public class BookPlayerModule extends BookplayerStepModule
 	public static String searchBookText(String searchtxt, int elementNum){
 		btnsearch();
 		txtSearch(searchtxt);
-		int size= elementsFinderByXpaths(prop.getProperty("searchresult_lstview_xpath"), "Search result count").size();
+		int size= elementsFinderByXpaths(prop.getProperty("searchresult_lstview_xpath"), "getting search result count..").size();
 		Log.info("Number of search found:"+ size);
 		String msg = null;
 		if(size>0){
@@ -252,7 +252,7 @@ public class BookPlayerModule extends BookplayerStepModule
 			}
 		}
 		//justForRemoveFilterPlate
-		elementFinderByXpath(prop.getProperty("filter_yellowhighlight_uncheck_xpath"), "chkbx_yellow").sendKeys(Keys.ESCAPE);
+		elementFinderByXpath(prop.getProperty("filter_yellowhighlight_uncheck_xpath"), "Close filter plate").sendKeys(Keys.ESCAPE);
 		int count = getHighLightCounts();
 		btnmyData();
 		return count;
@@ -287,7 +287,7 @@ public class BookPlayerModule extends BookplayerStepModule
 		}
 
 		//justForRemoveFilterPlate
-		elementFinderByXpath(prop.getProperty("filter_bluenotes_uncheck_xpath"), "chkbx_blue").sendKeys(Keys.ESCAPE);
+		elementFinderByXpath(prop.getProperty("filter_bluenotes_uncheck_xpath"), "Close filter plate.").sendKeys(Keys.ESCAPE);
 		int count = getNotesCounts();
 		btnmyData();
 		return count;
@@ -359,7 +359,7 @@ public class BookPlayerModule extends BookplayerStepModule
 		}
 
 		//justForRemoveFilterPlate
-		elementFinderByXpath(prop.getProperty("filter_bluecontextualnotes_uncheck_xpath"), "chkbx_blue").sendKeys(Keys.ESCAPE);
+		elementFinderByXpath(prop.getProperty("filter_bluecontextualnotes_uncheck_xpath"), "Close filter plate.").sendKeys(Keys.ESCAPE);
 		int count = getNotesCounts();
 		btnmyData();
 		return count;

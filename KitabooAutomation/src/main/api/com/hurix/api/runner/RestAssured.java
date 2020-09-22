@@ -5,6 +5,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
 import org.apache.http.HttpStatus;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -31,73 +32,76 @@ import com.hurix.automation.utility.Log;
 
 public class RestAssured {
 
-	public static List<String> detailisbn =  ExcelUtils.getisbn();
+	static List<String> detailisbn =  ExcelUtils.getisbn();
 	DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
 	Date dateobj = new Date();
 	//System.out.println(df.format(dateobj));
 	//public static long startDate1 = EpochTime.getEpochTime("df.format(dateobj");
-	public static long startDate ;//EpochTime.getEpochTime("2019/10/31 14:46:04");
-	public static long startIndex = 0;
-	public static long endIndex = 100;
+	static long startDate ;//EpochTime.getEpochTime("2019/10/31 14:46:04");
+	static long startIndex = 0;
+	static long endIndex = 100;
 	//public static int level;
-	public static String assetType;
-	public static int level;
-	public static String numberOfBooks;
-	public static String userToken = "";
-	public static int BookID_mark1;
-	public static int BookID_mark2;
-	public static int BookID_mark3;
-	public static int  bookID1;
-	public static int bookID2;
-	public static int bookID3;
-	public static int bookID6;
-	public static String isbn;
-	public static String isbnMeta;
-	public static String isbnIng;
-	public static String forName;
-	public static String responseMsg;
-	public static String content_ownership;
-	public static int userID;
-	public static int totalbooks;
-	public static int total;
-	public static String archiveDate;
-	public static String archiveDate6;
-	public static String operation0;
-	public static String operation1;
-	public static String ebookID1;
-	public static String catname;
-	public static String categoriesname;
-	public static String collectionName0;
-	public static String collectionName1;
-	public static String catname1;
-	public static int totalCategories;
-	public static String clientUserID;
-	public static String category1;
-	public static String clientBookID;
-	public static String search = "Native";	
-	public static XSSFWorkbook workbook;
-	public static XSSFSheet sheet;
-	public static String environMent;
-	public static String userName;
-	public static String password;
+	static String assetType;
+	static int level;
+	static String numberOfBooks;
+	static String userToken = "";
+	static int BookID_mark1;
+	static int BookID_mark2;
+	static int BookID_mark3;
+	static int  bookID1;
+	static int bookID2;
+	static int bookID3;
+	static int bookID6;
+	static String isbn;
+	static String isbnMeta;
+	static String isbnIng;
+	static String forName;
+	static String responseMsg;
+	static String content_ownership;
+	static int userID;
+	static int totalbooks;
+	static int total;
+	static int totalCategories;
+	static int type;
+	static Object archiveDate;
+	static Object archiveDate6;
+	static String operation0;
+	static String operation1;
+	static String ebookID1;
+	static String catname;
+	static String categoriesname;
+	static String collectionName0;
+	static String collectionName1;
+	static String catname1;	
+	static String clientUserID;
+	static String category1;
+	static String clientBookID;
+	static String search = "Native";	
+	static XSSFWorkbook workbook;
+	static XSSFSheet sheet;
+	static String environMent;
+	static String userName;
+	static String password;
 	public static String detail;
-	public static String externalURI;
-	public static String clientID;
-	public static String catlevel;
-	public static int type;
-	public static String isbn1;
-	public static String isbn2;
-	public static String isbn3;
-	public static String isbn4;
-	public static String isbn5;
-	public static String isbn6;
-	public static String isbn7;
-	public static String isbn8;
-	public static String isbn9;
-	public static String isbn10;
-	public static String isbn11;
-	public static String consumerKey=ExcelUtils.Consumer_key;
-	public static String consumerSecret=ExcelUtils.secret_key;
+	public static String sqlhost;
+	public static String sqlUsername;
+	public static String sqlPassword;
+	static String externalURI;
+	static String clientID;
+	static String catlevel;
+	static String isbn1;
+	static String isbn2;
+	static String isbn3;
+	static String isbn4;
+	static String isbn5;
+	static String isbn6;
+	static String isbn7;
+	static String isbn8;
+	static String isbn9;
+	static String isbn10;
+	static String isbn11;
+	static String consumerKey=ExcelUtils.Consumer_key;
+	static String consumerSecret=ExcelUtils.secret_key;
 
 	public static void   main(String []args) throws SQLException, JSONException{
 		Log.initialization("APITesting");	
@@ -122,21 +126,40 @@ public class RestAssured {
 				switch(environMent){
 				case "QC":
 					detail = "http://qc.kitaboo.com";
+					sqlhost = "jdbc:mysql://172.18.10.147:3306";
+					sqlUsername = "readonly";
+					sqlPassword = "readonly@123";
 					break;
 				case "Staging":
 					detail = "http://qacloud.kitaboo.com";
+					sqlhost="jdbc:mysql://hurix-staging-db.cbum2u9r6xyc.us-east-1.rds.amazonaws.com";
+					sqlUsername="qcteam";
+					sqlPassword="JB88F-WT2Q3-DPXTT";	
 					break;
 				case "BASE_US":
 					detail = "http://localhost:12346";
+					sqlhost="jdbc:mysql://localhost:12345";
+					sqlUsername="shweta-katare";
+					sqlPassword="J&P@O4A7HV";	
+					
 					break;
 				case "BASE_EU":
 					detail = "http://localhost:12347";
+					sqlhost="jdbc:mysql://localhost:56789";
+					sqlUsername="shweta-katare";
+					sqlPassword="J&P@O4A7HV";
 					break;
 				case "PROD_US":
 					detail = "http://cloud.kitaboo.com";
+					sqlhost="jdbc:mysql://localhost:12345";
+					sqlUsername="shweta-katare";
+					sqlPassword="J&P@O4A7HV";
 					break;
 				case "PROD_EU":
 					detail = "http://cloud.kitaboo.eu";
+					sqlhost="jdbc:mysql://localhost:56789";
+					sqlUsername="shweta-katare";
+					sqlPassword="J&P@O4A7HV";
 					break;
 				}	
 				Log.info("DIS-1466");
@@ -322,11 +345,11 @@ public class RestAssured {
 				Validation.responseTimeValidation(FetchbookListPermutation_withpagi51);
 				System.out.println("FetchbookListPermutation_withpagi : "+FetchbookListPermutation_withpagi51);
 
-				Response FetchbookListPermutationDEC52=FetchBookList.fetchBookList_with_permutation("archive_Date","DESC",userToken,"464","IPAD");
-				Validation.responseCodeValidation1(FetchbookListPermutationDEC52, HttpStatus.SC_OK);
-				Validation.responseHeaderCodeValidation(FetchbookListPermutationDEC52, HttpStatus.SC_OK);
-				Validation.responseTimeValidation(FetchbookListPermutationDEC52);
-				System.out.println("FetchbookListPermutation.DEC : "+FetchbookListPermutationDEC52);
+				FetchbookListPermutation_withpagi51=FetchBookList.fetchBookList_with_permutation("archive_Date","DESC",userToken,"464","IPAD");
+				Validation.responseCodeValidation1(FetchbookListPermutation_withpagi51, HttpStatus.SC_OK);
+				Validation.responseHeaderCodeValidation(FetchbookListPermutation_withpagi51, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(FetchbookListPermutation_withpagi51);
+				System.out.println("FetchbookListPermutation.DEC : "+FetchbookListPermutation_withpagi51);
 
 
 				Response FetchbookListPermutation_withpagiDEC53=FetchBookList.fetchBookList_withPAGI_permutation("archive_Date","DESC",0,8,userToken, "464", "IPAD");
@@ -525,7 +548,16 @@ public class RestAssured {
 				Validation.responseKeyValidation_key(FetchRecentlyViewedBook_Hash, "encryption");
 				System.out.println("FetchRecentlyViewedBook_Hash: "+FetchRecentlyViewedBook_Hash);
 
-				Response GetBookDetailsSecured_Hash = GetBookDetailsSecuredHash.getBookDetailsSecuredHash("2020-05-21 18:29:09.0",userToken,"45616452","IPAD",ebookID1,assetType);
+				Response GetBookDetailsSecured_Hash = GetBookDetailsSecuredHash.getBookDetailsSecuredHash(""+archiveDate+"", userToken, "5489989","IPAD",bookID1,""+assetType+"");
+				Validation.responseHeaderCodeValidation(GetBookDetailsSecured_Hash, HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(GetBookDetailsSecured_Hash, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(GetBookDetailsSecured_Hash);
+				Validation.responseHeaderCodeValidation(GetBookDetailsSecured_Hash, HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(GetBookDetailsSecured_Hash, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(GetBookDetailsSecured_Hash);
+				Validation.responseKeyValidation_key(GetBookDetailsSecured_Hash, "bookId");
+				Validation.responseKeyValidation_key(GetBookDetailsSecured_Hash, "category");
+				Validation.responseKeyValidation_key(GetBookDetailsSecured_Hash, "archiveDate");
 				System.out.println("GetBookDetailsSecured_Hash: "+GetBookDetailsSecured_Hash);
 
 				Response MarkAsFavourite_Hash = MarkAsFavouriteHash.markAsFavouriteHash(bookID1,userToken,"56454", "IPAD");
@@ -596,7 +628,7 @@ public class RestAssured {
 
 
 				//"2019/10/31 14:46:04"
-				Response V1RefreshBooks_hash = V1RefreshBooksHash.v1refreshBooks(archiveDate,bookID1,bookID2,userToken,"56454","IPAD");
+				Response V1RefreshBooks_hash = V1RefreshBooksHash.v1refreshBooks(""+archiveDate+"",bookID1,bookID2,userToken,"56454","IPAD");
 				Validation.responseHeaderCodeValidation(V1RefreshBooks_hash, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(V1RefreshBooks_hash, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(V1RefreshBooks_hash);
@@ -607,7 +639,7 @@ public class RestAssured {
 				Validation.responseKeyValidation_key(V1RefreshBooks_hash, "collectionThumbnail");
 				System.out.println("V1RefreshBooks_hash: "+V1RefreshBooks_hash);
 
-				Response V1RefreshBooks_hash2 = V1RefreshBooksHash.v1refreshBooks_op("2020/08/20 10:52:23",bookID6,bookID2,"UPDATE","NEW",userToken,"56454","IPAD");
+				Response V1RefreshBooks_hash2 = V1RefreshBooksHash.v1refreshBooks_op(""+archiveDate+"",bookID6,bookID2,"UPDATE","NEW",userToken,"56454","IPAD");
 				Validation.responseHeaderCodeValidation(V1RefreshBooks_hash2, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(V1RefreshBooks_hash2, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(V1RefreshBooks_hash2);
@@ -916,8 +948,8 @@ public class RestAssured {
 				Validation.responseNOTKeyValidation_key(getSecureURLres, "URL_NOT_FORMED");
 				System.out.println("getSecureURLres : "+getSecureURLres);
 
-				System.out.println("startDate :: "+startDate); 
-				Response bookdetails_res =Bookdetails.bookdetails("2019/10/31 14:46:04",userToken, "5489989","IPAD",""+ebookID1+"",""+assetType+"");
+				System.out.println("startDate :: "+startDate);
+				Response bookdetails_res = Bookdetails.bookdetails(""+archiveDate+"", userToken, "5489989","IPAD",bookID1,""+assetType+"");
 				Validation.responseHeaderCodeValidation(bookdetails_res, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(bookdetails_res, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(bookdetails_res);
@@ -1171,9 +1203,9 @@ public class RestAssured {
 				System.out.println("categoriesV2res : " +categoriesV2res);
 
 
-				String sqlhost="jdbc:mysql://hurix-staging-db.cbum2u9r6xyc.us-east-1.rds.amazonaws.com";
-				String sqlUsername="qcteam";
-				String sqlPassword="JB88F-WT2Q3-DPXTT";		
+				//String sqlhost="jdbc:mysql://hurix-staging-db.cbum2u9r6xyc.us-east-1.rds.amazonaws.com";
+				//String sqlUsername="qcteam";
+				//String sqlPassword="JB88F-WT2Q3-DPXTT";		
 
 				Response categoryBookListV1res = CategoryBookListV1.categoryBookListV1(""+category1+"",userToken,"56454", "IPAD",bookID1,catlevel,sqlhost,sqlUsername,sqlPassword);
 				Validation.responseHeaderCodeValidation(categoryBookListV1res, HttpStatus.SC_OK);
@@ -1843,7 +1875,7 @@ public class RestAssured {
 				Validation.responseKeyValidation_key(bookMetadata_res, "isbn");
 				Validation.responseKeyValidation_key(bookMetadata_res, "title");
 				Validation.responseKeyValidation_key(bookMetadata_res, "thumbnail");
-				Validation.responseKeyValidation_key(bookMetadata_res, "mimeType");
+				//Validation.responseKeyValidation_key(bookMetadata_res, "mimeType");
 				Validation.responseKeyValidation_key(bookMetadata_res, "pages");
 				Validation.responseKeyValidation_key(bookMetadata_res, "version");
 				Validation.responseKeyValidation_key(bookMetadata_res, "formats");
@@ -1889,7 +1921,7 @@ public class RestAssured {
 				Validation.responseKeyValidation_key(userAssignedBooks_res, "version");
 				System.out.println("userAssignedBooks_res : "+userAssignedBooks_res);
 
-				Response userAssignedBooks_withPagi_Res = UserAssignedBooks_OAuth.userAssignedBooks_OAuth_with_pagi(0, 80, consumerKey, consumerSecret);
+				Response userAssignedBooks_withPagi_Res = UserAssignedBooks_OAuth.userAssignedBooks_OAuth_with_pagi(0, 80, consumerKey, consumerSecret,clientUserID);
 				Validation.responseHeaderCodeValidation(userAssignedBooks_withPagi_Res, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(userAssignedBooks_withPagi_Res, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(userAssignedBooks_withPagi_Res);
@@ -1939,7 +1971,7 @@ public class RestAssured {
 
 
 				//2019/10/31 14:46:04
-				Response v1refreshBookList_res =V1refreshBookList.v1refreshBookList("archiveDate","NEW","UPDATE",""+bookID1+"",""+bookID2+"",userToken,"56454", "IPAD",clientID);
+				Response v1refreshBookList_res =V1refreshBookList.v1refreshBookList(""+archiveDate+"","NEW","UPDATE",bookID1,bookID2,userToken,"56454", "IPAD",clientID);
 				Validation.responseHeaderCodeValidation(v1refreshBookList_res, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(v1refreshBookList_res, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(v1refreshBookList_res);

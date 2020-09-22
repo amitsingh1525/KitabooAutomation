@@ -13,7 +13,11 @@ public class UploadEpub {
 		Response jsonResponse = null;
 		try {
 			Log.startTestCase("UploadEpub_OAuth");
-			
+			Log.info("title : "+title);
+			Log.info("isbn : "+isbn);
+			Log.info("filePath : "+filePath);
+			Log.info("author : "+author);
+			Log.info("category : "+category);
 			jsonResponse = given()
 					.auth()
 					.oauth(consumerKey, consumerSecret, "", "")
