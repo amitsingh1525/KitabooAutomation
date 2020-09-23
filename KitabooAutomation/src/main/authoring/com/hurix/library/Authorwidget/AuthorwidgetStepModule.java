@@ -1,5 +1,7 @@
 package com.hurix.library.Authorwidget;
 
+import static com.hurix.library.Authorwidget.AuthorwidgetStepModule.prop;
+
 import java.util.Properties;
 
 import org.openqa.selenium.By;
@@ -7,6 +9,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 
 import com.hurix.automation.utility.DragAndDrop;
 import com.hurix.automation.utility.Driver;
@@ -14,7 +17,7 @@ import com.hurix.automation.utility.UIElements;
 
 public class AuthorwidgetStepModule extends UIElements {
 	
-private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAutomation/KitabooAutomation/config/authoring/authoring.properties");
+public static Properties prop = getProperty(System.getProperty("user.dir")+"/config/authoring/authoring.properties");
 
 // create author widget
 	
@@ -68,7 +71,7 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 	
 	public static void btn_save(){
 		try {
-			elementFinderByID(prop.getProperty("save_btn_ID"), "btn_save").click();
+			elementFinderByLinkText(prop.getProperty("save_btn_linktext"), "btn_save").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -76,7 +79,7 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 	
 	public static void btn_begin(){
 		try {
-			elementFinderByID(prop.getProperty("begin_btn_Id"), "btn_begin").click();
+			elementFinderByLinkText(prop.getProperty("begin_btn_Linktext"), "btn_begin").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -149,7 +152,7 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 	
 	public static void btnsavewidget(){
 		try {
-			elementFinderByID(prop.getProperty("save_btn_ID"), "btn_save").click();
+			elementFinderByLinkText(prop.getProperty("save_btn_linktext"), "btn_save").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -334,7 +337,7 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 //Publish author widget (List view)	
 	public static void btnPublish(){
 		try {
-			elementFinderByLinkText(prop.getProperty("publish_btn_linktext"), "btn_publish").click();
+			elementFinderByID(prop.getProperty("publish_btn_ID"), "btn_publish").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -342,7 +345,7 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 	
 	public static void drpdwnFormat(){
 		try {
-			elementFinderByID(prop.getProperty("drpdwn_format_ID"), "drpdw Format").click();
+			elementFinderByID(prop.getProperty("format_drpdwn_ID"), "drpdw Format").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -350,7 +353,17 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 	
 	public static void drpdwnFormatHTML(){
 		try {
-			elementFinderByLinkText(prop.getProperty("drpdwn_formatHTML_linktext"), "drpdw Format HTML").click();
+			
+			/*Select drpcountry = new Select(Driver.driver.findElement(By.id("theme1tt233")));
+			Thread.sleep(2000);
+			drpcountry.selectByVisibleText("SCORM");
+			
+			Select drpCountry = new Select(Driver.driver.findElement(By.id("pubLangForAuthor")));
+			Thread.sleep(2000);
+			drpCountry.selectByVisibleText("Italian");
+			Thread.sleep(500);*/
+			UIElements.selectDropdown(By.id("theme1tt233"), "HTML", "HTML");
+			//elementFinderByLinkText(prop.getProperty("formatHTML_drpdwn_linktext"), "drpdw Format HTML").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -358,7 +371,8 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 	
 	public static void drpdwnFormatScorm(){
 		try {
-			elementFinderByLinkText(prop.getProperty("drpdwn_formatSCORM_linktext"), "drpdw Format Scorm").click();
+			UIElements.selectDropdown(By.id("pubLangForAuthor"), "SCORM", "SCORM");
+			//elementFinderByLinkText(prop.getProperty("formatSCORM_drpdwn_linktext"), "drpdw Format Scorm").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -366,7 +380,7 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 	
 	public static void drpdwnLanguage(){
 		try {
-			elementFinderByID(prop.getProperty("drpdwn_language_ID"), "drpdw Language").click();
+			elementFinderByID(prop.getProperty("language_drpdwn_ID"), "drpdw Language").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -374,7 +388,8 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 	
 	public static void drpdwnLanguageEnglish(){
 		try {
-			elementFinderByLinkText(prop.getProperty("drpdwn_languageEnglish_linktext"), "drpdw Language English").click();
+			UIElements.selectDropdown(By.id("pubLangForAuthor"), "English", "English");
+			//elementFinderByLinkText(prop.getProperty("languageEnglish_drpdwn_linktext"), "drpdw Language English").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -382,7 +397,8 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 	
 	public static void drpdwnLanguageItalian(){
 		try {
-			elementFinderByLinkText(prop.getProperty("drpdwn_languageItalian_linktext"), "drpdw Language Italian").click();
+			UIElements.selectDropdown(By.id("pubLangForAuthor"), "Italian", "Italian");
+			//elementFinderByLinkText(prop.getProperty("languageItalian_drpdwn_linktext"), "drpdw Language Italian").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -390,7 +406,8 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 	
 	public static void drpdwnLanguageSpanish(){
 		try {
-			elementFinderByLinkText(prop.getProperty("drpdwn_languageSpanish_linktext"), "drpdw Language Spanish").click();
+			UIElements.selectDropdown(By.id("pubLangForAuthor"), "Spanish", "Spanish");
+			//elementFinderByLinkText(prop.getProperty("languageSpanish_drpdwn_linktext"), "drpdw Language Spanish").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -398,7 +415,7 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 	
 	public static void btnPublishOk(){
 		try {
-			elementFinderByLinkText(prop.getProperty("btn_ok_publish_linktext"), "btn publish ok").click();
+			elementFinderByLinkText(prop.getProperty("publishok_btn_linktext"), "btn publish ok").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -406,7 +423,8 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 	
 	public static void btnBlockMainPage(){
 		try {
-			elementFinderByID(prop.getProperty("btn_blockMainPage_ID"), "btn Block main page").click();
+			UIElements.wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id(prop.getProperty("blockMainPage_btn_ID"))));
+			//elementFinderByID(prop.getProperty("blockMainPage_btn_ID"), "btn Block main page");
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -416,7 +434,7 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 	
 	public static void btnDownloadPackage(){
 		try {
-			elementFinderByXpath(prop.getProperty("btn_download_package_Xpath"), "btn Download package").click();
+			elementFinderByXpath(prop.getProperty("downloadpackage_btn_Xpath"), "btn Download package").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -424,7 +442,7 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 	
 	public static void drpdwPublished(){
 		try {
-			elementFinderByXpath(prop.getProperty("drp_published_ID"), "drpdwn Published").click();
+			elementFinderByID(prop.getProperty("published_drpdw_ID"), "drpdwn Published").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -432,7 +450,8 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 	
 	public static void drpdwAll(){
 		try {
-			elementFinderByXpath(prop.getProperty("drp_all_linktext"), "drpdwn All").click();
+			UIElements.selectDropdown(By.id("singleMode"), "All", "All");
+			//elementFinderByLinkText(prop.getProperty("all_drpdw_linktext"), "drpdwn All").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -490,7 +509,9 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 	
 	public static void drpdwThemeAqua(){
 		try {
-			elementFinderByLinkText(prop.getProperty("drpdw_themeAqua_linktext"), "drpdwn ThemeAqua").click();
+			
+			UIElements.selectDropdown(By.id("theme12"), "Aqua", "Aqua");
+			//elementFinderByLinkText(prop.getProperty("drpdw_themeAqua_linktext"), "drpdwn ThemeAqua").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -506,7 +527,8 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 	
 	public static void drpdwFormatHtml(){
 		try {
-			elementFinderByLinkText(prop.getProperty("drpdw_formatHTML_linktext"), "drpdwn Format HTML").click();
+			UIElements.selectDropdown(By.id("theme1tt"), "HTML", "HTML");
+			//elementFinderByLinkText(prop.getProperty("drpdw_formatHTML_linktext"), "drpdwn Format HTML").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -514,6 +536,7 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 	
 	public static void drpdwlanguage(){
 		try {
+			
 			elementFinderByID(prop.getProperty("drpdw_language_ID"), "drpdwn Language").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
@@ -522,7 +545,8 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 	
 	public static void drpdwLanguageEnglish(){
 		try {
-			elementFinderByLinkText(prop.getProperty("drpdw_languageEnglish_linktext"), "drpdwn Language English").click();
+			UIElements.selectDropdown(By.id("pubLangForAuthor1"), "English", "English");
+			//elementFinderByLinkText(prop.getProperty("drpdw_languageEnglish_linktext"), "drpdwn Language English").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -538,7 +562,8 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 	
 	public static void drpdwLanguageItalian(){
 		try {
-			elementFinderByLinkText(prop.getProperty("drpdw_languageItalian_linktext"), "drpdwn Language Italian").click();
+			UIElements.selectDropdown(By.id("pubLangForAuthor1"), "Italian", "Italian");
+			//elementFinderByLinkText(prop.getProperty("drpdw_languageItalian_linktext"), "drpdwn Language Italian").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -546,7 +571,8 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 	
 	public static void drpdwLanguageSpanish(){
 		try {
-			elementFinderByID(prop.getProperty("drpdw_languageSpanish_linktext"), "drpdwn Language Spanish").click();
+			UIElements.selectDropdown(By.id("pubLangForAuthor1"), "Spanish", "Spanish");
+			//elementFinderByID(prop.getProperty("drpdw_languageSpanish_linktext"), "drpdwn Language Spanish").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -588,9 +614,13 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 //	Components started
 
 // Title component started
+	
 	public static void cmp_title(){
 		try {
+			System.out.println("drag title comp");
 			DragAndDrop.dragAndDrop(By.xpath(prop.getProperty("title_cmp_Xpath")), By.id(prop.getProperty("dragDrop_ID")));
+			System.out.println("Dropped title component");
+			
 			//elementFinderByXpath(prop.getProperty("title_cmp_Xpath"), "cmp_title");
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
@@ -651,7 +681,16 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 	
 	public static void saveActivity(){
 		try {
-			elementFinderByID(prop.getProperty("dropdown_ID"), "SaveActivity()");
+			elementFinderByXpath(prop.getProperty("save_activity_Xpath"), "SaveActivity()").click();
+			 //UIElements.wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(prop.getProperty("loader_Xpath"))));
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void loader(){
+		try {
+			 UIElements.wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(prop.getProperty("loader_Xpath"))));
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -661,7 +700,7 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 	
 	public static void addPage(){
 		try {
-			DragAndDrop.dragAndDrop(By.xpath(prop.getProperty("addPage_btn_Xpath")), By.id(prop.getProperty("dragandropPage_Xpath")));
+			DragAndDrop.dragAndDrop(By.xpath(prop.getProperty("addPage_btn_Xpath")), By.xpath(prop.getProperty("dragandropPage_Xpath")));
 			//elementFinderByXpath(prop.getProperty("title_cmp_Xpath"), "cmp_title");
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
@@ -759,10 +798,10 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 			}
 		}
 		
-		public static void txtbxImageHeader(String text){
+		public static void txtbxImageHeader(String imageheader){
 			try {
 				//elementFinderByXpath(prop.getProperty("imageheader_txtbx_Xpath"), "txtbx image header").clear();
-				elementFinderByXpath(prop.getProperty("imageheader_txtbx_Xpath"), "txtbx image header").sendKeys(text);
+				elementFinderByXpath(prop.getProperty("imageheader_txtbx_Xpath"), "txtbx image header").sendKeys(imageheader);
 				//elementFinderByXpath(prop.getProperty("imageheader_txtbx_Xpath"), "txtbx image header").click();
 			} catch (Exception e) {
 				System.out.println("Element not present."+e.getMessage());
@@ -781,7 +820,9 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 		
 		public static void btnUploadImage(){
 			try {
-				elementFinderByXpath(prop.getProperty("uploadimage_area_Xpath"), "btn upload Image").click();
+				 UIElements.wait.until(ExpectedConditions.elementToBeClickable(By.id(prop.getProperty("uploadimage_area_ID"))));
+				elementFinderByID(prop.getProperty("uploadimage_area_ID"), "btn upload Image").click();
+				 Thread.sleep(1000);
 			} catch (Exception e) {
 				System.out.println("Element not present."+e.getMessage());
 			}
@@ -800,6 +841,7 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 		
 		public static void btnUploadVideo(){
 			try {
+				UIElements.wait.until(ExpectedConditions.elementToBeClickable(By.xpath(prop.getProperty("uploadvideo_area_Xpath"))));
 				elementFinderByXpath(prop.getProperty("uploadvideo_area_Xpath"), "btn upload Video").click();
 			} catch (Exception e) {
 				System.out.println("Element not present."+e.getMessage());
@@ -860,6 +902,7 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 		
 		public static void btnUploadHTMLinteractivity(){
 			try {
+				UIElements.wait.until(ExpectedConditions.elementToBeClickable(By.xpath(prop.getProperty("upload_zip_btn_Xpath"))));
 				elementFinderByXpath(prop.getProperty("upload_zip_btn_Xpath"), "btn upload HTMLinteractivity").click();
 			} catch (Exception e) {
 				System.out.println("Element not present."+e.getMessage());
@@ -906,9 +949,9 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 			}
 		}
 		
-		public static void btnOK(){
+		public static void btnCreate(){
 			try {
-				elementFinderByXpath(prop.getProperty("ok_btn_Xpath"), "txtbx No Of Columns").click();
+				elementFinderByXpath(prop.getProperty("create_btn_Xpath"), "btn create").click();
 				
 			} catch (Exception e) {
 				System.out.println("Element not present."+e.getMessage());
@@ -930,6 +973,15 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 				elementFinderByXpath(prop.getProperty("captiontable_txtbx_Xpath"), "txtbx Table caption").clear();
 				elementFinderByXpath(prop.getProperty("captiontable_txtbx_Xpath"), "txtbx Table caption").sendKeys(caption);
 			
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void txtbxTableHeader1(String Header1){
+			try {
+				elementFinderByXpath(prop.getProperty("tableheader1_txtbx_Xpath"), "txtbx Table Header1").click();
+				elementFinderByXpath(prop.getProperty("tableheader1_txtbx_Xpath"), "txtbx Table Header1").sendKeys(Header1);
 			} catch (Exception e) {
 				System.out.println("Element not present."+e.getMessage());
 			}
@@ -968,7 +1020,7 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 		
 		public static void btnUploadImagesidebar(){
 			try {
-				elementFinderByXpath(prop.getProperty("uploadimage_area_Xpath"), "btn upload Image static sidebar").click();
+				elementFinderByID(prop.getProperty("uploadimage_area_id"), "btn upload Image static sidebar").click();
 			} catch (Exception e) {
 				System.out.println("Element not present."+e.getMessage());
 			}
@@ -994,20 +1046,20 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 			}
 		}
 		
-		public static void txtbxMCQHeader(String header){
+		public static void txtbxMCQHeader(String MCQheader){
 			try {
 				//elementFinderByXpath(prop.getProperty("multipleChoiceheader_txtbx_Xpath"), "txtbx MCQ header").clear();
-				elementFinderByXpath(prop.getProperty("multipleChoiceheader_txtbx_Xpath"), "txtbx MCQ header").sendKeys(header);
+				elementFinderByXpath(prop.getProperty("multipleChoiceheader_txtbx_Xpath"), "txtbx MCQ header").sendKeys(MCQheader);
 				//elementFinderByXpath(prop.getProperty("imageheader_txtbx_Xpath"), "txtbx image header").click();
 			} catch (Exception e) {
 				System.out.println("Element not present."+e.getMessage());
 			}
 		}
 		
-		public static void txtbxMCQinstruction(String instruction){
+		public static void txtbxMCQinstruction(String MCQinstruction){
 			try {
 				//elementFinderByXpath(prop.getProperty("multipleChoiceinstruction_txtbx_Xpath"), "txtbx MCQ instruction").clear();
-				elementFinderByXpath(prop.getProperty("multipleChoiceinstruction_txtbx_Xpath"), "txtbx MCQ instruction").sendKeys(instruction);
+				elementFinderByXpath(prop.getProperty("multipleChoiceinstruction_txtbx_Xpath"), "txtbx MCQ instruction").sendKeys(MCQinstruction);
 				//elementFinderByXpath(prop.getProperty("multipleChoiceinstruction_txtbx_Xpath"), "txtbx MCQ instruction").click();
 			} catch (Exception e) {
 				System.out.println("Element not present."+e.getMessage());
@@ -1064,6 +1116,15 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 			}
 		}
 		
+		public static void chkbxcorrectoption(){
+			try {
+				elementFinderByXpath(prop.getProperty("multipleChoice_correctoption_chkbx_Xpath"), "chkbx correct option").click();
+				
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
 	//Slideshow
 		public static void cmpSlideshow(){
 			try {
@@ -1073,9 +1134,9 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 			}
 		}
 		
-		public static void txtbxSlideshowTitle(String title){
+		public static void txtbxSlideshowTitle(String Slideshowtitle){
 			try {
-				elementFinderByXpath(prop.getProperty("slideshowtitle_txtbx_Xpath"), "txtbx shideshow title").sendKeys(title);
+				elementFinderByXpath(prop.getProperty("slideshowtitle_txtbx_Xpath"), "txtbx shideshow title").sendKeys(Slideshowtitle);
 			} catch (Exception e) {
 				System.out.println("Element not present."+e.getMessage());
 			}
@@ -1083,7 +1144,7 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 		
 		public static void btnSlideshowUploadImage(){
 			try {
-				elementFinderByXpath(prop.getProperty("uploadimage_area_Xpath"), "txtbx Slideshow Upload Image").click();
+				elementFinderByXpath(prop.getProperty("uploadimage_area_xpath"), "btn Slideshow Upload Image").click();
 			} catch (Exception e) {
 				System.out.println("Element not present."+e.getMessage());
 			}
@@ -1133,21 +1194,40 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 			}
 		}
 		
-		public static void btnSlideshowUploadImage2(){
+		public static void chkbxSlideshowUploadVideo(){
 			try {
-				elementFinderByXpath(prop.getProperty("uploadimage2_area_Xpath"), "btn Upload Image2 Slideshow").click();
+				elementFinderByXpath(prop.getProperty("uploadvideo2_chkbx_Xpath"), "chkbx Upload video Slideshow").click();
 			} catch (Exception e) {
 				System.out.println("Element not present."+e.getMessage());
 			}
 		}
 		
-		public static void btnSlideshowUploadImage3(){
+		public static void btnSlideshowUploadVideo2(){
 			try {
-				elementFinderByXpath(prop.getProperty("uploadimage3_area_Xpath"), "btn Upload Image3 Slideshow").click();
+				elementFinderByXpath(prop.getProperty("uploadvideo2_area_Xpath"), "btn Upload video2 Slideshow").click();
 			} catch (Exception e) {
 				System.out.println("Element not present."+e.getMessage());
 			}
 		}
+		
+		public static void chkbxSlideshowAddText(){
+			try {
+				elementFinderByXpath(prop.getProperty("uploadtext3_chkbx_Xpath"), "chkbx add text Slideshow").click();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void txtbxAddText(String text){
+			try {
+				elementFinderByXpath(prop.getProperty("uploadtext3_area_Xpath"), "txtbx add text Slideshow").clear();
+				elementFinderByXpath(prop.getProperty("uploadtext3_area_Xpath"), "txtbx add text Slideshow").sendKeys(text);
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		
 		
 	//Image Labelling
 		public static void cmpImagelabelling(){
@@ -1158,10 +1238,10 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 			}
 		}
 		
-		public static void txtbxImagelabellingTitle(String title){
+		public static void txtbxImagelabellingTitle(String labellingtitle){
 			try {
-				elementFinderByXpath(prop.getProperty("Imagelabellingtitle_txtbx_Xpath "), "txtbx Imagelabelling title").clear();
-				elementFinderByXpath(prop.getProperty("Imagelabellingtitle_txtbx_Xpath "), "txtbx Imagelabelling title").sendKeys(title);
+				//elementFinderByXpath(prop.getProperty("Imagelabellingtitle_txtbx_Xpath "), "txtbx Imagelabelling title").clear();
+				elementFinderByXpath(prop.getProperty("Imagelabellingtitle_txtbx_Xpath "), "txtbx Imagelabelling title").sendKeys(labellingtitle);
 			} catch (Exception e) {
 				System.out.println("Element not present."+e.getMessage());
 			}
@@ -1169,7 +1249,7 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 		
 		public static void txtbxImagelabellingInstruction(String Instruction){
 			try {
-				elementFinderByXpath(prop.getProperty("ImagelabellingInstruction_txtbx_Xpath "), "txtbx Imagelabelling Instruction").clear();
+				//elementFinderByXpath(prop.getProperty("ImagelabellingInstruction_txtbx_Xpath "), "txtbx Imagelabelling Instruction").clear();
 				elementFinderByXpath(prop.getProperty("ImagelabellingInstruction_txtbx_Xpath "), "txtbx Imagelabelling Instruction").sendKeys(Instruction);
 			} catch (Exception e) {
 				System.out.println("Element not present."+e.getMessage());
@@ -1195,7 +1275,7 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 		public static void btnImagelabellingAddLabel1(){
 			try {
 				  WebElement element = elementFinderByXpath(prop.getProperty("Imagelabelling_addlabel1_btn_Xpath"), "txtbx Imagelabelling Add label");
-				 Actions action = new Actions(Driver.driver);
+				   Actions action = new Actions(Driver.driver);
 				    action.moveToElement(element, 700, 512).doubleClick().perform();
 				    System.out.println("Add Label 1");
 			} catch (Exception e) {
@@ -1264,5 +1344,556 @@ private static Properties prop = getProperty("C:/Users/amit.singh/git/KitabooAut
 			}
 		}
 		
+	//Fill in the blanks
+		public static void cmpFillintheBlanks(){
+			try {
+				DragAndDrop.dragAndDrop(By.xpath(prop.getProperty("fillintheBlank_cmp_Xpath")), By.id(prop.getProperty("dragDrop_ID")));
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void txtbxFillintheBlanksHeader(String FillintheBlanksheader){
+			try {
+				//elementFinderByXpath(prop.getProperty("fillintheBlank_header_btn_Xpath"), "txtbx fillintheBlank header").clear();
+				elementFinderByXpath(prop.getProperty("fillintheBlank_header_btn_Xpath"), "txtbx fillintheBlank header").sendKeys(FillintheBlanksheader);
+				elementFinderByXpath(prop.getProperty("fillintheBlank_header_btn_Xpath"), "txtbx fillintheBlank header").click();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void txtbxFillintheBlanksInstruction(String FillintheBlanksinstruction){
+			try {
+				//elementFinderByXpath(prop.getProperty("fillintheBlank_header_btn_Xpath"), "txtbx fillintheBlank header").clear();
+				elementFinderByXpath(prop.getProperty("fillintheBlank_instruction_btn_Xpath"), "txtbx fillintheBlank instruction").sendKeys(FillintheBlanksinstruction);
+				elementFinderByXpath(prop.getProperty("fillintheBlank_instruction_btn_Xpath"), "txtbx fillintheBlank instruction").click();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void txtbxFillintheBlankSentence(String FillintheBlankssentence){
+			try {
+				//elementFinderByXpath(prop.getProperty("fillintheBlank_header_btn_Xpath"), "txtbx fillintheBlank header").clear();
+				elementFinderByXpath(prop.getProperty("fillintheBlank_sentence_txt_Xpath"), "txtbx fillintheBlank sentence").sendKeys(FillintheBlankssentence);
+				elementFinderByXpath(prop.getProperty("fillintheBlank_sentence_txt_Xpath"), "txtbx fillintheBlank sentence").click();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void btnfillintheBlankInsertBlank(){
+			try {
+				elementFinderByXpath(prop.getProperty("fillintheBlank_insert_blank_btn_Xpath"), "btn fillintheBlank InsertBlank").click();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void btnselectAnswerDrpdwn(){
+			try {
+				elementFinderByXpath(prop.getProperty("fillintheBlank_dropdown_btn_Xpath"), "btn fillintheBlank Select answer dropdown").click();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void btnAddOption(){
+			try {
+				elementFinderByXpath(prop.getProperty("fillintheBlank_addoption_btn_Xpath"), "btn fillintheBlank Add option").click();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void txtbxFillintheBlankOption1(String FillintheBlanksOption1){
+			try {
+				//elementFinderByXpath(prop.getProperty("fillintheBlank_header_btn_Xpath"), "txtbx fillintheBlank header").clear();
+				elementFinderByXpath(prop.getProperty("fillintheBlank_option1_btn_Xpath"), "txtbx fillintheBlank option 1").sendKeys(FillintheBlanksOption1);
+				//elementFinderByXpath(prop.getProperty("fillintheBlank_sentence_txt_Xpath"), "txtbx fillintheBlank sentence").click();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void txtbxFillintheBlankOption2(String FillintheBlanksOption2){
+			try {
+				//elementFinderByXpath(prop.getProperty("fillintheBlank_header_btn_Xpath"), "txtbx fillintheBlank header").clear();
+				elementFinderByXpath(prop.getProperty("fillintheBlank_option2_btn_Xpath"), "txtbx fillintheBlank option 2").sendKeys(FillintheBlanksOption2);
+				//elementFinderByXpath(prop.getProperty("fillintheBlank_sentence_txt_Xpath"), "txtbx fillintheBlank sentence").click();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void txtbxFillintheBlankOption3(String FillintheBlanksOption3){
+			try {
+				//elementFinderByXpath(prop.getProperty("fillintheBlank_header_btn_Xpath"), "txtbx fillintheBlank header").clear();
+				elementFinderByXpath(prop.getProperty("fillintheBlank_option3_btn_Xpath"), "txtbx fillintheBlank option 3").sendKeys(FillintheBlanksOption3);
+				//elementFinderByXpath(prop.getProperty("fillintheBlank_sentence_txt_Xpath"), "txtbx fillintheBlank sentence").click();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void txtbxFillintheBlankradio1(){
+			try {
+				elementFinderByXpath(prop.getProperty("fillintheBlank_radio1_rad_Xpath"), "txtbx fillintheBlank radio 1").click();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+	//Highlighter
+		public static void cmpHighlighter(){
+			try {
+				DragAndDrop.dragAndDrop(By.xpath(prop.getProperty("highlighter_cmp_Xpath")), By.id(prop.getProperty("dragDrop_ID")));
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void txtbx_introduction(String introduction){
+			try {
+				//elementFinderByXpath(prop.getProperty("highlighterintroduction_txtbx_Xpath"), "txtbx_title").clear();
+				elementFinderByXpath(prop.getProperty("highlighterintroduction_txtbx_Xpath"), "txtbx_introduction").sendKeys(introduction);
+				//elementFinderByXpath(prop.getProperty("highlighterintroduction_txtbx_Xpath"), "txtbx_introduction").click();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void txtbx_instruction(String instruction){
+			try {
+				//elementFinderByXpath(prop.getProperty("highlighterinstruction_txtbx_Xpath"), "txtbx_instruction").clear();
+				elementFinderByXpath(prop.getProperty("highlighterinstruction_txtbx_Xpath"), "txtbx_instruction").sendKeys(instruction);
+				//elementFinderByXpath(prop.getProperty("highlighterinstruction_txtbx_Xpath"), "txtbx_instruction").click();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void txtbx_1statement(String statement){
+			try {
+				elementFinderByXpath(prop.getProperty("highlighter_1statement_btn_Xpath"), "txtbx_instruction").click();
+				elementFinderByXpath(prop.getProperty("highlighter_1statement_btn_Xpath"), "txtbx_instruction").sendKeys(statement);
+				//elementFinderByXpath(prop.getProperty("highlighterinstruction_txtbx_Xpath"), "txtbx_instruction").click();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void btnhighlight(){
+			try {
+				elementFinderByXpath(prop.getProperty("highlighter_myHighLight_btn_Xpath"), "btn highlight").click();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+	//correction
+		public static void cmpCorrection(){
+			try {
+				DragAndDrop.dragAndDrop(By.xpath(prop.getProperty("correction_cmp_Xpath")), By.id(prop.getProperty("dragDrop_ID")));
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void txtbx_correctionHeader(String correctionheader){
+			try {
+				//elementFinderByXpath(prop.getProperty("highlighterintroduction_txtbx_Xpath"), "txtbx_title").clear();
+				elementFinderByXpath(prop.getProperty("correction_header_xpath"), "txtbx_header").sendKeys(correctionheader);
+				//elementFinderByXpath(prop.getProperty("highlighterintroduction_txtbx_Xpath"), "txtbx_introduction").click();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void txtbx_correctionInstruction(String instruction){
+			try {
+				//elementFinderByXpath(prop.getProperty("highlighterinstruction_txtbx_Xpath"), "txtbx_instruction").clear();
+				elementFinderByXpath(prop.getProperty("correction_instruction_xpath"), "txtbx_instruction").sendKeys(instruction);
+				//elementFinderByXpath(prop.getProperty("highlighterinstruction_txtbx_Xpath"), "txtbx_instruction").click();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void txtbx_statement(String statement){
+			try {
+				elementFinderByXpath(prop.getProperty("correction_1statement_btn_Xpath"), "txtbx_statement").click();
+				elementFinderByXpath(prop.getProperty("correction_1statement_btn_Xpath"), "txtbx_statement").sendKeys(statement);
+				//elementFinderByXpath(prop.getProperty("highlighterinstruction_txtbx_Xpath"), "txtbx_instruction").click();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void btnstrikethrough(){
+			try {
+				elementFinderByXpath(prop.getProperty("correctionstrikethrough_btn_Xpath"), "btn strikethrough").click();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void txtbx_correctanswer(String correctanswer){
+			try {
+				elementFinderByXpath(prop.getProperty("correction_1stanswer_txtbx_Xpath"), "txtbx_correctanswer").click();
+				elementFinderByXpath(prop.getProperty("correction_1stanswer_txtbx_Xpath"), "txtbx_correctanswer").sendKeys(correctanswer);
+				//elementFinderByXpath(prop.getProperty("highlighterinstruction_txtbx_Xpath"), "txtbx_instruction").click();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+//sorting component
+		public static void cmpSorting(){
+			try {
+				DragAndDrop.dragAndDrop(By.xpath(prop.getProperty("Sorting_cmp_Xpath")), By.id(prop.getProperty("dragDrop_ID")));
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void txtbx_sortingHeader(String sortingheader){
+			try {
+				//elementFinderByXpath(prop.getProperty("highlighterintroduction_txtbx_Xpath"), "txtbx_title").clear();
+				elementFinderByXpath(prop.getProperty("Sortingheader_txtbx_Xpath"), "txtbx_header").sendKeys(sortingheader);
+				//elementFinderByXpath(prop.getProperty("highlighterintroduction_txtbx_Xpath"), "txtbx_introduction").click();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void txtbx_sortingInstruction(String instruction){
+			try {
+				//elementFinderByXpath(prop.getProperty("highlighterinstruction_txtbx_Xpath"), "txtbx_instruction").clear();
+				elementFinderByXpath(prop.getProperty("Sortinginstruction_txtbx_Xpath"), "txtbx_instruction").sendKeys(instruction);
+				//elementFinderByXpath(prop.getProperty("highlighterinstruction_txtbx_Xpath"), "txtbx_instruction").click();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void txtbx_sortingstatement(String statement){
+			try {
+				elementFinderByXpath(prop.getProperty("Sorting_Description_txt_Xpath"), "txtbx_statement").click();
+				elementFinderByXpath(prop.getProperty("Sorting_Description_txt_Xpath"), "txtbx_statement").sendKeys(statement);
+				//elementFinderByXpath(prop.getProperty("highlighterinstruction_txtbx_Xpath"), "txtbx_instruction").click();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void btninsertSortItem(){
+			try {
+				elementFinderByXpath(prop.getProperty("Sorting_sortitem_btn_Xpath"), "btn insertSortItem").click();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void txtbx_sortanswer(String sortanswer){
+			try {
+				elementFinderByXpath(prop.getProperty("Sorting_sortanswer_txtbx_Xpath"), "txtbx_sortanswer").click();
+				elementFinderByXpath(prop.getProperty("Sorting_sortanswer_txtbx_Xpath"), "txtbx_sortanswer").sendKeys(sortanswer);
+				//elementFinderByXpath(prop.getProperty("highlighterinstruction_txtbx_Xpath"), "txtbx_instruction").click();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+	
+// Match the Pairs
+		public static void cmpmatchthePairs(){
+			try {
+				DragAndDrop.dragAndDrop(By.xpath(prop.getProperty("matchthePairs_cmp_Xpath")), By.id(prop.getProperty("dragDrop_ID")));
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void txtbx_mtpHeader(String mtpheader){
+			try {
+				//elementFinderByXpath(prop.getProperty("highlighterintroduction_txtbx_Xpath"), "txtbx_title").clear();
+				elementFinderByXpath(prop.getProperty("mtpheader_txtbx_Xpath"), "txtbx_header").sendKeys(mtpheader);
+				//elementFinderByXpath(prop.getProperty("highlighterintroduction_txtbx_Xpath"), "txtbx_introduction").click();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void txtbx_mtpInstruction(String instruction){
+			try {
+				//elementFinderByXpath(prop.getProperty("highlighterinstruction_txtbx_Xpath"), "txtbx_instruction").clear();
+				elementFinderByXpath(prop.getProperty("mtpinstruction_txtbx_Xpat"), "txtbx_instruction").sendKeys(instruction);
+				//elementFinderByXpath(prop.getProperty("highlighterinstruction_txtbx_Xpath"), "txtbx_instruction").click();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void txtbx_mtpElement1(String Element1){
+			try {
+				//elementFinderByXpath(prop.getProperty("highlighterinstruction_txtbx_Xpath"), "txtbx_instruction").clear();
+				elementFinderByXpath(prop.getProperty("element1_txtbx_Xpath"), "txtbx_Element1").sendKeys(Element1);
+				//elementFinderByXpath(prop.getProperty("highlighterinstruction_txtbx_Xpath"), "txtbx_instruction").click();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void txtbx_mtpElement2(String Element2){
+			try {
+				//elementFinderByXpath(prop.getProperty("highlighterinstruction_txtbx_Xpath"), "txtbx_instruction").clear();
+				elementFinderByXpath(prop.getProperty("element2_txtbx_Xpath"), "txtbx_Element2").sendKeys(Element2);
+				//elementFinderByXpath(prop.getProperty("highlighterinstruction_txtbx_Xpath"), "txtbx_instruction").click();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void btnmtpAddPairs(){
+			try {
+				elementFinderByXpath(prop.getProperty("addpairs_btn_Xpath"), "btn mtp add pairs").click();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void txtbx_mtpQuestion1(String Question1){
+			try {
+				//elementFinderByXpath(prop.getProperty("highlighterinstruction_txtbx_Xpath"), "txtbx_instruction").clear();
+				elementFinderByXpath(prop.getProperty("question1_txtbx_Xpath"), "txtbx_Question1").sendKeys(Question1);
+				//elementFinderByXpath(prop.getProperty("highlighterinstruction_txtbx_Xpath"), "txtbx_instruction").click();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void txtbx_mtpAnswer1(String Answer1){
+			try {
+				//elementFinderByXpath(prop.getProperty("highlighterinstruction_txtbx_Xpath"), "txtbx_instruction").clear();
+				elementFinderByXpath(prop.getProperty("answer1_txtbx_Xpath"), "txtbx_Answer1").sendKeys(Answer1);
+				//elementFinderByXpath(prop.getProperty("highlighterinstruction_txtbx_Xpath"), "txtbx_instruction").click();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void txtbx_mtpQuestion2(String Question2){
+			try {
+				//elementFinderByXpath(prop.getProperty("highlighterinstruction_txtbx_Xpath"), "txtbx_instruction").clear();
+				elementFinderByXpath(prop.getProperty("question2_txtbx_Xpath"), "txtbx_Question2").sendKeys(Question2);
+				//elementFinderByXpath(prop.getProperty("highlighterinstruction_txtbx_Xpath"), "txtbx_instruction").click();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void txtbx_mtpAnswer2(String Answer2){
+			try {
+				//elementFinderByXpath(prop.getProperty("highlighterinstruction_txtbx_Xpath"), "txtbx_instruction").clear();
+				elementFinderByXpath(prop.getProperty("answer2_txtbx_Xpath"), "txtbx_Answer2").sendKeys(Answer2);
+				//elementFinderByXpath(prop.getProperty("highlighterinstruction_txtbx_Xpath"), "txtbx_instruction").click();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void txtbx_mtpQuestion3(String Question3){
+			try {
+				//elementFinderByXpath(prop.getProperty("highlighterinstruction_txtbx_Xpath"), "txtbx_instruction").clear();
+				elementFinderByXpath(prop.getProperty("question3_txtbx_Xpath"), "txtbx_Question3").sendKeys(Question3);
+				//elementFinderByXpath(prop.getProperty("highlighterinstruction_txtbx_Xpath"), "txtbx_instruction").click();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void txtbx_mtpAnswer3(String Answer3){
+			try {
+				//elementFinderByXpath(prop.getProperty("highlighterinstruction_txtbx_Xpath"), "txtbx_instruction").clear();
+				elementFinderByXpath(prop.getProperty("answer3_txtbx_Xpath"), "txtbx_Answer3").sendKeys(Answer3);
+				//elementFinderByXpath(prop.getProperty("highlighterinstruction_txtbx_Xpath"), "txtbx_instruction").click();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void txtbx_mtpQuestion4(String Question4){
+			try {
+				//elementFinderByXpath(prop.getProperty("highlighterinstruction_txtbx_Xpath"), "txtbx_instruction").clear();
+				elementFinderByXpath(prop.getProperty("question4_txtbx_Xpath"), "txtbx_Question4").sendKeys(Question4);
+				//elementFinderByXpath(prop.getProperty("highlighterinstruction_txtbx_Xpath"), "txtbx_instruction").click();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void txtbx_mtpAnswer4(String Answer4){
+			try {
+				//elementFinderByXpath(prop.getProperty("highlighterinstruction_txtbx_Xpath"), "txtbx_instruction").clear();
+				elementFinderByXpath(prop.getProperty("answer4_txtbx_Xpath"), "txtbx_Answer4").sendKeys(Answer4);
+				//elementFinderByXpath(prop.getProperty("highlighterinstruction_txtbx_Xpath"), "txtbx_instruction").click();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+// Sidebar Component
+		public static void cmpsidebar(){
+			try {
+				DragAndDrop.dragAndDrop(By.xpath(prop.getProperty("sidebar_cmp_Xpath")), By.id(prop.getProperty("dragDrop_ID")));
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void txtbx_sidebarTitle(String sidebartitle){
+			try {
+				//elementFinderByXpath(prop.getProperty("highlighterintroduction_txtbx_Xpath"), "txtbx_title").clear();
+				elementFinderByXpath(prop.getProperty("sidebartitle_txtbx_Xpath"), "txtbx_sidebartitle").sendKeys(sidebartitle);
+				//elementFinderByXpath(prop.getProperty("highlighterintroduction_txtbx_Xpath"), "txtbx_introduction").click();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void txtbx_sidebarEnterText(String text){
+			try {
+				//elementFinderByXpath(prop.getProperty("highlighterinstruction_txtbx_Xpath"), "txtbx_instruction").clear();
+				elementFinderByXpath(prop.getProperty("entertext_txtbx_Xpath"), "txtbx_EnterText").sendKeys(text);
+				//elementFinderByXpath(prop.getProperty("highlighterinstruction_txtbx_Xpath"), "txtbx_instruction").click();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+//Click to reveal component
+		public static void cmpclicktoreveal(){
+			try {
+				DragAndDrop.dragAndDrop(By.xpath(prop.getProperty("clicktoReveal_cmp_Xpath")), By.id(prop.getProperty("dragDrop_ID")));
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void txtbx_ClicktoRevealHeader(String ClicktoRevealheader){
+			try {
+				//elementFinderByXpath(prop.getProperty("highlighterintroduction_txtbx_Xpath"), "txtbx_title").clear();
+				elementFinderByXpath(prop.getProperty("ClicktoRevealheader_txt_Xpath"), "txtbx_ClicktoRevealheader").sendKeys(ClicktoRevealheader);
+				//elementFinderByXpath(prop.getProperty("highlighterintroduction_txtbx_Xpath"), "txtbx_introduction").click();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void txtbx_ClicktoRevealdescription(String text){
+			try {
+				elementFinderByXpath(prop.getProperty("ClicktoRevealdescription_txt_Xpath"), "txtbx_EnterText").clear();
+				elementFinderByXpath(prop.getProperty("ClicktoRevealdescription_txt_Xpath"), "txtbx_EnterText").sendKeys(text);
+				//elementFinderByXpath(prop.getProperty("highlighterinstruction_txtbx_Xpath"), "txtbx_instruction").click();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void txtbx_ClicktoRevealButtonLabel(String ButtonLabel){
+			try {
+				//elementFinderByXpath(prop.getProperty("highlighterintroduction_txtbx_Xpath"), "txtbx_title").clear();
+				elementFinderByXpath(prop.getProperty("ClicktoRevealButtonLabel_txtbx_xpath"), "txtbx_ButtonLabel").sendKeys(ButtonLabel);
+				//elementFinderByXpath(prop.getProperty("highlighterintroduction_txtbx_Xpath"), "txtbx_introduction").click();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+//WordSearch
+		public static void cmpWordSearch(){
+			try {
+				DragAndDrop.dragAndDrop(By.xpath(prop.getProperty("wordsearch_cmp_Xpath")), By.id(prop.getProperty("dragDrop_ID")));
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void txtbx_WordsearchHeader(String wordsearchheader){
+			try {
+				//elementFinderByXpath(prop.getProperty("highlighterintroduction_txtbx_Xpath"), "txtbx_title").clear();
+				elementFinderByXpath(prop.getProperty("wordsearchheader_txt_Xpath"), "txtbx_wordsearch header").sendKeys(wordsearchheader);
+				//elementFinderByXpath(prop.getProperty("highlighterintroduction_txtbx_Xpath"), "txtbx_introduction").click();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void txtbx_Wordsearchdescription(String text){
+			try {
+			//	elementFinderByXpath(prop.getProperty("wordsearchinstruction_txt_Xpath"), "txtbx_EnterText").clear();
+				elementFinderByXpath(prop.getProperty("wordsearchinstruction_txt_Xpath"), "txtbx_EnterText").sendKeys(text);
+				//elementFinderByXpath(prop.getProperty("highlighterinstruction_txtbx_Xpath"), "txtbx_instruction").click();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void txtbx_wordsearchquestion(String wordsearchquestion){
+			try {
+				//elementFinderByXpath(prop.getProperty("highlighterintroduction_txtbx_Xpath"), "txtbx_title").clear();
+				elementFinderByXpath(prop.getProperty("wordsearchquestion_txt_Xpath"), "txtbx_ButtonLabel").sendKeys(wordsearchquestion);
+				//elementFinderByXpath(prop.getProperty("highlighterintroduction_txtbx_Xpath"), "txtbx_introduction").click();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void txtbx_wordsearchhiddenword(String hiddenword){
+			try {
+				//elementFinderByXpath(prop.getProperty("highlighterintroduction_txtbx_Xpath"), "txtbx_title").clear();
+				elementFinderByXpath(prop.getProperty("hiddenword_txt_Xpath"), "txtbx_ButtonLabel").sendKeys(hiddenword);
+				//elementFinderByXpath(prop.getProperty("highlighterintroduction_txtbx_Xpath"), "txtbx_introduction").click();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void btnadd(){
+			try {
+				elementFinderByXpath(prop.getProperty("addbutton_btn_Xpath"), "btn add").click();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+	
+	//Question answer component
+		public static void cmpQuestionanswer(){
+			try {
+				DragAndDrop.dragAndDrop(By.xpath(prop.getProperty("Questionanswer_cmp_Xpath")), By.id(prop.getProperty("dragDrop_ID")));
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void txtbx_EnterQuestion(String EnterQuestion){
+			try {
+				//elementFinderByXpath(prop.getProperty("highlighterintroduction_txtbx_Xpath"), "txtbx_title").clear();
+				elementFinderByXpath(prop.getProperty("question_txt_Xpath"), "txtbx_EnterQuestion").sendKeys(EnterQuestion);
+				//elementFinderByXpath(prop.getProperty("highlighterintroduction_txtbx_Xpath"), "txtbx_introduction").click();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void rdbtn_longAnswer(){
+			try {
+				elementFinderByXpath(prop.getProperty("long_rdbtn_Xpath"), "btn longAnswer").click();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+
 	
 }

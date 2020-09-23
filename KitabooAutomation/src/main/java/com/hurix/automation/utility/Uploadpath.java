@@ -6,10 +6,9 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
 import java.io.File;
 
-
-
-public class UploadImage {
-	public static void uploadImage(String upload){
+public class Uploadpath {
+	
+	public static void uploadpath(String upload){
 		try {
 			Thread.sleep(4000);
 			File imgfileobject= new File("");
@@ -31,6 +30,5 @@ public class UploadImage {
 			System.out.println("Element not present."+e.getMessage());
 		}
 	}
-
 
 }
