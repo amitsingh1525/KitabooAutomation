@@ -8,6 +8,7 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.hurix.automation.utility.Driver;
 import com.hurix.automation.utility.UIElements;
@@ -18,6 +19,7 @@ public class AudioStepModule extends UIElements {
 
 	public static void popupmsg(){
 		try {
+			WebDriverWait wait = new WebDriverWait(Driver.driver, 30); 
 			wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("loader_image")));
 			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[1]/form[1]/div[20]/div[2]/div/div/div/h1/a")));
 			int size=Driver.driver.findElements(By.xpath("//*[@id='bookDeleteModal']/div[2]")).size();
