@@ -1152,8 +1152,8 @@ public static Properties prop = getProperty(System.getProperty("user.dir")+"/con
 		
 		public static void txtbxSlideshowSubTitle(String subtitle){
 			try {
-				elementFinderByXpath(prop.getProperty("slideshow_subtitle_txtbx_Xpath "), "txtbx shideshow subtitle").clear();
-				elementFinderByXpath(prop.getProperty("slideshow_subtitle_txtbx_Xpath "), "txtbx shideshow subtitle").sendKeys(subtitle);
+				//elementFinderByXpath(prop.getProperty("slideshow_subtitle_txtbx_Xpath "), "txtbx shideshow subtitle").clear();
+				elementFinderByXpath(prop.getProperty("slideshow_subtitle_txtbx_Xpath"), "txtbx shideshow subtitle").sendKeys(subtitle);
 			} catch (Exception e) {
 				System.out.println("Element not present."+e.getMessage());
 			}
@@ -1161,8 +1161,8 @@ public static Properties prop = getProperty(System.getProperty("user.dir")+"/con
 		
 		public static void txtbxSlideshowSlideTitle(String slidetitle){
 			try {
-				elementFinderByXpath(prop.getProperty("slideshow_slidetitle_txtbx_Xpath "), "txtbx shideshow slidetitle").clear();
-				elementFinderByXpath(prop.getProperty("slideshow_slidetitle_txtbx_Xpath "), "txtbx shideshow slidetitle").sendKeys(slidetitle);
+				//elementFinderByXpath(prop.getProperty("slideshow_slidetitle_txtbx_Xpath "), "txtbx shideshow slidetitle").clear();
+				elementFinderByXpath(prop.getProperty("slideshow_slidetitle_txtbx_Xpath"), "txtbx shideshow slidetitle").sendKeys(slidetitle);
 			} catch (Exception e) {
 				System.out.println("Element not present."+e.getMessage());
 			}
@@ -1170,8 +1170,8 @@ public static Properties prop = getProperty(System.getProperty("user.dir")+"/con
 		
 		public static void txtbxSlideshowCaption(String Caption){
 			try {
-				elementFinderByXpath(prop.getProperty("captionslideshow_txtbx_Xpath "), "txtbx shideshow Caption").clear();
-				elementFinderByXpath(prop.getProperty("captionslideshow_txtbx_Xpath "), "txtbx shideshow Caption").sendKeys(Caption);
+				elementFinderByXpath(prop.getProperty("captionslideshow_txtbx_Xpath"), "txtbx shideshow Caption").clear();
+				elementFinderByXpath(prop.getProperty("captionslideshow_txtbx_Xpath"), "txtbx shideshow Caption").sendKeys(Caption);
 			} catch (Exception e) {
 				System.out.println("Element not present."+e.getMessage());
 			}
@@ -1179,8 +1179,8 @@ public static Properties prop = getProperty(System.getProperty("user.dir")+"/con
 		
 		public static void txtbxSlideshowPlaceholder(String placeholder){
 			try {
-				elementFinderByXpath(prop.getProperty("slideshow_placeholder_txtbx_Xpath "), "txtbx shideshow placeholder").clear();
-				elementFinderByXpath(prop.getProperty("slideshow_placeholder_txtbx_Xpath "), "txtbx shideshow placeholder").sendKeys(placeholder);
+				elementFinderByXpath(prop.getProperty("slideshow_placeholder_txtbx_Xpath"), "txtbx shideshow placeholder").clear();
+				elementFinderByXpath(prop.getProperty("slideshow_placeholder_txtbx_Xpath"), "txtbx shideshow placeholder").sendKeys(placeholder);
 			} catch (Exception e) {
 				System.out.println("Element not present."+e.getMessage());
 			}
@@ -1204,7 +1204,7 @@ public static Properties prop = getProperty(System.getProperty("user.dir")+"/con
 		
 		public static void btnSlideshowUploadVideo2(){
 			try {
-				elementFinderByXpath(prop.getProperty("uploadvideo2_area_Xpath"), "btn Upload video2 Slideshow").click();
+				elementFinderByID(prop.getProperty("uploadvideo2_area_ID"), "btn Upload video2 Slideshow").click();
 			} catch (Exception e) {
 				System.out.println("Element not present."+e.getMessage());
 			}

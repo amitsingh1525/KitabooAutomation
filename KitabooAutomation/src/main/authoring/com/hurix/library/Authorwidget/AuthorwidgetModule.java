@@ -51,7 +51,7 @@ public class AuthorwidgetModule extends AuthorwidgetStepModule {
 		Thread.sleep(5000);
 		Thread.sleep(5000);
 		
-		titleComponent(title,author);
+		/*titleComponent(title,author);
 		headerComponent(header);
 		textComponent(text);
 		imageComponent(imageheader,caption,uploadimage);
@@ -60,19 +60,19 @@ public class AuthorwidgetModule extends AuthorwidgetStepModule {
 		htmlInteractivityComponent(caption, uploadzip);
 	    tableComponent(NoOfRows,NoOfColumns,tableheader,caption);
 		staticSidebarComponent(staticSidebarheader,text,uploadimage,caption);
-		mcqComponent(MCQheader,MCQinstruction,question,Option1,Option2,Option3,Option4);
+		mcqComponent(MCQheader,MCQinstruction,question,Option1,Option2,Option3,Option4);*/
 		slideshowComponent(Slideshowtitle,uploadimage,subtitle,slidetitle,caption,placeholder,uploadvideo,text);
-		imageLabellingComponent(labellingtitle,labellingInstruction,Label1,Label2,caption,uploadimage2);
+		/*imageLabellingComponent(labellingtitle,labellingInstruction,Label1,Label2,caption,uploadimage2);
 		fillintheBlanksComponent(FillintheBlanksheader,FillintheBlanksinstruction,FillintheBlankssentence,FillintheBlanksOption1,FillintheBlanksOption2,FillintheBlanksOption3);
-		
+		*/
 		highlightComponent(introduction,instruction,statement);
 		correctionComponent(correctionheader,instruction,statement,correctanswer);
-		sortingComponent(sortingheader,instruction,statement,sortanswer);
+	/*	sortingComponent(sortingheader,instruction,statement,sortanswer);
 		matchthepairsComponent(mtpheader,instruction,Element1,Element2,Question1,Answer1,Question2,Answer2,Question3,Answer3,Question4,Answer4);
 		sidebarComponent(sidebartitle,text);
 		clicktorevealComponent(ClicktoRevealheader,text,ButtonLabel);
 		wordSearchComponent(wordsearchheader,text,wordsearchquestion,hiddenword);
-		questionanswerComponent(EnterQuestion);
+		questionanswerComponent(EnterQuestion);*/
 		
 		Thread.sleep(3000);
 		Driver.driver.close();
@@ -93,8 +93,11 @@ public class AuthorwidgetModule extends AuthorwidgetStepModule {
 	//copy functionality
 		copyAuthorWidget();
 		
+	//Delete functionality
+	   deleteAuthorWidget();
+		
 	//Rename functionality	
-		renameAuthorWidget(widgetName);
+	   renameAuthorWidget(widgetName);
 	
 	// Filter author widget and create widget Functionality
 		filterAuthorWidget();
@@ -102,14 +105,11 @@ public class AuthorwidgetModule extends AuthorwidgetStepModule {
 	/*//Multiple publish author widget
 		multiplePublishDownload(theme,Format,language);*/
 		
-	// share functionaliy
-		shareAuthorWidget();
-		
 	// Change cover functionality
 		changeCover();
 		
-	//Delete functionality
-		deleteAuthorWidget();
+	// share functionaliy
+		shareAuthorWidget();
 		
 	}
 
@@ -350,7 +350,7 @@ public class AuthorwidgetModule extends AuthorwidgetStepModule {
 		btnCreate();
 		txtbxTableHeader(tableheader);
 		txtbxTableCaption(caption);
-		/*//txtbxTableHeader1("Book Name");
+		
 		tableWriter(prop.getProperty("tableheader1_txtbx_Xpath"), "Book Name");
 		tableWriter(prop.getProperty("tableheader2_txtbx_Xpath"), "Book Author");
 		tableWriter(prop.getProperty("tableheader3_txtbx_Xpath"), "Book Details");
@@ -363,7 +363,7 @@ public class AuthorwidgetModule extends AuthorwidgetStepModule {
 		tableWriter(prop.getProperty("column_designation1_txtbx_Xpath"), "My Country My Life");
 		tableWriter(prop.getProperty("column_designation2_txtbx_Xpath"), "Lal Krishna Advani");
 		tableWriter(prop.getProperty("column_designation3_txtbx_Xpath"), "My Country My Life is an autobiographical book by L. K. Advani, an Indian politician who served as the Deputy Prime Minister of India from 2002 to 2004, and was the Leader of the Opposition in the 15th Lok Sabha. The book was released on 19 March 2008 by Abdul Kalam, the eleventh President of India.The book has 1,040 pages and narrates autobiographical accounts and events in the life of Advani. It became the best seller book in the non-fiction category and Advani joined Archer as a bestseller author.");
-		*/
+		
 		saveActivity();
 		loader();
 	}
@@ -371,7 +371,7 @@ public class AuthorwidgetModule extends AuthorwidgetStepModule {
 	
 
 	public static void tableWriter(String ele,String header) {
-		WebElement element= UIElements.elementFinderByXpath(prop.getProperty(ele), "elementName");
+		WebElement element= UIElements.elementFinderByXpath(ele, header);
 		// Action class use
 	    Actions action = new Actions(Driver.driver);
 	    Action seriesOfActions = action	.click().sendKeys(element,header).build();
@@ -428,6 +428,9 @@ public class AuthorwidgetModule extends AuthorwidgetStepModule {
 		btnSlideshowUploadVideo2();
 		Uploadpath.uploadpath(uploadvideo);
 		loader();
+		btnSlideshowNextSlide();
+		chkbxSlideshowAddText();
+		txtbxAddText(text);
 		saveActivity();
 		loader();
 		//txtbxAddText(text);
