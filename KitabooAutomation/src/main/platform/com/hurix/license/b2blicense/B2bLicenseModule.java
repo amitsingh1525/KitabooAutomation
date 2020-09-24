@@ -103,14 +103,14 @@ public class B2bLicenseModule extends B2bLicenseStepModule
 				accesscodeindividuallicense(k);
 				licenselimitelicense(deviceLicenses, k);
 			}
-			if(accessCode.equalsIgnoreCase("Group"))
+			else if(accessCode.equalsIgnoreCase("Group"))
 			{
 				drpaccesscodelicense(k);
 				accesscodegrouplicense(k);
 				accesscodegroupname(groupname,k);
 				licensegrouplimitelicense(deviceLicenses, k);
 			}
-			if(accessCode.equalsIgnoreCase("Group Licenses"))
+			else if(accessCode.equalsIgnoreCase("Group Licenses"))
 			{
 				drpaccesscodelicense(k);
 				accesscodegrouplicensinglicense(k);
@@ -125,13 +125,13 @@ public class B2bLicenseModule extends B2bLicenseStepModule
 				validityRedemptionlicense(k);
 				expiredateredemlicense(expiryDate, k);
 			}
-			if(validity.equalsIgnoreCase("Limited-Activation"))
+			else if(validity.equalsIgnoreCase("Limited-Activation"))
 			{
 				validitydropdownlicense(k);
 				validityactivatelicense(k);
 				expiredatelicense(expiryDate,k);
 			}
-			if(validity.equalsIgnoreCase("Perpetual"))
+			else if(validity.equalsIgnoreCase("Perpetual"))
 			{
 				validitydropdownlicense(k);
 				validityPerpetuallicense(k);

@@ -50,7 +50,8 @@ public class B2bLicense {
 				LoginModule.loginScenario(username, password);
 				Log.endTestCase("End Login");
 				Log.startTestCase("B2bLicense");
-				ExcelFile.setExcelFile("\\testData\\TestData.xlsx", "B2BLicense");
+				String path="\\testData\\TestData.xlsx";
+				ExcelFile.setExcelFile(path, "B2BLicense");
 				int licensecount = ExcelFile.getRowCount();
 				for(int i=1;i<=1;i++)
 				{
