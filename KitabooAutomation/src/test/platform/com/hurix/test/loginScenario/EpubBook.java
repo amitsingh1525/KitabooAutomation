@@ -37,7 +37,7 @@ public class EpubBook {
 		String path="\\testData\\TestData.xlsx";
 		ExcelFile.setExcelFile(path, "Create_Kitaboo_Credential");
 		int size = ExcelFile.getRowCount();
-		for(int j=1;j<=1;j++)
+		for(int j=2;j<=2;j++)
 		{
 			String username = ExcelFile.getCellData(j, 0);
 			String password = ExcelFile.getCellData(j, 1);
@@ -76,7 +76,7 @@ public class EpubBook {
 				String font = ExcelFile.getCellData(i,15);
 
 				EpubBookModule.epubhtmlbookcreate();
-				EpubBookModule.metadata(isbn, title, language, spreadtype, bookorentation, epubtype, font, picformate);
+				EpubBookModule.metadata(isbn, title+nowEpochTime, language, spreadtype, bookorentation, epubtype, font, picformate);
 				EpubBookModule.fileuplod(pdffilepath, pdfanswer, coveranswer, coverfilepath);
 				
 				Log.endTestCase("End");

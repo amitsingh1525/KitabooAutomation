@@ -160,7 +160,9 @@ public class EpubBookStepModule extends UIElements {
 		try {
 			threadHold_5Sec();
 			if(coveranswer.equals("Yes"))
-			{			
+			{		
+				
+				elementFinderByXpath(prop.getProperty("coverimageepubbooks"), "Click on cover image radio button").click();
 				Driver.driver.findElement(By.xpath(prop.getProperty("coveruploadepubbooks_xpath",""))).sendKeys(filepath);
 				Log.info("image upload in progress");
 				wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(prop.getProperty("coverupoadsuccess_xpath","cover image uploaded sucessfully"))));
