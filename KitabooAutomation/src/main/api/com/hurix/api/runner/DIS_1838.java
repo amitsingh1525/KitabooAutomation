@@ -125,10 +125,10 @@ public class DIS_1838 {
 			environMent = formatter.formatCellValue(sheet.getRow(i).getCell(0));
 			userName = formatter.formatCellValue(sheet.getRow(i).getCell(1));			
 			password = formatter.formatCellValue(sheet.getRow(i).getCell(2));				
-			catlevel = formatter.formatCellValue(sheet.getRow(i).getCell(4));
+			catlevel = formatter.formatCellValue(sheet.getRow(i).getCell(3));
 			deviceT = formatter.formatCellValue(sheet.getRow(i).getCell(4));
 			runY_N = formatter.formatCellValue(sheet.getRow(i).getCell(5));
-			clientID = formatter.formatCellValue(sheet.getRow(i).getCell(3));
+			//clientID = formatter.formatCellValue(sheet.getRow(i).getCell(3));
 
 			Log.info("runY_N : "+runY_N);
 			if(runY_N.contains("NO")){Log.info("Permission to Run that Row is Denied!!..Please change YES in Ith row in Respective Sheet of Yours, Thank You");}
@@ -150,8 +150,7 @@ public class DIS_1838 {
 				detail = "http://localhost:12346";
 				sqlhost="jdbc:mysql://localhost:12345";
 				sqlUsername="shweta-katare";
-				sqlPassword="J&P@O4A7HV";	
-
+				sqlPassword="J&P@O4A7HV";
 				break;
 			case "BASE_EU":
 				detail = "http://localhost:12347";
@@ -236,7 +235,7 @@ public class DIS_1838 {
 			bookID2 = fetchBookList_without_pagination.then().extract().path("bookList.book.id[1]");			
 			System.out.println("bookID2: "+bookID2);
 			/*bookID3 = fetchBookList_without_pagination.then().extract().path("bookList.book.id[2]");			
-				System.out.println("bookID3: "+bookID3);*/
+			System.out.println("bookID3: "+bookID3);*/
 			//bookID6 = fetchBookList_without_pagination.then().extract().path("bookList.book.id[6]");
 			//System.out.println("bookID6 :: "+bookID6);
 			isbn = fetchBookList_without_pagination.then().extract().path("bookList.book.isbn[1]");
@@ -254,7 +253,7 @@ public class DIS_1838 {
 			catname = ExtractCategory.extractCategory(category1);
 			System.out.println("catname: " +catname);
 			/*forName = fetchBookList_without_pagination.then().extract().path("bookList.book.formats.name[0]");
-				Log.info("$#@$#@#@#@##@#$!@#$%^#@#$%^ forName :: "+forName);*/
+			Log.info("$#@$#@#@#@##@#$!@#$%^#@#$%^ forName :: "+forName);*/
 			archiveDate = fetchBookList_without_pagination.then().extract().path("bookList.book.archiveDate[0]");
 			System.out.println("archiveDate:"+archiveDate);
 			archiveDate6=fetchBookList_without_pagination.then().extract().path("bookList.book.archiveDate[6]");
@@ -266,7 +265,7 @@ public class DIS_1838 {
 			//System.out.println("@#$%^&*(*&^%$#@#$%^&*&^%$# HERE");
 			//String categoryIdList01=((String) categoryIdList0).replace("||", ",");
 			//Log.info("categoryIdList01 : "+categoryIdList01);
-			Response Refreshcategory_Nat=RefreshCategory.refreshCategory("[6,250]", userToken, "fs313", deviceT);
+			Response Refreshcategory_Nat=RefreshCategory.refreshCategory("[13,2]", userToken, "fs313", deviceT);
 			Validation.responseHeaderCodeValidation(Refreshcategory_Nat,HttpStatus.SC_OK);//Native_cat2_UPD
 			Validation.responseCodeValidation1(Refreshcategory_Nat, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(Refreshcategory_Nat);
@@ -290,16 +289,16 @@ public class DIS_1838 {
 			category=FetchBookList_nat.then().extract().path("bookList.book.category[0]");
 			Log.info("category : "+category);
 			//Validation.responseKcount(FetchBookList_Refl, category);
-			//Validation.responseKcount1(FetchBookList_Refl, "vishal");
+			//Validation.responseKcount1(FetchBookList_Refl, "New_ADHOC");
 			categoryList=FetchBookList_nat.then().extract().path("bookList.book.categoryList[0]");
 			Log.info("categoryList : "+categoryList);
 			categoryIdList=FetchBookList_nat.then().extract().path("bookList.book.categoryIdList[0]");
 			Log.info("categoryIdList : "+categoryIdList);
 			System.out.println("FetchBookList_Refl : "+FetchBookList_nat);
-			Validation.responseKeyValidation_key(FetchBookList_nat, "vishal");
+			Validation.responseKeyValidation_key(FetchBookList_nat, "New_ADHOC");
 			//categoryIdList1=FetchBookList_nat.then().extract().path("bookList.book.categoryIdList[17]");
 
-			Response RefreshcategoryRefl=RefreshCategory.refreshCategory("[68,69,193,228,241]", userToken, "fs313",deviceT);
+			Response RefreshcategoryRefl=RefreshCategory.refreshCategory("[13,2]", userToken, "fs313",deviceT);
 			Validation.responseHeaderCodeValidation(RefreshcategoryRefl,HttpStatus.SC_OK);//Reflow_cat2_UPD
 			Validation.responseCodeValidation1(RefreshcategoryRefl, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(RefreshcategoryRefl);
@@ -325,10 +324,10 @@ public class DIS_1838 {
 			categoryIdList=FetchBookList_ver_Reflo.then().extract().path("bookList.book.categoryIdList[2]");
 			Log.info("categoryIdList : "+categoryIdList);
 			System.out.println("FetchBookList_ver : "+FetchBookList_ver_Reflo);
-			Validation.responseKeyValidation_key(FetchBookList_ver_Reflo, "vishal");
+			Validation.responseKeyValidation_key(FetchBookList_ver_Reflo, "New_ADHOC");
 			//categoryIdList2=FetchBookList_ver_Reflo.then().extract().path("bookList.book.categoryIdList[18]");
 
-			Response RefreshcategoryAudio=RefreshCategory.refreshCategory("[72,228,241]", userToken, "fs313", deviceT);
+			Response RefreshcategoryAudio=RefreshCategory.refreshCategory("[13,3]", userToken, "fs313", deviceT);
 			Validation.responseHeaderCodeValidation(RefreshcategoryAudio,HttpStatus.SC_OK);//Audio_cat2_UPD1
 			Validation.responseCodeValidation1(RefreshcategoryAudio, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(RefreshcategoryAudio);
@@ -354,10 +353,10 @@ public class DIS_1838 {
 			categoryIdList=FetchBookList_ver_audio.then().extract().path("bookList.book.categoryIdList[3]");
 			Log.info("categoryIdList : "+categoryIdList);
 			System.out.println("FetchBookList_ver : "+FetchBookList_ver_audio);
-			Validation.responseKeyValidation_key(FetchBookList_ver_audio, "vishal");
+			Validation.responseKeyValidation_key(FetchBookList_ver_audio, "New_ADHOC");
 			//categoryIdList3=FetchBookList_ver_audio.then().extract().path("bookList.book.categoryIdList[2]");
 
-			Response Refreshcategory_Fixed=RefreshCategory.refreshCategory("[230,228,241]", userToken, "fs313",deviceT);
+			Response Refreshcategory_Fixed=RefreshCategory.refreshCategory("[13,2]", userToken, "fs313",deviceT);
 			Validation.responseHeaderCodeValidation(Refreshcategory_Fixed,HttpStatus.SC_OK);//Fixed_cat2_UPD
 			Validation.responseCodeValidation1(Refreshcategory_Fixed, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(Refreshcategory_Fixed);
@@ -383,7 +382,7 @@ public class DIS_1838 {
 			categoryIdList=FetchBookList_ver_Fix.then().extract().path("bookList.book.categoryIdList[5]");
 			Log.info("categoryIdList : "+categoryIdList);
 			System.out.println("FetchBookList_ver : "+FetchBookList_ver_Fix);
-			Validation.responseKeyValidation_key(FetchBookList_ver_Fix, "vishal");
+			Validation.responseKeyValidation_key(FetchBookList_ver_Fix, "New_ADHOC");
 			//categoryIdList4=FetchBookList_ver_Fix.then().extract().path("bookList.book.categoryIdList[19]");
 
 			Response MultiCategorybookList=MultiCategoryBookList.multiCategoryBookList(catlevel, bookID1, sqlhost,  sqlUsername,  sqlPassword, userToken, "dsd3231332",deviceT);
@@ -394,7 +393,7 @@ public class DIS_1838 {
 			Validation.responseNOTKeyValidation_key(MultiCategorybookList, "categoryIdList");
 			Validation.responseNOTKeyValidation_key(MultiCategorybookList, "categoryList");
 			Validation.responseKeyValidation_key(MultiCategorybookList, "collectionID");
-			Validation.responseKeyValidation_key(MultiCategorybookList, "vishal");
+			Validation.responseKeyValidation_key(MultiCategorybookList, "New_ADHOC");
 			System.out.println("MultiCategorybookList : "+MultiCategorybookList);
 
 			Response multiCategoryCollectionBookList=MultiCategoryCollectionBookList.multiCategoryCollectionBookList(catlevel,bookID1,sqlhost,  sqlUsername,  sqlPassword,userToken,"ds32323",deviceT,collectionName0);
@@ -405,7 +404,7 @@ public class DIS_1838 {
 			Validation.responseNOTKeyValidation_key(multiCategoryCollectionBookList, "categoryIdList");
 			Validation.responseNOTKeyValidation_key(multiCategoryCollectionBookList, "categoryList");
 			Validation.responseKeyValidation_key(multiCategoryCollectionBookList, "collectionID");
-			Validation.responseKeyValidation_key(multiCategoryCollectionBookList, "vishal");
+			Validation.responseKeyValidation_key(multiCategoryCollectionBookList, "New_ADHOC");
 			Validation.responseKeyAndValue(multiCategoryCollectionBookList,"collectionTitle",collectionName0);
 			System.out.println("MultiCategoryCollectionBookList : "+multiCategoryCollectionBookList);
 			}

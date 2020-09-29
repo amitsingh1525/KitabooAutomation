@@ -12,7 +12,7 @@ public class FetchBookList {
 		Response jsonResponse = null;
 		try {
 			Log.startTestCase("fetchBookList_without_pagination.Device:"+deviceType+"");
-			//System.out.println("GETfetchBookList RequestURL:" +fetchBookListPath);
+			Log.info("userToken :" +userToken);
 			jsonResponse = given()
 					.header("usertoken",userToken)
 					.get("/DistributionServices/services/api/reader/distribution/"+deviceID+"/"+deviceType+"/fetchBookList");

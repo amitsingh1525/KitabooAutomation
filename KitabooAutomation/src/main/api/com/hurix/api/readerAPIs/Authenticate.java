@@ -10,6 +10,8 @@ public class Authenticate {
 	{
 		Response jsonResponse = null;
 		Log.info("URL : "+"/DistributionServices/services/api/reader/user/"+deviceID+"/"+deviceType+"/authenticateUser");
+		Log.info("BODY : "+"{\"user\":{\"userName\":\""+username+"\",\"password\":\""+password+"\"}}");
+		Log.info("clientID : "+clientID);
 		try {
 			
 			jsonResponse = given()
@@ -21,9 +23,7 @@ public class Authenticate {
 			
 		} catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
-			
+			Log.fail(exp.getMessage());			
 			exp.printStackTrace();
 		}
 		Log.endTestCase("End");

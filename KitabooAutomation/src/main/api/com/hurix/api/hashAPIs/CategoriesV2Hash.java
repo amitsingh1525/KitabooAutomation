@@ -34,9 +34,8 @@ public class CategoriesV2Hash {
 			Log.info("CategoriesV2_Hash Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
-			exp.printStackTrace();
+			Log.fail(exp.getMessage());
+			
 		}
 		Log.endTestCase("End");
 		return jsonResponse;

@@ -41,21 +41,21 @@ public class DIS_1979 {
 
 	public static void main(String[] args) {
 		//Log.initialization("APITesting");//DIS-1979	
-		Log.initialization("DIS_1979");
+		Log.initialization("DIS-1979");
 		try {
 			//startDate=EpochTime.getEpochTime(""+startDate+"");
 			excelPath="./testData/DIS-1979.xlsx";
 			workbook = new XSSFWorkbook(excelPath);
 			sheet= workbook.getSheet("Sheet1");
-			for(int i=1;i<=sheet.getLastRowNum();i++)
+			for(int i=1;i<=1;i++)
 			{DataFormatter formatter = new DataFormatter();
 			environMent = formatter.formatCellValue(sheet.getRow(i).getCell(0));
 			userName = formatter.formatCellValue(sheet.getRow(i).getCell(1));			
 			password = formatter.formatCellValue(sheet.getRow(i).getCell(2));				
-			catlevel = formatter.formatCellValue(sheet.getRow(i).getCell(4));
+			catlevel = formatter.formatCellValue(sheet.getRow(i).getCell(3));
 			String deviceT = formatter.formatCellValue(sheet.getRow(i).getCell(4));
 			String runY_N = formatter.formatCellValue(sheet.getRow(i).getCell(5));
-			clientID = formatter.formatCellValue(sheet.getRow(i).getCell(3));
+			//clientID = formatter.formatCellValue(sheet.getRow(i).getCell(3));
 
 			Log.info("runY_N : "+runY_N);
 			if(runY_N.contains("NO")){Log.info("Permission to Run that Row is Denied!!..Please change YES in Ith row in Respective Sheet of Yours, Thank You");}
@@ -105,7 +105,7 @@ public class DIS_1979 {
 				LoginModule.loginScenario("automation.test1@yopmail.com", "kitaboo!123");
 				String title = KitabooBooksModule.bookCreationPDF("hello", "World", "level2", "For automation Testing", "Hello, World");
 				KitabooBooksModule.bookPublishAndArchivePDF(title);*/
-
+				clientID =JDBC_category.getReader(userName, sqlhost, sqlUsername, sqlPassword);
 				Log.startTestCase("Authenticate");
 				Log.info("detail : "+detail);
 				Log.info("userName : "+userName);
