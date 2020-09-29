@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
+import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -36,8 +37,10 @@ public static void setExcelFile(String Path,String SheetName) throws Exception {
 //This method is to read the test data from the Excel cell, in this we are passing parameters as Row num and Col num
 public static String getCellData(int RowNum, int ColNum) throws Exception{
        try{
+    	   DataFormatter df = new DataFormatter();
     	  Cell = ExcelWSheet.getRow(RowNum).getCell(ColNum);
-          String CellData = Cell.toString();
+    	  String CellData = df.formatCellValue(Cell);
+          //String CellData = Cell.toString();
           return CellData;
           }catch (Exception e){
             return"";
