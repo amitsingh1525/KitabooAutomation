@@ -74,12 +74,9 @@ public class Metadata {
 
 				Log.info("Metadata Response: "+jsonResponse.then().extract().response().prettyPrint());
 			}
-		}
-
-		catch (Exception exp) 
+		}catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
+			Log.fail(exp.getMessage());
 			exp.printStackTrace();
 		}
 		Log.endTestCase("End");

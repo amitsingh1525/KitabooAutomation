@@ -30,8 +30,7 @@ public class UpDateEpub {
 			Log.info("UpDateEpub_OAuth Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 
 		{
-			Log.info(exp.getMessage());
-			Log.info("here"+exp.getCause());
+			Log.fail(exp.getMessage());
 			exp.printStackTrace();
 		}
 		Log.endTestCase("End");

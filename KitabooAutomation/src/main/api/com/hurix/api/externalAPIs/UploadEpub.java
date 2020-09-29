@@ -12,7 +12,7 @@ public class UploadEpub {
 
 		Response jsonResponse = null;
 		try {
-			Log.startTestCase("UploadEpub_OAuth");
+			Log.startTestCase("UploadEpub");
 			Log.info("title : "+title);
 			Log.info("isbn : "+isbn);
 			Log.info("filePath : "+filePath);
@@ -29,11 +29,10 @@ public class UploadEpub {
 			Validation.responseTimeValidation(jsonResponse);
 			Validation.responseKeyValidation_key(jsonResponse, "The request for the uploadEpub taken successfully.");*/
 			
-			Log.info("UploadEpub_OAuth Response: "+jsonResponse.then().extract().response().prettyPrint());
+			Log.info("UploadEpub Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
+			Log.fail(exp.getMessage());
 			exp.printStackTrace();
 		}
 		Log.endTestCase("End");

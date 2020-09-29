@@ -5,6 +5,7 @@ import static io.restassured.RestAssured.given;
 import java.sql.SQLException;
 
 import com.hurix.api.utility.ExcelUtils;
+import com.hurix.automation.utility.Log;
 
 import io.restassured.response.Response;
 
@@ -57,8 +58,7 @@ public class UpdateUser_captital_OAuth {
 			//Log.info("updateUser_captital_OAuth Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
+			Log.fail(exp.getMessage());
 			exp.printStackTrace();
 		}
 		//Log.endTestCase("End");
