@@ -44,6 +44,7 @@ public class UploadEpubBookModule extends UploadEpubBookStepModule
 		txtepubuploadinputIsbn(isbn);
 		txtepubuploadinputref(ref);
 		txtepubuploadinputDesc(desc);
+		threadHold_5Sec();
 	}
 
 	public static void epubuploadamazonpolly(String voice,String language, String SpeechRate)
