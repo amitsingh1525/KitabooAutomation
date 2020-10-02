@@ -163,6 +163,7 @@ public class OrderV2 {
 		Response jsonResponse = null;
 		try {
 			Log.startTestCase("orderV2_with.RefID."+refID+"");
+			Log.info("HERE we are  : "+refID);
 			Log.info("refID : "+refID);
 			Log.info("email : "+email);
 			jsonResponse = given()

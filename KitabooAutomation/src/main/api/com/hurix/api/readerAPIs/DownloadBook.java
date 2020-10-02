@@ -21,6 +21,8 @@ public class DownloadBook {
 			Log.startTestCase("downloadBookFor."+deviceType+"_"+State+"");
 			Log.info("bookID here: "+bookID1);
 			Log.info("deviceType : "+deviceType);
+			Log.info("deviceID : "+deviceID);
+			Log.info("State: "+State);
 			Log.info("URL : "+"/DistributionServices/services/api/reader/distribution/"+deviceID+"/"+deviceType+"/"+bookID1+"/downloadBook?state="+State+"");
 			//System.out.println("downloadBookPathANDROIDRequestURL:" +downloadBookPathANDROID);
 			Log.info("userToken : "+userToken);

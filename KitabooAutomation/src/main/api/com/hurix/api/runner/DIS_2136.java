@@ -15,12 +15,11 @@ import com.hurix.api.readerAPIs.*;
 import com.hurix.api.utility.*;
 import com.hurix.automation.utility.Log;
 
-public class DIS_1881 {
+public class DIS_2136 {
 
 	DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
 	Date dateobj = new Date();
-	//System.out.println(df.format(dateobj));
-	//public static long startDate1 = EpochTime.getEpochTime("df.format(dateobj");
+	
 	public static long startDate ;//EpochTime.getEpochTime("2019/10/31 14:46:04");
 	public static long startIndex = 0;
 	public static long endIndex = 100;
@@ -46,7 +45,6 @@ public class DIS_1881 {
 	public static int client_Id;
 	public static int totalbooks;
 	public static int total;
-	public static int epubId;
 	public static String archiveDate;
 	public static String archiveDate1;
 	public static String archiveDate2;
@@ -88,6 +86,9 @@ public class DIS_1881 {
 	public static String isbn9;
 	public static String isbn10;
 	public static String isbn11;
+	public static String  email;
+	public static String  firstName;
+	public static String  lastName;
 	public static String consumerKey;
 	public static String consumerSecret;
 	public static Object categoryIdList0;
@@ -100,31 +101,31 @@ public class DIS_1881 {
 	public static Object categoryIdList;
 	public static String title;
 	public static String runY_N;
-	public static String filePath;
 	//public static String consumerKey=ExcelUtils.Consumer_key;
 	//public static String consumerSecret=ExcelUtils.secret_key;
 
 	public static void   main(String []args) throws SQLException, JSONException{
-		Log.initialization("Sprint33.1/DIS-1881");	
+		Log.initialization("Sprint33.1/DIS-2136");	
 		//List<String> detail =  ExcelUtils.getuserDetails();
 		try {
+			String finalEmailID = "";
 			//startDate=EpochTime.getEpochTime(""+startDate+"");
-			String excelPath="./testData/Sprint33.1/DIS-1881.xlsx";
+			String excelPath="./testData/Sprint33.1/DIS-2137.xlsx";
 			workbook = new XSSFWorkbook(excelPath);
-			sheet= workbook.getSheet("Sheet1");
+			sheet= workbook.getSheet("Register_DIS-2137");
 			for(int i=1;i<=sheet.getLastRowNum();i++)
 			{DataFormatter formatter = new DataFormatter();
 			environMent = formatter.formatCellValue(sheet.getRow(i).getCell(0));
 			userName = formatter.formatCellValue(sheet.getRow(i).getCell(1));			
 			password = formatter.formatCellValue(sheet.getRow(i).getCell(2));
-			deviceT = formatter.formatCellValue(sheet.getRow(i).getCell(3));
-			catlevel = formatter.formatCellValue(sheet.getRow(i).getCell(4));
+			catlevel = formatter.formatCellValue(sheet.getRow(i).getCell(3));
+			deviceT = formatter.formatCellValue(sheet.getRow(i).getCell(4));				
 			runY_N=formatter.formatCellValue(sheet.getRow(i).getCell(5));
-			searchV2TEXT = formatter.formatCellValue(sheet.getRow(i).getCell(6));
-			title= formatter.formatCellValue(sheet.getRow(i).getCell(7));
-			filePath=formatter.formatCellValue(sheet.getRow(i).getCell(8));
 
+			firstName= formatter.formatCellValue(sheet.getRow(i).getCell(7));
+			lastName= formatter.formatCellValue(sheet.getRow(i).getCell(8));
 
+			//String[] deviceT = {"IPAD","ANDROID","WINDOWS","PC","HTML5"};
 			Log.info("runY_N : "+runY_N);
 			if(runY_N.contains("NO")){Log.info("Permission to Run that Row is Denied!!..Please change YES in Ith row in Respective Sheet of Yours, Thank You");}
 			else if(runY_N.contains("YES"))
@@ -168,20 +169,18 @@ public class DIS_1881 {
 			}				
 			io.restassured.RestAssured.baseURI = detail;
 
-			clientID = JDBC_category.getReader(userName, sqlhost, sqlUsername, sqlPassword);
+			//clientID = JDBC_category.getReader_clientID(clientID, sqlhost, sqlUsername, sqlPassword);		
+			clientID =JDBC_category.getReader(userName, sqlhost, sqlUsername, sqlPassword);
+			Log.info("ReaderKey : "+clientID);
 
 
-			Log.startTestCase("Authenticate");
+			//for(int i4=0; i4<=4; i4++)
+			//{
+			Log.startTestCase("Authenticate.device: "+deviceT);
 			Log.info("detail : "+detail);
 			Log.info("userName : "+userName);
 			Log.info("password : "+password);
 			Log.info("clientID : "+clientID);
-
-
-			//clientID =JDBC_category.getReader(userName, sqlhost, sqlUsername, sqlPassword);
-			Log.info("ReaderKey : "+clientID);
-
-
 			Response authenticateValue = Authenticate.authenticate(clientID, userName, password,"514185",deviceT);
 			Log.info("Authenticate Response: "+authenticateValue.then().extract().response().prettyPrint());				
 			System.out.println("HERE_Before");
@@ -205,65 +204,27 @@ public class DIS_1881 {
 			Log.endTestCase("End");
 
 
+			//String ck= JDBC_category.getCKSK(client_Id, sqlhost, sqlUsername, sqlPassword);
+			//Log.info("ck : "+ck);
+			//Log.info("Sk : "+ck[1]);
 			consumerKey = JDBC_category.getCK(client_Id, sqlhost, sqlUsername, sqlPassword);
 			consumerSecret =JDBC_category.getSK(client_Id, sqlhost, sqlUsername, sqlPassword);
 
-			/*long nowEpochTime = Instant.now().toEpochMilli();
-			Response  UploadEpub_res= UploadEpub.uploadEpub_OAuth(consumerKey, consumerSecret, filePath ,title+""+nowEpochTime+"",""+title+""+nowEpochTime+"","level4_upd",""+nowEpochTime+"",""+title+""+nowEpochTime+"");
-			Validation.responseHeaderCodeValidation(UploadEpub_res, HttpStatus.SC_OK);
-			Validation.responseCodeValidation1(UploadEpub_res, HttpStatus.SC_OK);
-			Validation.responseTimeValidation(UploadEpub_res);
-			Validation.responseKeyValidation_key(UploadEpub_res, "The request for the uploadEpub taken successfully.");
-			System.out.println("UploadEpub_res : "+UploadEpub_res);
-			epubId = UploadEpub_res.then().extract().path("epubId");
-			System.out.println("epubId: "+epubId);
 
-
-			Thread.sleep(9000);
-			Response EpubStatus_res = EpubStatus.epubStatus(consumerKey, consumerSecret,epubId);
-			Validation.responseHeaderCodeValidation(EpubStatus_res, HttpStatus.SC_OK);
-			Validation.responseCodeValidation1(EpubStatus_res, HttpStatus.SC_OK);
-			Validation.responseTimeValidation(EpubStatus_res);
-			Validation.responseKeyValidation_key(EpubStatus_res, "status");
-			Validation.responseKeyValidation_key(EpubStatus_res, "100");*/
-
-
-			for(int i1=1; i1<=1; i1++)
-			{Log.info("HERE in for_"+i1);
-			isbnMeta=formatter.formatCellValue(sheet.getRow(i1).getCell(9));
-			Log.info("isbnMeta : "+isbnMeta);
-			Log.info("isbnMeta: "+isbnMeta);
-			//String consumerKey, String consumerSecret,String string,String title,String author,String cat4
-			Response Metadata_res = Metadata.metadata(consumerKey, consumerSecret,isbnMeta,"Reflow_"+isbnMeta+"","Reflow_"+isbnMeta+"",catlevel,"description");
-			Validation.responseHeaderCodeValidation(Metadata_res, HttpStatus.SC_OK);
-			Validation.responseCodeValidation1(Metadata_res, HttpStatus.SC_OK);
-			Validation.responseTimeValidation(Metadata_res);
-			Validation.responseKeyValidation_key(Metadata_res, "isbn");
-			Validation.responseKeyValidation_key(Metadata_res, "The request for the uploadEpub taken successfully.");
-			isbnMeta = Metadata_res.then().extract().path("isbn");
-			Log.info("isbnMeta: "+isbnMeta);}
-			
-			Response IngectEpub_res1=null;
-			for(int i2=1; i2<=1;i2++)
-			{String isbnURL=formatter.formatCellValue(sheet.getRow(i2).getCell(10));
-			IngectEpub_res1 = IngectEpub.ingectEpub_ext(consumerKey, consumerSecret,""+isbnURL+"");
-			Log.info("URL : "+detail);
-			Validation.responseHeaderCodeValidation(IngectEpub_res1, HttpStatus.SC_OK);
-			Validation.responseCodeValidation1(IngectEpub_res1, HttpStatus.SC_OK);
-			Validation.responseTimeValidation(IngectEpub_res1);
-			Validation.responseKeyValidation_key(IngectEpub_res1, "The request for the uploadEpub taken successfully.");}
-			isbnIng = IngectEpub_res1.then().extract().path("isbn");			
-			Log.info("isbnIng: "+isbnIng);		
-			
-			
-			Response IngestionStatus_res = IngestionStatus.ingestionStatus(consumerKey, consumerSecret, isbnIng);
-			Validation.responseHeaderCodeValidation(IngestionStatus_res, HttpStatus.SC_OK);
-			Validation.responseCodeValidation1(IngestionStatus_res, HttpStatus.SC_OK);
-			Validation.responseINTEGERKeyAndValue(IngestionStatus_res, "status", 100);	
-			System.out.println("IngestionStatus_res : "+IngestionStatus_res);
-			
-			
-			}
+			for(int i2=1; i2<=5; i2++)
+			{
+				String email= formatter.formatCellValue(sheet.getRow(i2).getCell(6));
+				finalEmailID = finalEmailID+"\""+email+"\""+",";
+			}			
+			Log.info("finalEmailID : "+finalEmailID);
+			//finalEmailID = "\""Stag1Samar.Rylee_Allen+5498@mafthy.acadmey"\";
+			finalEmailID = "\"Stag1Samar.Rylee_Allen+5498@mafthy.academy\",\"Stag1_1Samar.Rylee_Allen+5498@mafthy.academy\"";
+			Response registerUSER = BulkUsersRegistration.bulkUsersRegistration(consumerKey, consumerSecret, finalEmailID);
+			Log.info("detail : "+detail);
+			Validation.responseHeaderCodeValidation(registerUSER, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(registerUSER, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(registerUSER);
+			Validation.responseKeyValidation_key(registerUSER, "id");}
 			}
 		} catch (Exception exp) 
 		{
@@ -274,4 +235,3 @@ public class DIS_1881 {
 		Log.endTestCase("End");
 	}
 }
-

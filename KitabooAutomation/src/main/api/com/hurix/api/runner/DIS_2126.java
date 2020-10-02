@@ -14,7 +14,7 @@ import com.hurix.api.readerAPIs.*;
 import com.hurix.api.utility.*;
 import com.hurix.automation.utility.Log;
 
-public class DIS_1765 {
+public class DIS_2126 {
 
 	//static List<String> detailisbn =  ExcelUtils.getisbn();
 	DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
@@ -112,11 +112,11 @@ public class DIS_1765 {
 	//public static String consumerSecret=ExcelUtils.secret_key;
 
 	public static void   main(String []args) throws SQLException, JSONException{
-		Log.initialization("Sprint33.1/DIS-1765DIS-2126");	
+		Log.initialization("Sprint33.1/DIS-2126");	
 		//List<String> detail =  ExcelUtils.getuserDetails();
 		try {
 			//startDate=EpochTime.getEpochTime(""+startDate+"");
-			String excelPath="./testData/Sprint33.1/DIS-1765_DIS-2001.xlsx";
+			String excelPath="./testData/Sprint33.1/DIS-2126.xlsx";
 			workbook = new XSSFWorkbook(excelPath);
 			sheet= workbook.getSheet("Sheet1");
 			for(int i=1;i<=sheet.getLastRowNum();i++)
@@ -185,6 +185,9 @@ public class DIS_1765 {
 			//client_Id = 7;
 			consumerKey = JDBC_category.getCK(client_Id, sqlhost, sqlUsername, sqlPassword);
 			consumerSecret =JDBC_category.getSK(client_Id, sqlhost, sqlUsername, sqlPassword);
+			/*else if(environMent.equals("Staging"))
+			{consumerKey = JDBC_category.getCK(1337, sqlhost, sqlUsername, sqlPassword);
+			consumerSecret =JDBC_category.getSK(1337, sqlhost, sqlUsername, sqlPassword);}*/
 
 
 			for(int i5=1;i5<=10;i5++)
@@ -385,7 +388,7 @@ public class DIS_1765 {
 			Validation.responseKeyValidation_key(fethcatcollection,"collections");
 			Validation.responseKeyValidation_key(fethcatcollection,"name");
 
-			Response fetchCategoriesCollectionsBooks = FetchCategoriesCollectionsBooks.fetchCategoriesCollectionsBooks(userToken_re,"fs424",deviceT,category1,collectionName1,bookID1,sqlhost,sqlUsername,sqlPassword,catlevel);
+			Response fetchCategoriesCollectionsBooks = FetchCategoriesCollectionsBooks.fetchCategoriesCollectionsBooks(userToken_re,"fs424",deviceT,category1,collectionName1,bookID2,sqlhost,sqlUsername,sqlPassword,catlevel);
 			Validation.responseHeaderCodeValidation(fetchCategoriesCollectionsBooks, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(fetchCategoriesCollectionsBooks,HttpStatus.SC_OK);
 			Validation.responseTimeValidation(fetchCategoriesCollectionsBooks);
@@ -474,7 +477,7 @@ public class DIS_1765 {
 			Validation.responseKeyValidation_key(CategoryBookListV2Res,"id");
 			Validation.responseKeyValidation_key(CategoryBookListV2Res,"title");
 
-			Response fetchcategorybooksV1 = FetchCategorybooksV1.fetchCategorybooksV1(""+category1+"", userToken_re);
+			Response fetchcategorybooksV1 = FetchCategorybooksV1.fetchCategorybooksV1(""+category1+"", userToken_re,bookID1, catlevel, sqlhost, sqlUsername, sqlPassword);
 			Validation.responseHeaderCodeValidation(fetchcategorybooksV1, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(fetchcategorybooksV1, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(fetchcategorybooksV1);
@@ -601,8 +604,8 @@ public class DIS_1765 {
 		  }
 		}catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
 			exp.printStackTrace();
 		}
 	}

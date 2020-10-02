@@ -177,7 +177,7 @@ public class DIS_2120 {
 			//Log.info("ReaderKey : "+clientID);
 			
 			
-			for(int i4=0; i4<=4 ;i4++)
+			for(int i4=0; i4<=4; i4++)
 			{Log.startTestCase("Authenticate.device: "+deviceT[i4]);
 			Log.info("detail : "+detail);
 			Log.info("userName : "+userName);
@@ -205,6 +205,10 @@ public class DIS_2120 {
 			System.out.println("client_Id:"+client_Id);
 			Log.endTestCase("End");
 			
+			
+			//String ck= JDBC_category.getCKSK(client_Id, sqlhost, sqlUsername, sqlPassword);
+			//Log.info("ck : "+ck);
+			//Log.info("Sk : "+ck[1]);
 			consumerKey = JDBC_category.getCK(client_Id, sqlhost, sqlUsername, sqlPassword);
 			consumerSecret =JDBC_category.getSK(client_Id, sqlhost, sqlUsername, sqlPassword);
 			
@@ -416,9 +420,10 @@ public class DIS_2120 {
 			Validation.responseKeyAndValue(v1refreshBookList_res, "operation", operation1);
 
 
-			Response MultiCategoryBookList_res = MultiCategoryBookList.multiCategoryBookList(catlevel,bookID1,sqlhost,sqlUsername,sqlPassword,userToken,"45564595",deviceT[i4]);
-			if(catlevel.contains ("1")){}			
-			else{Validation.responseHeaderCodeValidation(MultiCategoryBookList_res, HttpStatus.SC_OK);
+			Log.info("catlevel : "+catlevel);
+			if(catlevel.contains("1")){}			
+			else if(catlevel.contains("2||3||4")){Response MultiCategoryBookList_res = MultiCategoryBookList.multiCategoryBookList(catlevel,bookID1,sqlhost,sqlUsername,sqlPassword,userToken,"45564595",deviceT[i4]);
+			Validation.responseHeaderCodeValidation(MultiCategoryBookList_res, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(MultiCategoryBookList_res, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(MultiCategoryBookList_res);
 			Validation.responseKeyValidation_key(MultiCategoryBookList_res, "totalbooks");
@@ -443,9 +448,10 @@ public class DIS_2120 {
 
 
 
-			Response MultiCategoryCollection_BookList=MultiCategoryCollectionBookList.multiCategoryCollectionBookList(catlevel, bookID1, sqlhost,sqlUsername,sqlPassword, userToken, "4524242",deviceT[i4], collectionName0);
-			if(catlevel.contains ("1")){}	
-			else{Validation.responseHeaderCodeValidation(MultiCategoryCollection_BookList, HttpStatus.SC_OK);
+			Log.info("catlevel : "+catlevel);
+			if(catlevel.contains("1")){}	
+			else if(catlevel.contains("2||3||4")){Response MultiCategoryCollection_BookList=MultiCategoryCollectionBookList.multiCategoryCollectionBookList(catlevel, bookID1, sqlhost,sqlUsername,sqlPassword, userToken, "4524242",deviceT[i4], collectionName0);
+			Validation.responseHeaderCodeValidation(MultiCategoryCollection_BookList, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(MultiCategoryCollection_BookList, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(MultiCategoryCollection_BookList);
 			Validation.responseKeyValidation_key(MultiCategoryCollection_BookList, "totalbooks");
@@ -564,7 +570,7 @@ public class DIS_2120 {
 
 			Response downloadBook1 = DownloadBook.downloadBook(userToken,"2123",deviceT[i4],bookID2,"offline");			
 			Log.info("bookID1 : "+bookID1);
-			Validation.responseCodeValidation1(downloadBook1, HttpStatus.SC_OK);
+			//Validation.responseCodeValidation1(downloadBook1, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(downloadBook1);
 			Validation.responseKeyValidation_key(downloadBook1,"fileSize");
 			Validation.responseKeyValidation_key(downloadBook1,"responseMsg");
@@ -606,6 +612,7 @@ public class DIS_2120 {
 			Validation.responseTimeValidation(bulkDownloadBook);
 			Validation.responseKeyValidation_key(bulkDownloadBook,"responseMsg");
 			Validation.responseKeyValidation_key(bulkDownloadBook,"timestamp");
+			
 			}
 			}
 		  }

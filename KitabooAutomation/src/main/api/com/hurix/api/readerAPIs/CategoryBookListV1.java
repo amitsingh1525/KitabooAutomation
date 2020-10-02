@@ -21,7 +21,7 @@ public class CategoryBookListV1 {
 		String Fcatname=null;
 		Response jsonResponse = null;
 		try {			
-			Log.startTestCase("categoryBookListV1.catname="+catname+"");
+			Log.startTestCase("categoryBookListV1.catLevel="+catLevel+"");
 			Connection con = DriverManager.getConnection(sqlhost,sqlUsername,sqlPassword);
 			Statement stmt = con.createStatement();
 			ResultSet result = null;
