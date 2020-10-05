@@ -1,23 +1,17 @@
 package com.hurix.api.runner;
 
 import io.restassured.response.Response;
-
-import java.util.List;
-
 import org.apache.http.HttpStatus;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
-import com.hurix.api.externalAPIs.GetClientUsers;
-import com.hurix.api.externalAPIs.Getusers;
+import com.hurix.api.externalAPIs.*;
 import com.hurix.api.readerAPIs.*;
 import com.hurix.api.utility.*;
 import com.hurix.automation.utility.Log;
 
 public class DIS_2125 {
 
-	public static List<String> detailisbn =  ExcelUtils.getisbn();
 	public static String consumerKey;
 	public static String consumerSecret;
 	public static String excelPath;
@@ -39,7 +33,7 @@ public class DIS_2125 {
 	public static String sqlUsername;
 	public static String sqlPassword;
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		//Log.initialization("APITesting");//DIS-1979	
 		Log.initialization("Sprint33.1/DIS-2125");
 		try {
@@ -101,7 +95,7 @@ public class DIS_2125 {
 			}				
 			io.restassured.RestAssured.baseURI = detail;
 
-			
+
 			if(userName.contains("ent_lear_cat2@yopmail.com")){clientID ="cHJvZi1raXRhYm9v";}
 			else{clientID =JDBC_category.getReader(userName, sqlhost, sqlUsername, sqlPassword);}
 			Log.startTestCase("Authenticate");
@@ -135,10 +129,13 @@ public class DIS_2125 {
 			consumerKey = JDBC_category.getCK(client_Id, sqlhost, sqlUsername, sqlPassword);
 
 			consumerSecret =JDBC_category.getSK(client_Id, sqlhost, sqlUsername, sqlPassword);
-			
-			Response getclientsUser = GetClientUsers.getClientUsers(consumerKey, consumerSecret);
+
+			Response getclientsUser=null;
+			if(environMent.equals("PROD_EU")){}
+			else{getclientsUser = GetClientUsers.getClientUsers(consumerKey, consumerSecret);
 			Validation.responseHeaderCodeValidation(getclientsUser, HttpStatus.SC_OK);
-			Validation.responseCodeValidation1(getclientsUser, HttpStatus.SC_OK);
+			//Validation.responseCodeValidation1(getclientsUser, HttpStatus.SC_OK);
+			Thread.sleep(4000);
 			Validation.responseTimeValidation(getclientsUser);
 			String userId1 = getclientsUser.then().extract().path("users[1].userid");
 			Log.info("userId1 is : "+userId1);
@@ -157,11 +154,11 @@ public class DIS_2125 {
 			Validation.responseKeyAndValue(getclientsUser, "userid", ""+userId+"");
 			Validation.responseKeyAndValue(getclientsUser, "username", ""+userName+"");
 			Validation.responseKeyAndValue(getclientsUser, "userid", ""+userId1+"");
-			Validation.responseKeyAndValue(getclientsUser, "username", ""+userName1+"");
+			Validation.responseKeyAndValue(getclientsUser, "username", ""+userName1+"");}
 			//System.out.println("getclientsUser : "+getclientsUser);
-			
-			
-			getclientsUser = GetClientUsers.getClientUsers_Pagi(0,4,consumerKey, consumerSecret);
+
+
+			getclientsUser = GetClientUsers.getClientUsers_Pagi(0,100,consumerKey, consumerSecret);
 			Validation.responseHeaderCodeValidation(getclientsUser, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(getclientsUser, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(getclientsUser);
@@ -179,13 +176,58 @@ public class DIS_2125 {
 			Validation.responseKeyValidation_key(getclientsUser, "createDate");
 			Validation.responseKeyValidation_key(getclientsUser, "lastAccessDate");
 			Validation.responseKeyValidation_key(getclientsUser, "active");
+			String userId1 = getclientsUser.then().extract().path("users[1].userid");
+			Log.info("userId1 is : "+userId1);
+			String userName1 = getclientsUser.then().extract().path("users[1].username");
+			Log.info("userName1 is : "+userName1);
+			String userId = getclientsUser.then().extract().path("users[0].userid");
+			Log.info("userId is : "+userId);
+			String userName = getclientsUser.then().extract().path("users[0].username");
+			Log.info("username is : "+userName);
+			Validation.responseKeyValidation_key(getclientsUser, "userid");
+			Validation.responseKeyValidation_key(getclientsUser, "username");
+			Validation.responseKeyValidation_key(getclientsUser, "maxDeviceCount");
+			Validation.responseKeyValidation_key(getclientsUser, "createDate");
+			Validation.responseKeyValidation_key(getclientsUser, "lastAccessDate");
+			Validation.responseKeyValidation_key(getclientsUser, "active");
+			Validation.responseKeyAndValue(getclientsUser, "userid", ""+userId+"");
+			Validation.responseKeyAndValue(getclientsUser, "username", ""+userName+"");
+			Validation.responseKeyAndValue(getclientsUser, "userid", ""+userId1+"");
+			Validation.responseKeyAndValue(getclientsUser, "username", ""+userName1+"");
 			Validation.responseKeyAndValue(getclientsUser, "userid", ""+userId+"");
 			Validation.responseKeyAndValue(getclientsUser, "username", ""+userName+"");
 			Validation.responseKeyAndValue(getclientsUser, "userid", ""+userId1+"");
 			Validation.responseKeyAndValue(getclientsUser, "username", ""+userName1+"");
 			System.out.println("getclientsUser : "+getclientsUser);
-			
-			
+
+			if(environMent.equals("PROD_EU"))
+			{
+				Response getUsers_0_100 = Getusers.getusers_pagi(0, 100, consumerKey, consumerSecret, clientUserID);
+				Validation.responseHeaderCodeValidation(getUsers_0_100, HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(getUsers_0_100, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(getUsers_0_100);
+				/*userId1 = getUsers.then().extract().path("users[1].userid");
+			Log.info("userId1 is : "+userId1);
+			userName1 = getUsers.then().extract().path("users[1].username");
+			Log.info("userName1 is : "+userName1);*/
+				String userId11 = getUsers_0_100.then().extract().path("users[0].userid");
+				Log.info("userId11 is : "+userId11);
+				String userName11 = getUsers_0_100.then().extract().path("users[0].username");
+				Log.info("username11 is : "+userName11);
+				Validation.responseKeyValidation_key(getUsers_0_100, "userid");
+				Validation.responseKeyValidation_key(getUsers_0_100, "username");
+				Validation.responseKeyValidation_key(getUsers_0_100, "maxDeviceCount");
+				Validation.responseKeyValidation_key(getUsers_0_100, "createDate");
+				//Validation.responseKeyValidation_key(getUsers, "lastAccessDate");
+				Validation.responseKeyValidation_key(getUsers_0_100, "active");
+				Validation.responseKeyAndValue(getUsers_0_100, "userid", ""+userId11+"");
+				Validation.responseKeyAndValue(getUsers_0_100, "username", ""+userName11+"");	
+
+				Validation.responseKeyAndValue(getUsers_0_100, "userid", ""+userId+"");  //from getclient user Assertion
+				Validation.responseKeyAndValue(getUsers_0_100, "username", ""+userName+"");//from getclient user Assertion
+				
+			}
+			else{
 			Response getUsers = Getusers.getusers(consumerKey, consumerSecret,clientUserID);
 			Validation.responseHeaderCodeValidation(getUsers, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(getUsers, HttpStatus.SC_OK);
@@ -206,15 +248,16 @@ public class DIS_2125 {
 			Validation.responseKeyValidation_key(getUsers, "active");
 			Validation.responseKeyAndValue(getUsers, "userid", ""+userId11+"");
 			Validation.responseKeyAndValue(getUsers, "username", ""+userName11+"");
-			
-			
+
+
 			Validation.responseKeyAndValue(getUsers, "userid", ""+userId+"");  //from getclient user Assertion
 			Validation.responseKeyAndValue(getUsers, "username", ""+userName+"");//from getclient user Assertion
-			System.out.println("getclientsUser : "+getUsers);
+			}
 			
+
 			}
 			}
-		}catch (Exception exp) 
+		}catch (AssertionError exp) 
 		{
 			Log.fail(exp.getMessage());
 			Log.fail("fails due to"+ exp.getCause());

@@ -2,27 +2,23 @@ package com.hurix.api.runner;
 
 import io.restassured.response.Response;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import org.apache.http.HttpStatus;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.JSONException;
+
 import com.hurix.api.externalAPIs.*;
 import com.hurix.api.readerAPIs.*;
 import com.hurix.api.utility.*;
 import com.hurix.automation.utility.Log;
+import com.hurix.automation.utility.UIElements;
 
 
 public class DIS_2137 {
 	
-		DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
-		Date dateobj = new Date();
-		//System.out.println(df.format(dateobj));
-		//public static long startDate1 = EpochTime.getEpochTime("df.format(dateobj");
-		public static long startDate ;//EpochTime.getEpochTime("2019/10/31 14:46:04");
+		
+		public static long startDate ;
 		public static long startIndex = 0;
 		public static long endIndex = 100;
 		//public static int level;
@@ -212,7 +208,7 @@ public class DIS_2137 {
 				consumerSecret =JDBC_category.getSK(client_Id, sqlhost, sqlUsername, sqlPassword);
 
 				
-				for(int i2=1; i2<=1021;i2++)
+				for(int i2=1; i2<=sheet.getLastRowNum();i2++)
 				{email= formatter.formatCellValue(sheet.getRow(i2).getCell(6));
 				String splitStr = email.substring(0,16);
 				userName=splitStr+EpochTime.current();
@@ -221,7 +217,8 @@ public class DIS_2137 {
 				Validation.responseHeaderCodeValidation(registerUSER, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(registerUSER, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(registerUSER);
-				Validation.responseKeyValidation_key(registerUSER, "id");}
+				Validation.responseKeyValidation_key(registerUSER, "id");
+				UIElements.threadHold_2Sec();}
 				//Validation.responseINTEGERKeyAndValue(registerUSER, "responseMsg", "OK");
 				
 			  //}

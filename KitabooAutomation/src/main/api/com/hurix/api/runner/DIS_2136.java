@@ -110,9 +110,9 @@ public class DIS_2136 {
 		try {
 			String finalEmailID = "";
 			//startDate=EpochTime.getEpochTime(""+startDate+"");
-			String excelPath="./testData/Sprint33.1/DIS-2137.xlsx";
+			String excelPath="./testData/Sprint33.1/DIS-2136.xlsx";
 			workbook = new XSSFWorkbook(excelPath);
-			sheet= workbook.getSheet("Register_DIS-2137");
+			sheet= workbook.getSheet("Sheet1");
 			for(int i=1;i<=sheet.getLastRowNum();i++)
 			{DataFormatter formatter = new DataFormatter();
 			environMent = formatter.formatCellValue(sheet.getRow(i).getCell(0));
@@ -120,15 +120,14 @@ public class DIS_2136 {
 			password = formatter.formatCellValue(sheet.getRow(i).getCell(2));
 			catlevel = formatter.formatCellValue(sheet.getRow(i).getCell(3));
 			deviceT = formatter.formatCellValue(sheet.getRow(i).getCell(4));				
-			runY_N=formatter.formatCellValue(sheet.getRow(i).getCell(5));
-
-			firstName= formatter.formatCellValue(sheet.getRow(i).getCell(7));
-			lastName= formatter.formatCellValue(sheet.getRow(i).getCell(8));
+			runY_N = formatter.formatCellValue(sheet.getRow(i).getCell(5));
+			String email1 = formatter.formatCellValue(sheet.getRow(i).getCell(6));
+			String email2 = formatter.formatCellValue(sheet.getRow(i).getCell(7));
 
 			//String[] deviceT = {"IPAD","ANDROID","WINDOWS","PC","HTML5"};
 			Log.info("runY_N : "+runY_N);
-			if(runY_N.contains("NO")){Log.info("Permission to Run that Row is Denied!!..Please change YES in Ith row in Respective Sheet of Yours, Thank You");}
-			else if(runY_N.contains("YES"))
+			if(runY_N.equals("NO")){Log.info("Permission to Run that Row is Denied!!..Please change YES in Ith row in Respective Sheet of Yours, Thank You");}
+			else if(runY_N.equals("YES"))
 			{switch(environMent){
 			case "QC":
 				detail = "http://qc.kitaboo.com";
@@ -218,13 +217,20 @@ public class DIS_2136 {
 			}			
 			Log.info("finalEmailID : "+finalEmailID);
 			//finalEmailID = "\""Stag1Samar.Rylee_Allen+5498@mafthy.acadmey"\";
-			finalEmailID = "\"Stag1Samar.Rylee_Allen+5498@mafthy.academy\",\"Stag1_1Samar.Rylee_Allen+5498@mafthy.academy\"";
-			Response registerUSER = BulkUsersRegistration.bulkUsersRegistration(consumerKey, consumerSecret, finalEmailID);
+			finalEmailID = "\""+email1+"\",\""+email2+"\"";
+			Log.info("email1 : "+email1);
+			Log.info("email2 : "+email2);
+			Response bulkusersRegistration = BulkUsersRegistration.bulkUsersRegistration(consumerKey, consumerSecret, finalEmailID);
 			Log.info("detail : "+detail);
-			Validation.responseHeaderCodeValidation(registerUSER, HttpStatus.SC_OK);
-			Validation.responseCodeValidation1(registerUSER, HttpStatus.SC_OK);
-			Validation.responseTimeValidation(registerUSER);
-			Validation.responseKeyValidation_key(registerUSER, "id");}
+			Validation.responseHeaderCodeValidation(bulkusersRegistration, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(bulkusersRegistration, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(bulkusersRegistration);
+			Validation.responseKeyAndValue(bulkusersRegistration, "responseMsg", "OK");
+			//Validation.responseKeyValidation_key(registerUSER, "id");
+			
+			
+			}
+			
 			}
 		} catch (Exception exp) 
 		{

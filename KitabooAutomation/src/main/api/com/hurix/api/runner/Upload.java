@@ -238,7 +238,7 @@ public class Upload {
 		}catch (Exception exp) 
 		{
 			Log.fail(exp.getMessage());
-			Log.fail("fails due to"+ exp.getCause());
+			Log.fail("Fails due to"+ exp.getCause());
 			exp.printStackTrace();
 		}
 	}

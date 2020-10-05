@@ -1,9 +1,7 @@
 package com.hurix.api.runner;
 
 import io.restassured.response.Response;
-
 import java.sql.SQLException;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -18,17 +16,11 @@ import com.hurix.api.readerAPIs.*;
 import com.hurix.api.utility.*;
 import com.hurix.automation.utility.Log;
 
-public class DIS_1765_WilloPin {	
-
-	//static List<String> detailisbn =  ExcelUtils.getisbn();
-	DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
-	Date dateobj = new Date();
-	//System.out.println(df.format(dateobj));
-	// static long startDate1 = EpochTime.getEpochTime("df.format(dateobj");
-	static long startDate ;//EpochTime.getEpochTime("2019/10/31 14:46:04");
+public class DIS_1765_WilloPin {
+	
+	static long startDate ;
 	static long startIndex = 0;
 	static long endIndex = 100;
-	// static int level;
 	static String assetType;
 	static int level;
 	static String numberOfBooks;
@@ -183,6 +175,7 @@ public class DIS_1765_WilloPin {
 			}				
 			io.restassured.RestAssured.baseURI = detail;
 
+			//if(environMent.equals("Staging") &&  userName.contains(""))
 			//clientID = JDBC_category.getReader(userName, sqlhost, sqlUsername, sqlPassword);
 			//String client_Id1 = formatter.formatCellValue(sheet.getRow(i).getCell(9));
 			//int client_Id = Integer.parseInt(""+client_Id1+"");
@@ -201,8 +194,9 @@ public class DIS_1765_WilloPin {
 			clientID = JDBC_category.getReader(userName, sqlhost, sqlUsername, sqlPassword);
 			Log.info("clientID : "+clientID);
 			
-			
-			/*Response authenticateValue = Authenticate.authenticate(clientID, userName, password,"514185",deviceT[i4]);
+			if(environMent.equals("Staging") &&  userName.contains("ent_lear_cat2@yopmail.com")){}			
+			else{
+			Response authenticateValue = Authenticate.authenticate(clientID, userName, password,"514185",deviceT[i4]);
 			Log.info("Authenticate Response: "+authenticateValue.then().extract().response().prettyPrint());				
 			System.out.println("HERE_Before");
 			Log.info("clientID : "+clientID);
@@ -222,11 +216,14 @@ public class DIS_1765_WilloPin {
 			System.out.println("clientUserID:"+clientUserID);
 			client_Id = authenticateValue.then().extract().path("user.clientID");
 			System.out.println("client_Id:"+client_Id);
-			Log.endTestCase("End");*/
+			Log.endTestCase("End");}
 
 
-
-			client_Id = 1337;
+			if(environMent.equals("Staging") &&  userName.contains("ent_lear_cat2@yopmail.com"))
+			{client_Id = 1337;
+			consumerKey = JDBC_category.getCK(client_Id, sqlhost, sqlUsername, sqlPassword);
+			consumerSecret =JDBC_category.getSK(client_Id, sqlhost, sqlUsername, sqlPassword);}else{}
+			
 			consumerKey = JDBC_category.getCK(client_Id, sqlhost, sqlUsername, sqlPassword);
 			consumerSecret =JDBC_category.getSK(client_Id, sqlhost, sqlUsername, sqlPassword);
 
@@ -321,18 +318,18 @@ public class DIS_1765_WilloPin {
 			Validation.responseINTEGERKeyAndValue(invalidValidate, "PIN", 101);
 
 			invalidValidate = ValidatePin.validatePin("cHJvZi1raXRhYm9v",pinKey,pinPair,"15331",deviceT[i4]);
-			Log.info("InValid clientID : cHJvZi1raXRhYm9v");
+			Log.info("InValid clientID check: cHJvZi1raXRhYm9v");
 			Validation.responseHeaderCodeValidation(invalidValidate, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(invalidValidate, HttpStatus.SC_UNAUTHORIZED);
 			Validation.responseTimeValidation(invalidValidate);
 			Validation.responseINTEGERKeyAndValue(invalidValidate, "PIN_API", 401);
 
 			invalidValidate = ValidatePin.validatePin("VEFGVEM=",pinKey,pinPair,"15331",deviceT[i4]);
-			Log.info("InValid clientID : VEFGVEM=");
+			Log.info("InValid clientID  check: VEFGVEM=");
 			Validation.responseHeaderCodeValidation(invalidValidate, HttpStatus.SC_OK);
-			Validation.responseCodeValidation1(invalidValidate, HttpStatus.SC_UNAUTHORIZED);
+			Validation.responseCodeValidation1(invalidValidate, HttpStatus.SC_BAD_REQUEST);
 			Validation.responseTimeValidation(invalidValidate);
-			Validation.responseINTEGERKeyAndValue(invalidValidate, "PIN_API", 401 );
+			Validation.responseINTEGERKeyAndValue(invalidValidate, "clientID", 101 );
 
 
 			Response fetchbooklist=FetchBookList.fetchBookList_without_pagination(userToken_re, "rwds32323", deviceT[i4]);
@@ -719,7 +716,16 @@ public class DIS_1765_WilloPin {
 			Validation.responseKeyValidation_key(ListBooks, "createdOn");
 			Validation.responseKeyValidation_key(ListBooks, "category");
 			Validation.responseKeyValidation_key(ListBooks, "categoryList");
-			Validation.responseKeyValidation_key(ListBooks, "version");}
+			Validation.responseKeyValidation_key(ListBooks, "version");
+			
+			validatePin = ValidatePin.validatePin(clientID,pinKey,pinPair,"15331",deviceT[i4]);
+			Log.info("clientID : "+clientID);
+			Log.info("detail : "+detail);
+			Validation.responseHeaderCodeValidation(validatePin, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(validatePin, HttpStatus.SC_BAD_REQUEST);
+			Validation.responseTimeValidation(validatePin);
+			Validation.responseINTEGERKeyAndValue(validatePin, "PIN", 101);
+			Validation.responseKeyValidation_key(validatePin, "PIN is already consumed");}
 
 			Log.startTestCase("GeneratePin_10Mins");
 			String deviceT1="IPAD";

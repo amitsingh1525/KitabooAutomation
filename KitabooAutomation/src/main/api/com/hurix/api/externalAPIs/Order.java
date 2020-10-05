@@ -23,7 +23,7 @@ public class Order {
 					.queryParam("type", type)
 					.queryParam("deviceLimit", deviceLimit)	
 					.post("/DistributionServices/ext/api/order");*/
-					.post("DistributionServices/ext/api/order?orderNo="+orderNo+"&bookID="+BookID1+"&type="+type+"&keyCount="+keyCount+"&deviceLimit="+deviceLimit+"");
+					.post("/DistributionServices/ext/api/order?orderNo="+orderNo+"&bookID="+BookID1+"&type="+type+"&keyCount="+keyCount+"&deviceLimit="+deviceLimit+"");
 			
 			
 			Log.info("OrderV2."+BookID1+" Response: "+jsonResponse.then().extract().response().prettyPrint());

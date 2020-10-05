@@ -119,7 +119,7 @@ public class DIS_2126 {
 			String excelPath="./testData/Sprint33.1/DIS-2126.xlsx";
 			workbook = new XSSFWorkbook(excelPath);
 			sheet= workbook.getSheet("Sheet1");
-			for(int i=1;i<=sheet.getLastRowNum();i++)
+			for(int i=2;i<=sheet.getLastRowNum();i++)
 			{DataFormatter formatter = new DataFormatter();
 			environMent = formatter.formatCellValue(sheet.getRow(i).getCell(0));
 			userName = formatter.formatCellValue(sheet.getRow(i).getCell(1));			
@@ -219,27 +219,48 @@ public class DIS_2126 {
 			Validation.responseCodeValidation1(fetchbooklist, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(fetchbooklist);
 			bookID1 = fetchbooklist.then().extract().path("bookList.book.id[0]");
-			System.out.println("bookID_1: "+bookID1);
+			Log.info("bookID_1: "+bookID1);
+			Log.info("environMent : "+environMent);
+			Log.info("userName : "+userName);
+
+			if(environMent.equals("BASE_US")&& userName.equals("willo.test1@yopmail.com") || environMent.equals("PROD_US") && userName.equals("willo.test1@yopmail.com"))
+			{Log.info("HEREREEEEEEEEEEEEEEEEEE");
+			bookID2 = fetchbooklist.then().extract().path("bookList.book.id[0]");
+			Log.info("bookID2: "+bookID2);
+			bookID3 = fetchbooklist.then().extract().path("bookList.book.id[0]");
+			Log.info("bookID3: "+bookID3);}
+			else
+			{Log.info("HEREREEEEEEEEEEEEEEEEEE");
 			bookID2 = fetchbooklist.then().extract().path("bookList.book.id[1]");
-			System.out.println("bookID: "+bookID2);
+			Log.info("bookID2: "+bookID2);
 			bookID3 = fetchbooklist.then().extract().path("bookList.book.id[2]");
-			System.out.println("bookID: "+bookID3);
+			Log.info("bookID3: "+bookID3);}
 			title = fetchbooklist.then().extract().path("bookList.book.title[0]");
-			System.out.println("title: "+title);
-			isbn = fetchbooklist.then().extract().path("bookList.book.isbn[1]");
-			System.out.println("isbn: "+isbn);
+			Log.info("title0: "+title);
+			isbn = fetchbooklist.then().extract().path("bookList.book.isbn[0]");
+			Log.info("isbn0: "+isbn);
 			ebookID1 = fetchbooklist.then().extract().path("bookList.book.ebookID[0]");
-			System.out.println("ebookID: "+ebookID1);
+			Log.info("ebookID: "+ebookID1);
+			if(environMent.equals("BASE_US") || environMent.equals("PROD_US") && userName.equals("willo.test1@yopmail.com"))
+			{assetType = fetchbooklist.then().extract().path("bookList.book.assetType[0]");
+			Log.info("assetType: "+assetType);
+			category1 = fetchbooklist.then().extract().path("bookList.book.category[0]");
+			Log.info("category1: "+category1);
+			collectionName1 = fetchbooklist.then().extract().path("bookList.book.collectionTitle[0]");
+			Log.info("collectionName1: "+collectionName1);
+			catname = ExtractCategory.extractCategory(category1);			
+			}
+			else{
 			assetType = fetchbooklist.then().extract().path("bookList.book.assetType[1]");
-			System.out.println("assetType: "+assetType);
+			Log.info("assetType1: "+assetType);
 			category1 = fetchbooklist.then().extract().path("bookList.book.category[1]");
-			System.out.println("category1: "+category1);
+			Log.info("category1: "+category1);
 			collectionName1 = fetchbooklist.then().extract().path("bookList.book.collectionTitle[1]");
-			System.out.println("collectionName1: "+collectionName1);
-			catname = ExtractCategory.extractCategory(category1);
-			System.out.println("catname: " +catname);
-			String archiveDate = fetchbooklist.then().extract().path("bookList.book.archiveDate[1]");
-			System.out.println("archiveDate:"+archiveDate);
+			Log.info("collectionName1: "+collectionName1);
+			catname = ExtractCategory.extractCategory(category1);}
+			Log.info("catname: " +catname);
+			String archiveDate = fetchbooklist.then().extract().path("bookList.book.archiveDate[0]");
+			Log.info("archiveDate:"+archiveDate);
 
 
 			Response bookdetails = Bookdetails.bookdetails(archiveDate,userToken_re,"fg3cg23",deviceT,bookID2,"");
@@ -515,7 +536,7 @@ public class DIS_2126 {
 
 			Response books = ClientUserID_books.clientUserID_books(consumerKey, consumerSecret, searchV2TEXT, ""+clientUserID+"");
 			Validation.responseHeaderCodeValidation(books, HttpStatus.SC_OK);
-			Validation.responseCodeValidation1(books, HttpStatus.SC_OK);
+			//Validation.responseCodeValidation1(books, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(books);
 			Validation.responseKeyValidation_key(books, "id");
 			Validation.responseKeyValidation_key(books, "isbn");
