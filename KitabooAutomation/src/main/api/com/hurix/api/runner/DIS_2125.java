@@ -127,7 +127,6 @@ public class DIS_2125 {
 			Log.endTestCase("End");
 
 			consumerKey = JDBC_category.getCK(client_Id, sqlhost, sqlUsername, sqlPassword);
-
 			consumerSecret =JDBC_category.getSK(client_Id, sqlhost, sqlUsername, sqlPassword);
 
 			Response getclientsUser=null;
