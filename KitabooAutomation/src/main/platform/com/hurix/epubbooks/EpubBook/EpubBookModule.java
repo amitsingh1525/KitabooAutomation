@@ -50,11 +50,12 @@ public class EpubBookModule extends EpubBookStepModule
 	
 	public static void fileuplod(String pdffilepath, String pdfanswer, String coveranswer, String coverfilepath)
 	{
+		String parentWin = Driver.driver.getWindowHandle();
 		pdffileupload(pdfanswer,pdffilepath);
 		uploadcoverimage(coveranswer, coverfilepath);
 		btnfinishepubbook();
 		btncontinueepubbooks();
-		Driver.driver.switchTo().parentFrame();
+		Driver.driver.switchTo().window(parentWin);
 			
 	}
 	

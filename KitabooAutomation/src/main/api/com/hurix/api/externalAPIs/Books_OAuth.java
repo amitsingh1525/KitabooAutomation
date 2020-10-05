@@ -25,8 +25,8 @@ public class Books_OAuth {
 			Log.info("Books_OAuth Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
+			Log.fail(exp.getMessage());
+			//System.out.println(exp.getCause());
 			exp.printStackTrace();
 		}
 		Log.endTestCase("End");
