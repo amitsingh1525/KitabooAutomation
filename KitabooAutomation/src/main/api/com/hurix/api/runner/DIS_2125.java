@@ -131,8 +131,8 @@ public class DIS_2125 {
 			consumerSecret =JDBC_category.getSK(client_Id, sqlhost, sqlUsername, sqlPassword);
 
 			Response getclientsUser=null;
-			if(environMent.equals("PROD_EU")){}
-			else{getclientsUser = GetClientUsers.getClientUsers(consumerKey, consumerSecret);
+
+			/*getclientsUser = GetClientUsers.getClientUsers(consumerKey, consumerSecret);
 			Validation.responseHeaderCodeValidation(getclientsUser, HttpStatus.SC_OK);
 			//Validation.responseCodeValidation1(getclientsUser, HttpStatus.SC_OK);
 			Thread.sleep(4000);
@@ -154,8 +154,7 @@ public class DIS_2125 {
 			Validation.responseKeyAndValue(getclientsUser, "userid", ""+userId+"");
 			Validation.responseKeyAndValue(getclientsUser, "username", ""+userName+"");
 			Validation.responseKeyAndValue(getclientsUser, "userid", ""+userId1+"");
-			Validation.responseKeyAndValue(getclientsUser, "username", ""+userName1+"");}
-			//System.out.println("getclientsUser : "+getclientsUser);
+			Validation.responseKeyAndValue(getclientsUser, "username", ""+userName1+"");*/
 
 
 			getclientsUser = GetClientUsers.getClientUsers_Pagi(0,100,consumerKey, consumerSecret);
@@ -200,42 +199,40 @@ public class DIS_2125 {
 			Validation.responseKeyAndValue(getclientsUser, "username", ""+userName1+"");
 			System.out.println("getclientsUser : "+getclientsUser);
 
-			if(environMent.equals("PROD_EU"))
-			{
-				Response getUsers_0_100 = Getusers.getusers_pagi(0, 100, consumerKey, consumerSecret, clientUserID);
-				Validation.responseHeaderCodeValidation(getUsers_0_100, HttpStatus.SC_OK);
-				Validation.responseCodeValidation1(getUsers_0_100, HttpStatus.SC_OK);
-				Validation.responseTimeValidation(getUsers_0_100);
-				/*userId1 = getUsers.then().extract().path("users[1].userid");
-			Log.info("userId1 is : "+userId1);
-			userName1 = getUsers.then().extract().path("users[1].username");
-			Log.info("userName1 is : "+userName1);*/
-				String userId11 = getUsers_0_100.then().extract().path("users[0].userid");
-				Log.info("userId11 is : "+userId11);
-				String userName11 = getUsers_0_100.then().extract().path("users[0].username");
-				Log.info("username11 is : "+userName11);
-				Validation.responseKeyValidation_key(getUsers_0_100, "userid");
-				Validation.responseKeyValidation_key(getUsers_0_100, "username");
-				Validation.responseKeyValidation_key(getUsers_0_100, "maxDeviceCount");
-				Validation.responseKeyValidation_key(getUsers_0_100, "createDate");
-				//Validation.responseKeyValidation_key(getUsers, "lastAccessDate");
-				Validation.responseKeyValidation_key(getUsers_0_100, "active");
-				Validation.responseKeyAndValue(getUsers_0_100, "userid", ""+userId11+"");
-				Validation.responseKeyAndValue(getUsers_0_100, "username", ""+userName11+"");	
 
-				Validation.responseKeyAndValue(getUsers_0_100, "userid", ""+userId+"");  //from getclient user Assertion
-				Validation.responseKeyAndValue(getUsers_0_100, "username", ""+userName+"");//from getclient user Assertion
-				
-			}
-			else{
-			Response getUsers = Getusers.getusers(consumerKey, consumerSecret,clientUserID);
-			Validation.responseHeaderCodeValidation(getUsers, HttpStatus.SC_OK);
-			Validation.responseCodeValidation1(getUsers, HttpStatus.SC_OK);
-			Validation.responseTimeValidation(getUsers);
+			Response getUsers_0_100 = Getusers.getusers_pagi(0, 100, consumerKey, consumerSecret, clientUserID);
+			Validation.responseHeaderCodeValidation(getUsers_0_100, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(getUsers_0_100, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(getUsers_0_100);
 			/*userId1 = getUsers.then().extract().path("users[1].userid");
 			Log.info("userId1 is : "+userId1);
 			userName1 = getUsers.then().extract().path("users[1].username");
 			Log.info("userName1 is : "+userName1);*/
+			String userId11 = getUsers_0_100.then().extract().path("users[0].userid");
+			Log.info("userId11 is : "+userId11);
+			String userName11 = getUsers_0_100.then().extract().path("users[0].username");
+			Log.info("username11 is : "+userName11);
+			Validation.responseKeyValidation_key(getUsers_0_100, "userid");
+			Validation.responseKeyValidation_key(getUsers_0_100, "username");
+			Validation.responseKeyValidation_key(getUsers_0_100, "maxDeviceCount");
+			Validation.responseKeyValidation_key(getUsers_0_100, "createDate");
+			//Validation.responseKeyValidation_key(getUsers, "lastAccessDate");
+			Validation.responseKeyValidation_key(getUsers_0_100, "active");
+			Validation.responseKeyAndValue(getUsers_0_100, "userid", ""+userId11+"");
+			Validation.responseKeyAndValue(getUsers_0_100, "username", ""+userName11+"");	
+
+			Validation.responseKeyAndValue(getUsers_0_100, "userid", ""+userId+"");  //from getclient user Assertion
+			Validation.responseKeyAndValue(getUsers_0_100, "username", ""+userName+"");//from getclient user Assertion
+
+			/*else{
+			Response getUsers = Getusers.getusers(consumerKey, consumerSecret,clientUserID);
+			Validation.responseHeaderCodeValidation(getUsers, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(getUsers, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(getUsers);
+			userId1 = getUsers.then().extract().path("users[1].userid");
+			Log.info("userId1 is : "+userId1);
+			userName1 = getUsers.then().extract().path("users[1].username");
+			Log.info("userName1 is : "+userName1);
 			String userId11 = getUsers.then().extract().path("users[0].userid");
 			Log.info("userId11 is : "+userId11);
 			String userName11 = getUsers.then().extract().path("users[0].username");
@@ -251,9 +248,9 @@ public class DIS_2125 {
 
 
 			Validation.responseKeyAndValue(getUsers, "userid", ""+userId+"");  //from getclient user Assertion
-			Validation.responseKeyAndValue(getUsers, "username", ""+userName+"");//from getclient user Assertion
-			}
-			
+			Validation.responseKeyAndValue(getUsers, "username", ""+userName+"");*/ //from getclient user Assertion
+
+
 
 			}
 			}
