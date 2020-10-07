@@ -20,7 +20,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class UIElements {
 
 
-	public static long waitTiming = 60;
+	public static long waitTiming = 30;
 	public static WebDriverWait wait;
 
 	public static WebElement elementFinderByID(String elmentID, String elementName) {
@@ -263,7 +263,7 @@ public class UIElements {
 	}
 
 	public static void windowhandle() {
-			wait.until(ExpectedConditions.numberOfWindowsToBe(2));
+		//	wait.until(ExpectedConditions.numberOfWindowsToBe(2));
 			for (String childWindow : Driver.driver.getWindowHandles())  
 			{  
 				Driver.driver.switchTo().window(childWindow);  

@@ -255,7 +255,7 @@ public class Reader_5Sanity{
 
 	public static  void TC_AboutUS(){
 		Log.startTestCase("TC_AboutUS");
-		LoginModule.userLogin("sharing.teacher@yopmail.com", "kitaboo@123");
+		LoginModule.userLogin("hurixlearner@gmail.com", "kitaboo@123");
 		String msg = BookShelfModule.aboutUS();
 		System.out.println(msg);
 		if(msg.contains("Version")){
@@ -268,6 +268,8 @@ public class Reader_5Sanity{
 
 	public static  void TC_Refresh(){
 		Log.startTestCase("TC_Refresh");
+		Driver.driver.navigate().refresh();
+		BookPlayerModule.threadHold_2Sec();
 		BookShelfStepModule.btnRefresh();
 		Log.endTestCase("End");
 	}
@@ -288,7 +290,7 @@ public class Reader_5Sanity{
 
 	public static  void TC_CatNavigationAndLaunch(){
 		Log.startTestCase("TC_CatNavigationAndLaunch");
-		BookShelfModule.catNavigationAndLaunch("Showcase");
+		BookShelfModule.catNavigationAndLaunch("Automation");
 		LoginModule.threadHold_5Sec();
 		BookplayerStepModule.btnbacktobookshelf();
 		Log.endTestCase("End");
@@ -335,9 +337,10 @@ public class Reader_5Sanity{
 
 	public static  void TC_Analytics(){
 		Log.startTestCase("TC_Analytics");
-		BookShelfModule.linkHorizontalCatName("Showcase");
+		BookShelfModule.linkHorizontalCatName("All");
 		BookShelfModule.analytics(0);
 		Log.endTestCase("End");
+		Driver.driver.navigate().refresh();
 	}
 
 	public static void termination(){
@@ -618,10 +621,22 @@ public class Reader_5Sanity{
 	public static void TC_ContentResources() {
 		Log.startTestCase("TC_ContentResources");
 		int resourceSize = BookplayerStepModule.getResourcelst();
-		for(int i=0; i< resourceSize; i++) {
+		for(int i=0; i<= 2; i++) {
 			BookPlayerModule.threadHold_2Sec();
 			BookPlayerModule.contentResources(i);
 		}
+		Log.endTestCase("End");
+	}
+	
+	public static void TC_JumptoBook() {
+		Log.startTestCase("TC_JumptoBook");
+		LoginModule.userLogin("reader5_teacher@yopmail.com", "kitaboo@123");
+		BookShelfModule.catNavigationAndLaunch("history");
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.allmarkup(1,"Test Go To Book");
 		Log.endTestCase("End");
 	}
 
@@ -640,6 +655,57 @@ public class Reader_5Sanity{
 
 	public static void TC_NoteSharing() {
 		Log.startTestCase("TC_NoteSharing");
+		LoginModule.userLogin("hurixlearner@gmail.com", "kitaboo@123");
+		BookShelfModule.catNavigationAndLaunch("Automation");
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.stickyNotes("purple", "5", 70, 60, "I noted down my text.");
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.stickyNotes("blue", "5", 195, 75, "If you read this message please comment us.");
+		BookPlayerModule.openStickyNotesWithCordinates("purple", "5", 70, 60);
+		BookPlayerModule.btnSharedStickyNotes();
+		BookPlayerModule.chkbxSharedNotesToAllTeacher();
+		BookPlayerModule.btndoneSharedStickyNotes();
+
+		BookPlayerModule.openStickyNotesWithCordinates("blue", "5", 195, 75);
+		BookPlayerModule.btnSharedStickyNotes();
+		BookPlayerModule.chkbxSharedNotesToAllTeacher();
+		BookPlayerModule.btndoneSharedStickyNotes();
+
+		BookPlayerModule.bookPlayerLogout();
+		LoginModule.userLogin("hurixteacher5@gmail.com", "kitaboo@123");
+		BookShelfModule.catNavigationAndLaunch("Automation");
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.myDataSharedNotes(0, true);
+		BookPlayerModule.myDataSharedNotes(1, false);
+		BookPlayerModule.myDataCommentOnSharedNotes(0, "Yes, I found your message!");
+		BookPlayerModule.bookPlayerLogout();
+		LoginModule.userLogin("hurixlearner@gmail.com", "kitaboo@123");
+		BookShelfModule.catNavigationAndLaunch("Automation");
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.openStickyNotesWithCordinates("purple", "5", 70, 60);
+		BookPlayerModule.btnDeleteStickyNotes();
+		BookPlayerModule.openStickyNotesWithCordinates("blue", "5", 195, 75);
+		String msg = BookPlayerModule.getSharedStickyNotesCommentmsg();
+		if(msg.equals("Yes, I found you message!")) {
+			Log.pass("Teacher comment found in a student login. msg was: '"+msg+"'");
+		}else {
+			Log.fail("Teacher comment NOT found in a student login. msg was: '"+msg+"'");
+		}
+		BookPlayerModule.btnDeleteStickyNotes();
+		Log.endTestCase("End");
+	}
+	
+	public static void TC_HighlightSharing() {
+		Log.startTestCase("TC_HighlightSharing");
 		LoginModule.userLogin("hurixlearner@gmail.com", "kitaboo@123");
 		BookShelfModule.catNavigationAndLaunch("Automation");
 		BookPlayerModule.threadHold_5Sec();
@@ -722,7 +788,7 @@ public class Reader_5Sanity{
 	}
 
 	public static void main(String []args){
-		setup();
+	/*	setup();
 		TC_InvalidUserNameANDPassword("", "");
 		TC_DownloadForDesktop();
 		TC_AvailableOnTheAppleStore();
@@ -731,8 +797,8 @@ public class Reader_5Sanity{
 		TC_LoginWithValidUserNameANDPassword("", "");
 		TC_RememberMe("", "");
 		TC_InvalidAccessCodeSignup("");
-		TC_AccessCodeSignupByUsedEmailID("7731231213558515", "", "", "", "");
-		TC_AccessCodeSignup("7731231213558515", "", "", "", "");
+		TC_AccessCodeSignupByUsedEmailID("0503111170616024", "", "", "", "");
+		TC_AccessCodeSignup("0503111170616024", "", "", "", "");
 
 
 		TC_InvalidForgetPassword("");
@@ -804,7 +870,13 @@ public class Reader_5Sanity{
 		TC_DeleteBookmark();
 		TC_NavigationWithChapter();
 		TC_SerachA_word();
-
+		BookPlayerModule.bookPlayerLogout();*/
+		
+		setup();
+		TC_JumptoBook();
+		TC_HighlightSharing();
+		
+		
 		//termination();
 	}
 
