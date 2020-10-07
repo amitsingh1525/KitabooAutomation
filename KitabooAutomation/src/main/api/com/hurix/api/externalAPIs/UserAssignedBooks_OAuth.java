@@ -31,8 +31,7 @@ public class UserAssignedBooks_OAuth {
 			Log.info("UserAssignedBooks_OAuth Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
+			Log.fail(exp.getMessage());
 			exp.printStackTrace();
 		}
 		Log.endTestCase("End");
@@ -40,7 +39,7 @@ public class UserAssignedBooks_OAuth {
 		
 	}
 
-	public static Response userAssignedBooks_OAuth_with_pagi(long startIndex, long endIndex,String consumerKey, String consumerSecret){
+	public static Response userAssignedBooks_OAuth_with_pagi(long startIndex, long endIndex,String consumerKey, String consumerSecret,String clientUserID){
 		//System.out.println("GETuserAssignedBooks_OAuth_with_pagi: " +GETuserAssignedBooks_OAuthPath);		
 		Response jsonResponse = null;
 		try {
@@ -50,7 +49,7 @@ public class UserAssignedBooks_OAuth {
 					.oauth(consumerKey, consumerSecret, "", "")
 					.header("startIndex",startIndex)
 					.header("endIndex", endIndex)
-					.get("/DistributionServices/ext/api/userAssignedBooks?clientUserId="+com.hurix.api.runner.RestAssured.clientUserID+"");
+					.get("/DistributionServices/ext/api/userAssignedBooks?clientUserId="+clientUserID+"");
 			Validation.responseHeaderCodeValidation(jsonResponse, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(jsonResponse, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(jsonResponse);
@@ -60,8 +59,7 @@ public class UserAssignedBooks_OAuth {
 			Log.info("UserAssignedBooks_OAuth_with_pagi Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
+			Log.fail(exp.getMessage());
 			exp.printStackTrace();
 		}
 		Log.endTestCase("End");

@@ -1,10 +1,8 @@
 package com.hurix.api.readerAPIs;
 
 import static io.restassured.RestAssured.given;
-import java.sql.SQLException;
 import io.restassured.response.Response;
-import com.hurix.api.utility.JDBC_category;
-import com.hurix.api.utility.Validation;
+import com.hurix.api.utility.*;
 import com.hurix.automation.utility.Log;
 
 public class MultiCategoryBookList {
@@ -15,6 +13,7 @@ public class MultiCategoryBookList {
 		try {
 
 			Log.startTestCase("MultiCategoryBookList:"+catLevel+"");
+			Log.info("bookID : "+bookID);
 			if(catLevel.contains ("4"))
 			{
 				jsonResponse = given()
@@ -50,8 +49,8 @@ public class MultiCategoryBookList {
 			}
 		} catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
 			exp.printStackTrace();
 		}
 		Log.endTestCase("End");
@@ -103,8 +102,8 @@ public class MultiCategoryBookList {
 
 		} catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
 			exp.printStackTrace();
 		}
 		Log.endTestCase("End");
@@ -162,8 +161,8 @@ public class MultiCategoryBookList {
 
 		} catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
 			exp.printStackTrace();
 		}
 		Log.endTestCase("End");

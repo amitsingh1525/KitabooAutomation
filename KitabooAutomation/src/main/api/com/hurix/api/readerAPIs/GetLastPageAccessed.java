@@ -5,24 +5,21 @@ import io.restassured.response.Response;
 import com.hurix.automation.utility.Log;
 
 public class GetLastPageAccessed {
-	public static Response getLastPageAccessed(String userToken,String DeviceID,String DeviceType)
+	public static Response getLastPageAccessed(int bookID1,String userToken,String deviceID,String deviceType)
 	{
 		Response jsonResponse = null;
 		try {
 
-			Log.startTestCase("GetLastPageAccessed");
-			//System.out.println("GETfetchBookList RequestURL:" +fetchBookListPath);
+			Log.startTestCase("GetLastPageAccessed.device:"+deviceType+".bookID1:"+bookID1+"");
 			jsonResponse = given()
 					.header("usertoken",userToken)
-					.get("DistributionServices/services/api/reader/books/"+DeviceID+"/"+DeviceType+"/348931329/getLastPageAccessed");
-			/*Validation.responseCodeValidation1(jsonResponse, HttpStatus.SC_OK);
-		Validation.responseHeaderCodeValidation(jsonResponse, HttpStatus.SC_OK);
-		Validation.responseTimeValidation(jsonResponse);*/
-			Log.info("GetLastPageAccessed Response: "+jsonResponse.then().extract().response().prettyPrint());
+					.get("DistributionServices/services/api/reader/books/"+deviceID+"/"+deviceType+"/"+bookID1+"/getLastPageAccessed");
+			Log.info("usertoken : "+userToken);
+			Log.info("GetLastPageAccessed.device:"+deviceType+".bookID1:"+bookID1+" Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
 			exp.printStackTrace();
 		}
 		Log.endTestCase("End");

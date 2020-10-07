@@ -17,10 +17,11 @@ public class CategoryBookListV1 {
 
 	public static Response categoryBookListV1(String catname,String userToken,String DeviceID,String DeviceType,int bookID, String catLevel, String sqlhost, String sqlUsername, String sqlPassword)
 	{
+		Log.info("catname : "+catname);
 		String Fcatname=null;
 		Response jsonResponse = null;
 		try {			
-			Log.startTestCase("categoryBookListV1.catname="+catname+"");
+			Log.startTestCase("categoryBookListV1.catLevel="+catLevel+"");
 			Connection con = DriverManager.getConnection(sqlhost,sqlUsername,sqlPassword);
 			Statement stmt = con.createStatement();
 			ResultSet result = null;
@@ -35,7 +36,8 @@ public class CategoryBookListV1 {
 			c1 = result.getString("c1");
 			Fcatname=c1;
 			Log.info("catname  : "+Fcatname);
-
+			Log.info("userToken  : "+userToken);
+			Log.info("URL  : "+"/DistributionServices/services/api/reader/books/"+DeviceID+"/"+DeviceType+"/books/"+catname+"");
 			if(catLevel .contains("1"))
 			{
 				//catname=catname;
@@ -58,12 +60,9 @@ public class CategoryBookListV1 {
 
 				Log.info("categoryBookListV1 Response: "+jsonResponse.then().extract().response().prettyPrint());
 			}
-
 			else if(catLevel .contains("3"))
 			{
-
 				System.out.println("schemaNAme : " +schemaNAme);
-
 				Log.info("Fcatname  : "+Fcatname);
 				System.out.println("GETcategoryBookListV1 RequestURL:" +GETcategoryBookListV1Path);
 				jsonResponse = given()
@@ -83,10 +82,11 @@ public class CategoryBookListV1 {
 
 				Log.info("categoryBookListV1 Response: "+jsonResponse.then().extract().response().prettyPrint());
 			}
+			stmt.close();
+			con.close();
 		} catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
+			Log.fail(exp.getMessage());
 			exp.printStackTrace();
 		}
 		Log.endTestCase("End");
@@ -169,10 +169,11 @@ public class CategoryBookListV1 {
 
 				Log.info("categoryBookListV1.catname="+catname+".SortBy="+SortBy+".orderBy="+orderBy+" Response: "+jsonResponse.then().extract().response().prettyPrint());
 			}
+			stmt.close();
+			con.close();
 		} catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
+			Log.fail(exp.getMessage());
 			exp.printStackTrace();
 		}
 		Log.endTestCase("End");
@@ -263,13 +264,36 @@ public class CategoryBookListV1 {
 
 				Log.info("categoryBookListV1.catname="+catname+".SortBy="+SortBy+".orderBy="+orderBy+" Response: "+jsonResponse.then().extract().response().prettyPrint());
 			}
+			stmt.close();
+			con.close();
 		} catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
+			Log.fail(exp.getMessage());
 			exp.printStackTrace();
 		}
 		Log.endTestCase("End");
 		return jsonResponse;
 	}
+
+	public static Response categoryBookListV1_cat(String catname,String userToken,String DeviceID,String DeviceType,int bookID, String catLevel, String sqlhost, String sqlUsername, String sqlPassword)
+	{
+		//String Fcatname=null;
+		Response jsonResponse = null;
+		try {			
+			Log.startTestCase("categoryBookListV1.catname="+catname+"");
+
+			Log.info("catname  : "+catname);
+			System.out.println("GETcategoryBookListV1 RequestURL:" +GETcategoryBookListV1Path);
+			jsonResponse = given()
+					.header("usertoken",userToken)	
+					.get("/DistributionServices/services/api/reader/books/"+DeviceID+"/"+DeviceType+"/books/"+catname+"");
+
+			Log.info("categoryBookListV1.catname="+catname+" Response: "+jsonResponse.then().extract().response().prettyPrint());
+	} catch (Exception exp) 
+	{
+		Log.fail(exp.getMessage());
+		exp.printStackTrace();
+	}
+	return jsonResponse;
+}
 }

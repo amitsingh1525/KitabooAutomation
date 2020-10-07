@@ -42,6 +42,7 @@ public class Reader_5Sanity{
 			Log.pass("Username or Password entered is incorrect");
 		}
 		else {
+			//ja
 			Log.fail("Username or Password entered is correct");
 		}
 		Log.endTestCase("End");
@@ -175,9 +176,9 @@ public class Reader_5Sanity{
 		LoginModule.forgetPassword("hurix.reader@gmail.com");
 		String msg = LoginModule.getForgetmsg();
 		if(msg.contains("reset")){
-			Log.pass("reset msg found.");
+			Log.pass("Forget Reset message found. message was: "+msg);
 		}else{
-			Log.fail("reset msg NOT found.");
+			Log.fail("reset msg NOT found.. message found: "+msg);
 		}
 		LoginModule.btnOk();
 		Log.endTestCase("End");
@@ -621,7 +622,8 @@ public class Reader_5Sanity{
 	public static void TC_ContentResources() {
 		Log.startTestCase("TC_ContentResources");
 		int resourceSize = BookplayerStepModule.getResourcelst();
-		for(int i=0; i<= 2; i++) {
+		Log.info("Resources Count: "+resourceSize);
+		for(int i=0; i<=  2; i++) {
 			BookPlayerModule.threadHold_2Sec();
 			BookPlayerModule.contentResources(i);
 		}
@@ -797,9 +799,14 @@ public class Reader_5Sanity{
 		TC_LoginWithValidUserNameANDPassword("", "");
 		TC_RememberMe("", "");
 		TC_InvalidAccessCodeSignup("");
+<<<<<<< HEAD
 		TC_AccessCodeSignupByUsedEmailID("0503111170616024", "", "", "", "");
 		TC_AccessCodeSignup("0503111170616024", "", "", "", "");
 
+=======
+		TC_AccessCodeSignupByUsedEmailID("3195071221489016", "", "", "", "");
+		TC_AccessCodeSignup("3195071221489016", "", "", "", "");
+>>>>>>> branch 'master' of https://github.com/amitsingh1525/KitabooAutomation.git
 
 		TC_InvalidForgetPassword("");
 		TC_ForgetPassword("");
@@ -824,8 +831,6 @@ public class Reader_5Sanity{
 		//BookShelfModule.catNavigationAndLaunch("Automation");
 		LoginModule.userLogin("hurixreader5@gmail.com", "kitaboo@123");
 		BookShelfModule.catNavigationAndLaunch("Automation");
-
-
 
 		BookPlayerModule.threadHold_5Sec();
 		BookPlayerModule.threadHold_5Sec();
@@ -878,6 +883,7 @@ public class Reader_5Sanity{
 		
 		
 		//termination();
+
 	}
 
 }

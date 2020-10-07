@@ -14,6 +14,7 @@ public class MultiCategoryCollectionBookList {
 		try {
 
 			Log.startTestCase("MultiCategoryCollectionBookList"+catLevel+"");
+			Log.info("collectName : " +collectName);
 			if(catLevel.contains ("4"))
 			{
 				Log.info("collectName Before string : "+collectName);
@@ -60,8 +61,8 @@ public class MultiCategoryCollectionBookList {
 			Log.info("MultiCategoryCollectionBookList: "+catLevel+ " Response: "+jsonResponse.then().extract().response().prettyPrint());
 		}catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
 			exp.printStackTrace();
 		}
 		Log.endTestCase("End");
@@ -126,8 +127,8 @@ public class MultiCategoryCollectionBookList {
 			Log.info("MultiCategoryCollectionBookList"+catLevel+".SortBy="+SortBy+".orderBy="+orderBy+" Reponse: "+catLevel+ " Response: "+jsonResponse.then().extract().response().prettyPrint());
 		}catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
 			exp.printStackTrace();
 		}
 		Log.endTestCase("End");
@@ -198,8 +199,8 @@ public class MultiCategoryCollectionBookList {
 			Log.info("MultiCategoryCollectionBookList"+catLevel+".SortBy="+SortBy+".orderBy="+orderBy+" Reponse: "+catLevel+ " Response: "+jsonResponse.then().extract().response().prettyPrint());
 		}catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
 			exp.printStackTrace();
 		}
 		Log.endTestCase("End");

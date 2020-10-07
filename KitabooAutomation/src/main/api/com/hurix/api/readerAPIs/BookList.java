@@ -17,8 +17,7 @@ public class BookList {
 			Log.info("bookListResponse: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
+			Log.fail(exp.getMessage());
 			exp.printStackTrace();
 		}
 		Log.endTestCase("End");
@@ -38,8 +37,7 @@ public class BookList {
 			Log.info("bookList.SortBy="+SortBy+".orderBy="+orderBy+" Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
+			Log.fail(exp.getMessage());
 			exp.printStackTrace();
 		}
 		Log.endTestCase("End");
@@ -61,8 +59,7 @@ public class BookList {
 			Log.info("bookList.SortBy="+SortBy+".orderBy="+orderBy+".startIndex="+startIndex+".endIndex="+endIndex+" Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
+			Log.fail(exp.getMessage());
 			exp.printStackTrace();
 		}
 		Log.endTestCase("End");

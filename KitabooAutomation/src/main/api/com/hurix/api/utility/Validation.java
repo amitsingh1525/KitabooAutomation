@@ -1,5 +1,7 @@
 package com.hurix.api.utility;
 
+import java.util.List;
+
 import org.junit.Assert;
 
 import com.relevantcodes.extentreports.ExtentReports;
@@ -7,47 +9,33 @@ import com.hurix.automation.utility.*;
 
 import io.restassured.response.*;
 
-
 public class Validation {
 	static ExtentReports extent;
-	static ResponseBody<?> body;
 	public static void responseHeaderCodeValidation(Response jsonResponse, int statusCode) 
-
 	{
-		Log.info("Expected StatusCode = "+statusCode); 
-		int jsonResponse1=0;
-		try {
-			if(jsonResponse!=null)
-			{
-				//Log.info("HERE");
-				Log.info("Actual StatusCode = "+jsonResponse.getStatusCode());
-				jsonResponse1 = jsonResponse.getStatusCode();
-			}
-		} catch (AssertionError e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();}
-
-		if(jsonResponse1 == statusCode)
+		int responseCode = jsonResponse.getStatusCode();
+		
+		if(responseCode == statusCode)
 		{
-			//Assert.assertThat(statusCode, jsonResponse.then().extract().path("responseCode"));
-			Log.pass("successFull Header Validate, status code is = " +jsonResponse.getStatusCode());
+			Log.pass("Expected and actual statusCode: " +jsonResponse.getStatusCode()+" is matched.");
 		}
-		else if(jsonResponse1 != statusCode)
+		else if(responseCode != statusCode)
 		{
-			//Assert.assertThat(statusCode, jsonResponse.then().extract().path("responseCode"));
-			Log.fail("Fail Header Validated, status code is = " +jsonResponse);
+			Log.fail("Expected HeaderCode: " +statusCode+" But found: "+jsonResponse.getStatusCode()+". Both are not matched");
 		}
 	}
+
 
 	public static void responseTimeValidation(Response jsonResponse)
 	{
 		try {			
 			long time =jsonResponse.time();
 			//Log.pass("HERE "+jsonResponse+" API Reposne Time Is :: " +time);
-			Log.pass("API Reposne Time in MillSeconds Is = " +time);
+			Log.pass("API Reposne Time in MilliSeconds Is = " +time);
 
 		} catch (Exception e) {
 			Log.fail(e.getMessage());
+			Log.fail("fails due to"+ e.getCause());
 		}
 	}
 
@@ -102,26 +90,30 @@ public class Validation {
 	} */
 	public static void responseKeyValidation_key(Response jsonResponse, String key)
 	{
-		if(jsonResponse!=null)
-		{body = jsonResponse.getBody();
-		String bodyStringValue = body.asString();
-		Log.info("KEY string :: " +key);
-		try {
-			Assert.assertTrue(bodyStringValue.contains(key));
-			Log.pass("validation pass Parameter is Present are = " +key);
-		} catch (AssertionError e) {
-			e.printStackTrace();
-			Log.fail("validated Asserting for contails= 1 Not FOUND are = " +key);
-			//Log.fail("validated Not FOUND are : " +key+ "=" +value );
-		}	
+		ResponseBody<?> body = jsonResponse.getBody();
+		if(body!=null)
+		{
+			String bodyStringValue = body.asString();
+			try {
+				Assert.assertTrue(bodyStringValue.contains(key));
+				
+				Log.pass("Parameter is Present= "+key+"  .inside response body.");
+			} catch (AssertionError e) {
+				e.printStackTrace();
+				Log.fail("Expected Parameter is NOT Present= "+key+" .inside response body.");
+				//Log.fail("validated Not FOUND are : " +key+ "=" +value );
+			}	
+		}else{
+			Log.warn("Response null found!");
 		}
 	}
 	public static void responseNOTKeyValidation_key(Response jsonResponse, String key)
 	{
-		body = jsonResponse.getBody();
+		ResponseBody<?> body = jsonResponse.getBody();
 		String bodyStringValue = body.asString();
 		Log.info("Whole string :: " +key);
-		Log.info("HERE we are-> "+" bodyStringValue="+bodyStringValue+" key ="+key+"");
+		// bodyStringValue="+bodyStringValue+"
+		Log.info("HERE we are-> "+" key ="+key+"");
 		if(bodyStringValue != key)
 		{
 			//Assert.assertFalse(bodyStringValue.contains(key));
@@ -144,11 +136,11 @@ public class Validation {
 			Log.fail("size Validation pass is : " +""+variable+""+" =$GREATER THEN EQUALS TO$: "+value);
 		}
 	}
-	
+
 	public static void responseISGreater_String(String  variable , int key,int value)
 	{
 		//int key= Integer.parseInt(""+key1+"");	
-		
+
 		if(key >= value)
 		{
 			Log.pass("size Validation pass is : " + ""+variable+""+" =$GREATER THEN EQUALS TO$: "+value);
@@ -162,7 +154,8 @@ public class Validation {
 	{
 		//JSONObject array = new JSONObject(jsonResponse .getBody().asString());
 		//for(String i=0;i<array.length();i++)
-		body = jsonResponse.getBody();
+		ResponseBody<?> body = jsonResponse.getBody();
+		//body = jsonResponse.getBody();
 		String bodyStringValue = body.asString();
 		Log.info("Whole string :: " +key);
 		String chunk=null;
@@ -180,7 +173,8 @@ public class Validation {
 
 	public static void responseINTEGERKeyAndValue(Response jsonResponse, String key,Object  value)
 	{
-		body = jsonResponse.getBody();
+		//body = jsonResponse.getBody();
+		ResponseBody<?> body = jsonResponse.getBody();
 		String bodyStringValue = body.asString();
 		Log.info("Whole string :: " +key);
 		String chunk=null;
@@ -195,7 +189,103 @@ public class Validation {
 		}
 		else
 		{
-			Log.fail("validated INTEGER Asserting for contails= 1 Not FOUND are = " +chunk);
+			Log.fail("validation pass INTEGER Parameter is NOT are= " +chunk);
 		}				
 	}
+
+	/*public static void responseKeyAndValue_obj(Response jsonResponse, String key,Object value)
+	{
+		//JSONObject array = new JSONObject(jsonResponse .getBody().asString());
+		//for(String i=0;i<array.length();i++)
+		ResponseBody<?> body = jsonResponse.getBody();
+		//body = jsonResponse.getBody();
+		String bodyStringValue = body.asString();
+		Log.info("Whole string :: " +key);
+		String chunk=null;
+		chunk = "\""+key+"\": "+"\""+value+"\"";
+		Log.info("WHOLE STRING is key:value = "+chunk);
+		if(bodyStringValue.contains(chunk))
+		{
+			Log.pass("validation pass Parameter is Present are = " +chunk);
+		}
+		else
+		{
+			Log.fail("validated Asserting for contails= 1 Not FOUND are = " +chunk);
+		}			
+	}*/
+
+	public static void responseKcount(Response jsonResponse, String key)
+	{
+		/*int total = 0;
+		String[] here2=null;
+		String here1=null;*/
+		//JSONObject array = new JSONObject(jsonResponse .getBody().asString());
+		//for(String i=0;i<array.length();i++)
+		//ResponseBody<?> body = jsonResponse.getBody();
+		//body = jsonResponse.getBody();
+		//String bodyStringValue = body.asString();
+		List<String>  key1 =jsonResponse.then().extract().path("bookList.book."+key+"");
+
+		Log.info("key1="+key+" :"+key1.size());
+
+		Log.pass("TOTAL COUNT Present are = " +key1.size());
+
+	}
+
+	public static void responseKcount1(Response jsonResponse, String key)
+	{
+		int total = 0;
+		//String[] here2=null;
+		//String here1=null;
+		total = Integer.parseInt(""+key+"");	
+		
+		//JSONObject array = new JSONObject(jsonResponse .getBody().asString());
+		//for(String i=0;i<array.length();i++)
+		
+		Log.pass("TOTAL TOTALS Present are = " +total);
+
+	}
+	
+	public static void responseKeyValidation_Str(Object jsonResponse, String key)
+	{
+		//ResponseBody<?> body = jsonResponse.getBody();
+		if(jsonResponse!=null)
+		{
+			String bodyStringValue = jsonResponse.toString();
+			try {
+				Assert.assertTrue(bodyStringValue.contains(key));
+				
+				Log.pass("String Parameter is Present= "+key+"  .inside response body.");
+			} catch (AssertionError e) {
+				e.printStackTrace();
+				Log.fail("String Expected Parameter is NOT Present= "+key+" .inside response body.");
+				//Log.fail("validated Not FOUND are : " +key+ "=" +value );
+			}	
+		}else{
+			Log.warn("Response null found!");
+		}
+	}
+	
+	/*public static void responseKcount_Str(List<String> jsonResponse, String key)
+	{
+		int total = 0;
+		String[] here2=null;
+		String here1=null;
+		//JSONObject array = new JSONObject(jsonResponse .getBody().asString());
+		//for(String i=0;i<array.length();i++)
+		//ResponseBody<?> body = jsonResponse.getBody();
+		//body = jsonResponse.getBody();
+		//String bodyStringValue = jsonResponse.toString();
+		//List<String>  key1 =bodyStringValue.substring(key);
+
+		List<String> category = ((Validatable<ValidatableResponse, Response>) jsonResponse).then().extract().path("bookList.book."+key+"");
+		//boolean count = (jsonResponse.contains(key));
+		Object key1 =  ((Validatable<ValidatableResponse, Response>) jsonResponse).then().extract().path(""+key+"");
+		
+		
+		Log.info("key1="+key+" :"+((List<String>) key1).size());
+
+		Log.pass("TOTAL COUNT Present are = " +((List<String>) key1).size());
+
+	}*/
 }

@@ -21,7 +21,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void btnbacktobookshelf(){
 		try {
-			elementFinderByXpath(prop.getProperty("backtobookshelf_xpath"), "btn_backtobookshelf").click();
+			elementFinderByXpath(prop.getProperty("backtobookshelf_xpath"), "Click on BookShelf.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -29,7 +29,7 @@ public class BookplayerStepModule extends UIElements {
 	
 	public static void btnBookPlayerProfileIcon(){
 		try {
-			elementFinderByXpath(prop.getProperty("bookPlayerProfileIcon_Xpath"), "btnBookPlayerProfileIcon").click();
+			elementFinderByXpath(prop.getProperty("bookPlayerProfileIcon_Xpath"), "Click on Profile Icon.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -37,7 +37,7 @@ public class BookplayerStepModule extends UIElements {
 	
 	public static void btnBookPlayerProfileIcon_Signout(){
 		try {
-			elementFinderByXpath(prop.getProperty("bookPlayerProfileIconSignout_Xpath"), "btnBookPlayerProfileIcon_Signout").click();
+			elementFinderByXpath(prop.getProperty("bookPlayerProfileIconSignout_Xpath"), "Click on Signout.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -45,7 +45,7 @@ public class BookplayerStepModule extends UIElements {
 	
 	public static void btnNextPageNavigation(){
 		try {
-			elementFinderByXpath(prop.getProperty("nextPageNavigation_xpath"), "btn_backtobookshelf").click();
+			elementFinderByXpath(prop.getProperty("nextPageNavigation_xpath"), "Click on next page arrow.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -53,7 +53,7 @@ public class BookplayerStepModule extends UIElements {
 	
 	public static void btnPreviousPageNavigation(){
 		try {
-			elementFinderByXpath(prop.getProperty("previousPageNavigation_xpath"), "btn_backtobookshelf").click();
+			elementFinderByXpath(prop.getProperty("previousPageNavigation_xpath"), "Click on previous page arrow.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -62,7 +62,7 @@ public class BookplayerStepModule extends UIElements {
 	public static void btntableofcontentandresources(){
 		try {
 			//changes
-			elementFinderByID(prop.getProperty("tableofcontentandresources_ID"), "btn_tableofcontentandresources").click();
+			elementFinderByID(prop.getProperty("tableofcontentandresources_ID"), "Click on TOC.").click();
 			/*elementFinderByID(prop.getProperty("resources_ID"), "btn_resources").click();
 			elementFinderByID(prop.getProperty("resources_drpdwn_xpath"), "drpdwn_resourcelist").click();*/
 		} catch (Exception e) {
@@ -72,7 +72,7 @@ public class BookplayerStepModule extends UIElements {
 	
 	public static void btnresources(){
 		try {
-			elementFinderByXpath(prop.getProperty("resources_xpath"), "btn_resources").click();
+			elementFinderByXpath(prop.getProperty("resources_xpath"), "Click on resources.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -80,7 +80,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void btnResourceDrpdwn(){
 		try {
-			elementFinderByXpath(prop.getProperty("resources_drpdwn_xpath"), "drpdwn_resourcelist").click();
+			elementFinderByXpath(prop.getProperty("resources_drpdwn_xpath"), "Click on resources dropdown.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -90,7 +90,7 @@ public class BookplayerStepModule extends UIElements {
 		btntableofcontentandresources();
 		btnresources();
 		btnResourceDrpdwn();
-		int size = elementsFinderByXpaths(prop.getProperty("resources_list_drpdwn_lstview_xpath"), "drpdwn_resourcelist").size();
+		int size = elementsFinderByXpaths(prop.getProperty("resources_list_drpdwn_lstview_xpath"), "getting resources list.").size();
 		btnResourceDrpdwn();
 		btntableofcontentandresources();
 		return size;
@@ -98,7 +98,7 @@ public class BookplayerStepModule extends UIElements {
 	
 	public static void btnResourcelst(int i){
 		try {
-			List<WebElement> element = elementsFinderByXpaths(prop.getProperty("resources_list_drpdwn_lstview_xpath"), "drpdwn_resourcelist");
+			List<WebElement> element = elementsFinderByXpaths(prop.getProperty("resources_list_drpdwn_lstview_xpath"), "Click on resources.");
 			element.get(i).click();
 			String value = element.get(i).getAttribute("aria-label");
 			String title = value.replaceAll("Page [0-9]", "");
@@ -124,6 +124,7 @@ public class BookplayerStepModule extends UIElements {
 		}
 	}
 	
+<<<<<<< HEAD
 	public static void markup(int pageNum,String title){
 		try {
 			
@@ -166,9 +167,11 @@ public class BookplayerStepModule extends UIElements {
 		}
 	}
 
+=======
+>>>>>>> branch 'master' of https://github.com/amitsingh1525/KitabooAutomation.git
 	public static void btncontents(){
 		try {
-			elementFinderByXpath(prop.getProperty("contents_xpath"), "btncontents").click();
+			elementFinderByXpath(prop.getProperty("contents_xpath"), "Click on Contents.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -176,7 +179,7 @@ public class BookplayerStepModule extends UIElements {
 	
 	public static void btncontentsdrpdwn(){
 		try {
-			List<WebElement> ele = elementsFinderByXpaths(prop.getProperty("content_drpdwn_lstview_xpath"), "btncontentsdrpdwn");
+			List<WebElement> ele = elementsFinderByXpaths(prop.getProperty("content_drpdwn_lstview_xpath"), "Click on contents dropdown.");
 			ele.get(0).click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
@@ -185,7 +188,7 @@ public class BookplayerStepModule extends UIElements {
 	
 	public static void btncontentsChildlist(){
 		try {
-			List<WebElement> ele = elementsFinderByXpaths(prop.getProperty("content_childList_lstview_xpath"), "btn_contents");
+			List<WebElement> ele = elementsFinderByXpaths(prop.getProperty("content_childList_lstview_xpath"), "Click on content child list.");
 			ele.get(0).click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
@@ -194,7 +197,7 @@ public class BookplayerStepModule extends UIElements {
 	
 	public static void lstcontent_list(int chapterno){
 		try {
-			List<WebElement> element= elementsFinderByXpaths(prop.getProperty("content_list_lstview_xpath"), "lst_content_list");
+			List<WebElement> element= elementsFinderByXpaths(prop.getProperty("content_list_lstview_xpath"), "Click on list content.");
 			element.get(chapterno).click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
@@ -203,7 +206,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void btnhighlights(){
 		try {
-			elementFinderByXpath(prop.getProperty("highlights_xpath"), "btn_highlights").click();
+			elementFinderByXpath(prop.getProperty("highlights_xpath"), "Click on highlight.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -211,7 +214,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void btnnotes(){
 		try {
-			elementFinderByXpath(prop.getProperty("notes_xpath"), "btn_notes").click();
+			elementFinderByXpath(prop.getProperty("notes_xpath"), "Click on notes.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -219,7 +222,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void lstfilter_list(){
 		try {
-			List<WebElement> element= elementsFinderByXpaths(prop.getProperty("filter_list_lstview_xpath"), "lst_filter_list");
+			List<WebElement> element= elementsFinderByXpaths(prop.getProperty("filter_list_lstview_xpath"), "Click on filter");
 
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
@@ -228,7 +231,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void btnsearch(){
 		try {
-			elementFinderByID(prop.getProperty("searchbtn_ID"), "btn_search").click();
+			elementFinderByID(prop.getProperty("searchbtn_ID"), "Click on search").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -236,8 +239,8 @@ public class BookplayerStepModule extends UIElements {
 	
 	public static void txtSearch(String text){
 		try {
-			elementFinderByID(prop.getProperty("searchboxtxt_ID"), "txt_searchbox").sendKeys(text);
-			elementFinderByID(prop.getProperty("searchboxtxt_ID"), "txt_searchbox").sendKeys(Keys.ENTER);
+			elementFinderByID(prop.getProperty("searchboxtxt_ID"), "Enterd search text '"+text+"'").sendKeys(text);
+			elementFinderByID(prop.getProperty("searchboxtxt_ID"), "Press enter key").sendKeys(Keys.ENTER);
 			threadHold_2Sec();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
@@ -249,7 +252,7 @@ public class BookplayerStepModule extends UIElements {
 		String pageNumber = null;
 		try {
 			pageNumber = getPageNumsearchResult(i);
-			List<WebElement> element= elementsFinderByXpaths(prop.getProperty("searchresult_lstview_xpath"), "get page number");
+			List<WebElement> element= elementsFinderByXpaths(prop.getProperty("searchresult_lstview_xpath"), "Click on search result list.");
 			element.get(i).click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
@@ -260,7 +263,7 @@ public class BookplayerStepModule extends UIElements {
 	public static String getPageNumsearchResult(int i){
 		String pagenum = null;
 		try {
-			List<WebElement> element= elementsFinderByXpaths(prop.getProperty("pageNumOnSearchText_lstview_xpath"), "searchresult_lstview_xpath");
+			List<WebElement> element= elementsFinderByXpaths(prop.getProperty("pageNumOnSearchText_lstview_xpath"), "Getting page number from the search result.");
 			pagenum = element.get(i).getText();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
@@ -271,7 +274,7 @@ public class BookplayerStepModule extends UIElements {
 	public static String getinvalidsearchmsg(){
 		String msg = null;
 		try {
-			msg = elementFinderByXpath(prop.getProperty("invalidsearch_visibletext_xpath"), "search results not found").getText();
+			msg = elementFinderByXpath(prop.getProperty("invalidsearch_visibletext_xpath"), "Getting Invalid search msg.").getText();
 			System.out.println("Invalid search message found: "+ msg);
 		} catch (Exception e) {
 			System.out.println("Element not present.");
@@ -281,7 +284,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void btnmyData(){
 		try {
-			elementFinderByID(prop.getProperty("mydata_ID"), "btn_mydata").click();
+			elementFinderByID(prop.getProperty("mydata_ID"), "Click on my data.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -289,7 +292,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void btnmyDatahighlight(){
 		try {
-			elementFinderByXpath(prop.getProperty("highlights_xpath"), "btn_highlights").click();
+			elementFinderByXpath(prop.getProperty("highlights_xpath"), "Click on my data highlight tab.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -297,7 +300,7 @@ public class BookplayerStepModule extends UIElements {
 	
 	public static void btnFilter(){
 		try {
-			elementFinderByXpath(prop.getProperty("filter_xpath"), "btn_filter").click();
+			elementFinderByXpath(prop.getProperty("filter_xpath"), "click on filter.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -305,7 +308,7 @@ public class BookplayerStepModule extends UIElements {
 	
 	public static void btnClearAllFilter(){
 		try {
-			elementFinderByXpath(prop.getProperty("filter_allhighlight_uncheck_xpath"), "chkbx_all").click();
+			elementFinderByXpath(prop.getProperty("filter_allhighlight_uncheck_xpath"), "Click on all checkbox.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -313,7 +316,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void chkbxyellowhighlight(){
 		try {
-			elementFinderByXpath(prop.getProperty("filter_yellowhighlight_uncheck_xpath"), "chkbx_yellow").click();
+			elementFinderByXpath(prop.getProperty("filter_yellowhighlight_uncheck_xpath"), "Click on yellow highlight checkbox.").click();
 			threadHold_2Sec();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
@@ -322,7 +325,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void chkbxredhighlight(){
 		try {
-			elementFinderByXpath(prop.getProperty("filter_redhighlight_uncheck_xpath"), "chkbx_red").click();
+			elementFinderByXpath(prop.getProperty("filter_redhighlight_uncheck_xpath"), "Click on yellow red checkbox.").click();
 			threadHold_2Sec();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
@@ -331,7 +334,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void chkbxpurplehighlight(){
 		try {
-			elementFinderByXpath(prop.getProperty("filter_purplehighlight_uncheck_xpath"), "chkbx_purple").click();
+			elementFinderByXpath(prop.getProperty("filter_purplehighlight_uncheck_xpath"), "Click on purple highlight checkbox.").click();
 			threadHold_2Sec();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
@@ -340,7 +343,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void chkbxgreenhighlight(){
 		try {
-			elementFinderByXpath(prop.getProperty("filter_greenhighlight_uncheck_xpath"), "chkbx_green").click();
+			elementFinderByXpath(prop.getProperty("filter_greenhighlight_uncheck_xpath"), "Click on green highlight checkbox.").click();
 			threadHold_2Sec();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
@@ -349,7 +352,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void chkbxbluehighlight(){
 		try {
-			elementFinderByXpath(prop.getProperty("filter_bluehighlight_uncheck_xpath"), "chkbx_blue").click();
+			elementFinderByXpath(prop.getProperty("filter_bluehighlight_uncheck_xpath"), "Click on blue highlight checkbox.").click();
 			threadHold_2Sec();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
@@ -358,7 +361,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void btnmyDatanotes(){
 		try {
-			elementFinderByXpath(prop.getProperty("notes_xpath"), "btn_notes").click();
+			elementFinderByXpath(prop.getProperty("notes_xpath"), "Click on notes.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -366,7 +369,7 @@ public class BookplayerStepModule extends UIElements {
 	
 	public static void btnClearAllNoteschkbx(){
 		try {
-			elementFinderByXpath(prop.getProperty("filter_allnotes_uncheck_xpath"), "chkbx_all").click();
+			elementFinderByXpath(prop.getProperty("filter_allnotes_uncheck_xpath"), "Click on all checkbox.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -375,7 +378,7 @@ public class BookplayerStepModule extends UIElements {
 	public static void btnmyDatanormalnotes(){
 		try {
 			threadHold_2Sec();
-			elementFinderByXpath(prop.getProperty("normalnotes_drpdwn_xpath"), "drpdwn_normalnotes").click();
+			elementFinderByXpath(prop.getProperty("normalnotes_drpdwn_xpath"), "Click on normal notes dropdown xpath.").click();
 			threadHold_2Sec();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
@@ -425,8 +428,8 @@ public class BookplayerStepModule extends UIElements {
 	public static void chkbxNotesForAll(){
 		try {
 			threadHold_2Sec();
-			elementFinderByXpath(prop.getProperty("chknormalnotesAll_xpath"), "chkbxNotesForAll").click();
-			elementFinderByXpath(prop.getProperty("chknormalnotesAll_xpath"), "chkbxNotesForAll").click();
+			elementFinderByXpath(prop.getProperty("chknormalnotesAll_xpath"), "Click on all checkbox.").click();
+			elementFinderByXpath(prop.getProperty("chknormalnotesAll_xpath"), "Click on all checkbox.").click();
 			threadHold_2Sec();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
@@ -435,7 +438,7 @@ public class BookplayerStepModule extends UIElements {
 	
 	public static void chkbxyellownotes(){
 		try {
-			elementFinderByXpath(prop.getProperty("filter_yellownotes_uncheck_xpath"), "chkbx_yellow").click();
+			elementFinderByXpath(prop.getProperty("filter_yellownotes_uncheck_xpath"), "Click on yellow notes checkbox.").click();
 			threadHold_2Sec();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
@@ -444,7 +447,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void chkbxrednotes(){
 		try {
-			elementFinderByXpath(prop.getProperty("filter_rednotes_uncheck_xpath"), "chkbx_red").click();
+			elementFinderByXpath(prop.getProperty("filter_rednotes_uncheck_xpath"), "Click on red notes checkbox.").click();
 			threadHold_2Sec();
 
 		} catch (Exception e) {
@@ -454,7 +457,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void chkbxpurplenotes(){
 		try {
-			elementFinderByXpath(prop.getProperty("filter_purplenotes_uncheck_xpath"), "chkbx_purple").click();
+			elementFinderByXpath(prop.getProperty("filter_purplenotes_uncheck_xpath"), "Click on purple notes checkbox.").click();
 			threadHold_2Sec();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
@@ -463,7 +466,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void chkbxgreennotes(){
 		try {
-			elementFinderByXpath(prop.getProperty("filter_greennotes_uncheck_xpath"), "chkbx_green").click();
+			elementFinderByXpath(prop.getProperty("filter_greennotes_uncheck_xpath"), "Click on green notes checkbox.").click();
 			threadHold_2Sec();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
@@ -472,7 +475,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void chkbxbluenotes(){
 		try {
-			elementFinderByXpath(prop.getProperty("filter_bluenotes_uncheck_xpath"), "chkbx_blue").click();
+			elementFinderByXpath(prop.getProperty("filter_bluenotes_uncheck_xpath"), "Click on blue notes checkbox.").click();
 			threadHold_2Sec();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
@@ -482,7 +485,7 @@ public class BookplayerStepModule extends UIElements {
 	public static void btnmyDatacontextualnotes(){
 		try {
 			threadHold_5Sec();
-			elementFinderByXpath(prop.getProperty("contextualnotes_drpdwn_xpath"), "drpdwn_contextualnotes").click();
+			elementFinderByXpath(prop.getProperty("contextualnotes_drpdwn_xpath"), "Click on contextual notes dropdown.").click();
 			threadHold_2Sec();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
@@ -492,8 +495,8 @@ public class BookplayerStepModule extends UIElements {
 	public static void chkbxContextualNotesForAll(){
 		try {
 			threadHold_2Sec();
-			elementFinderByXpath(prop.getProperty("chkContextualNotesAll_xpath"), "chkbxContextualNotesForAll").click();
-			elementFinderByXpath(prop.getProperty("chkContextualNotesAll_xpath"), "chkbxContextualNotesForAll").click();
+			elementFinderByXpath(prop.getProperty("chkContextualNotesAll_xpath"), "Click on contextual notes for all checkbox.").click();
+			elementFinderByXpath(prop.getProperty("chkContextualNotesAll_xpath"), "Click on contextual notes for all checkbox.").click();
 			threadHold_2Sec();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
@@ -502,7 +505,7 @@ public class BookplayerStepModule extends UIElements {
 	
 	public static void chkbxyellowcontextualnotes(){
 		try {
-			elementFinderByXpath(prop.getProperty("filter_yellowcontextualnotes_uncheck_xpath"), "chkbx_yellow").click();
+			elementFinderByXpath(prop.getProperty("filter_yellowcontextualnotes_uncheck_xpath"), "Click on yellow contextual checkbox.").click();
 			threadHold_2Sec();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
@@ -511,7 +514,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void chkbxredcontextualnotes(){
 		try {
-			elementFinderByXpath(prop.getProperty("filter_redcontextualnotes_uncheck_xpath"), "chkbx_red").click();
+			elementFinderByXpath(prop.getProperty("filter_redcontextualnotes_uncheck_xpath"), "Click on red contextual checkbox.").click();
 			threadHold_2Sec();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
@@ -520,7 +523,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void chkbxpurplecontextualnotes(){
 		try {
-			elementFinderByXpath(prop.getProperty("filter_purplecontextualnotes_uncheck_xpath"), "chkbx_purple").click();
+			elementFinderByXpath(prop.getProperty("filter_purplecontextualnotes_uncheck_xpath"), "Click on purple contextual checkbox.").click();
 			threadHold_2Sec();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
@@ -529,7 +532,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void chkbxgreencontextualnotes(){
 		try {
-			elementFinderByXpath(prop.getProperty("filter_greencontextualnotes_uncheck_xpath"), "chkbx_green").click();
+			elementFinderByXpath(prop.getProperty("filter_greencontextualnotes_uncheck_xpath"), "Click on green contextual checkbox.").click();
 			threadHold_2Sec();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
@@ -538,7 +541,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void chkbxbluecontextualnotes(){
 		try {
-			elementFinderByXpath(prop.getProperty("filter_bluecontextualnotes_uncheck_xpath"), "chkbx_blue").click();
+			elementFinderByXpath(prop.getProperty("filter_bluecontextualnotes_uncheck_xpath"), "Click on blue contextual checkbox.").click();
 			threadHold_2Sec();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
@@ -549,7 +552,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void btnpentool(){
 		try {
-			elementFinderByID(prop.getProperty("pentoolbtn_ID"), "btn_pentool").click();
+			elementFinderByID(prop.getProperty("pentoolbtn_ID"), "Click on pentool.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -557,7 +560,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void btnPenColour_Black(){
 		try {
-			elementFinderByXpath(prop.getProperty("pencolourpaletteblack_xpath"), "btnPenColour_Black").click();
+			elementFinderByXpath(prop.getProperty("pencolourpaletteblack_xpath"), "Click on pen black colour.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -565,7 +568,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void btnPenColour_Red(){
 		try {
-			elementFinderByXpath(prop.getProperty("pencolourpalettered_xpath"), "btnPenColour_Red").click();
+			elementFinderByXpath(prop.getProperty("pencolourpalettered_xpath"), "Click on pen red colour.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -573,7 +576,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void btnPenColour_Purple(){
 		try {
-			elementFinderByXpath(prop.getProperty("pencolourpalettepurple_xpath"), "btnPenColour_Purple").click();
+			elementFinderByXpath(prop.getProperty("pencolourpalettepurple_xpath"), "Click on pen purple colour.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -581,7 +584,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void btnPenColour_Green(){
 		try {
-			elementFinderByXpath(prop.getProperty("pencolourpalettegreen_xpath"), "btnPenColour_Green").click();
+			elementFinderByXpath(prop.getProperty("pencolourpalettegreen_xpath"), "Click on pen green colour.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -589,7 +592,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void btnPenColour_Blue(){
 		try {
-			elementFinderByXpath(prop.getProperty("pencolourpaletteblue_xpath"), "btnPenColour_Blue").click();
+			elementFinderByXpath(prop.getProperty("pencolourpaletteblue_xpath"), "Click on pen blue colour.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -598,8 +601,8 @@ public class BookplayerStepModule extends UIElements {
 	public static void dragthicknessbar(){
 		try {
 			Thread.sleep(2000);
-			elementFinderByXpath(prop.getProperty("thicknessbarpoint_xpath"), "thicknessbar");
-			WebElement slider = elementFinderByXpath(prop.getProperty("thicknessbarpoint_xpath"), "thicknessbar point");
+			elementFinderByXpath(prop.getProperty("thicknessbarpoint_xpath"), "Click on thickness bar.");
+			WebElement slider = elementFinderByXpath(prop.getProperty("thicknessbarpoint_xpath"), "Click on thicknessbar pointer");
 			WebElement stroke_slider = elementFinderByXpath(prop.getProperty("thicknessbar_xpath"), "thicknessbar point");
 			Actions action =  new Actions(Driver.driver);
 			action.clickAndHold(slider);
@@ -618,7 +621,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void btneraser(){
 		try {
-			elementFinderByXpath(prop.getProperty("eraserbtn_xpath"), "btn_eraser").click();
+			elementFinderByXpath(prop.getProperty("eraserbtn_xpath"), "Click on eraser.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -626,7 +629,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void btnundo(){
 		try {
-			elementFinderByXpath(prop.getProperty("undobtn_xpath"), "btn_undo").click();
+			elementFinderByXpath(prop.getProperty("undobtn_xpath"), "Click on undo.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -634,7 +637,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void btnclearall(){
 		try {
-			elementFinderByXpath(prop.getProperty("clearallbtn_xpath"), "btn_clearall").click();
+			elementFinderByXpath(prop.getProperty("clearallbtn_xpath"), "Click on clearAll.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -642,7 +645,7 @@ public class BookplayerStepModule extends UIElements {
 	
 	public static void btnclearallAlertPopup_Yes(){
 		try {
-			elementFinderByXpath(prop.getProperty("clearallYesbtn_xpath"), "btnclearallAlertPopup_Yes").click();
+			elementFinderByXpath(prop.getProperty("clearallYesbtn_xpath"), "Click on clear all pop-up.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -650,7 +653,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void btnsavePenTool(){
 		try {
-			elementFinderByXpath(prop.getProperty("pentoolsavebtn_xpath"), "btnsavePenTool").click();
+			elementFinderByXpath(prop.getProperty("pentoolsavebtn_xpath"), "Click on Save pen tool.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -658,7 +661,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void btnstickynotes(){
 		try {
-			elementFinderByID(prop.getProperty("stickynotes_ID"), "btn_stickynotes").click();
+			elementFinderByID(prop.getProperty("stickynotes_ID"), "Click on sticky notes.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -666,7 +669,7 @@ public class BookplayerStepModule extends UIElements {
 	
 	public static void btnDeleteStickyNotes(){
 		try {
-			elementFinderByXpath(prop.getProperty("deleteSticky_Xpath"), "btnDeleteStickyNotes").click();
+			elementFinderByXpath(prop.getProperty("deleteSticky_Xpath"), "Click on delete sticky notes.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -674,7 +677,7 @@ public class BookplayerStepModule extends UIElements {
 	
 	public static void btnSharedStickyNotes(){
 		try {
-			elementFinderByXpath(prop.getProperty("sharedStickyNotes_xpath"), "btnSharedStickyNotes").click();
+			elementFinderByXpath(prop.getProperty("sharedStickyNotes_xpath"), "Click on share sticky notes.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -683,7 +686,7 @@ public class BookplayerStepModule extends UIElements {
 	public static String getSharedStickyNotesCommentmsg(){
 		String msg = "NA";
 		try {
-			msg = elementFinderByXpath(prop.getProperty("SharedStickyNotesCommentmsg_xpath"), "btnSharedStickyNotes").getText();
+			msg = elementFinderByXpath(prop.getProperty("SharedStickyNotesCommentmsg_xpath"), "Getting sticky notes comment message.").getText();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -691,7 +694,7 @@ public class BookplayerStepModule extends UIElements {
 	}
 	public static void chkbxSharedNotesToAllTeacher(){
 		try {
-			elementFinderByXpath(prop.getProperty("sharedAllTeacherStickyNoteschkbx_xpath"), "chkbxAllTeacher").click();
+			elementFinderByXpath(prop.getProperty("sharedAllTeacherStickyNoteschkbx_xpath"), "Click on checkbox to all teacher.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -699,7 +702,7 @@ public class BookplayerStepModule extends UIElements {
 	
 	public static void btndoneSharedStickyNotes(){
 		try {
-			elementFinderByXpath(prop.getProperty("DoneSharedStickyNotes_xpath"), "chkbxAllTeacher").click();
+			elementFinderByXpath(prop.getProperty("DoneSharedStickyNotes_xpath"), "Click on done shared sticky notes.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -709,7 +712,7 @@ public class BookplayerStepModule extends UIElements {
 	public static void btnStickyNotesInsidePage(int i, String pageNum){
 		try {
 			Driver.driver.switchTo().frame("epub_"+pageNum);
-			List<WebElement> element = elementsFinderByXpaths(prop.getProperty("StickyNote_lstView_Xpath"), "btnStickyNotesInsidePage");
+			List<WebElement> element = elementsFinderByXpaths(prop.getProperty("StickyNote_lstView_Xpath"), "Click on sticky notes inside page.");
 			element.get(i).click();
 			Driver.driver.switchTo().parentFrame();
 		} catch (Exception e) {
@@ -719,7 +722,7 @@ public class BookplayerStepModule extends UIElements {
 	
 	public static void btnMyDataNotificationIcon(){
 		try {
-			elementFinderByID(prop.getProperty("teacherNotification_id"), "btnMyDataNotificationIcon").click();
+			elementFinderByID(prop.getProperty("teacherNotification_id"), "Click on my data notification icon.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -727,7 +730,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void btnAcceptStickyNotes(int i){
 		try {
-			List<WebElement> ele = elementsFinderByXpaths(prop.getProperty("sharedNotesAccept_lstview_xpath"), "btnAcceptStickyNotes");
+			List<WebElement> ele = elementsFinderByXpaths(prop.getProperty("sharedNotesAccept_lstview_xpath"), "Click on Accept Sticky notes.");
 			ele.get(i).click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
@@ -736,7 +739,7 @@ public class BookplayerStepModule extends UIElements {
 	
 	public static void btnDeclinedStickyNotes(int i){
 		try {
-			List<WebElement> ele = elementsFinderByXpaths(prop.getProperty("sharedNotesDecline_lstview_xpath"), "btnDeclinedStickyNotes");
+			List<WebElement> ele = elementsFinderByXpaths(prop.getProperty("sharedNotesDecline_lstview_xpath"), "Click on Decline Sticky notes.");
 			ele.get(i).click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
@@ -745,7 +748,7 @@ public class BookplayerStepModule extends UIElements {
 	
 	public static void btnCommentOnNotes(int i){
 		try {
-			List<WebElement> ele = elementsFinderByXpaths(prop.getProperty("sharedNotesCommentbtn_lstview_xpath"), "btnCommentOnNotes");
+			List<WebElement> ele = elementsFinderByXpaths(prop.getProperty("sharedNotesCommentbtn_lstview_xpath"), "Click on comment on notes.");
 			ele.get(i).click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
@@ -755,7 +758,7 @@ public class BookplayerStepModule extends UIElements {
 	public static int getCommentOnNotesCount(int i){
 		int count = 0;
 		try {
-			List<WebElement> ele = elementsFinderByXpaths(prop.getProperty("sharedNotesCommentbtn_lstview_xpath"), "btnCommentOnNotes");
+			List<WebElement> ele = elementsFinderByXpaths(prop.getProperty("sharedNotesCommentbtn_lstview_xpath"), "Gettin comment count.");
 			count = Integer.parseInt(ele.get(i).getText().replaceAll("Comments ", ""));
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
@@ -765,7 +768,7 @@ public class BookplayerStepModule extends UIElements {
 	
 	public static void txtCommentOnNotes(String comment){
 		try {
-			elementFinderByXpath(prop.getProperty("sharedNotesCommenttxt_xpath"), "txtCommentOnNotes").sendKeys(comment);
+			elementFinderByXpath(prop.getProperty("sharedNotesCommenttxt_xpath"), "Enterd Comment i.e '"+comment+"'.").sendKeys(comment);
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -773,7 +776,7 @@ public class BookplayerStepModule extends UIElements {
 	
 	public static void btnSendCommentOnNotes(){
 		try {
-			elementFinderByXpath(prop.getProperty("sharedNotesSendCommentbtn_xpath"), "btnSendCommentOnNotes").click();
+			elementFinderByXpath(prop.getProperty("sharedNotesSendCommentbtn_xpath"), "Click on send comment.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -781,7 +784,7 @@ public class BookplayerStepModule extends UIElements {
 	
 	public static void btnBackArrow(){
 		try {
-			elementFinderByXpath(prop.getProperty("sharedNotesBackArrowbtn_xpath"), "btnBackArrow").click();
+			elementFinderByXpath(prop.getProperty("sharedNotesBackArrowbtn_xpath"), "Click on back arrow.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -790,7 +793,7 @@ public class BookplayerStepModule extends UIElements {
 	public static String getSharedNotesCountFromMyDataIcon(){
 		String count = "0";
 		try {
-			count = elementFinderByXpath(prop.getProperty("getCountFromMyDataIcon_xpath"), "getSharedNotesCountFromMyDataIcon").getText();
+			count = elementFinderByXpath(prop.getProperty("getCountFromMyDataIcon_xpath"), "Getting shared notes count from my data icon.").getText();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -801,7 +804,7 @@ public class BookplayerStepModule extends UIElements {
 	public static int getSharedNotesCountFromlist(){
 		int count = 0;
 		try {
-			count = elementsFinderByXpaths(prop.getProperty("sharedNotesAccept_lstview_xpath"), "getSharedNotesCountFromlist").size();
+			count = elementsFinderByXpaths(prop.getProperty("sharedNotesAccept_lstview_xpath"), "Getting shared notes count from list.").size();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -810,7 +813,7 @@ public class BookplayerStepModule extends UIElements {
 	
 	public static void btnhighlight(){
 		try {
-			elementFinderByID(prop.getProperty("highlight_ID"), "btn_highlight").click();
+			elementFinderByID(prop.getProperty("highlight_ID"), "Click on highlight.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -818,7 +821,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void btnzoomin(){
 		try {
-			elementFinderByXpath(prop.getProperty("zoomin_xpath"), "btn_zoomin").click();
+			elementFinderByXpath(prop.getProperty("zoomin_xpath"), "Click on Zoom.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -826,7 +829,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void btnzoomout(){
 		try {
-			elementFinderByID(prop.getProperty("zoomout_ID"), "btn_zoomout").click();
+			elementFinderByID(prop.getProperty("zoomout_ID"), "Click on Zoom out icon.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -835,7 +838,7 @@ public class BookplayerStepModule extends UIElements {
 	public static String getzoomValue(){
 		String zoomValue = null;
 		try {
-			zoomValue = elementFinderByID(prop.getProperty("zoomvalue_id"), "getzoomValue").getText();
+			zoomValue = elementFinderByID(prop.getProperty("zoomvalue_id"), "Getting zoom value.").getText();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -844,7 +847,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void btnfittowidth(){
 		try {
-			elementFinderByXpath(prop.getProperty("fittowidth_xpath"), "fittowidth").click();
+			elementFinderByXpath(prop.getProperty("fittowidth_xpath"), "Click on fit to width.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -852,7 +855,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void btnfittoheight(){
 		try {
-			elementFinderByXpath(prop.getProperty("fittoheight_xpath"), "fittoheight").click();
+			elementFinderByXpath(prop.getProperty("fittoheight_xpath"), "Click on fit to height.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -860,7 +863,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void btnsinglepage(){
 		try {
-			elementFinderByXpath(prop.getProperty("singlepagebtn_xpath"), "singlepage").click();
+			elementFinderByXpath(prop.getProperty("singlepagebtn_xpath"), "Click on single page view.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -868,7 +871,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void btndoublepage(){
 		try {
-			elementFinderByXpath(prop.getProperty("doublepagebtn_xpath"), "doublepage").click();
+			elementFinderByXpath(prop.getProperty("doublepagebtn_xpath"), "Click on double page view.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -876,7 +879,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void btnthumbnail(){
 		try {
-			elementFinderByID(prop.getProperty("thumbnailbtn_ID"), "thumbnail").click();
+			elementFinderByID(prop.getProperty("thumbnailbtn_ID"), "Click on thumbnail.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -884,7 +887,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void btnhistoryprevious(){
 		try {
-			elementFinderByXpath(prop.getProperty("historyprevious_xpath"), "historyprevious").click();
+			elementFinderByXpath(prop.getProperty("historyprevious_xpath"), "Click on history previous page.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -892,7 +895,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void btnhistorynext(){
 		try {
-			elementFinderByXpath(prop.getProperty("historynext_xpath"), "historynext").click();
+			elementFinderByXpath(prop.getProperty("historynext_xpath"), "Click on history next page.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -900,10 +903,10 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void txtbxgotopage(String pageNum){
 		try {
-			elementFinderByID(prop.getProperty("gotopagetextbox_id"), "gotopagetextbox").click();
-			elementFinderByID(prop.getProperty("gotopagetextbox_id"), "gotopagetextbox").clear();
-			elementFinderByID(prop.getProperty("gotopagetextbox_id"), "gotopagetextbox").sendKeys(pageNum);
-			elementFinderByID(prop.getProperty("gotopagetextbox_id"), "gotopagetextbox").sendKeys(Keys.ENTER);
+			elementFinderByID(prop.getProperty("gotopagetextbox_id"), "Click on go to page textbox.").click();
+			elementFinderByID(prop.getProperty("gotopagetextbox_id"), "Clear go to page textbox field.").clear();
+			elementFinderByID(prop.getProperty("gotopagetextbox_id"), "Entered page number in go to page textbox i.e. '"+pageNum+"'.").sendKeys(pageNum);
+			elementFinderByID(prop.getProperty("gotopagetextbox_id"), "Press enter key.").sendKeys(Keys.ENTER);
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -912,7 +915,7 @@ public class BookplayerStepModule extends UIElements {
 	public static String getpageNum(){
 		String pageCount = "0";
 		try {
-			pageCount = elementFinderByXpath(prop.getProperty("getPageNumber_xpath"), "gotopagetextbox").getAttribute("aria-valuenow");
+			pageCount = elementFinderByXpath(prop.getProperty("getPageNumber_xpath"), "getting page number from go to page textbox.").getAttribute("aria-valuenow");
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -931,7 +934,7 @@ public class BookplayerStepModule extends UIElements {
 	public static String getchapterTitle(){
 		String chaptertitle = null;
 		try {
-			chaptertitle = elementFinderByID(prop.getProperty("chapterTitle_id"), "Chapter Title").getText();
+			chaptertitle = elementFinderByID(prop.getProperty("chapterTitle_id"), "getting chapter details.").getText();
 		} catch (Exception e) {
 			System.out.println("Element not present.");
 		}
@@ -941,7 +944,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void btnnextchapter(){
 		try {
-			elementFinderByXpath(prop.getProperty("nextchapterbtn_xpath"), "nextchapter").click();
+			elementFinderByXpath(prop.getProperty("nextchapterbtn_xpath"), "Click on next chapter.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -949,7 +952,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void btnpreviouschapter(){
 		try {
-			elementFinderByXpath(prop.getProperty("previouschapterbtn_xpath"), "previouschapter").click();
+			elementFinderByXpath(prop.getProperty("previouschapterbtn_xpath"), "Click on previous chapter name.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -957,7 +960,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void btnnextpage(){
 		try {
-			elementFinderByXpath(prop.getProperty("nextpagebtn_xpath"), "nextpage").click();
+			elementFinderByXpath(prop.getProperty("nextpagebtn_xpath"), "Click on next page.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -965,7 +968,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void btnpreviouspage(){
 		try {
-			elementFinderByXpath(prop.getProperty("previouspagebtn_xpath"), "previouspage").click();
+			elementFinderByXpath(prop.getProperty("previouspagebtn_xpath"), "Click on previous page.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -973,7 +976,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void btnfull_DefaultScreen(){
 		try {
-			elementFinderByID(prop.getProperty("full_Defaultscreenbtn_xpath"), "full_Defaultscreenbtn").click();
+			elementFinderByID(prop.getProperty("full_Defaultscreenbtn_xpath"), "Click on full/Default screen.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -981,7 +984,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void btnprofile(){
 		try {
-			elementFinderByXpath(prop.getProperty("profilebtn_xpath"), "profile").click();
+			elementFinderByXpath(prop.getProperty("profilebtn_xpath"), "Click on profile.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -989,7 +992,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void btnsignout(){
 		try {
-			elementFinderByXpath(prop.getProperty("signoutbtn_xpath"), "signout").click();
+			elementFinderByXpath(prop.getProperty("signoutbtn_xpath"), "Click on Signout.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -997,7 +1000,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void txtStickyNotes(String notes){
 		try {
-			elementFinderByID(prop.getProperty("editnote_ID"), "txtStickyNotes").sendKeys(notes);
+			elementFinderByID(prop.getProperty("editnote_ID"), "Enterd notes in sticky notes filed i.e. '"+notes+"'").sendKeys(notes);
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -1005,7 +1008,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void btnSaveStickyNotes(){
 		try {
-			elementFinderByXpath(prop.getProperty("postnotebtn_xpath"), "btnSaveStickyNotes").click();
+			elementFinderByXpath(prop.getProperty("postnotebtn_xpath"), "Clock on save sticky notes.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -1013,7 +1016,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void btnStickyClr_orange(){
 		try {
-			elementFinderByXpath(prop.getProperty("clrOrangeSticky_xpath"), "btnStickyClr_orange").click();
+			elementFinderByXpath(prop.getProperty("clrOrangeSticky_xpath"), "Pick up a orange colour from sticky notes.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -1022,7 +1025,7 @@ public class BookplayerStepModule extends UIElements {
 	
 	public static void btnStickyClr_pink(){
 		try {
-			elementFinderByXpath(prop.getProperty("clrRedSticky_xpath"), "btnStickyClr_pink").click();
+			elementFinderByXpath(prop.getProperty("clrRedSticky_xpath"), "Pick up a pink colour from sticky notes.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -1030,7 +1033,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void btnStickyClr_purple(){
 		try {
-			elementFinderByXpath(prop.getProperty("clrPurpleSticky_xpath"), "btnStickyClr_purple").click();
+			elementFinderByXpath(prop.getProperty("clrPurpleSticky_xpath"), "Pick up a purple colour from sticky notes.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -1038,7 +1041,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void btnStickyClr_green(){
 		try {
-			elementFinderByXpath(prop.getProperty("clrGreenSticky_xpath"), "btnStickyClr_green").click();
+			elementFinderByXpath(prop.getProperty("clrGreenSticky_xpath"), "Pick up a green colour from sticky notes.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -1046,7 +1049,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void btnStickyClr_blue(){
 		try {
-			elementFinderByXpath(prop.getProperty("clrBlueSticky_xpath"), "btnStickyClr_blue").click();
+			elementFinderByXpath(prop.getProperty("clrBlueSticky_xpath"), "Pick up a blue colour from sticky notes.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -1055,14 +1058,13 @@ public class BookplayerStepModule extends UIElements {
 	public static void selectparagraph(int x, int y){
 		try {
 			Thread.sleep(1000);
-			Driver.driver.switchTo().frame(elementFinderByID(prop.getProperty("highlightfram_ID"), "highlight frame id"));
+			Driver.driver.switchTo().frame(elementFinderByID(prop.getProperty("highlightfram_ID"), "Switiching iframe.."));
 			Thread.sleep(500);
-			elementFinderByID(prop.getProperty("highlightword_id"), "highlight word id");
-			WebElement from = elementFinderByID(prop.getProperty("highlightword_id"), "highlight word id");
+			elementFinderByID(prop.getProperty("highlightword_id"), "Waiting for word..");
+			WebElement from = elementFinderByID(prop.getProperty("highlightword_id"), "Click on word");
 			JavascriptExecutor js = (JavascriptExecutor)Driver.driver;
 			js.executeScript("arguments[0].click();", from);
 			Thread.sleep(500);
-			System.out.println("mouse movement");
 			dragAndDrop(from, x, y);
 			//dragAndDrop(from, 0, 45);
 			Thread.sleep(1000);
@@ -1074,7 +1076,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void btnhighlightdelete(){
 		try {
-			elementFinderByID(prop.getProperty("highlightdelete_id"), "highlight delete btn").click();
+			elementFinderByID(prop.getProperty("highlightdelete_id"), "Click on delete highlight.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -1082,7 +1084,7 @@ public class BookplayerStepModule extends UIElements {
 	
 	public static void btnhighlightsearch(){
 		try {
-			elementFinderByID(prop.getProperty("highlightsearch_id"), "btnhighlightsearch").click();
+			elementFinderByID(prop.getProperty("highlightsearch_id"), "Click on search highlight").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -1091,10 +1093,10 @@ public class BookplayerStepModule extends UIElements {
 	public static void selectparagraph_delete(){
 		try {
 			Thread.sleep(1000);
-			Driver.driver.switchTo().frame(elementFinderByID(prop.getProperty("highlightfram_ID"), "highlight frame id"));
+			Driver.driver.switchTo().frame(elementFinderByID(prop.getProperty("highlightfram_ID"), "Switiching iframe"));
 			Thread.sleep(500);
-			elementFinderByID(prop.getProperty("highlightword_id"), "highlight word id");
-			WebElement from = elementFinderByID(prop.getProperty("highlightword_id"), "highlight word id");
+			elementFinderByID(prop.getProperty("highlightword_id"), "Waiting for word..");
+			WebElement from = elementFinderByID(prop.getProperty("highlightword_id"), "Click on word.");
 			from.click();
 			JavascriptExecutor js = (JavascriptExecutor)Driver.driver;
 			js.executeScript("arguments[0].click();", from);
@@ -1107,7 +1109,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void bltyellow(){
 		try {
-			elementFinderByID(prop.getProperty("highlightyellow_id"), "yellow highlight color").click();
+			elementFinderByID(prop.getProperty("highlightyellow_id"), "Pick up a yellow colour from highlight.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -1115,7 +1117,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void bltred(){
 		try {
-			elementFinderByID(prop.getProperty("highlightred_id"), "red highlight color").click();
+			elementFinderByID(prop.getProperty("highlightred_id"), "Pick up a red colour from highlight").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -1123,7 +1125,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void bltpurple(){
 		try {
-			elementFinderByID(prop.getProperty("highlightpurple_id"), "purple highlight color").click();
+			elementFinderByID(prop.getProperty("highlightpurple_id"), "Pick up a purple colour from highlight").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -1131,7 +1133,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void bltgreen(){
 		try {
-			elementFinderByID(prop.getProperty("highlightgreen_id"), "green highlight color").click();
+			elementFinderByID(prop.getProperty("highlightgreen_id"), "Pick up a green colour from highlight").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -1139,7 +1141,7 @@ public class BookplayerStepModule extends UIElements {
 
 	public static void bltblue(){
 		try {
-			elementFinderByID(prop.getProperty("highlightblue_id"), "blue highlight color").click();
+			elementFinderByID(prop.getProperty("highlightblue_id"), "Pick up a blue colour from highlight").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -1163,9 +1165,9 @@ public class BookplayerStepModule extends UIElements {
 	public static void btnbookmark(){
 		try {
 			threadHold_5Sec();
-			Driver.driver.switchTo().frame(elementFinderByID(prop.getProperty("bookmarkfram_ID"), "bookmark frame id"));
+			Driver.driver.switchTo().frame(elementFinderByID(prop.getProperty("bookmarkfram_ID"), "Switiching iframe.."));
 			threadHold_2Sec();
-			WebElement element0 = elementFinderByID(prop.getProperty("bookmarkThisPage_ID"), "bookmark this page"); 
+			WebElement element0 = elementFinderByID(prop.getProperty("bookmarkThisPage_ID"), "Click on bookmark."); 
 			JavascriptExecutor executor = (JavascriptExecutor)Driver.driver;
 			executor.executeScript("arguments[0].click();", element0);
 			Driver.driver.switchTo().defaultContent();
@@ -1177,8 +1179,8 @@ public class BookplayerStepModule extends UIElements {
 	public static void txtbookmark(String msg){
 		try {
 			threadHold_2Sec();
-			elementFinderByXpath(prop.getProperty("bookmarkTitle_xpath"), "bookmark title").clear();
-			elementFinderByXpath(prop.getProperty("bookmarkTitle_xpath"), "bookmark title").sendKeys(msg);
+			elementFinderByXpath(prop.getProperty("bookmarkTitle_xpath"), "Cleared bookmark text.").clear();
+			elementFinderByXpath(prop.getProperty("bookmarkTitle_xpath"), "Entered Bookmar i.e '"+msg+"'").sendKeys(msg);
 			
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
@@ -1187,7 +1189,7 @@ public class BookplayerStepModule extends UIElements {
 	
 	public static void btnaddbookmark(){
 		try {
-			elementFinderByXpath(prop.getProperty("addBookmark_xpath"), "add bookmark").click();	
+			elementFinderByXpath(prop.getProperty("addBookmark_xpath"), "Click on add bookmark.").click();	
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -1195,7 +1197,7 @@ public class BookplayerStepModule extends UIElements {
 	
 	public static void btntocbookmark(){
 		try {
-			elementFinderByXpath(prop.getProperty("bookmarks_xpath"), "bookmark").click();	
+			elementFinderByXpath(prop.getProperty("bookmarks_xpath"), "Click on bookmark tab from toc.").click();	
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -1204,17 +1206,17 @@ public class BookplayerStepModule extends UIElements {
 	public static int getbookmarkCounts(){
 		int size = 0;
 		try {
-			size= Driver.driver.findElements(By.xpath(prop.getProperty("bookmark_list_lstview_xpath"))).size();
+			size= Driver.driver.findElements(By.xpath(prop.getProperty("getting bookmark list count."))).size();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
 		return size;
 	}
 	
-	public static String btnbookmarkpageno(int i){
+	public static String getbookmarkpageno(int i){
 		String pageno = "NA";
 		try {
-			List<WebElement> element= elementsFinderByXpaths(prop.getProperty("bookmarkpageno_lstView_xpath"), "bookmark page number");
+			List<WebElement> element= elementsFinderByXpaths(prop.getProperty("bookmarkpageno_lstView_xpath"), "getting page number from bookmark list count.");
 			pageno = element.get(i).getText();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
@@ -1225,8 +1227,8 @@ public class BookplayerStepModule extends UIElements {
 	public static int bookmarklist(int i){
 		int pageNum = 0;
 		try {
-			List<WebElement> element= elementsFinderByXpaths(prop.getProperty("bookmark_list_lstview_xpath"), "bookmark_lstview_xpath");
-			pageNum = Integer.parseInt(btnbookmarkpageno(i));
+			List<WebElement> element= elementsFinderByXpaths(prop.getProperty("bookmark_list_lstview_xpath"), "Click on bookmark from bookmark list.");
+			pageNum = Integer.parseInt(getbookmarkpageno(i));
 			element.get(i).click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
@@ -1256,7 +1258,7 @@ public class BookplayerStepModule extends UIElements {
 	public static void btndeletebookmark(){
 		try {
 		
-			elementFinderByXpath(prop.getProperty("deleteBookmark_xpath"), "delete bookmark").click();	
+			elementFinderByXpath(prop.getProperty("deleteBookmark_xpath"), "Click on delete bookmark.").click();	
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}

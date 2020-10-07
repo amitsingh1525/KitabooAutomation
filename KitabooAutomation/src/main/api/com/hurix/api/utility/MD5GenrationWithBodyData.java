@@ -52,6 +52,7 @@ public class MD5GenrationWithBodyData {
 		byte[] utf8 = str.getBytes("UTF8");
 		byte[] enc = ecipher.doFinal(utf8);
 		 //return new sun.misc.BASE64Encoder().encode(enc);
+		@SuppressWarnings("restriction")
 		String hashValue = new sun.misc.BASE64Encoder().encode(enc);
 		
 		return hashValue;

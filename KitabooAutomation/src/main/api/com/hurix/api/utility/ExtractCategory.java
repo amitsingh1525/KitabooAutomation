@@ -1,5 +1,7 @@
 package com.hurix.api.utility;
 
+import org.mortbay.log.Log;
+
 public class ExtractCategory {
 
 	public static  String  extractCategory(String category)
@@ -9,15 +11,15 @@ public class ExtractCategory {
 		if(value.contains("||")){
 			int endIndex = value.lastIndexOf("||");
 			String newstr = value.substring(endIndex, value.length());
-			System.out.println(String.valueOf(newstr.replace("||", "")));
+			Log.info(String.valueOf(newstr.replace("||", "")));
 			catname = String.valueOf(newstr.replace("||", ""));
 		}else if(value.contains(",")){
 			int endIndex = value.lastIndexOf(",");
 			String newstr = value.substring(endIndex, value.length());
-			System.out.println(String.valueOf(newstr.replace(",", "")));
+			Log.info(String.valueOf(newstr.replace(",", "")));
 			catname = String.valueOf(newstr.replace(",", ""));
 		}else{
-			System.out.println(value);
+			Log.info("value : "+value);
 			catname = String.valueOf(value);
 		}
 		return catname;

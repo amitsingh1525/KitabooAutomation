@@ -20,6 +20,7 @@ public class GetRawTrackingData{
 			Log.info("Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		Log.endTestCase("End");

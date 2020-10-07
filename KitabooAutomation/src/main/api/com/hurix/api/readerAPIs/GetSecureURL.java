@@ -14,8 +14,9 @@ public class GetSecureURL {
 		
 		Response jsonResponse = null;
 		try {
-			
 			Log.startTestCase("getSecureURL");
+			Log.info("URL : "+"/DistributionServices/services/api/reader/secure/"+deviceID+"/"+deviceType+"/getSecureURL?entryID&type="+type+"");
+			Log.info("userToken : "+userToken);
 			//System.out.println("GETfetBookListRequestURL:" +GETgetSecureURLPath);
 			jsonResponse = given()
 					.header("usertoken",userToken)						
@@ -24,8 +25,8 @@ public class GetSecureURL {
 			Log.info("GetSecureURLResponse: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
 			exp.printStackTrace();
 		}
 		Log.endTestCase("End");

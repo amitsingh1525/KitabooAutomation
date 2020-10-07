@@ -15,7 +15,7 @@ public class AudioModule extends AudioStepModule
 	public static void logout()
 	{
 		Log.startTestCase("Logout");
-		if(Driver.driver.getCurrentUrl().contains("books.xhtml"))
+		if(Driver.driver.getCurrentUrl().contains("audio.xhtml"))
 		{
 			btnlogout();
 		}
@@ -27,6 +27,21 @@ public class AudioModule extends AudioStepModule
 		Log.endTestCase("End");
 	}
 	
+	public static void popup()
+	{
+		Log.startTestCase("Logout");
+		if(Driver.driver.getCurrentUrl().contains("books.xhtml"))
+		{
+			popupmsg();
+		}
+		else
+		{
+			Log.fail("Expected URL contain 'books.xhtml' but found "+Driver.driver.getCurrentUrl());
+		
+		}
+		Log.endTestCase("End");
+	}
+
 	
 	
 	
@@ -48,7 +63,6 @@ public class AudioModule extends AudioStepModule
 						
 			coverpath=System.getProperty("user.dir")+coverpath;
 			coverAudio(coverpath); 
-			
 			
 			audiopath=System.getProperty("user.dir")+audiopath;
 			uploadAudio(audiopath);
@@ -88,6 +102,8 @@ public class AudioModule extends AudioStepModule
 			btnaudioarchive();
 			btnaudioarchiveNo();
 			btnAudioSave();
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='mesId']/div/ul/li/span[text()='Audio uploaded successfully']")));
+		
 			//btnarchiveAudio();
 			//btnaudioCancel();
 			//btnaudioEdit();
@@ -108,55 +124,63 @@ public class AudioModule extends AudioStepModule
 	{
 		Log.startTestCase("Change audio");
 		linklibrary();
+		
 		linkAsset();
 		linkAudio();
 		btnAddAudio();
 		threadHold_5Sec();
 		if(Driver.driver.getCurrentUrl().contains("audio.xhtml"))
 		{
-			Log.pass("After successfully login redirected to the home page"+Driver.driver.getCurrentUrl());
-			
-			invalidaudiofilepath=System.getProperty("user.dir")+invalidaudiofilepath;
-			uploadAudio(invalidaudiofilepath);
+			try {
+				Log.pass("After successfully login redirected to the home page"+Driver.driver.getCurrentUrl());
+				
+				invalidaudiofilepath=System.getProperty("user.dir")+invalidaudiofilepath;
+				uploadAudio(invalidaudiofilepath);
+							
+				coverpath=System.getProperty("user.dir")+coverpath;
+				coverAudio(coverpath); 
+				
+				audiopath=System.getProperty("user.dir")+audiopath;
+				uploadAudio(audiopath);
 						
-			coverpath=System.getProperty("user.dir")+coverpath;
-			coverAudio(coverpath); 
+				btnChangeaudio();
+				
+				uploadAudio(audiopath);
+				
+				threadHold_5Sec();
+				threadHold_5Sec();
+				threadHold_5Sec();
+				threadHold_5Sec();
+				txtAudioTitle(title);
+				txtAudioDesription(desc);
+				txtAudioTag(tag);
+				txtAudioCategory(subject);
+				
+				System.out.println(System.getProperty("user.dir"));
+				audiopath=System.getProperty("user.dir")+audiopath;
+				
+				wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("loader_image")));
+				btnAddchapter();
+				txtChapterTitle("ChapterTitle");
+				txtChapterDescription("ChapterDescription");
+				btnAddchapter();
+				txtChapterTitle1("ChapterTitle1");
+				txtChapterDescription1("ChapterDescription1");
+							
+				wrongtranscriptfile=System.getProperty("user.dir")+wrongtranscriptfile;
+				btnaudioTranscriptFileNamePanel(wrongtranscriptfile);
+				
+				transcriptfilepath=System.getProperty("user.dir")+transcriptfilepath;
+				btnaudioTranscriptFileNamePanel(transcriptfilepath);  //error for element is not found
+							
+				btnaudioarchive();
+				btnaudioarchiveYes();
+				wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='mesId']/div/ul/li/span[text()='Audio archival process started.']")));
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
-			audiopath=System.getProperty("user.dir")+audiopath;
-			uploadAudio(audiopath);
-					
-			btnChangeaudio();
-			
-			uploadAudio(audiopath);
-			
-			threadHold_5Sec();
-			threadHold_5Sec();
-			threadHold_5Sec();
-			threadHold_5Sec();
-			txtAudioTitle(title);
-			txtAudioDesription(desc);
-			txtAudioTag(tag);
-			txtAudioCategory(subject);
-			
-			System.out.println(System.getProperty("user.dir"));
-			audiopath=System.getProperty("user.dir")+audiopath;
-			
-			wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("loader_image")));
-			btnAddchapter();
-			txtChapterTitle("ChapterTitle");
-			txtChapterDescription("ChapterDescription");
-			btnAddchapter();
-			txtChapterTitle1("ChapterTitle1");
-			txtChapterDescription1("ChapterDescription1");
-						
-			wrongtranscriptfile=System.getProperty("user.dir")+wrongtranscriptfile;
-			btnaudioTranscriptFileNamePanel(wrongtranscriptfile);
-			
-			transcriptfilepath=System.getProperty("user.dir")+transcriptfilepath;
-			btnaudioTranscriptFileNamePanel(transcriptfilepath);  //error for element is not found
-						
-			btnaudioarchive();
-			btnaudioarchiveYes();
 			//btnaudioCancel();
 			//btnaudioEdit();
 			
@@ -297,6 +321,8 @@ public class AudioModule extends AudioStepModule
 			btnaudioarchiveNo();
 			btnaudioarchive();
 			btnaudioarchiveYes();
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='mesId']/div/ul/li/span[text()='Audio archival process started.']")));
+			
 			//btnAudioSave();
 			//btnaudioCancel();
 			//btnaudioEdit();
@@ -321,18 +347,20 @@ public class AudioModule extends AudioStepModule
 		dropdowninprogressaudio();
 		dropdowninArchiveAudio();
 		btnupdateAudio();
-		//Update Book started..
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='mesId']/div/ul/li/span[text()='Update Book started..']")));
 		btnrevertAudio();
 		btnrevertAudiono();
 		btnrevertAudio();
 		btnrevertAudioyes();
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='mesId']/div/ul/li/span[text()='Audio book has been reverted to previous version successfully.']")));
 		dropdowninprogressaudio();
 		dropdowninArchiveAudio();
 		btnupdateAudio();
-		//Update Book started..
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='mesId']/div/ul/li/span[text()='Update Book started..']")));
+		
 		btnEditaudio();
 		
-		//Audio book has been reverted to previous version successfully.
+		
 		threadHold_5Sec();
 		if(Driver.driver.getCurrentUrl().contains("audio.xhtml"))
 		{
@@ -378,11 +406,58 @@ public class AudioModule extends AudioStepModule
 			btnaudioarchiveNo();
 			btnAudioSave();
 			btnrevertAudio();
+			btnrevertAudioyes();
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='mesId']/div/ul/li/span[text()='Audio book has been reverted to previous version successfully.']")));
 			//btnaudioCancel();
 			//btnaudioEdit();
 			
 			/*JavascriptExecutor js = (JavascriptExecutor) driver;
 			js.executeScript("document.getElementById('//id of element').setAttribute('attr', '10')");*/
+			
+		}
+		else
+		{
+			Log.fail("Expected URL contain 'books.xhtml' but found "+Driver.driver.getCurrentUrl());
+		
+		}
+		Log.endTestCase("End");
+	}
+	
+	
+	
+	public static void deleteaudio()
+	{
+		Log.startTestCase("create audio");
+		linklibrary();
+		linkAsset();
+		linkAudio();
+				
+		threadHold_5Sec();
+		if(Driver.driver.getCurrentUrl().contains("audio.xhtml"))
+		{
+			Log.pass("After successfully login redirected to the home page"+Driver.driver.getCurrentUrl());
+			threadHold_2Sec();
+			
+			btndeleteaudioinprogress();
+			btnaudiono();
+			btndeleteaudioinprogress();
+			btnaudioyes();
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='mesId']/div/ul/li/span[text()='Audio has been deleted successfully.']")));
+			System.out.println("Wait Time: "+UIElements.waitTiming);
+			//bracket ke ander apna invisible wala daal d
+		
+			threadHold_5Sec();
+			threadHold_5Sec();
+			
+			dropdowninprogressaudio();
+			dropdowninArchiveAudio();
+			
+			btndeleteaudioinarchive();
+			btnsoftdeteleaudio();
+			
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='mesId']/div/ul/li/span[text()='audio has been deleted successfully.']")));
+			btnharddeleteaudio();
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='mesId']/div/ul/li/span[text()='audio has been deleted successfully.']")));
 			
 		}
 		else

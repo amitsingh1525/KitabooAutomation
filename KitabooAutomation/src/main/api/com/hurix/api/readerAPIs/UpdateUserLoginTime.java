@@ -8,25 +8,22 @@ import com.hurix.automation.utility.Log;
 public class UpdateUserLoginTime {
 	
 	public static String unMarkAsFavouritePath;
-	public static Response updateUserLoginTime()
+	public static Response updateUserLoginTime(String userToken,int userID)
 	{
-		System.out.println("markfav_bookID: " +com.hurix.api.runner.RestAssured.BookID_mark1);
-		//unMarkAsFavouritePath = ""+com.hurix.api.utility.ExcelUtils.getbaseURI()+"/DistributionServices/services/api/reader/user/123/IPAD/unMarkAsFavourite?bookid="+com.hurix.api.runner.RestAssured.BookID_mark1+"";
-		
 		Response jsonResponse = null;
 		try {
 			
-			Log.startTestCase("GETunMarkAsFavourite");
+			Log.startTestCase("updateUserLoginTime");
 			//System.out.println("GETunMarkAsFavouriteURL:" +unMarkAsFavouritePath);
 			jsonResponse = given()
-							.header("usertoken",com.hurix.api.runner.RestAssured.userToken)						
-							.get("/DistributionServices/services/api/reader/user/"+com.hurix.api.runner.RestAssured.userID+"/updateUserLoginTime");
+							.header("usertoken",userToken)						
+							.get("/DistributionServices/services/api/reader/user/"+userID+"/updateUserLoginTime");
 			
-			Log.info("GETunMarkAsFavourite: "+jsonResponse.then().extract().response().prettyPrint());
+			Log.info("updateUserLoginTime : "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
 			exp.printStackTrace();
 		}
 		Log.endTestCase("End");
