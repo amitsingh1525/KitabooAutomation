@@ -17,7 +17,7 @@ public class UpdateUserLoginTime {
 			//System.out.println("GETunMarkAsFavouriteURL:" +unMarkAsFavouritePath);
 			jsonResponse = given()
 							.header("usertoken",userToken)						
-							.get("/DistributionServices/services/api/reader/user/"+userID+"/updateUserLoginTime");
+							.post("/DistributionServices/services/api/reader/user/"+userID+"/updateUserLoginTime");
 			
 			Log.info("updateUserLoginTime : "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 

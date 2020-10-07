@@ -105,7 +105,7 @@ public class DIS_1979 {
 				LoginModule.loginScenario("automation.test1@yopmail.com", "kitaboo!123");
 				String title = KitabooBooksModule.bookCreationPDF("hello", "World", "level2", "For automation Testing", "Hello, World");
 				KitabooBooksModule.bookPublishAndArchivePDF(title);*/
-				clientID =JDBC_category.getReader(userName, sqlhost, sqlUsername, sqlPassword);
+				clientID =JDBC_Queries.getReader(userName, sqlhost, sqlUsername, sqlPassword);
 				Log.startTestCase("Authenticate");
 				Log.info("detail : "+detail);
 				Log.info("userName : "+userName);
@@ -113,31 +113,31 @@ public class DIS_1979 {
 				Log.info("ReaderKey : "+clientID);
 				Response authenticateValue = Authenticate.authenticate(clientID, userName, password,"514185",deviceT);
 				Log.info("Authenticate Response: "+authenticateValue.then().extract().response().prettyPrint());				
-				System.out.println("HERE_Before");
+				Log.info("HERE_Before");
 				Log.info("clientID : "+clientID);
 				Validation.responseHeaderCodeValidation(authenticateValue, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(authenticateValue, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(authenticateValue);
 				Validation.responseKeyValidation_key(authenticateValue, "userName");
 				Validation.responseKeyValidation_key(authenticateValue, userName);
-				System.out.println("HERE_After");
+				Log.info("HERE_After");
 				System.out.println("here");
 				userName = authenticateValue.then().extract().path("user.userName");
 				int userID = authenticateValue.then().extract().path("user.id");
-				System.out.println("userID: "+userID);
+				Log.info("userID: "+userID);
 				String userToken = authenticateValue.then().extract().path("userToken");
-				System.out.println("userToken:"+userToken);
+				Log.info("userToken:"+userToken);
 				String clientUserID = authenticateValue.then().extract().path("user.clientUserID");
-				System.out.println("clientUserID:"+clientUserID);
+				Log.info("clientUserID:"+clientUserID);
 				int client_Id = authenticateValue.then().extract().path("user.clientID");
-				System.out.println("client_Id:"+client_Id);
+				Log.info("client_Id:"+client_Id);
 				Log.endTestCase("End");
 
-				consumerKey = JDBC_category.getCK(client_Id, sqlhost, sqlUsername, sqlPassword);
-				consumerSecret =JDBC_category.getSK(client_Id, sqlhost, sqlUsername, sqlPassword);
+								
+				consumerKey = JDBC_Queries.getCK(client_Id, sqlhost, sqlUsername, sqlPassword);
+				consumerSecret =JDBC_Queries.getSK(client_Id, sqlhost, sqlUsername, sqlPassword);
 				
-				consumerKey = JDBC_category.getCK(client_Id, sqlhost, sqlUsername, sqlPassword);
-				consumerSecret =JDBC_category.getSK(client_Id, sqlhost, sqlUsername, sqlPassword);
+				
 				Log.info("URL : "+detail);
 				nowEpochTime = Instant.now().toEpochMilli();
 				Title ="Reflow_epub_"+nowEpochTime+"";
@@ -147,9 +147,8 @@ public class DIS_1979 {
 				Validation.responseCodeValidation1(UploadEpub_res, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(UploadEpub_res);
 				Validation.responseKeyValidation_key(UploadEpub_res, "The request for the uploadEpub taken successfully.");
-				System.out.println("UploadEpub_res : "+UploadEpub_res);
 				epubId = UploadEpub_res.then().extract().path("epubId");
-				System.out.println("epubId: "+epubId);
+				Log.info("epubId: "+epubId);
 
 
 				Thread.sleep(9000);
@@ -159,7 +158,6 @@ public class DIS_1979 {
 				Validation.responseTimeValidation(EpubStatus_res);
 				Validation.responseKeyValidation_key(EpubStatus_res, "status");
 				Validation.responseKeyValidation_key(EpubStatus_res, "100");
-				System.out.println("EpubStatus_res : "+EpubStatus_res);
 				//Log.info(Validation.responseCodeValidation1(EpubStatus_res, HttpStatus.SC_OK));
 				//2 qand 3 success
 
@@ -204,7 +202,7 @@ public class DIS_1979 {
 				Validation.responseCodeValidation1(IngectEpub_res1, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(IngectEpub_res1);
 				Validation.responseKeyValidation_key(IngectEpub_res1, "The request for the uploadEpub taken successfully.");
-				System.out.println("IngectEpub_res : "+IngectEpub_res1);
+				
 
 				isbnURL=formatter.formatCellValue(sheet.getRow(4).getCell(1));
 				Response IngectEpub_res2 = IngectEpub.ingectEpub_ext(consumerKey, consumerSecret,""+isbnURL+"");
@@ -213,8 +211,8 @@ public class DIS_1979 {
 				Validation.responseCodeValidation1(IngectEpub_res2, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(IngectEpub_res2);
 				Validation.responseKeyValidation_key(IngectEpub_res2, "The request for the uploadEpub taken successfully.");
-				System.out.println("IngectEpub_res : "+IngectEpub_res2);
-
+				
+				
 				isbnURL=formatter.formatCellValue(sheet.getRow(4).getCell(2));
 				Response IngectEpub_res3 = IngectEpub.ingectEpub_ext(consumerKey, consumerSecret,""+isbnURL+"");
 				Log.info("URL : "+detail);
@@ -222,7 +220,6 @@ public class DIS_1979 {
 				Validation.responseCodeValidation1(IngectEpub_res3, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(IngectEpub_res3);
 				Validation.responseKeyValidation_key(IngectEpub_res3, "The request for the uploadEpub taken successfully.");
-				System.out.println("IngectEpub_res : "+IngectEpub_res3);
 
 				isbnURL=formatter.formatCellValue(sheet.getRow(4).getCell(3));
 				Response IngectEpub_res4 = IngectEpub.ingectEpub_ext(consumerKey, consumerSecret,""+isbnURL+"");
@@ -231,7 +228,6 @@ public class DIS_1979 {
 				Validation.responseCodeValidation1(IngectEpub_res4, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(IngectEpub_res4);
 				Validation.responseKeyValidation_key(IngectEpub_res4, "The request for the uploadEpub taken successfully.");
-				System.out.println("IngectEpub_res : "+IngectEpub_res4);
 
 				isbnURL=formatter.formatCellValue(sheet.getRow(4).getCell(4));
 				Response IngectEpub_res5 = IngectEpub.ingectEpub_ext(consumerKey, consumerSecret,""+isbnURL+"");
@@ -240,7 +236,6 @@ public class DIS_1979 {
 				Validation.responseCodeValidation1(IngectEpub_res5, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(IngectEpub_res5);
 				Validation.responseKeyValidation_key(IngectEpub_res5, "The request for the uploadEpub taken successfully.");
-				System.out.println("IngectEpub_res : "+IngectEpub_res5);
 
 				isbnURL=formatter.formatCellValue(sheet.getRow(4).getCell(5));
 				Response IngectEpub_res6 = IngectEpub.ingectEpub_ext(consumerKey, consumerSecret,""+isbnURL+"");
@@ -249,8 +244,8 @@ public class DIS_1979 {
 				Validation.responseCodeValidation1(IngectEpub_res6, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(IngectEpub_res6);
 				Validation.responseKeyValidation_key(IngectEpub_res6, "The request for the uploadEpub taken successfully.");
-				System.out.println("IngectEpub_res : "+IngectEpub_res6);
 
+				
 				isbnURL=formatter.formatCellValue(sheet.getRow(4).getCell(6));
 				Response IngectEpub_res7 = IngectEpub.ingectEpub_ext(consumerKey, consumerSecret,""+isbnURL+"");
 				Log.info("URL : "+detail);
@@ -258,8 +253,8 @@ public class DIS_1979 {
 				Validation.responseCodeValidation1(IngectEpub_res7, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(IngectEpub_res7);
 				Validation.responseKeyValidation_key(IngectEpub_res7, "The request for the uploadEpub taken successfully.");
-				System.out.println("IngectEpub_res : "+IngectEpub_res7);
 
+				
 				isbnURL=formatter.formatCellValue(sheet.getRow(4).getCell(7));
 				Response IngectEpub_res8= IngectEpub.ingectEpub_ext(consumerKey, consumerSecret,""+isbnURL+"");
 				Log.info("URL : "+detail);
@@ -267,8 +262,8 @@ public class DIS_1979 {
 				Validation.responseCodeValidation1(IngectEpub_res8, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(IngectEpub_res8);
 				Validation.responseKeyValidation_key(IngectEpub_res8, "The request for the uploadEpub taken successfully.");
-				System.out.println("IngectEpub_res : "+IngectEpub_res8);			
 
+				
 				isbnURL=formatter.formatCellValue(sheet.getRow(4).getCell(8));
 				Response IngectEpub_res9 = IngectEpub.ingectEpub_ext(consumerKey, consumerSecret,""+isbnURL+"");
 				Log.info("URL : "+detail);
@@ -276,8 +271,8 @@ public class DIS_1979 {
 				Validation.responseCodeValidation1(IngectEpub_res9, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(IngectEpub_res9);
 				Validation.responseKeyValidation_key(IngectEpub_res9, "The request for the uploadEpub taken successfully.");
-				System.out.println("IngectEpub_res : "+IngectEpub_res9);					
 
+				
 				isbnURL=formatter.formatCellValue(sheet.getRow(4).getCell(9));
 				Response IngectEpub_res10 = IngectEpub.ingectEpub_ext(consumerKey, consumerSecret,""+isbnURL+"");
 				Log.info("URL : "+detail);
@@ -285,8 +280,8 @@ public class DIS_1979 {
 				Validation.responseCodeValidation1(IngectEpub_res10, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(IngectEpub_res10);
 				Validation.responseKeyValidation_key(IngectEpub_res10, "The request for the uploadEpub taken successfully.");
-				System.out.println("IngectEpub_res : "+IngectEpub_res10);									
-
+				
+				
 				/*isbnURL=formatter.formatCellValue(sheet.getRow(4).getCell(10));
 				Response IngectEpub_res11 = IngectEpub.ingectEpub_ext(consumerKey, consumerSecret,""+isbnURL+"");
 				Validation.responseHeaderCodeValidation(IngectEpub_res11, HttpStatus.SC_OK);
@@ -303,23 +298,27 @@ public class DIS_1979 {
 				Validation.responseHeaderCodeValidation(IngestionStatus_res, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(IngestionStatus_res, HttpStatus.SC_OK);
 				Validation.responseINTEGERKeyAndValue(IngestionStatus_res, "status", 100);	
-				System.out.println("IngestionStatus_res : "+IngestionStatus_res);
-
+				
+				
 				Response updatemeta = UpdateMetadata.updateMetadata(consumerKey, consumerSecret,isbnIng,"Reflow_"+isbnIng+"_UPD","Reflow_"+isbnIng+"_UPD",catlevel,"description");
-				System.out.println("updatemeta : "+updatemeta);
+				Validation.responseHeaderCodeValidation(updatemeta, HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(updatemeta, HttpStatus.SC_OK);
+				Validation.responseKeyValidation_Str(updatemeta, "The request for the update ePub metadata completed successfully.");
 
 				isbnIng = IngectEpub_res2.then().extract().path("isbn");			
-				System.out.println("isbnIng: "+isbnIng);
+				Log.info("isbnIng: "+isbnIng);
 				Thread.sleep(4000);
 				Response IngestionStatus_res2 = IngestionStatus.ingestionStatus(consumerKey, consumerSecret, isbnIng);
 				Validation.responseHeaderCodeValidation(IngestionStatus_res2, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(IngestionStatus_res2, HttpStatus.SC_OK);
 				Validation.responseINTEGERKeyAndValue(IngestionStatus_res2, "status", 100);					
-				System.out.println("IngestionStatus_res : "+IngestionStatus_res2);
+			
 
 				updatemeta = UpdateMetadata.updateMetadata(consumerKey, consumerSecret,isbnIng,"Reflow_"+isbnIng+"_UPD","Reflow_"+isbnIng+"_UPD",catlevel,"description");
-				System.out.println("updatemeta : "+updatemeta);
-
+				Validation.responseHeaderCodeValidation(updatemeta, HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(updatemeta, HttpStatus.SC_OK);
+				Validation.responseKeyValidation_Str(updatemeta, "The request for the update ePub metadata completed successfully.");
+				
 
 				isbnIng = IngectEpub_res3.then().extract().path("isbn");			
 				System.out.println("isbnIng: "+isbnIng);
@@ -328,11 +327,13 @@ public class DIS_1979 {
 				Validation.responseHeaderCodeValidation(IngestionStatus_res3, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(IngestionStatus_res3, HttpStatus.SC_OK);
 				Validation.responseINTEGERKeyAndValue(IngestionStatus_res3, "status", 100);	
-				System.out.println("IngestionStatus_res : "+IngestionStatus_res3);
+				
 
 				updatemeta = UpdateMetadata.updateMetadata(consumerKey, consumerSecret,isbnIng,"Reflow_"+isbnIng+"_UPD","Reflow_"+isbnIng+"_UPD",catlevel,"description");
-				System.out.println("updatemeta : "+updatemeta);
-
+				Validation.responseHeaderCodeValidation(updatemeta, HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(updatemeta, HttpStatus.SC_OK);
+				Validation.responseKeyValidation_Str(updatemeta, "The request for the update ePub metadata completed successfully.");
+				
 
 				isbnIng = IngectEpub_res4.then().extract().path("isbn");			
 				System.out.println("isbnIng: "+isbnIng);
@@ -341,9 +342,12 @@ public class DIS_1979 {
 				Validation.responseHeaderCodeValidation(IngestionStatus_res4, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(IngestionStatus_res4, HttpStatus.SC_OK);
 				Validation.responseINTEGERKeyAndValue(IngestionStatus_res4, "status", 100);	
-				System.out.println("IngestionStatus_res : "+IngestionStatus_res4);
+			
+				
 				updatemeta = UpdateMetadata.updateMetadata(consumerKey, consumerSecret,isbnIng,"Reflow_"+isbnIng+"_UPD","Reflow_"+isbnIng+"_UPD",catlevel,"description");
-				System.out.println("updatemeta : "+updatemeta);
+				Validation.responseHeaderCodeValidation(updatemeta, HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(updatemeta, HttpStatus.SC_OK);
+				Validation.responseKeyValidation_Str(updatemeta, "The request for the update ePub metadata completed successfully.");
 
 
 				isbnIng = IngectEpub_res5.then().extract().path("isbn");			
@@ -353,9 +357,10 @@ public class DIS_1979 {
 				Validation.responseHeaderCodeValidation(IngestionStatus_res5, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(IngestionStatus_res5, HttpStatus.SC_OK);
 				Validation.responseINTEGERKeyAndValue(IngestionStatus_res5, "status", 100);	
-				System.out.println("IngestionStatus_res : "+IngestionStatus_res5);
+				
+				
 				updatemeta = UpdateMetadata.updateMetadata(consumerKey, consumerSecret,isbnIng,"Reflow_"+isbnIng+"_UPD","Reflow_"+isbnIng+"_UPD",catlevel,"description");
-				System.out.println("updatemeta : "+updatemeta);
+				
 
 
 
@@ -366,10 +371,10 @@ public class DIS_1979 {
 				Validation.responseHeaderCodeValidation(IngestionStatus_res6, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(IngestionStatus_res6, HttpStatus.SC_OK);
 				Validation.responseINTEGERKeyAndValue(IngestionStatus_res6, "status", 100);	
-				System.out.println("IngestionStatus_res : "+IngestionStatus_res6);
+				
+				
 				updatemeta = UpdateMetadata.updateMetadata(consumerKey, consumerSecret,isbnIng,"Reflow_"+isbnIng+"_UPD","Reflow_"+isbnIng+"_UPD",catlevel,"description");
-				System.out.println("updatemeta : "+updatemeta);
-
+				
 
 
 				isbnIng = IngectEpub_res7.then().extract().path("isbn");			
@@ -379,9 +384,13 @@ public class DIS_1979 {
 				Validation.responseHeaderCodeValidation(IngestionStatus_res7, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(IngestionStatus_res7, HttpStatus.SC_OK);
 				Validation.responseINTEGERKeyAndValue(IngestionStatus_res7, "status", 100);	
-				System.out.println("IngestionStatus_res : "+IngestionStatus_res7);
+				
+				
+				
 				updatemeta = UpdateMetadata.updateMetadata(consumerKey, consumerSecret,isbnIng,"Reflow_"+isbnIng+"_UPD","Reflow_"+isbnIng+"_UPD",catlevel,"description");
-				System.out.println("updatemeta : "+updatemeta);
+				Validation.responseHeaderCodeValidation(updatemeta, HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(updatemeta, HttpStatus.SC_OK);
+				Validation.responseKeyValidation_Str(updatemeta, "The request for the update ePub metadata completed successfully.");
 
 
 
@@ -392,10 +401,11 @@ public class DIS_1979 {
 				Validation.responseHeaderCodeValidation(IngestionStatus_res8, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(IngestionStatus_res8, HttpStatus.SC_OK);
 				Validation.responseINTEGERKeyAndValue(IngestionStatus_res8, "status", 100);	
-				System.out.println("IngestionStatus_res : "+IngestionStatus_res8);
+				
 				updatemeta = UpdateMetadata.updateMetadata(consumerKey, consumerSecret,isbnIng,"Reflow_"+isbnIng+"_UPD","Reflow_"+isbnIng+"_UPD",catlevel,"description");
-				System.out.println("updatemeta : "+updatemeta);
-
+				Validation.responseHeaderCodeValidation(updatemeta, HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(updatemeta, HttpStatus.SC_OK);
+				Validation.responseKeyValidation_Str(updatemeta, "The request for the update ePub metadata completed successfully.");
 
 
 				isbnIng = IngectEpub_res9.then().extract().path("isbn");			
@@ -405,10 +415,11 @@ public class DIS_1979 {
 				Validation.responseHeaderCodeValidation(IngestionStatus_res9, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(IngestionStatus_res9, HttpStatus.SC_OK);
 				Validation.responseINTEGERKeyAndValue(IngestionStatus_res9, "status", 100);	
-				System.out.println("IngestionStatus_res : "+IngestionStatus_res9);
+			
 				updatemeta = UpdateMetadata.updateMetadata(consumerKey, consumerSecret,isbnIng,"Reflow_"+isbnIng+"_UPD","Reflow_"+isbnIng+"_UPD",catlevel,"description");
-				System.out.println("updatemeta : "+updatemeta);
-
+				Validation.responseHeaderCodeValidation(updatemeta, HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(updatemeta, HttpStatus.SC_OK);
+				Validation.responseKeyValidation_Str(updatemeta, "The request for the update ePub metadata completed successfully.");
 
 				isbnIng = IngectEpub_res10.then().extract().path("isbn");			
 				System.out.println("isbnIng: "+isbnIng);
@@ -417,9 +428,11 @@ public class DIS_1979 {
 				Validation.responseHeaderCodeValidation(IngestionStatus_res10, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(IngestionStatus_res10, HttpStatus.SC_OK);
 				Validation.responseINTEGERKeyAndValue(IngestionStatus_res10, "status", 100);	
-				System.out.println("IngestionStatus_res : "+IngestionStatus_res10);
+			
 				updatemeta = UpdateMetadata.updateMetadata(consumerKey, consumerSecret,isbnIng,"Reflow_"+isbnIng+"_UPD","Reflow_"+isbnIng+"_UPD",catlevel,"description");
-				System.out.println("updatemeta : "+updatemeta);
+				Validation.responseHeaderCodeValidation(updatemeta, HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(updatemeta, HttpStatus.SC_OK);
+				Validation.responseKeyValidation_Str(updatemeta, "The request for the update ePub metadata completed successfully.");
 
 
 				Response fetchBookList_without_pagination = FetchBookList.fetchBookList_without_pagination(userToken,"45616452",deviceT);

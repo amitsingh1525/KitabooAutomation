@@ -121,7 +121,7 @@ public class DIS_1604 {
 			io.restassured.RestAssured.baseURI = detail;	
 
 			//clientID =JDBC_category.getReader(userName, sqlhost, sqlUsername, sqlPassword);
-			String readerKey = JDBC_category.getReader_clientID(1219, sqlhost, sqlUsername, sqlPassword);
+			String readerKey = JDBC_Queries.getReader_clientID(1219, sqlhost, sqlUsername, sqlPassword);
 			//int client_Id = Integer.parseInt(""+client_Id+"");					
 			//String userName1=null;			
 
@@ -171,7 +171,7 @@ public class DIS_1604 {
 			int clientID = ValidateUsertoken.then().extract().path("clientID");
 			Log.info("userID : "+userID);
 
-			readerKey = JDBC_category.getReader_clientID(clientID, sqlhost, sqlUsername, sqlPassword);
+			readerKey = JDBC_Queries.getReader_clientID(clientID, sqlhost, sqlUsername, sqlPassword);
 
 			//TC-742
 			Log.startTestCase("ACEP_logout");

@@ -130,7 +130,7 @@ public class Patch_OrderV2 {
 				int type = Integer.parseInt(""+type1+"");
 
 
-				clientID =JDBC_category.getReader(userName, sqlhost, sqlUsername, sqlPassword);
+				clientID =JDBC_Queries.getReader(userName, sqlhost, sqlUsername, sqlPassword);
 				//int client_Id = Integer.parseInt(""+client_Id+"");					
 				String userName1=null;			
 
@@ -166,8 +166,8 @@ public class Patch_OrderV2 {
 				email = authenticateValue.then().extract().path("user.email");
 				Log.info("email:"+email);
 
-				consumerKey = JDBC_category.getCK(client_Id, sqlhost, sqlUsername, sqlPassword);
-				consumerSecret =JDBC_category.getSK(client_Id, sqlhost, sqlUsername, sqlPassword);
+				consumerKey = JDBC_Queries.getCK(client_Id, sqlhost, sqlUsername, sqlPassword);
+				consumerSecret =JDBC_Queries.getSK(client_Id, sqlhost, sqlUsername, sqlPassword);
 
 
 				Response fetchbooklist = FetchBookList.fetchBookList_without_pagination(userToken, "rwds32323", deviceT);
@@ -195,7 +195,7 @@ public class Patch_OrderV2 {
 					Log.info("userName : "+"\""+userName+"\"");
 					Log.info("password : "+password);
 					Log.info("email : "+email);
-				}	else if(client_T.contains("Existing"))
+				}else if(client_T.contains("Existing"))
 				{orderV2_withBookID = OrderV2.orderV2_withBookID(EpochTime.current(),consumerKey,consumerSecret,bookID1,time,firstName,lastName,userName1,password,""+userID1+"", email,deviceLimit,type);
 				Log.info("OrderNumber : " +EpochTime.current());
 				Log.info("detail : "+detail);

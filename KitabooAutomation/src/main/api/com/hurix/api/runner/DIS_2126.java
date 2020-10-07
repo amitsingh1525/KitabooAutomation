@@ -183,11 +183,11 @@ public class DIS_2126 {
 		
 
 			//client_Id = 7;
-			consumerKey = JDBC_category.getCK(client_Id, sqlhost, sqlUsername, sqlPassword);
-			consumerSecret =JDBC_category.getSK(client_Id, sqlhost, sqlUsername, sqlPassword);
+			consumerKey = JDBC_Queries.getCK(client_Id, sqlhost, sqlUsername, sqlPassword);
+			consumerSecret =JDBC_Queries.getSK(client_Id, sqlhost, sqlUsername, sqlPassword);
 			/*else if(environMent.equals("Staging"))
-			{consumerKey = JDBC_category.getCK(1337, sqlhost, sqlUsername, sqlPassword);
-			consumerSecret =JDBC_category.getSK(1337, sqlhost, sqlUsername, sqlPassword);}*/
+			{consumerKey = JDBC_Queries.getCK(1337, sqlhost, sqlUsername, sqlPassword);
+			consumerSecret =JDBC_Queries.getSK(1337, sqlhost, sqlUsername, sqlPassword);}*/
 
 
 			for(int i5=1;i5<=10;i5++)
@@ -222,6 +222,8 @@ public class DIS_2126 {
 			Log.info("bookID_1: "+bookID1);
 			Log.info("environMent : "+environMent);
 			Log.info("userName : "+userName);
+			
+			
 
 			if(environMent.equals("BASE_US")&& userName.equals("willo.test1@yopmail.com") || environMent.equals("PROD_US") && userName.equals("willo.test1@yopmail.com"))
 			{Log.info("HEREREEEEEEEEEEEEEEEEEE");
@@ -330,7 +332,7 @@ public class DIS_2126 {
 			Validation.responseCodeValidation1(unMarkFav, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(unMarkFav);
 			//Validation.responseKeyValidation_key(unMarkFav, "isbn");
-			System.out.println("unMarkFav : "+unMarkFav);
+			
 
 
 			Response FetchFavouriteBooks_res1 = FetchFavouriteBooks.fetchFavouriteBooks(userToken_re,"8742685",deviceT);

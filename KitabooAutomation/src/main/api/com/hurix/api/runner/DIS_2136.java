@@ -168,8 +168,8 @@ public class DIS_2136 {
 			}				
 			io.restassured.RestAssured.baseURI = detail;
 
-			//clientID = JDBC_category.getReader_clientID(clientID, sqlhost, sqlUsername, sqlPassword);		
-			clientID =JDBC_category.getReader(userName, sqlhost, sqlUsername, sqlPassword);
+			//clientID = JDBC_Queries.getReader_clientID(clientID, sqlhost, sqlUsername, sqlPassword);		
+			clientID =JDBC_Queries.getReader(userName, sqlhost, sqlUsername, sqlPassword);
 			Log.info("ReaderKey : "+clientID);
 
 
@@ -193,21 +193,21 @@ public class DIS_2136 {
 			System.out.println("here");
 			userName = authenticateValue.then().extract().path("user.userName");
 			userID = authenticateValue.then().extract().path("user.id");
-			System.out.println("userID: "+userID);
+			Log.info("userID: "+userID);
 			userToken = authenticateValue.then().extract().path("userToken");
-			System.out.println("userToken:"+userToken);
+			Log.info("userToken:"+userToken);
 			clientUserID = authenticateValue.then().extract().path("user.clientUserID");
-			System.out.println("clientUserID:"+clientUserID);
+			Log.info("clientUserID:"+clientUserID);
 			client_Id = authenticateValue.then().extract().path("user.clientID");
-			System.out.println("client_Id:"+client_Id);
+			Log.info("client_Id:"+client_Id);
 			Log.endTestCase("End");
 
 
-			//String ck= JDBC_category.getCKSK(client_Id, sqlhost, sqlUsername, sqlPassword);
+			//String ck= JDBC_Queries.getCKSK(client_Id, sqlhost, sqlUsername, sqlPassword);
 			//Log.info("ck : "+ck);
 			//Log.info("Sk : "+ck[1]);
-			consumerKey = JDBC_category.getCK(client_Id, sqlhost, sqlUsername, sqlPassword);
-			consumerSecret =JDBC_category.getSK(client_Id, sqlhost, sqlUsername, sqlPassword);
+			consumerKey = JDBC_Queries.getCK(client_Id, sqlhost, sqlUsername, sqlPassword);
+			consumerSecret =JDBC_Queries.getSK(client_Id, sqlhost, sqlUsername, sqlPassword);
 
 
 			for(int i2=1; i2<=5; i2++)

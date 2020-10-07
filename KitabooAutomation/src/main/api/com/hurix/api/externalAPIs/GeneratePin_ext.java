@@ -34,6 +34,4 @@ public class GeneratePin_ext {
 		Log.endTestCase("End");
 		return jsonResponse;
 	}
-
-
 }

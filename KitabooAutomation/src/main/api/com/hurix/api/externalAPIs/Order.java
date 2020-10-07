@@ -12,6 +12,10 @@ public class Order {
 		try {
 			Log.startTestCase("orderV2_with.BookID."+BookID1+"");
 			Log.info("BookID1 :"+ "\""+BookID1+"\"");
+			Log.info("keyCount : " +keyCount);
+			Log.info("consumerKey : " +consumerKey);
+			Log.info("consumerSecret : " +consumerSecret);
+			Log.info("bookID1 : " +BookID1);
 			jsonResponse = given()
 					.auth()
 					.oauth(consumerKey, consumerSecret, "", "")

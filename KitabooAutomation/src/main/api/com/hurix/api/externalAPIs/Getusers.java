@@ -40,6 +40,8 @@ public class Getusers {
 			Log.info("clientUserID:" +clientUserID);
 			Log.info("consumerKey:" +consumerKey);
 			Log.info("consumerSecret:" +consumerSecret);
+			Log.info("startIndex :" +startIndex);
+			Log.info("endIndex :" +endIndex);
 			jsonResponse = given()
 					.auth()
 					.oauth(consumerKey, consumerSecret, "", "")

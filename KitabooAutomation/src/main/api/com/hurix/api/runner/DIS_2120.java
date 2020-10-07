@@ -172,8 +172,8 @@ public class DIS_2120 {
 			}				
 			io.restassured.RestAssured.baseURI = detail;
 
-			//clientID = JDBC_category.getReader_clientID(clientID, sqlhost, sqlUsername, sqlPassword);		
-			//clientID =JDBC_category.getReader(userName, sqlhost, sqlUsername, sqlPassword);
+			//clientID = JDBC_Queries.getReader_clientID(clientID, sqlhost, sqlUsername, sqlPassword);		
+			//clientID =JDBC_Queries.getReader(userName, sqlhost, sqlUsername, sqlPassword);
 			//Log.info("ReaderKey : "+clientID);
 			
 			
@@ -206,11 +206,11 @@ public class DIS_2120 {
 			Log.endTestCase("End");
 			
 			
-			//String ck= JDBC_category.getCKSK(client_Id, sqlhost, sqlUsername, sqlPassword);
+			//String ck= JDBC_Queries.getCKSK(client_Id, sqlhost, sqlUsername, sqlPassword);
 			//Log.info("ck : "+ck);
 			//Log.info("Sk : "+ck[1]);
-			consumerKey = JDBC_category.getCK(client_Id, sqlhost, sqlUsername, sqlPassword);
-			consumerSecret =JDBC_category.getSK(client_Id, sqlhost, sqlUsername, sqlPassword);
+			consumerKey = JDBC_Queries.getCK(client_Id, sqlhost, sqlUsername, sqlPassword);
+			consumerSecret =JDBC_Queries.getSK(client_Id, sqlhost, sqlUsername, sqlPassword);
 			
 			Response fetchBookList_without_pagination = FetchBookList.fetchBookList_without_pagination(userToken,"45616452",deviceT[i4]);
 			Validation.responseCodeValidation1(fetchBookList_without_pagination, HttpStatus.SC_OK);

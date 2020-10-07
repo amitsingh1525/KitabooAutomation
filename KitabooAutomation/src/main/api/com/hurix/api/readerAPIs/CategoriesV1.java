@@ -7,10 +7,8 @@ import com.hurix.automation.utility.Log;
 
 public class CategoriesV1 {
 	
-	public static String GETcategoriesV1Path;
 	public static Response categoriesV1(String userToken,String deviceID,String deviceType)
-	{
-		
+	{		
 		Response jsonResponse = null;
 		try {
 			
@@ -23,11 +21,9 @@ public class CategoriesV1 {
 		} catch (Exception exp) 
 		{
 			Log.fail(exp.getMessage());
-			exp.printStackTrace();
+			Log.fail("fails due to"+ exp.getCause());
 		}
 		Log.endTestCase("End");
 		return jsonResponse;
 	}
-
-
 }

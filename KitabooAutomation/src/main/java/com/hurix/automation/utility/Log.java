@@ -1,5 +1,4 @@
-package com.hurix.automation.utility;
- 
+package com.hurix.automation.utility; 
 
 import java.io.File;
 import java.time.Instant;
@@ -38,7 +37,6 @@ public class Log {
 			test = extent.startTest(sTestCaseName, "Sample description");
 			extent.flush();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -49,7 +47,6 @@ public class Log {
 			extent.endTest(test);
 			extent.flush();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -63,7 +60,6 @@ public class Log {
 			test.log(LogStatus.INFO, message);
 			extent.flush();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -91,7 +87,6 @@ public class Log {
 			test.log(LogStatus.ERROR, "Find the Screenshot below: " + test.addScreenCapture(file.getAbsolutePath()+scr_Path));
 			extent.flush();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

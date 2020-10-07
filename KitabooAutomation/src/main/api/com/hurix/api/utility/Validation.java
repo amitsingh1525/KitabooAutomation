@@ -137,9 +137,9 @@ public class Validation {
 		}
 	}
 
-	public static void responseISGreater_String(String  variable , int key,int value)
+	public static void responseISGreater_String(Response variable,String key1,int value)
 	{
-		//int key= Integer.parseInt(""+key1+"");	
+		int key= Integer.parseInt(""+key1+"");	
 
 		if(key >= value)
 		{
