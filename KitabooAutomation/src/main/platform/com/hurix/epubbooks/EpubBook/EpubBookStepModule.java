@@ -79,6 +79,19 @@ public class EpubBookStepModule extends UIElements {
 		}
 	}		
 	
+	public static void windowswitchtoparent(){
+		try {
+			for(String winHandle : Driver.driver.getWindowHandles())  // Switch to new opened window
+			{
+				Driver.driver.switchTo().window(winHandle);
+				Log.info(winHandle);
+
+			}
+			} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}		
+	
 	public static void txtisbnepubbook(String isbn){
 		try {
 			elementFinderByXpath(prop.getProperty("isbnepubbook_xpath"), "Click on isbn").click();

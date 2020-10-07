@@ -103,8 +103,7 @@ public class CategoryBookListV2 {
 			con.close();
 		} catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
+			Log.fail(exp.getMessage());
 			exp.printStackTrace();
 		}
 		Log.endTestCase("End");
@@ -191,8 +190,7 @@ public class CategoryBookListV2 {
 			con.close();
 		} catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
+			Log.fail(exp.getMessage());
 			exp.printStackTrace();
 		}
 		Log.endTestCase("End");
@@ -213,8 +211,7 @@ public class CategoryBookListV2 {
 			Log.info("CategoryBookListV2 Response: "+jsonResponse.then().extract().response().prettyPrint());
 		}catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
+			Log.fail(exp.getMessage());
 			exp.printStackTrace();
 		}
 		Log.endTestCase("End");

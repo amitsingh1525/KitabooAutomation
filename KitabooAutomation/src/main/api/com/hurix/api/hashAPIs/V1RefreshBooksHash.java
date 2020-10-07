@@ -43,19 +43,13 @@ public class V1RefreshBooksHash {
 			Log.info("V1RefreshBooks Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
+			Log.fail(exp.getMessage());
 			exp.printStackTrace();
 		}
 		Log.endTestCase("End");
 		return jsonResponse;
 	}
-	
-	
-	
-	
-	
-	
+		
 	public static Response v1refreshBooks_op(Object startDate,int bookID1,int bookID2,String operation1,String operation2,String userToken,String deviceID ,String deviceType)
 	{
 		//,"+bookID2+"
@@ -84,8 +78,7 @@ public class V1RefreshBooksHash {
 			Log.info("V1RefreshBooks_Hash.operation1="+operation1+".operation2="+operation2+" Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
+			Log.fail(exp.getMessage());
 			exp.printStackTrace();
 		}
 		Log.endTestCase("End");

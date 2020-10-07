@@ -50,7 +50,7 @@ public class AuthorwidgetModule extends AuthorwidgetStepModule {
 		Driver.driver.manage().window().maximize();
 		Thread.sleep(5000);
 		Thread.sleep(5000);
-		
+		titleComponent(title,author);
 		/*titleComponent(title,author);
 		headerComponent(header);
 		textComponent(text);
@@ -74,7 +74,7 @@ public class AuthorwidgetModule extends AuthorwidgetStepModule {
 		wordSearchComponent(wordsearchheader,text,wordsearchquestion,hiddenword);
 		questionanswerComponent(EnterQuestion);*/
 		
-		Thread.sleep(3000);
+	/*	Thread.sleep(3000);
 		Driver.driver.close();
 // 		Old Window Handle
 	    Thread.sleep(5000);
@@ -84,10 +84,10 @@ public class AuthorwidgetModule extends AuthorwidgetStepModule {
 		//WebDriverWait wait = new WebDriverWait(Driver.driver,60); 
 		wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("iframeBody"));
 		//Driver.driver.switchTo().frame("iframeBody");
-		System.out.println("Frame switched");
-	//	Driver.driver.switchTo().frame("iframeBody");
+		System.out.println("Frame switched");*/
+
 	    
-	 //publish author widget and download (list view)
+/*	 //publish author widget and download (list view)
 	  	publishDownloadAuthorWidget(Format,language);
 	
 	//copy functionality
@@ -102,11 +102,11 @@ public class AuthorwidgetModule extends AuthorwidgetStepModule {
 	// Filter author widget and create widget Functionality
 		filterAuthorWidget();
 		
-	/*//Multiple publish author widget
-		multiplePublishDownload(theme,Format,language);*/
+	//Multiple publish author widget
+		multiplePublishDownload(theme,Format,language);
 		
 	// Change cover functionality
-		changeCover();
+		changeCover();*/
 		
 	// share functionaliy
 		shareAuthorWidget();

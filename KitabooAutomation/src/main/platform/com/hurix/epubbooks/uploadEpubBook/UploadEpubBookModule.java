@@ -66,7 +66,7 @@ public class UploadEpubBookModule extends UploadEpubBookStepModule
 		btnepubuploadstart();
 		WebDriverWait wait = new WebDriverWait(Driver.driver, 900); 
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(prop.getProperty("epubuploadfilepicker_id"))));
-		Driver.driver.switchTo().frame(prop.getProperty("epubuploadfilepickerdialog_name"));
+		Driver.driver.switchTo().frame("filepicker_dialog");
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(prop.getProperty("epubuploadfileInputContainer_id"))));
 		Driver.driver.findElement(By.id(prop.getProperty("epubuploadfileUploadInput_id"))).sendKeys(filePath);
 		
