@@ -37,8 +37,5 @@ public class UploadMediaFile {
 		}
 		Log.endTestCase("End");
 		return jsonResponse;
-
-	}	
-
-
+	}
 }

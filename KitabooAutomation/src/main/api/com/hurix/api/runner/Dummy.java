@@ -1,7 +1,10 @@
 package com.hurix.api.runner;
 
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 import io.restassured.response.Response;
 
@@ -12,7 +15,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.hurix.api.externalAPIs.*;
 import com.hurix.api.readerAPIs.*;
-import com.hurix.api.readerAPIs.RegisterUser;
 import com.hurix.api.utility.*;
 import com.hurix.automation.utility.Log;
 
@@ -27,7 +29,11 @@ public class Dummy {
 	public static String userName;
 	public static String password;
 	public static String detail;
+	static int BookID_mark1;
+	static int BookID_mark2;
+	static int BookID_mark3;
 	public static String firstName;
+	public static String version;
 	public static String lastName;
 	public static String clientID;
 	public static String catlevel;
@@ -37,6 +43,8 @@ public class Dummy {
 	public static int  bookID1;
 	public static int bookID2;
 	public static int bookID3;
+	public static int bookID4;
+	public static int bookID5;
 	public static int bookID6;
 	static String isbn;
 	static String assetType;
@@ -51,8 +59,11 @@ public class Dummy {
 	public static String catname; 
 	public static long nowEpochTime;
 	public static String Title;
-	public static int epubId;
+	public static int epubId; 
 	public static String totalbooks;
+	public static String pageID;
+	public static String lastPage;
+	public static String chapterID;
 	public static String isbnMeta;
 	public static String isbnIng;
 	public static String sqlhost;
@@ -80,10 +91,13 @@ public class Dummy {
 			String type1 = formatter.formatCellValue(sheet.getRow(i).getCell(7));
 			String  filePath =formatter.formatCellValue(sheet.getRow(i).getCell(8));
 			String collectionRefID=formatter.formatCellValue(sheet.getRow(i).getCell(10));
-
+			pageID =formatter.formatCellValue(sheet.getRow(i).getCell(11));
+			lastPage =formatter.formatCellValue(sheet.getRow(i).getCell(12));
+			chapterID =formatter.formatCellValue(sheet.getRow(i).getCell(13));
 
 			Log.info("runY_N : "+runY_N);
-			if(runY_N.contains("NO")){Log.info("Permission to Run that Row is Denied!!..Please change YES in Ith row in Respective Sheet of Yours, Thank You");}
+			if(runY_N.contains("NO"))
+			{Log.info("runY_N : "+runY_N);Log.info("Permission to Run that Row is Denied!!..Please change YES in Ith row in Respective Sheet of Yours, Thank You");}
 			else if(runY_N.contains("YES"))
 			{switch(environMent){
 			case "QC":
@@ -126,15 +140,54 @@ public class Dummy {
 			}				
 			io.restassured.RestAssured.baseURI = detail;
 
+						
 			Log.info("deviceLimit : +deviceLimit");
 			int deviceLimit1 = Integer.parseInt(""+deviceLimit+"");
 			int typeF = Integer.parseInt(""+type1+"");
+			int pageIDF = Integer.parseInt(""+pageID+"");
+			int lastPageF = Integer.parseInt(""+lastPage+"");
+			int chapterIDF = Integer.parseInt(""+chapterID+"");
 			SimpleDateFormat formatter1 = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");  
 			Date date = new Date();  
 			String  time=formatter1.format(date);
 			clientID = JDBC_Queries.getReader(userName, sqlhost, sqlUsername, sqlPassword);
 
-
+			String userNameT = formatter.formatCellValue(sheet.getRow(2).getCell(1));			
+			String passwordT = formatter.formatCellValue(sheet.getRow(2).getCell(2));
+			Log.startTestCase("Authenticate."+deviceType+"");
+			Response authenticateValueT = Authenticate.authenticate(clientID, userNameT, passwordT,"514185",deviceType);
+			Log.info("Authenticate Response: "+authenticateValueT.then().extract().response().prettyPrint());				
+			Log.info("HERE_Before");
+			Log.info("clientID : "+clientID);
+			Validation.responseHeaderCodeValidation(authenticateValueT, HttpStatus.SC_OK);
+			//Validation.responseCodeValidation1(authenticateValue, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(authenticateValueT);
+			Validation.responseKeyValidation_key(authenticateValueT, "userName");
+			Validation.responseKeyValidation_key(authenticateValueT, userNameT);			
+			Log.info("HERE_After");
+			String userNameTT = authenticateValueT.then().extract().path("user.userName");
+			Validation.responseKeyAndValue(authenticateValueT, "userName", userNameT);
+			int userIDT = authenticateValueT.then().extract().path("user.id");
+			Log.info("userIDT : "+userID);
+			String userTokenT = authenticateValueT.then().extract().path("userToken");
+			Log.info("userTokenT :"+userTokenT);
+			String clientUserIDT = authenticateValueT.then().extract().path("user.clientUserID");
+			Log.info("clientUserIDT :"+clientUserIDT);
+			int client_IdT = authenticateValueT.then().extract().path("user.clientID");
+			Log.info("client_IdT :"+client_IdT);
+			String firstNameT = authenticateValueT.then().extract().path("user.firstName");
+			Log.info("firstNameT:"+firstNameT);
+			String lastNameT = authenticateValueT.then().extract().path("user.lastName");
+			Log.info("lastNameT :"+lastNameT);
+			Log.info("HEWEWEWEWE");
+			String userName1T = authenticateValueT.then().extract().path("user.userName");
+			Log.info("userName1T :"+""+userName1T+"");
+			String emailT = authenticateValueT.then().extract().path("user.email");
+			Log.info("emailT :"+emailT);
+			
+			
+			
+			
 			Log.info("detail : "+detail);
 			Log.info("userName : "+userName);
 			Log.info("password : "+password);
@@ -237,7 +290,11 @@ public class Dummy {
 			Log.info("bookID2: "+bookID2);
 			bookID3 = fetchBookList_without_pagination.then().extract().path("bookList.book.id[2]");			
 			Log.info("bookID3: "+bookID3);
-			bookID6 = fetchBookList_without_pagination.then().extract().path("bookList.book.id[6]");
+			bookID4 = fetchBookList_without_pagination.then().extract().path("bookList.book.id[3]");
+			Log.info("bookID4 :: "+bookID4);
+			bookID5 = fetchBookList_without_pagination.then().extract().path("bookList.book.id[4]");
+			Log.info("bookID5 :: "+bookID5);
+			bookID6 = fetchBookList_without_pagination.then().extract().path("bookList.book.id[5]");
 			Log.info("bookID6 :: "+bookID6);
 			isbn = fetchBookList_without_pagination.then().extract().path("bookList.book.isbn[1]");
 			Log.info("isbn: "+isbn);
@@ -268,7 +325,11 @@ public class Dummy {
 			Log.info("collectionName0: "+collectionName0);
 			String classID =fetchBookList_without_pagination.then().extract().path("bookList.book.classList[0].classID[0]");
 			Log.info("classID: "+classID);
-
+			version = fetchBookList_without_pagination.then().extract().path("bookList.book.version[0]");
+			Log.info("version: "+version);
+			
+			
+			
 			/*Response GETfetchBookCount_res = FetchBookCount.fetchBookCount(userToken,"45616452",deviceType);
 			Validation.responseHeaderCodeValidation(GETfetchBookCount_res, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(GETfetchBookCount_res,HttpStatus.SC_OK);
@@ -787,7 +848,7 @@ public class Dummy {
 			Validation.responseKeyValidation_key(fetchBookClassUserExpandedAnalytics, "pagesRead");
 			Validation.responseKeyValidation_key(fetchBookClassUserExpandedAnalytics, "id");
 			Validation.responseKeyValidation_key(fetchBookClassUserExpandedAnalytics, "studentAnalytics");
-			Validation.responseKeyValidation_key(fetchBookClassUserExpandedAnalytics, "sessionAnalytics");*/
+			Validation.responseKeyValidation_key(fetchBookClassUserExpandedAnalytics, "sessionAnalytics");
 			
 			
 			Response fetchBookClassInfo=FetchBookClassInfo.fetchBookClassInfo(bookID1, userToken, "fdghs78", deviceType);
@@ -806,29 +867,788 @@ public class Dummy {
 			Validation.responseKeyValidation_key(fetchBookClassInfo, "learners");
 			Validation.responseKeyValidation_key(fetchBookClassInfo, "profilePicURL");
 
-			
-			Response savecollection = Savecollection.savecollection(consumerKey, consumerSecret, bookID1, bookID2);
+			long clientCollectionId=EpochTime.current();
+			Response savecollection = Savecollection.savecollection(clientCollectionId,consumerKey, consumerSecret, bookID1, bookID2);
+			Validation.responseCodeValidation1(savecollection, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(savecollection, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(savecollection);
 			Validation.responseKeyAndValue(savecollection, "responseMsg","OK");
-			Validation.responseKeyValidation_key(savecollection, "clientCollectionId");
-			Validation.responseKeyValidation_key(savecollection, "coverImage");
-			Validation.responseKeyValidation_key(savecollection, "books");
-			Validation.responseKeyValidation_key(savecollection, "id");
+			Validation.responseKeyValidation_key(savecollection, "kitabooCollectionId");
+			Log.info("clientCollectionId : "+clientCollectionId);		
+			int kitabooCollectionId =	savecollection.then().extract().path("kitabooCollectionId");
+			Log.info("kitabooCollectionId : "+kitabooCollectionId);
 			
 			
 			Response listCollection= ListCollection.listCollection(consumerKey, consumerSecret);
 			Validation.responseCodeValidation1(listCollection, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(listCollection, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(listCollection);
-			Validation.responseKeyAndValue(listCollection, "responseMsg","OK");
 			Validation.responseKeyValidation_key(listCollection, "clientCollectionId");
 			Validation.responseKeyValidation_key(listCollection, "title");
 			Validation.responseKeyValidation_key(listCollection, "coverImageUrl");
 			Validation.responseKeyValidation_key(listCollection, "collectionType");
 			Validation.responseKeyValidation_key(listCollection, "referenceNumber");
 			
+			Response updateCollection = UpdateCollection.updateCollection(clientCollectionId,consumerKey, consumerSecret, bookID1, bookID2, bookID3);
+			Validation.responseCodeValidation1(updateCollection, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(updateCollection, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(updateCollection);
+			Validation.responseKeyAndValue(updateCollection, "responseMsg","OK");
+			
+			Response releaseCollection = ReleaseCollection.releaseCollection(kitabooCollectionId, userToken, "sdfg2345", deviceType);
+			Validation.responseCodeValidation1(releaseCollection, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(releaseCollection, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(releaseCollection);
+			Validation.responseKeyAndValue(releaseCollection, "responseMsg","OK");
+			
+			listCollection= ListCollection.listCollection(consumerKey, consumerSecret);
+			Validation.responseCodeValidation1(listCollection, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(listCollection, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(listCollection);
+			Validation.responseKeyValidation_key(listCollection, "clientCollectionId");
+			Validation.responseKeyValidation_key(listCollection, "title");
+			Validation.responseKeyValidation_key(listCollection, "coverImageUrl");
+			Validation.responseKeyValidation_key(listCollection, "collectionType");
+			Validation.responseKeyValidation_key(listCollection, "referenceNumber");
+			Validation.responseINTEGERKeyAndValue(listCollection, "id", kitabooCollectionId);
 			
 			
+			Response deleteClientCollection = DeleteClientCollection.deleteClientCollection(clientCollectionId, consumerKey,consumerSecret);
+			Validation.responseCodeValidation1(deleteClientCollection, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(deleteClientCollection, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(deleteClientCollection);
+			Validation.responseKeyAndValue(deleteClientCollection, "responseMsg","Success");
+			
+			long clientCollectionId1 = EpochTime.current();
+			savecollection = Savecollection.savecollection(clientCollectionId1,consumerKey, consumerSecret, bookID1, bookID2);
+			Validation.responseCodeValidation1(savecollection, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(savecollection, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(savecollection);
+			Validation.responseKeyAndValue(savecollection, "responseMsg","OK");
+			Validation.responseKeyValidation_key(savecollection, "kitabooCollectionId");
+			Log.info("clientCollectionId : "+clientCollectionId);		
+			int kitabooCollectionId1 =	savecollection.then().extract().path("kitabooCollectionId");
+			Log.info("kitabooCollectionId1 : "+kitabooCollectionId1);
+			
+			deleteClientCollection = DeleteClientCollection.deleteClientCollection(clientCollectionId1, consumerKey,consumerSecret);
+			Validation.responseCodeValidation1(deleteClientCollection, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(deleteClientCollection, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(deleteClientCollection);
+			Validation.responseKeyAndValue(deleteClientCollection, "responseMsg","Success");
+			
+			
+			listCollection= ListCollection.listCollection(consumerKey, consumerSecret);
+			Validation.responseCodeValidation1(listCollection, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(listCollection, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(listCollection);
+			Validation.responseKeyValidation_key(listCollection, "clientCollectionId");
+			Validation.responseKeyValidation_key(listCollection, "title");
+			Validation.responseKeyValidation_key(listCollection, "coverImageUrl");
+			Validation.responseKeyValidation_key(listCollection, "collectionType");
+			Validation.responseKeyValidation_key(listCollection, "referenceNumber");
+			Validation.responseNOTKeyValidation_key(listCollection, ""+kitabooCollectionId1+"");
+			
+			Response uploadProfilePic = UploadProfilePic.uploadProfilePic(userToken, "sdfg6543", deviceType);
+			Validation.responseCodeValidation1(uploadProfilePic, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(uploadProfilePic, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(uploadProfilePic);
+			Validation.responseKeyAndValue(uploadProfilePic, "responseMsg","OK");
+			Validation.responseKeyValidation_key(uploadProfilePic, "user");
+			Validation.responseKeyValidation_key(uploadProfilePic, "usernameForInstitute");
+			Validation.responseKeyValidation_key(uploadProfilePic, "trialUser");
+			Validation.responseKeyValidation_key(uploadProfilePic, "profilePicURL");
+			Validation.responseKeyValidation_key(uploadProfilePic, "clientID");
+			int client_idProfile = uploadProfilePic.then().extract().path("user.clientID");
+			Log.info("client_idProfile : "+client_idProfile);
+			Validation.responseINTEGERKeyAndValue(uploadProfilePic, "clientID", client_Id);			
+			
+			Response fetchBookMetaData = FetchBookMetaData.fetchBookMetaData(bookID1, userToken, "sdfgh65432", deviceType);
+			Validation.responseCodeValidation1(fetchBookMetaData, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(fetchBookMetaData, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(fetchBookMetaData);
+			Validation.responseKeyValidation_key(fetchBookMetaData, "resultSet");
+			Validation.responseKeyValidation_key(fetchBookMetaData, "publisherLogo");
+			Validation.responseKeyAndValue(fetchBookMetaData, "responseMsg","OK");
+			
+			Response fetchMarkupSetting = FetchMarkupSetting.fetchMarkupSetting(userToken, "asdfg345", deviceType);
+			Validation.responseCodeValidation1(fetchMarkupSetting, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(fetchMarkupSetting, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(fetchMarkupSetting);
+			Validation.responseKeyValidation_key(fetchMarkupSetting, "markupSettings");
+			Validation.responseKeyValidation_key(fetchMarkupSetting, "name");
+			Validation.responseKeyValidation_key(fetchMarkupSetting, "description");
+			Validation.responseKeyValidation_key(fetchMarkupSetting, "selectionsStatus");
+			Validation.responseKeyValidation_key(fetchMarkupSetting, "type");
+			Validation.responseKeyValidation_key(fetchMarkupSetting, "value");
+			Validation.responseKeyValidation_key(fetchMarkupSetting, "showTOR");
+			Validation.responseKeyValidation_key(fetchMarkupSetting, "hideIcon");
+			Validation.responseKeyValidation_key(fetchMarkupSetting, "width");
+			Validation.responseKeyValidation_key(fetchMarkupSetting, "height");
+			Validation.responseKeyValidation_key(fetchMarkupSetting, "subtitle");
+			Validation.responseKeyValidation_key(fetchMarkupSetting, "autoLogging");
+			
+			Response fetchDefaultCBMId = FetchDefaultCBMId.fetchDefaultCBMId(bookID1, userToken, "kjh9876", deviceType);
+			Validation.responseCodeValidation1(fetchDefaultCBMId, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(fetchDefaultCBMId, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(fetchDefaultCBMId);
+			Validation.responseKeyValidation_key(fetchDefaultCBMId, "defaultkitabooId");
+			Validation.responseKeyAndValue(fetchDefaultCBMId, "responseMsg","OK");
+			
+			Response fetchCollectionCBMId = FetchCollectionCBMId.fetchCollectionCBMId(bookID3, userToken, "kjh9876", deviceType);
+			Validation.responseCodeValidation1(fetchCollectionCBMId, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(fetchCollectionCBMId, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(fetchCollectionCBMId);
+			Validation.responseKeyValidation_key(fetchCollectionCBMId, "assignedkitabooId");
+			Validation.responseKeyAndValue(fetchCollectionCBMId, "responseMsg","OK");
+			
+			Response fetchRecentlyViewed =  FetchRecentlyViewed.fetchRecentlyViewed_without_pagi(userToken,"54254fd",deviceType);
+			Validation.responseHeaderCodeValidation(fetchRecentlyViewed, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(fetchRecentlyViewed, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(fetchRecentlyViewed);
+			Validation.responseKeyValidation_key(fetchRecentlyViewed, "archiveDate");
+			Validation.responseKeyValidation_key(fetchRecentlyViewed, "assetType");
+			Validation.responseKeyValidation_key(fetchRecentlyViewed, "assignedOn");
+			Validation.responseKeyValidation_key(fetchRecentlyViewed, "author");
+			Validation.responseKeyValidation_key(fetchRecentlyViewed, "bookActive");
+			Validation.responseKeyValidation_key(fetchRecentlyViewed, "bookCode");
+			Validation.responseKeyValidation_key(fetchRecentlyViewed, "bookId");
+			Validation.responseKeyValidation_key(fetchRecentlyViewed, "category");
+			Validation.responseKeyValidation_key(fetchRecentlyViewed, "categoryIdList");
+			Validation.responseKeyValidation_key(fetchRecentlyViewed, "categoryList");
+			Validation.responseKeyValidation_key(fetchRecentlyViewed, "collectionID");
+			Validation.responseKeyValidation_key(fetchRecentlyViewed, "collectionTitle");
+			Validation.responseKeyValidation_key(fetchRecentlyViewed, "collectionType");
+			Validation.responseKeyValidation_key(fetchRecentlyViewed, "ebookID");
+			Validation.responseKeyValidation_key(fetchRecentlyViewed, "expiryDate");
+			Validation.responseKeyValidation_key(fetchRecentlyViewed, "isbn");
+			Validation.responseKeyValidation_key(fetchRecentlyViewed, "pages");
+			Validation.responseKeyValidation_key(fetchRecentlyViewed, "readingPercentage");
+			Validation.responseKeyValidation_key(fetchRecentlyViewed, "encryption");
+			
+			
+			Response getLastPageAccessed =GetLastPageAccessed.getLastPageAccessed(bookID1, userToken, "sdfgh65432", deviceType);
+			Validation.responseHeaderCodeValidation(getLastPageAccessed, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(getLastPageAccessed, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(getLastPageAccessed);
+			Validation.responseKeyValidation_key(getLastPageAccessed, "LastPageFolio");
+			Validation.responseKeyAndValue(getLastPageAccessed, "responseMsg","OK");
+			
+			Response markAsFavourite_res = MarkAsFavourite.markAsFavourite(bookID1,userToken,"45564595",deviceType);
+			BookID_mark1 = bookID1;
+			Validation.responseHeaderCodeValidation(markAsFavourite_res, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(markAsFavourite_res, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(markAsFavourite_res);
+			
+			Response markAsFavourite_res1 = MarkAsFavourite.markAsFavourite(bookID2,userToken,"45564595",deviceType);
+			BookID_mark2 = bookID2;
+			Validation.responseHeaderCodeValidation(markAsFavourite_res1, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(markAsFavourite_res1, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(markAsFavourite_res1);
+
+
+
+			Response markAsFavourite_res3 = MarkAsFavourite.markAsFavourite(bookID3,userToken,"45564595",deviceType);
+			BookID_mark3 = bookID3;
+			Validation.responseHeaderCodeValidation(markAsFavourite_res3, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(markAsFavourite_res3, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(markAsFavourite_res3);
+			
+			
+			Response FetchFavouriteBooks_res = FetchFavouriteBooks.fetchFavouriteBooks(userToken,"45564595",deviceType);
+			Validation.responseHeaderCodeValidation(FetchFavouriteBooks_res, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(FetchFavouriteBooks_res, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(FetchFavouriteBooks_res);
+			Validation.responseKeyValidation_key(FetchFavouriteBooks_res, "archiveDate");
+			Validation.responseKeyValidation_key(FetchFavouriteBooks_res, "assetType");
+			Validation.responseKeyValidation_key(FetchFavouriteBooks_res, "assignedOn");
+			Validation.responseKeyValidation_key(FetchFavouriteBooks_res, "author");
+			Validation.responseKeyValidation_key(FetchFavouriteBooks_res, "bookActive");
+			Validation.responseKeyValidation_key(FetchFavouriteBooks_res, "bookCode");
+			Validation.responseKeyValidation_key(FetchFavouriteBooks_res, "bookDisLikeCount");
+			Validation.responseKeyValidation_key(FetchFavouriteBooks_res, "category");
+			Validation.responseKeyValidation_key(FetchFavouriteBooks_res, "categoryIdList");
+			Validation.responseKeyValidation_key(FetchFavouriteBooks_res, "categoryList");
+			Validation.responseKeyValidation_key(FetchFavouriteBooks_res, "collectionID");
+			Validation.responseKeyValidation_key(FetchFavouriteBooks_res, "collectionThumbnail");
+			Validation.responseKeyValidation_key(FetchFavouriteBooks_res, "collectionTitle");
+			Validation.responseKeyValidation_key(FetchFavouriteBooks_res, "collectionType");
+			Validation.responseKeyValidation_key(FetchFavouriteBooks_res, "ebookID");
+			Validation.responseKeyValidation_key(FetchFavouriteBooks_res, "id");
+			Validation.responseKeyValidation_key(FetchFavouriteBooks_res, "isbn");
+			Validation.responseKeyValidation_key(FetchFavouriteBooks_res, "like");
+			Validation.responseKeyValidation_key(FetchFavouriteBooks_res, "pages");
+			Validation.responseKeyValidation_key(FetchFavouriteBooks_res, "readingPercentage");
+			Validation.responseKeyValidation_key(FetchFavouriteBooks_res, "reflow");
+			Validation.responseKeyValidation_key(FetchFavouriteBooks_res, "title");
+			Validation.responseKeyValidation_key(FetchFavouriteBooks_res, "version");
+			Validation.responseINTEGERKeyAndValue(FetchFavouriteBooks_res, "id", BookID_mark1);
+			Validation.responseINTEGERKeyAndValue(FetchFavouriteBooks_res, "id", BookID_mark2);
+			Validation.responseINTEGERKeyAndValue(FetchFavouriteBooks_res, "id", BookID_mark3);
+			
+			Response unMarkAsFavourite_res = UnMarkAsFavourite.unMarkAsFavourite(BookID_mark1,userToken,"45564595",deviceType);
+			Validation.responseHeaderCodeValidation(unMarkAsFavourite_res, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(unMarkAsFavourite_res, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(unMarkAsFavourite_res);
+
+
+			Response unMarkAsFavourite_res1 = UnMarkAsFavourite.unMarkAsFavourite(BookID_mark2,userToken,"45564595",deviceType);
+			Validation.responseHeaderCodeValidation(unMarkAsFavourite_res1, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(unMarkAsFavourite_res1, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(unMarkAsFavourite_res1);
+
+
+			Response unMarkAsFavourite_res3 = UnMarkAsFavourite.unMarkAsFavourite(BookID_mark3,userToken,"45564595",deviceType);
+			Validation.responseHeaderCodeValidation(unMarkAsFavourite_res3, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(unMarkAsFavourite_res3, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(unMarkAsFavourite_res3);
+
+
+			Response FetchFavouriteBooks_resA= FetchFavouriteBooks.fetchFavouriteBooks(userToken,"45564595",deviceType);
+			Validation.responseHeaderCodeValidation(FetchFavouriteBooks_resA, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(FetchFavouriteBooks_resA, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(FetchFavouriteBooks_resA);
+			Validation.responseNOTKeyValidation_key(FetchFavouriteBooks_resA, ""+BookID_mark1+"");
+			Validation.responseNOTKeyValidation_key(FetchFavouriteBooks_resA, ""+BookID_mark2+"");
+			Validation.responseNOTKeyValidation_key(FetchFavouriteBooks_resA, ""+BookID_mark3+"");
+			
+			
+			String bookOpenTime= time+5;
+			Log.info("bookOpenTime : "+bookOpenTime);
+			Response SavetrackingDATA = SaveTrackingData.saveTrackingData(bookID1, classID, time, bookOpenTime, pageIDF, lastPageF, chapterIDF, userToken, "sdfgh345", deviceType);
+			Validation.responseCodeValidation1(SavetrackingDATA, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(SavetrackingDATA, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(SavetrackingDATA);
+			Validation.responseKeyAndValue(SavetrackingDATA, "responseMsg","OK");
+			
+			
+			bookOpenTime= time+10;
+			SavetrackingDATA = SaveTrackingData.saveTrackingDataV1(bookID1, classID, time, bookOpenTime, pageIDF, lastPageF, chapterIDF, userToken, "sdfgh345", deviceType);
+			Validation.responseCodeValidation1(SavetrackingDATA, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(SavetrackingDATA, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(SavetrackingDATA);
+			Validation.responseKeyAndValue(SavetrackingDATA, "responseMsg","OK");
+			
+			
+			Response scormDataForClassAndBook = ScormDataForClassAndBook.scormDataForClassAndBook(bookID1, classID, userToken, "asdfgh6543", deviceType);
+			Validation.responseCodeValidation1(scormDataForClassAndBook, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(scormDataForClassAndBook, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(scormDataForClassAndBook);
+			Validation.responseKeyAndValue(scormDataForClassAndBook, "responseMsg","OK");
+			
+			
+			Response fetchScormDataForBook =FetchScormDataForBook.fetchScormDataForBook(bookID1, userToken, "sdfgh7654", deviceType);
+			Validation.responseCodeValidation1(fetchScormDataForBook, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(fetchScormDataForBook, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(fetchScormDataForBook);
+			Validation.responseKeyAndValue(fetchScormDataForBook, "responseMsg","OK");
+			Validation.responseKeyValidation_key(fetchScormDataForBook, "scoList");
+			Validation.responseKeyValidation_key(fetchScormDataForBook, "classID");
+			Validation.responseKeyValidation_key(fetchScormDataForBook, "bookID");
+			Validation.responseKeyValidation_key(fetchScormDataForBook, "activityName");
+			Validation.responseKeyValidation_key(fetchScormDataForBook, "scoid");
+			Validation.responseKeyValidation_key(fetchScormDataForBook, "cmi.core");
+			Validation.responseKeyValidation_key(fetchScormDataForBook, "activityName");
+			String scoid= fetchScormDataForBook.then().extract().path("scoList[1].scoid");
+			Log.info("scoid : "+scoid);	
+			String classID_1= fetchScormDataForBook.then().extract().path("scoList[0].classID");
+			Log.info("classID_1 : "+classID_1);	
+			
+
+			Response saveScormData =SaveScormData.saveScormData(scoid, bookID1,userToken, "145644544", deviceType);
+			Log.info("detail : "+detail);	
+			Validation.responseCodeValidation1(saveScormData, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(saveScormData, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(saveScormData);
+			Validation.responseKeyAndValue(saveScormData, "responseMsg","OK");
+			
+			
+			Response saveScormDataForBook =SaveScormDataForBook.saveScormDataForBook(bookID1,classID, userToken, "hgfds4567", deviceType);
+			Validation.responseCodeValidation1(saveScormDataForBook, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(saveScormDataForBook, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(saveScormDataForBook);
+			Validation.responseKeyAndValue(saveScormDataForBook, "responseMsg","OK");
+			
+			Response fetchScormData = FetchScormData.fetchScormData(scoid, bookID1, userToken, "hgfds9876", deviceType);
+			Validation.responseCodeValidation1(fetchScormData, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(fetchScormData, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(fetchScormData);
+			Validation.responseKeyAndValue(fetchScormData, "responseMsg","OK");
+			Validation.responseKeyValidation_key(fetchScormData, "activityName");
+			Validation.responseKeyValidation_key(fetchScormData, "scoid");
+			Validation.responseKeyValidation_key(fetchScormData, "cmi.core");
+					
+			
+			int clientClassID = JDBC_Queries.getclientClassID(bookID1, classID, sqlhost, sqlUsername, sqlPassword);
+			Log.info("clientClassID : "+clientClassID);			
+			Response fetchScormDataForClass =FetchScormDataForClass.fetchScormDataForClass(consumerKey, consumerSecret, clientClassID);
+			Validation.responseTimeValidation(fetchScormDataForClass);
+			Validation.responseKeyValidation_key(fetchScormDataForClass, "scoList");
+			Validation.responseKeyValidation_key(fetchScormDataForClass, "classID");
+			Validation.responseKeyValidation_key(fetchScormDataForClass, "bookID");
+			Validation.responseKeyValidation_key(fetchScormDataForClass, "userID");
+			Validation.responseKeyValidation_key(fetchScormDataForClass, "clientClassId");
+			Validation.responseKeyValidation_key(fetchScormDataForClass, "scoid");
+			Validation.responseKeyValidation_key(fetchScormDataForClass, "cmi.core");
+			int userID=fetchScormDataForClass.then().extract().path("scoList[0].userID");
+			Log.info("userID : "+userID);
+			
+			
+			Response fetchScormData_OAuth = FetchScormData_OAuth.fetchScormData_OAuth(consumerKey, consumerSecret, clientClassID,userID);
+			Validation.responseCodeValidation1(fetchScormData_OAuth, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(fetchScormData_OAuth, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(fetchScormData_OAuth);
+			Validation.responseKeyValidation_key(fetchScormData_OAuth, "scoList");
+			Validation.responseKeyValidation_key(fetchScormData_OAuth, "classID");
+			Validation.responseKeyValidation_key(fetchScormData_OAuth, "bookID");
+			Validation.responseKeyValidation_key(fetchScormData_OAuth, "clientClassId");
+			Validation.responseKeyValidation_key(fetchScormData_OAuth, "scoid");
+			Validation.responseKeyValidation_key(fetchScormData_OAuth, "cmi.core");
+			
+			
+			fetchScormDataForBook =FetchScormDataForBook.fetchScormDataForBook(bookID1, userToken, "sdfgh7654", deviceType);
+			Validation.responseCodeValidation1(fetchScormDataForBook, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(fetchScormDataForBook, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(fetchScormDataForBook);
+			Validation.responseKeyAndValue(fetchScormDataForBook, "responseMsg","OK");
+			Validation.responseKeyValidation_key(fetchScormDataForBook, "scoList");
+			Validation.responseKeyValidation_key(fetchScormDataForBook, "classID");
+			Validation.responseKeyValidation_key(fetchScormDataForBook, "bookID");
+			Validation.responseKeyValidation_key(fetchScormDataForBook, "activityName");
+			Validation.responseKeyValidation_key(fetchScormDataForBook, "scoid");
+			Validation.responseKeyValidation_key(fetchScormDataForBook, "cmi.core");
+			Validation.responseKeyValidation_key(fetchScormDataForBook, "activityName");
+			scoid= fetchScormDataForBook.then().extract().path("scoList[1].scoid");
+			Log.info("scoid : "+scoid);	
+			classID_1= fetchScormDataForBook.then().extract().path("scoList[0].classID");
+			Log.info("classID_1 : "+classID_1);
+			
+			Response fetchBookClassInfo1=FetchBookClassInfo.fetchBookClassInfo(bookID1, userToken, "fdghs78", deviceType);
+			Validation.responseCodeValidation1(fetchBookClassInfo1, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(fetchBookClassInfo1);
+			Validation.responseKeyAndValue(fetchBookClassInfo1, "responseMsg","OK");
+			Validation.responseKeyValidation_key(fetchBookClassInfo1, "bookClassList");
+			Validation.responseKeyValidation_key(fetchBookClassInfo1, "book");
+			Validation.responseKeyValidation_key(fetchBookClassInfo1, "id");	
+			Validation.responseKeyValidation_key(fetchBookClassInfo1, "bookActive");
+			Validation.responseKeyValidation_key(fetchBookClassInfo1, "bookClassList");
+			Validation.responseKeyValidation_key(fetchBookClassInfo1, "classInfo");
+			Validation.responseKeyValidation_key(fetchBookClassInfo1, "name");
+			Validation.responseKeyValidation_key(fetchBookClassInfo1, "sharingSetting");
+			Validation.responseKeyValidation_key(fetchBookClassInfo1, "instructors");
+			Validation.responseKeyValidation_key(fetchBookClassInfo1, "learners");
+			Validation.responseKeyValidation_key(fetchBookClassInfo1, "profilePicURL");
+			
+			
+			Response saveUGC=SaveUGC.saveUGC(bookID1, time, userToken, "sdfgh2345", deviceType);
+			Validation.responseCodeValidation1(saveUGC, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(saveUGC);
+			Validation.responseKeyAndValue(saveUGC, "responseMsg","OK");
+			Validation.responseKeyValidation_key(saveUGC, "bookUgcList");
+			Validation.responseKeyValidation_key(saveUGC, "id");
+			Validation.responseKeyValidation_key(saveUGC, "bookID");
+			Validation.responseKeyValidation_key(saveUGC, "bookVersion");
+			Validation.responseKeyValidation_key(saveUGC, "ugcList");
+			Validation.responseKeyValidation_key(saveUGC, "localId");
+			Validation.responseKeyValidation_key(saveUGC, "type");
+			
+			
+			Response fetchUGC = FetchUGC.fetchUGC(bookID1, userToken, "23456543asdf", deviceType);
+			Validation.responseCodeValidation1(fetchUGC, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(fetchUGC);
+			Validation.responseKeyValidation_key(fetchUGC, "bookUgcList");
+			Validation.responseKeyValidation_key(fetchUGC, "bookID");
+			Validation.responseKeyValidation_key(fetchUGC, "ugcList");
+			Validation.responseKeyValidation_key(fetchUGC, "id");
+			Validation.responseKeyValidation_key(fetchUGC, "localId");
+			Validation.responseKeyValidation_key(fetchUGC, "ugcData");
+			Validation.responseKeyValidation_key(fetchUGC, "type");
+			Validation.responseKeyValidation_key(fetchUGC, "createdOn");
+			Validation.responseKeyValidation_key(fetchUGC, "metadata");
+			Validation.responseKeyValidation_key(fetchUGC, "folioID");
+			Validation.responseKeyValidation_key(fetchUGC, "status");
+			Validation.responseKeyValidation_key(fetchUGC, "important");			
+			
+			Response saveTeacherAnnotations = SaveTeacherAnnotations.saveTeacherAnnotations(bookID1, userID, userToken, "rt23", deviceType);
+			Log.info("%%%%%%%%%%saveTeacherAnnotations _Student%%%%%%%");
+			Validation.responseCodeValidation1(saveTeacherAnnotations, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(saveTeacherAnnotations);
+			Validation.responseKeyValidation_key(saveTeacherAnnotations, "ugcList");
+			Validation.responseKeyValidation_key(saveTeacherAnnotations, "id");
+			Validation.responseKeyValidation_key(saveTeacherAnnotations, "localId");
+			Validation.responseKeyValidation_key(saveTeacherAnnotations, "type");			
+			
+			saveTeacherAnnotations = SaveTeacherAnnotations.saveTeacherAnnotations(bookID1, userIDT, userTokenT, "rt23", deviceType);
+			Log.info("%%%%%%%%%%saveTeacherAnnotations _Instructor%%%%%%%");
+			Validation.responseCodeValidation1(saveTeacherAnnotations, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(saveTeacherAnnotations);
+			Validation.responseKeyValidation_key(saveTeacherAnnotations, "ugcList");
+			Validation.responseKeyValidation_key(saveTeacherAnnotations, "id");
+			Validation.responseKeyValidation_key(saveTeacherAnnotations, "localId");
+			Validation.responseKeyValidation_key(saveTeacherAnnotations, "type");
+			
+			Response fetchStudentAnnotations =FetchStudentAnnotations.fetchStudentAnnotations(bookID1, userID, version, userToken, "re23", deviceType);
+			Validation.responseCodeValidation1(fetchStudentAnnotations, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(fetchStudentAnnotations, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(fetchStudentAnnotations);
+			Validation.responseKeyValidation_key(fetchStudentAnnotations, "pageUgc");
+			Validation.responseKeyValidation_key(fetchStudentAnnotations, "folioID");
+			Validation.responseKeyValidation_key(fetchStudentAnnotations, "ugcList");
+			Validation.responseKeyValidation_key(fetchStudentAnnotations, "id");
+			Validation.responseKeyValidation_key(fetchStudentAnnotations, "localId");
+			Validation.responseKeyValidation_key(fetchStudentAnnotations, "ugcData");
+			Validation.responseKeyValidation_key(fetchStudentAnnotations, "type");
+			Validation.responseKeyValidation_key(fetchStudentAnnotations, "type");
+			Validation.responseKeyValidation_key(fetchStudentAnnotations, "createdBy");
+			Validation.responseKeyValidation_key(fetchStudentAnnotations, "firstName");
+			Validation.responseKeyValidation_key(fetchStudentAnnotations, "lastName");
+			Validation.responseKeyValidation_key(fetchStudentAnnotations, "metadata");
+			
+			Response fetchTeacherAnnotations =FetchTeacherAnnotations.fetchTeacherAnnotations(bookID1, userID, version, userTokenT, "re23", deviceType);
+			Validation.responseCodeValidation1(fetchTeacherAnnotations, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(fetchTeacherAnnotations, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(fetchTeacherAnnotations);
+			Validation.responseKeyValidation_key(fetchTeacherAnnotations, "pageUgc");
+			Validation.responseKeyValidation_key(fetchTeacherAnnotations, "folioID");
+			Validation.responseKeyValidation_key(fetchTeacherAnnotations, "ugcList");
+			Validation.responseKeyValidation_key(fetchTeacherAnnotations, "id");
+			Validation.responseKeyValidation_key(fetchTeacherAnnotations, "localId");
+			Validation.responseKeyValidation_key(fetchTeacherAnnotations, "ugcData");
+			Validation.responseKeyValidation_key(fetchTeacherAnnotations, "type");
+			Validation.responseKeyValidation_key(fetchTeacherAnnotations, "type");
+			Validation.responseKeyValidation_key(fetchTeacherAnnotations, "createdBy");
+			Validation.responseKeyValidation_key(fetchTeacherAnnotations, "firstName");
+			Validation.responseKeyValidation_key(fetchTeacherAnnotations, "lastName");
+			Validation.responseKeyValidation_key(fetchTeacherAnnotations, "metadata");
+			
+			
+			String formate1=null;
+			String formate2=null;
+			String formate3=null;
+			String formate4=null;
+			String formate5=null;
+			String formate = JDBC_Queries.getFormate(bookID5,sqlhost,sqlUsername,sqlPassword);
+			if(formate.equals("IPAD"))
+			{formate1 = JDBC_Queries.getFormate_3(bookID5,sqlhost,sqlUsername,sqlPassword);
+			formate2 = JDBC_Queries.getFormate_5(bookID5,sqlhost,sqlUsername,sqlPassword);
+			formate3 = JDBC_Queries.getFormate_12(bookID5,sqlhost,sqlUsername,sqlPassword);
+			formate4 = JDBC_Queries.getFormate_13(bookID5,sqlhost,sqlUsername,sqlPassword);
+			}
+			formate5 = JDBC_Queries.getFormate(bookID1,sqlhost,sqlUsername,sqlPassword);	
+			
+			
+			Response downloadBook = DownloadBook.downloadBook(userToken,"ds9465",formate,bookID5,"offline");
+			Validation.responseCodeValidation1(downloadBook, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(downloadBook);
+			Validation.responseKeyValidation_key(downloadBook,"content_ownership");
+			String content_ownership=downloadBook.then().extract().path("content_ownership");
+			Validation.responseKeyAndValue(downloadBook, "content_ownership", content_ownership);
+			Validation.responseKeyValidation_key(downloadBook,"fileSize");
+			Validation.responseKeyValidation_key(downloadBook,"responseMsg");
+			Validation.responseKeyValidation_key(downloadBook,"timestamp");						
+			
+			downloadBook = DownloadBook.downloadBook(userToken,"ds9465",formate1,bookID5,"offline");
+			Validation.responseCodeValidation1(downloadBook, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(downloadBook);
+			Validation.responseKeyValidation_key(downloadBook,"content_ownership");
+			content_ownership=downloadBook.then().extract().path("content_ownership");
+			Validation.responseKeyAndValue(downloadBook, "content_ownership", content_ownership);
+			Validation.responseKeyValidation_key(downloadBook,"fileSize");
+			Validation.responseKeyValidation_key(downloadBook,"responseMsg");
+			Validation.responseKeyValidation_key(downloadBook,"timestamp");
+			
+			
+			downloadBook = DownloadBook.downloadBook(userToken,"ds9465",formate2,bookID5,"online");
+			Validation.responseCodeValidation1(downloadBook, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(downloadBook);
+			Validation.responseKeyValidation_key(downloadBook,"content_ownership");
+			content_ownership=downloadBook.then().extract().path("content_ownership");
+			Validation.responseKeyAndValue(downloadBook, "content_ownership", content_ownership);
+			Validation.responseKeyValidation_key(downloadBook,"fileSize");
+			Validation.responseKeyValidation_key(downloadBook,"responseMsg");
+			Validation.responseKeyValidation_key(downloadBook,"timestamp");
+			
+			
+			downloadBook = DownloadBook.downloadBook(userToken,"ds9465",formate3,bookID5,"online");
+			Validation.responseCodeValidation1(downloadBook, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(downloadBook);
+			Validation.responseKeyValidation_key(downloadBook,"content_ownership");
+			content_ownership=downloadBook.then().extract().path("content_ownership");
+			Validation.responseKeyAndValue(downloadBook, "content_ownership", content_ownership);
+			Validation.responseKeyValidation_key(downloadBook,"fileSize");
+			Validation.responseKeyValidation_key(downloadBook,"responseMsg");
+			Validation.responseKeyValidation_key(downloadBook,"timestamp");
+			
+			downloadBook = DownloadBook.downloadBook(userToken,"ds9465",formate4,bookID5,"online");
+			Validation.responseCodeValidation1(downloadBook, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(downloadBook);
+			Validation.responseKeyValidation_key(downloadBook,"content_ownership");
+			content_ownership=downloadBook.then().extract().path("content_ownership");
+			Validation.responseKeyAndValue(downloadBook, "content_ownership", content_ownership);
+			Validation.responseKeyValidation_key(downloadBook,"fileSize");
+			Validation.responseKeyValidation_key(downloadBook,"responseMsg");
+			Validation.responseKeyValidation_key(downloadBook,"timestamp");
+			
+			
+			downloadBook = DownloadBook.downloadBook(userToken,"ds9465",formate5,bookID1,"online");
+			Validation.responseCodeValidation1(downloadBook, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(downloadBook);
+			Validation.responseKeyValidation_key(downloadBook,"content_ownership");
+			content_ownership=downloadBook.then().extract().path("content_ownership");
+			Validation.responseKeyAndValue(downloadBook, "content_ownership", content_ownership);
+			Validation.responseKeyValidation_key(downloadBook,"fileSize");
+			Validation.responseKeyValidation_key(downloadBook,"responseMsg");
+			Validation.responseKeyValidation_key(downloadBook,"timestamp");
+			
+			Response saveUGC1 = SaveUGC.saveUGC(bookID1, time, userToken, "sdfgh2345", deviceType);
+			Validation.responseCodeValidation1(saveUGC1, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(saveUGC1);
+			Validation.responseKeyAndValue(saveUGC1, "responseMsg","OK");
+			Validation.responseKeyValidation_key(saveUGC1, "bookUgcList");
+			Validation.responseKeyValidation_key(saveUGC1, "id");
+			Validation.responseKeyValidation_key(saveUGC1, "bookID");
+			Validation.responseKeyValidation_key(saveUGC1, "bookVersion");
+			Validation.responseKeyValidation_key(saveUGC1, "ugcList");
+			Validation.responseKeyValidation_key(saveUGC1, "localId");
+			Validation.responseKeyValidation_key(saveUGC1, "type");
+			int UGCId =saveUGC1.then().extract().path("bookUgcList[0].ugcList[0].id");
+			Log.info("UGCId : "+UGCId);
+			
+			Response submitAnnotations = SubmitAnnotations.submitAnnotations(bookID1, userToken, "u76", deviceType);
+			Validation.responseCodeValidation1(submitAnnotations, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(submitAnnotations, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(submitAnnotations);
+			Validation.responseKeyAndValue(submitAnnotations, "responseMsg","OK");
+			
+			Response acceptCollabData = AcceptCollabData.acceptCollabData(UGCId, userToken, "u76", deviceType);
+			Validation.responseCodeValidation1(acceptCollabData, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(acceptCollabData, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(acceptCollabData);
+			Validation.responseKeyAndValue(acceptCollabData, "responseMsg","OK");
+			
+			Response saveCollabData = SaveCollabData.saveCollabData(UGCId, bookID1, userID, userToken, "sdfg345", deviceType);
+			Validation.responseCodeValidation1(saveCollabData, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(saveCollabData, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(saveCollabData);
+			Validation.responseKeyAndValue(saveCollabData, "responseMsg","OK");
+			
+			Response fetchCollabData= FetchCollabData.fetchCollabData(version, bookID1, userToken, "gfd6543", deviceType);
+			Validation.responseCodeValidation1(fetchCollabData, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(fetchCollabData, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(fetchCollabData);
+			Validation.responseKeyAndValue(fetchCollabData, "responseMsg","OK");
+			Validation.responseKeyValidation_key(fetchCollabData, "id");
+			Validation.responseKeyValidation_key(fetchCollabData, "localId");
+			Validation.responseKeyValidation_key(fetchCollabData, "ugcData");
+			Validation.responseKeyValidation_key(fetchCollabData, "type");
+			Validation.responseKeyValidation_key(fetchCollabData, "createdOn");
+			Validation.responseKeyValidation_key(fetchCollabData, "createdBy");
+			Validation.responseKeyValidation_key(fetchCollabData, "firstName");
+			Validation.responseKeyValidation_key(fetchCollabData, "lastName");
+			Validation.responseKeyValidation_key(fetchCollabData, "userName");
+			Validation.responseKeyValidation_key(fetchCollabData, "metadata");
+			Validation.responseKeyValidation_key(fetchCollabData, "folioID");
+			Validation.responseKeyValidation_key(fetchCollabData, "status");
+			Validation.responseKeyValidation_key(fetchCollabData, "important");
+			Validation.responseKeyValidation_key(fetchCollabData, "noteShared");
+			Validation.responseKeyValidation_key(fetchCollabData, "actionTaken");
+			
+			
+			fetchCollabData= FetchCollabData.fetchCollabData_v3(version, bookID1, userToken, "gfd6543", deviceType);
+			Validation.responseCodeValidation1(fetchCollabData, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(fetchCollabData, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(fetchCollabData);
+			Validation.responseKeyAndValue(fetchCollabData, "responseMsg","OK");
+			Validation.responseKeyValidation_key(fetchCollabData, "id");
+			Validation.responseKeyValidation_key(fetchCollabData, "localId");
+			Validation.responseKeyValidation_key(fetchCollabData, "ugcData");
+			Validation.responseKeyValidation_key(fetchCollabData, "type");
+			Validation.responseKeyValidation_key(fetchCollabData, "createdOn");
+			Validation.responseKeyValidation_key(fetchCollabData, "createdBy");
+			Validation.responseKeyValidation_key(fetchCollabData, "firstName");
+			Validation.responseKeyValidation_key(fetchCollabData, "lastName");
+			Validation.responseKeyValidation_key(fetchCollabData, "userName");
+			Validation.responseKeyValidation_key(fetchCollabData, "metadata");
+			Validation.responseKeyValidation_key(fetchCollabData, "folioID");
+			Validation.responseKeyValidation_key(fetchCollabData, "status");
+			Validation.responseKeyValidation_key(fetchCollabData, "important");
+			Validation.responseKeyValidation_key(fetchCollabData, "noteShared");
+			Validation.responseKeyValidation_key(fetchCollabData, "actionTaken");
+			
+			String bookOpenTime= time+5;
+			Log.info("bookOpenTime : "+bookOpenTime);
+			Response SavetrackingDATA1 = SaveTrackingData.saveTrackingData(bookID1, classID, time, bookOpenTime, pageIDF, lastPageF, chapterIDF, userToken, "sdfgh345", deviceType);
+			Validation.responseCodeValidation1(SavetrackingDATA1, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(SavetrackingDATA1, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(SavetrackingDATA1);
+			Validation.responseKeyAndValue(SavetrackingDATA1, "responseMsg","OK");
+			
+			Response fetchBookClassAnalytics = FetchBookClassAnalytics.fetchBookClassAnalytics(bookID1,classID, userToken, "rew432", deviceType);
+			Validation.responseCodeValidation1(fetchBookClassAnalytics, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(fetchBookClassAnalytics, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(fetchBookClassAnalytics);
+			
+			Response fetchAnalytics = FetchAnalytics.fetchAnalytics(bookID1,classID, userToken, "rew432", deviceType);
+			Validation.responseCodeValidation1(fetchAnalytics, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(fetchAnalytics, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(fetchAnalytics);
+			Validation.responseKeyValidation_key(fetchAnalytics, "analytics");
+			Validation.responseKeyValidation_key(fetchAnalytics, "classAnalytics");
+			Validation.responseKeyValidation_key(fetchAnalytics, "name");
+			Validation.responseKeyValidation_key(fetchAnalytics, "id");
+			Validation.responseKeyValidation_key(fetchAnalytics, "totalPages");
+			Validation.responseKeyValidation_key(fetchAnalytics, "studentAnalytics");
+			Validation.responseKeyValidation_key(fetchAnalytics, "totalPages");
+			Validation.responseKeyValidation_key(fetchAnalytics, "subAnalytics");
+			
+			Response saveUGC11 = SaveUGC.saveUGC(bookID1, time, userToken, "sdfgh2345", deviceType);
+			Validation.responseCodeValidation1(saveUGC11, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(saveUGC11);
+			Validation.responseKeyAndValue(saveUGC11, "responseMsg","OK");
+			Validation.responseKeyValidation_key(saveUGC11, "bookUgcList");
+			Validation.responseKeyValidation_key(saveUGC11, "id");
+			Validation.responseKeyValidation_key(saveUGC11, "bookID");
+			Validation.responseKeyValidation_key(saveUGC11, "bookVersion");
+			Validation.responseKeyValidation_key(saveUGC11, "ugcList");
+			Validation.responseKeyValidation_key(saveUGC11, "localId");
+			Validation.responseKeyValidation_key(saveUGC11, "type");
+			int UGCId1 =saveUGC11.then().extract().path("bookUgcList[0].ugcList[0].id");
+			Log.info("UGCId : "+UGCId1);
+			
+			Response deleteUGCdata = SaveUGC.deleteUGCdata(bookID1, classID, userToken, "as23", deviceType);
+			Validation.responseCodeValidation1(deleteUGCdata, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(deleteUGCdata, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(deleteUGCdata);
+			Validation.responseKeyValidation_key(deleteUGCdata, "bookUgcList");
+			Validation.responseKeyValidation_key(deleteUGCdata, "bookID");
+			Validation.responseKeyValidation_key(deleteUGCdata, "bookVersion");
+			Validation.responseKeyValidation_key(deleteUGCdata, "ugcList");
+			Validation.responseKeyValidation_key(deleteUGCdata, "id");
+			Validation.responseKeyValidation_key(deleteUGCdata, "localId");
+			Validation.responseKeyValidation_key(deleteUGCdata, "type");
+			int UGCId11 =deleteUGCdata.then().extract().path("bookUgcList[0].ugcList[0].id");
+			Log.info("UGCId : "+UGCId11);
+			
+			
+			Response fetchUGC1 = FetchUGC.fetchUGC(bookID1, userToken, "23456543asdf", deviceType);
+			Validation.responseCodeValidation1(fetchUGC1, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(fetchUGC1);
+			Validation.responseKeyValidation_key(fetchUGC1, "bookUgcList");
+			Validation.responseKeyValidation_key(fetchUGC1, "bookID");
+			Validation.responseKeyValidation_key(fetchUGC1, "ugcList");
+			Validation.responseKeyValidation_key(fetchUGC1, "id");
+			Validation.responseKeyValidation_key(fetchUGC1, "localId");
+			Validation.responseKeyValidation_key(fetchUGC1, "ugcData");
+			Validation.responseKeyValidation_key(fetchUGC1, "type");
+			Validation.responseKeyValidation_key(fetchUGC1, "createdOn");
+			Validation.responseKeyValidation_key(fetchUGC1, "metadata");
+			Validation.responseKeyValidation_key(fetchUGC1, "folioID");
+			Validation.responseKeyValidation_key(fetchUGC1, "status");
+			Validation.responseKeyValidation_key(fetchUGC1, "important");
+			Validation.responseNOTKeyValidation_key(fetchUGC1, ""+UGCId11+"");
+			
+			Response books = Books.books(userToken, "sd234", deviceType);
+			Validation.responseCodeValidation1(books, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(books, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(books);
+			
+			
+			Response Booklist = BookList.bookList(userToken,"56454", deviceType);
+			Validation.responseHeaderCodeValidation(Booklist, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(Booklist, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(Booklist);
+			Validation.responseKeyValidation_key(Booklist,"archiveDate");
+			Validation.responseKeyValidation_key(Booklist,"assetType");
+			Validation.responseKeyValidation_key(Booklist,"assignedOn");
+			Validation.responseKeyValidation_key(Booklist,"bookCode");
+			Validation.responseKeyValidation_key(Booklist,"bookId");
+			Validation.responseKeyValidation_key(Booklist,"category");
+			Validation.responseKeyValidation_key(Booklist,"categoryIdList");
+			Validation.responseKeyValidation_key(Booklist,"categoryList");
+			Validation.responseKeyValidation_key(Booklist,"readingPercentage");
+			Validation.responseKeyValidation_key(Booklist,"pages");
+			Validation.responseKeyValidation_key(Booklist,"title");
+			Validation.responseKeyValidation_key(Booklist,"reflow");
+			Validation.responseKeyValidation_key(Booklist,"version");
+			
+			
+			Response refreshBookList = RefreshBookList.refreshBookList(userToken,"56496",deviceType);
+			Validation.responseHeaderCodeValidation(refreshBookList, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(refreshBookList, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(refreshBookList);
+			Validation.responseKeyValidation_key(refreshBookList, "archiveDate");
+			Validation.responseKeyValidation_key(refreshBookList, "assetType");
+			Validation.responseKeyValidation_key(refreshBookList, "assignedOn");
+			Validation.responseKeyValidation_key(refreshBookList, "author");
+			Validation.responseKeyValidation_key(refreshBookList, "bookActive");
+			Validation.responseKeyValidation_key(refreshBookList, "bookCode");
+			Validation.responseKeyValidation_key(refreshBookList, "bookDisLikeCount");
+			Validation.responseKeyValidation_key(refreshBookList, "bookId");
+			Validation.responseKeyValidation_key(refreshBookList, "bookLikeCount");
+			Validation.responseKeyValidation_key(refreshBookList, "category");
+			Validation.responseKeyValidation_key(refreshBookList, "categoryIdList");
+			Validation.responseKeyValidation_key(refreshBookList, "categoryList");
+			Validation.responseKeyValidation_key(refreshBookList, "collectionID");
+			Validation.responseKeyValidation_key(refreshBookList, "collectionTitle");
+			Validation.responseKeyValidation_key(refreshBookList, "collectionType");
+			Validation.responseKeyValidation_key(refreshBookList, "ebookID");
+			Validation.responseKeyValidation_key(refreshBookList, "expiryDate");
+			Validation.responseKeyValidation_key(refreshBookList, "favourite");
+
+
+
+			//2019/10/31 14:46:04
+			Response v1refreshBookList =V1refreshBookList.v1refreshBookList(""+archiveDate+"","NEW","UPDATE",bookID1,bookID2,userToken,"56454", deviceType,clientID);
+			Validation.responseHeaderCodeValidation(v1refreshBookList, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(v1refreshBookList, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(v1refreshBookList);
+			Validation.responseKeyValidation_key(v1refreshBookList, "archiveDate");
+			Validation.responseKeyValidation_key(v1refreshBookList, "assetType");
+			Validation.responseKeyValidation_key(v1refreshBookList, "assignedOn");
+			Validation.responseKeyValidation_key(v1refreshBookList, "author");
+			Validation.responseKeyValidation_key(v1refreshBookList, "bookActive");
+			Validation.responseKeyValidation_key(v1refreshBookList, "bookCode");
+			Validation.responseKeyValidation_key(v1refreshBookList, "bookDisLikeCount");
+			Validation.responseKeyValidation_key(v1refreshBookList, "bookId");
+			Validation.responseKeyValidation_key(v1refreshBookList, "bookLikeCount");
+			Validation.responseKeyValidation_key(v1refreshBookList, "category");
+			Validation.responseKeyValidation_key(v1refreshBookList, "categoryIdList");
+			Validation.responseKeyValidation_key(v1refreshBookList, "categoryList");
+			Validation.responseKeyValidation_key(v1refreshBookList, "collectionID");
+			Validation.responseKeyValidation_key(v1refreshBookList, "collectionTitle");
+			Validation.responseKeyValidation_key(v1refreshBookList, "collectionType");
+			Validation.responseKeyValidation_key(v1refreshBookList, "ebookID");
+			Validation.responseKeyValidation_key(v1refreshBookList, "reflow");
+			Validation.responseKeyValidation_key(v1refreshBookList, "operation");
+			operation0=v1refreshBookList.then().extract().path("bookList.book.operation[0]");
+			operation1=v1refreshBookList.then().extract().path("bookList.book.operation[1]");
+			Validation.responseKeyAndValue(v1refreshBookList, "operation", operation0);
+			Validation.responseKeyAndValue(v1refreshBookList, "operation", operation1);*/
+			
+			Response savePreferredLocale = SavePreferredLocale.savePreferredLocale(userToken, "234asd", deviceType);
+			Validation.responseHeaderCodeValidation(savePreferredLocale, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(savePreferredLocale, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(savePreferredLocale);
+			Validation.responseKeyAndValue(savePreferredLocale, "responseMsg","Ok");
+			
+			Response saveSessionHistory = SaveSessionHistory.saveSessionHistory(userToken,"45564595",deviceType,bookID1,time);
+			Log.info("TIME : "+time);
+			Validation.responseHeaderCodeValidation(saveSessionHistory, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(saveSessionHistory, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(saveSessionHistory);
+			Validation.responseKeyValidation_key(saveSessionHistory, "ok");
+			
+			
+			SimpleDateFormat formatter11 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");  
+			Date date1 = new Date();  
+			String  time1=formatter11.format(date1);
+			Response saveSessionHistoryForMutipleBooks = SaveSessionHistoryForMutipleBooks.saveSessionHistoryForMutipleBooks(bookID1, bookID2,time1, userToken, "fgh45", deviceType);
+			Validation.responseHeaderCodeValidation(saveSessionHistoryForMutipleBooks, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(saveSessionHistoryForMutipleBooks, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(saveSessionHistoryForMutipleBooks);
+			Validation.responseKeyValidation_key(saveSessionHistoryForMutipleBooks, "ok");
+			
+			
+			//Response checkClientSession =CheckClientSession.
 			
 			
 			

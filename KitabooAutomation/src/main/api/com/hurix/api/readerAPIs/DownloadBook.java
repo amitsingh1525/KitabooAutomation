@@ -12,20 +12,23 @@ public class DownloadBook {
 	{		
 		Response jsonResponse = null;
 		try {
-
-			Log.startTestCase("downloadBookFor."+deviceType+"_"+State+"");
+            String[] state1 = {"online","offline"};
+        	for(int i=0; i<=1 ;i++)
+            {
+            Log.startTestCase("downloadBookFor."+deviceType+"_"+state1[i]+"");
 			Log.info("bookID here: "+bookID1);
-			Log.info("deviceType : "+deviceType);
+			Log.info("formate : "+deviceType);
 			Log.info("deviceID : "+deviceID);
-			Log.info("State: "+State);
-			Log.info("URL : "+"/DistributionServices/services/api/reader/distribution/"+deviceID+"/"+deviceType+"/"+bookID1+"/downloadBook?state="+State+"");
+			Log.info("State: "+state1[i]);
+			Log.info("URL : "+"/DistributionServices/services/api/reader/distribution/"+deviceID+"/"+deviceType+"/"+bookID1+"/downloadBook?state="+state1[i]+"");
 			//System.out.println("downloadBookPathANDROIDRequestURL:" +downloadBookPathANDROID);
 			Log.info("userToken : "+userToken);
 			jsonResponse = given()
 					.header("usertoken",userToken)						
-					.get("/DistributionServices/services/api/reader/distribution/"+deviceID+"/"+deviceType+"/"+bookID1+"/downloadBook?state="+State+"");
+					.get("/DistributionServices/services/api/reader/distribution/"+deviceID+"/"+deviceType+"/"+bookID1+"/downloadBook?state="+state1[i]+"");
 
-			Log.info("downloadBookFor."+deviceType+"_"+State+" Response: "+jsonResponse.then().extract().response().prettyPrint());
+			Log.info("downloadBookFor."+deviceType+"_"+state1[i]+" Response: "+jsonResponse.then().extract().response().prettyPrint());
+            }
 		} catch (Exception exp) 
 		{
 			Log.fail(exp.getMessage());

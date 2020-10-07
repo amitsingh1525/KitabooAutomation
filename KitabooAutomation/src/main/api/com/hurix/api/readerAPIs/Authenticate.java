@@ -2,8 +2,6 @@ package com.hurix.api.readerAPIs;
 
 import static io.restassured.RestAssured.given;
 import io.restassured.response.Response;
-
-import com.hurix.api.utility.DatabaseQuerry;
 import com.hurix.automation.utility.Log;
 
 public class Authenticate {
