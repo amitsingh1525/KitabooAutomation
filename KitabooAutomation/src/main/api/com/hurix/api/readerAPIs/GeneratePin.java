@@ -10,18 +10,19 @@ public class GeneratePin {
 	{
 		Response jsonResponse = null;
 		try {
-			Log.startTestCase("GeneratePin.device:"+deviceType+"");
+			
+			Log.info("usertoken : "+usertoken);
+			Log.info("URL generete Pin: "+"/DistributionServices/services/api/reader/user/"+deviceID+"/"+deviceType+"/generatePin");
 			jsonResponse = given()
 				    .header("Content-Type","application/json")
-					.queryParam("usertoken", usertoken)					
+					.header("usertoken", usertoken)					
 					.post("/DistributionServices/services/api/reader/user/"+deviceID+"/"+deviceType+"/generatePin");
 			Log.info("GeneratePin.device:"+deviceType+" Response: "+jsonResponse.then().extract().response().prettyPrint());
 			
 		} catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
-			
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
 			exp.printStackTrace();
 		}
 		Log.endTestCase("End");

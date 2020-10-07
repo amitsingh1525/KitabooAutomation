@@ -22,7 +22,7 @@ public class SearchV2 {
 			Log.info("userToken : "+userToken);
 			Log.info("URL : "+"/DistributionServices/services/api/elasticsearch/distribution/"+deviceID+"/"+deviceType+"/searchV2");
 			
-			System.out.println("Body: "+searchV2Body);
+			Log.info("Body: "+searchV2Body);
 			jsonResponse = given()
 					.header("Content-Type","application/json")
 					.header("usertoken",userToken)
@@ -38,8 +38,8 @@ public class SearchV2 {
 			Log.info("searchV2.Text = "+serachText+" Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
 			exp.printStackTrace();
 		}
 		Log.endTestCase("End");

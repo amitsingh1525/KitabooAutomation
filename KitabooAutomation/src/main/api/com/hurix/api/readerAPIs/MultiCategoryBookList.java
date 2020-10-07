@@ -13,6 +13,7 @@ public class MultiCategoryBookList {
 		try {
 
 			Log.startTestCase("MultiCategoryBookList:"+catLevel+"");
+			Log.info("bookID : "+bookID);
 			if(catLevel.contains ("4"))
 			{
 				jsonResponse = given()
@@ -48,8 +49,8 @@ public class MultiCategoryBookList {
 			}
 		} catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
 			exp.printStackTrace();
 		}
 		Log.endTestCase("End");
@@ -101,8 +102,8 @@ public class MultiCategoryBookList {
 
 		} catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
 			exp.printStackTrace();
 		}
 		Log.endTestCase("End");
@@ -160,8 +161,8 @@ public class MultiCategoryBookList {
 
 		} catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
 			exp.printStackTrace();
 		}
 		Log.endTestCase("End");

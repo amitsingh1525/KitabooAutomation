@@ -21,13 +21,17 @@ public class Bookdetails {
 			Log.info("userToken : " +userToken);
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			Date datenew = df.parse(""+startDate+"");
-			long epoch = datenew.getTime();
-			epoch=epoch/1000;
+			long startDate1 = datenew.getTime();
+			startDate1=startDate1/1000;
 			jsonResponse = given()
-					.header("usertoken",userToken)						
-					.get("/DistributionServices/services/api/reader/distribution/"+deviceID+"/"+DeviceType+"/book/details?bookID="+bookID1+"&type="+assetType+"&t="+epoch+"");
+					.header("usertoken",userToken)	
+					.queryParam("bookID", bookID1)	
+					.queryParam("type", assetType)
+					.queryParam("t", startDate1)
+					//?bookID="+bookID1+"&type="+assetType+"&t="+startDate+"
+					.get("/DistributionServices/services/api/reader/distribution/"+deviceID+"/"+DeviceType+"/book/details");
 
-			Log.info("/DistributionServices/services/api/reader/distribution/"+deviceID+"/"+DeviceType+"/book/details?bookID="+bookID1+"&type="+assetType+"&t="+epoch+"");
+			Log.info("/DistributionServices/services/api/reader/distribution/"+deviceID+"/"+DeviceType+"/book/details?bookID="+bookID1+"&type="+assetType+"&t="+startDate1+"");
 			/*Validation.responseHeaderCodeValidation(jsonResponse, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(jsonResponse, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(jsonResponse);
@@ -37,8 +41,7 @@ public class Bookdetails {
 			Log.info("Bookdetails Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
+			Log.fail(exp.getMessage());
 			exp.printStackTrace();
 		}
 		Log.endTestCase("End");

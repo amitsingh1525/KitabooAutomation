@@ -14,7 +14,11 @@ public class BulkDownloadBook {
 		
 		//downloadBookPathANDROID = ""+com.hurix.api.utility.ExcelUtils.getbaseURI()+"/DistributionServices/services/api/reader/distribution/24Andr24/ANDROID/"+com.hurix.api.runner.RestAssured.bookID1+"/downloadBook?state=offline";
 		bulkDownload="{\"bookIds\":[\""+bookID1+"\",\""+bookID2+"\",\""+bookID3+"\"]}";
-		Log.info("bookID1: "+bookID1+ "bookID2: " +bookID2+  "bookID3: " +bookID3);
+		Log.info("userToken: "+userToken);
+		Log.info("bookID1 : "+bookID1+ "bookID2: " +bookID2+  "bookID3: " +bookID3);
+		Log.info("deviceType: "+deviceType);
+		Log.info("deviceID: "+deviceID);
+		Log.info("State: "+State);
 		Response jsonResponse = null;
 		try {
 
@@ -30,8 +34,7 @@ public class BulkDownloadBook {
 			Log.info("BulkDownloadBook."+deviceType+"_"+State+" Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
+			Log.fail(exp.getMessage());
 			exp.printStackTrace();
 		}
 		Log.endTestCase("End");

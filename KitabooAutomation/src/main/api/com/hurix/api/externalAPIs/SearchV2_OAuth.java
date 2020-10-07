@@ -2,8 +2,6 @@ package com.hurix.api.externalAPIs;
 
 import static io.restassured.RestAssured.given;
 import io.restassured.response.Response;
-
-import com.hurix.api.utility.Validation;
 import com.hurix.automation.utility.Log;
 
 public class SearchV2_OAuth {
@@ -31,18 +29,11 @@ public class SearchV2_OAuth {
 					.header("Content-Type","application/json")
 					.body(searchV2Body)					
 					.post("/DistributionServices/ext/api/searchV2");
-			Validation.responseHeaderCodeValidation(jsonResponse, 200);
-			Validation.responseCodeValidation1(jsonResponse, 200);
-			Validation.responseTimeValidation(jsonResponse);
-			Validation.responseKeyValidation_key(jsonResponse, "searchText");
-			Validation.responseKeyValidation_key(jsonResponse, "bookTitle");
-			Validation.responseKeyValidation_key(jsonResponse, "description");	
-							
+										
 			Log.info("SearchV2_OAuth Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
+			Log.fail(exp.getMessage());
 			exp.printStackTrace();
 		}
 		Log.endTestCase("End");

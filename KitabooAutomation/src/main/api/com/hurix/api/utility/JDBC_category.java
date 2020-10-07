@@ -1,4 +1,5 @@
 package com.hurix.api.utility;
+
 import java.sql.*;
 
 import org.apache.commons.codec.binary.Base64;
@@ -58,8 +59,9 @@ public class JDBC_category {
 			stmt.close();
 			con.close();
 			
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (SQLException exp) {
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
 		}
 		return new String(encodeValue);
 	}
@@ -83,7 +85,11 @@ public class JDBC_category {
 		//System.out.println(getArchiveDate(1317, "Audio_cat1", "jdbc:mysql://hurix-staging-db.cbum2u9r6xyc.us-east-1.rds.amazonaws.com","qcteam","JB88F-WT2Q3-DPXTT"));
 		//System.out.println(getCat(1317,"Audio_cat1","jdbc:mysql://hurix-staging-db.cbum2u9r6xyc.us-east-1.rds.amazonaws.com","qcteam","JB88F-WT2Q3-DPXTT"));
 	//System.out.println("HERE  : "+getBookId(2559, "Reflow_epub_UPD_", "jdbc:mysql://localhost:12345", "shweta-katare","J&P@O4A7HV"));
-	System.out.println("catN : " +getCat(2561, "Reflow_epub_UPD_", "jdbc:mysql://localhost:12345", "shweta-katare","J&P@O4A7HV"));
+	//System.out.println("catN : " +getCat(2561, "Reflow_epub_UPD_", "jdbc:mysql://localhost:12345", "shweta-katare","J&P@O4A7HV"));
+	
+	//System.out.println(get_bookID_down(348958408,14111, "jdbc:mysql://172.18.10.147:3306","readonly","readonly@123"));
+	//System.out.println(getCKSK(1437,"jdbc:mysql://hurix-staging-db.cbum2u9r6xyc.us-east-1.rds.amazonaws.com","qcteam","JB88F-WT2Q3-DPXTT"));
+	System.out.println(getReader_user_ID(932896,"jdbc:mysql://hurix-staging-db.cbum2u9r6xyc.us-east-1.rds.amazonaws.com","qcteam","JB88F-WT2Q3-DPXTT"));
 	}
 	
 	public static int getBookId(int client_id, String Title, String sqlhost, String sqlUsername, String sqlPassword)
@@ -104,8 +110,9 @@ public class JDBC_category {
 			Log.info("Result BookID : " +id);
 			stmt.close();
 			con.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (SQLException exp) {
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
 		}
 		return id;
 		//return new String(encodeValue);
@@ -126,8 +133,9 @@ public class JDBC_category {
 			Log.info("archive_date : " +archive_date);
 			stmt.close();
 			con.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (SQLException exp) {
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
 		}
 		return archive_date;
 	}
@@ -149,8 +157,9 @@ public class JDBC_category {
 			System.out.println("keywords : " +keywords);
 			stmt.close();
 			con.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (SQLException exp) {
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
 		}
 		return keywords;
 	}
@@ -171,8 +180,9 @@ public class JDBC_category {
 			System.out.println("category : " +category);
 			stmt.close();
 			con.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (SQLException exp) {
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
 		}
 		return category;
 	}
@@ -193,8 +203,9 @@ public class JDBC_category {
 			System.out.println("subtype : " +subtype);
 			stmt.close();
 			con.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (SQLException exp) {
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
 		}
 		return subtype;		
 	}
@@ -204,18 +215,43 @@ public class JDBC_category {
 		String reader_key = null;		
 		try {
 			//Connection con = DriverManager.getConnection("jdbc:mysql://172.18.10.147:3306","readonly","readonly@123");
+			Log.info("userName in query: " +userName);
 			Connection con = DriverManager.getConnection(sqlhost,sqlUsername,sqlPassword);
 			Statement stmt = con.createStatement();
 			ResultSet result = null;
-			Log.info("userName : " +userName);
-			result= stmt.executeQuery("SELECT reader_key FROM cloudCore.CLIENT WHERE id=(SELECT client_id FROM cloudCore.USER WHERE username='"+userName+"' LIMIT 1)");
+			Log.info("userName in query: " +userName);
+			result= stmt.executeQuery("SELECT reader_key FROM cloudCore.CLIENT WHERE id=(SELECT client_id FROM cloudCore.USER WHERE username='"+userName+"' AND deleted = 0 LIMIT 1) limit 1");
+			result.next();
+			Log.info("URL : "+"SELECT reader_key FROM cloudCore.CLIENT WHERE id=(SELECT client_id FROM cloudCore.USER WHERE username='"+userName+"' AND deleted = 0 LIMIT 1) limit 1");
+			reader_key = result.getString("reader_key");
+			Log.info("Result reader_key : " +reader_key);
+			stmt.close();
+			con.close();
+		} catch (SQLException exp) {
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
+		}
+		return reader_key;		
+	}
+	
+	public static String getIDReader_userID(int userID,String sqlhost, String sqlUsername, String sqlPassword)
+	{
+		String reader_key = null;		
+		try {
+			//Connection con = DriverManager.getConnection("jdbc:mysql://172.18.10.147:3306","readonly","readonly@123");
+			Connection con = DriverManager.getConnection(sqlhost,sqlUsername,sqlPassword);
+			Statement stmt = con.createStatement();
+			ResultSet result = null;
+			Log.info("userID : " +userID);
+			result= stmt.executeQuery("SELECT reader_key FROM cloudCore.CLIENT WHERE id=(SELECT client_id FROM cloudCore.USER WHERE	id="+userID+" LIMIT 1)");
 			result.next();
 			reader_key = result.getString("reader_key");
 			Log.info("Result reader_key : " +reader_key);
 			stmt.close();
 			con.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (SQLException exp) {
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
 		}
 		return reader_key;		
 	}
@@ -237,8 +273,9 @@ public class JDBC_category {
 			Log.info("Result consumer_key : " +consumer_key);
 			stmt.close();
 			con.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (SQLException exp) {
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
 		}
 		return consumer_key;
 	}
@@ -260,8 +297,9 @@ public class JDBC_category {
 			Log.info("Result shared_secret : " +shared_secret);
 			stmt.close();
 			con.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (SQLException exp) {
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
 		}
 		return shared_secret;		
 	}	
@@ -283,8 +321,9 @@ public class JDBC_category {
 			Log.info("Result bookcode : " +bookcode);
 			stmt.close();
 			con.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (SQLException exp) {
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
 		}
 		return bookcode;		
 	}	
@@ -307,10 +346,123 @@ public class JDBC_category {
 			Log.info("Result client_id : " +client_id);
 			stmt.close();
 			con.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (SQLException exp) {
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
 		}
 		return client_id;		
 	}	
+	
+	public static int get_bookID_down(int bookID1,int bookId,String sqlhost, String sqlUsername, String sqlPassword)
+	{
+		int format_id = 0;		
+		try {
+			//Connection con = DriverManager.getConnection("jdbc:mysql://172.18.10.147:3306","readonly","readonly@123");
+			Connection con = DriverManager.getConnection(sqlhost,sqlUsername,sqlPassword);
+			Statement stmt = con.createStatement();
+			ResultSet result = null;
+			Log.info("bookID1 : " +bookID1);
+			
+			result= stmt.executeQuery("SELECT schemaNAme FROM cloudCore.CLIENT WHERE Id IN (SELECT client_id FROM cloudCore.BOOKS WHERE ID IN (SELECT book_id FROM cloudCore.COLLECTION_BOOK_MAP WHERE ID = "+bookID1+"))");
+			result.next();
+			String schemaNAme = result.getString("schemaNAme");
+			System.out.println("schemaNAme : " +schemaNAme);
+			
+			result= stmt.executeQuery("SELECT format_id FROM "+schemaNAme+".BOOK_FORMAT_MAP WHERE book_id="+bookId+" LIMIT 5");
+			result.next();
+			Log.info("HERE : " +"SELECT format_id FROM "+schemaNAme+".BOOK_FORMAT_MAP WHERE book_id="+bookId+" LIMIT 5");
+			//client_id= Integer.parseInt(""+client_id+"");
+			String format_id1 = result.getString("format_id");
+			format_id = Integer.parseInt(""+format_id1+"");
+			Log.info("Result format_id : " +format_id);
+			stmt.close();
+			con.close();
+		} catch (SQLException exp) {
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
+		}
+		return format_id;		
+	}	
+	public static String getReader_clientID(long clientID,String sqlhost, String sqlUsername, String sqlPassword)
+	{
+		String reader_key = null;		
+		try {
+			//Connection con = DriverManager.getConnection("jdbc:mysql://172.18.10.147:3306","readonly","readonly@123");
+			Log.info("clientID in query: " +clientID);
+			Connection con = DriverManager.getConnection(sqlhost,sqlUsername,sqlPassword);
+			Statement stmt = con.createStatement();
+			ResultSet result = null;
+			Log.info("clientID in query: " +clientID);
+			result= stmt.executeQuery("SELECT reader_key FROM cloudCore.CLIENT WHERE  id="+clientID+"");
+			result.next();
+			Log.info("URL : "+"SELECT reader_key FROM cloudCore.CLIENT WHERE  id="+clientID+"");
+			reader_key = result.getString("reader_key");
+			Log.info("Result reader_key : " +reader_key);
+			stmt.close();
+			con.close();
+		} catch (SQLException exp) {
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
+		}
+		return reader_key;		
+	}
+	
+	public static String getReader_user_ID(int user_id,String sqlhost, String sqlUsername, String sqlPassword)
+	{
+		String reader_key = null;		
+		try {
+			//Connection con = DriverManager.getConnection("jdbc:mysql://172.18.10.147:3306","readonly","readonly@123");
+			Log.info("user_id in query: " +user_id);
+			Connection con = DriverManager.getConnection(sqlhost,sqlUsername,sqlPassword);
+			Statement stmt = con.createStatement();
+			ResultSet result = null;
+			Log.info("user_id in query: " +user_id);
+			result= stmt.executeQuery("SELECT reader_key FROM cloudCore.CLIENT WHERE id=(SELECT client_id FROM cloudCore.CLIENT_USER_MAP WHERE user_id="+user_id+") AND deleted =0");
+			result.next();
+			Log.info("URL : "+"SELECT reader_key FROM cloudCore.CLIENT WHERE id=(SELECT client_id FROM cloudCore.CLIENT_USER_MAP WHERE user_id="+user_id+") AND deleted =0");
+			reader_key = result.getString("reader_key");
+			Log.info("Result reader_key : " +reader_key);
+			stmt.close();
+			con.close();
+		} catch (SQLException exp) {
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
+		}
+		return reader_key;		
+	}
+	
+	/*public static String getCKSK(int client_id, String sqlhost, String sqlUsername, String sqlPassword)
+	{
+		String[] cksk =null;
+		//String ck1 = null;	
+		//String  ck2 = null;	
+	
+		try {
+			//Connection con = DriverManager.getConnection("jdbc:mysql://172.18.10.147:3306","readonly","readonly@123");
+			Connection con = DriverManager.getConnection(sqlhost,sqlUsername,sqlPassword);
+			Statement stmt = con.createStatement();
+			ResultSet result = null;
+			Log.info("client_id : " +client_id);
+			result = stmt.executeQuery("SELECT consumer_key,shared_secret FROM cloudCore.CLIENT WHERE id="+client_id+"");
+			result.next();
+			//reader_key = result.getString("reader_key");
+			String ck1 = result.getString("consumer_key");
+			//result.next();
+			String ck2 = result.getString("shared_secret");
+			//String[] deviceT = {"IPAD","ANDROID","WINDOWS","PC","HTML5"};
+			//String [] here  ={"\""+ck1+"\"","\""+ck2+"\""};
+			//String[] 
+			cksk  ={ck1, ck2};
+			//Log.info("HERE : " +"SELECT consumer_key,shared_secret FROM cloudCore.CLIENT WHERE id="+client_id+"");
+			Log.info("Result consumer_key : " +cksk);
+			Log.info("Result shared_secret : " +cksk);
+			stmt.close();
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return cksk;
+	}*/
+	
 }
 

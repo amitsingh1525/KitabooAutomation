@@ -263,7 +263,7 @@ public class UIElements {
 	}
 
 	public static void windowhandle() {
-			wait.until(ExpectedConditions.numberOfWindowsToBe(2));
+		//	wait.until(ExpectedConditions.numberOfWindowsToBe(2));
 			for (String childWindow : Driver.driver.getWindowHandles())  
 			{  
 				Driver.driver.switchTo().window(childWindow);  

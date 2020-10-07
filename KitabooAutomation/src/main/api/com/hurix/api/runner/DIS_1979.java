@@ -41,21 +41,21 @@ public class DIS_1979 {
 
 	public static void main(String[] args) {
 		//Log.initialization("APITesting");//DIS-1979	
-		Log.initialization("DIS_1979");
+		Log.initialization("DIS-1979");
 		try {
 			//startDate=EpochTime.getEpochTime(""+startDate+"");
 			excelPath="./testData/DIS-1979.xlsx";
 			workbook = new XSSFWorkbook(excelPath);
 			sheet= workbook.getSheet("Sheet1");
-			for(int i=1;i<=sheet.getLastRowNum();i++)
+			for(int i=1;i<=1;i++)
 			{DataFormatter formatter = new DataFormatter();
 			environMent = formatter.formatCellValue(sheet.getRow(i).getCell(0));
 			userName = formatter.formatCellValue(sheet.getRow(i).getCell(1));			
 			password = formatter.formatCellValue(sheet.getRow(i).getCell(2));				
-			catlevel = formatter.formatCellValue(sheet.getRow(i).getCell(4));
+			catlevel = formatter.formatCellValue(sheet.getRow(i).getCell(3));
 			String deviceT = formatter.formatCellValue(sheet.getRow(i).getCell(4));
 			String runY_N = formatter.formatCellValue(sheet.getRow(i).getCell(5));
-			clientID = formatter.formatCellValue(sheet.getRow(i).getCell(3));
+			//clientID = formatter.formatCellValue(sheet.getRow(i).getCell(3));
 
 			Log.info("runY_N : "+runY_N);
 			if(runY_N.contains("NO")){Log.info("Permission to Run that Row is Denied!!..Please change YES in Ith row in Respective Sheet of Yours, Thank You");}
@@ -105,7 +105,7 @@ public class DIS_1979 {
 				LoginModule.loginScenario("automation.test1@yopmail.com", "kitaboo!123");
 				String title = KitabooBooksModule.bookCreationPDF("hello", "World", "level2", "For automation Testing", "Hello, World");
 				KitabooBooksModule.bookPublishAndArchivePDF(title);*/
-
+				clientID =JDBC_category.getReader(userName, sqlhost, sqlUsername, sqlPassword);
 				Log.startTestCase("Authenticate");
 				Log.info("detail : "+detail);
 				Log.info("userName : "+userName);
@@ -165,7 +165,7 @@ public class DIS_1979 {
 
 				/*for(int i1=0;i1<=9;i1++)
 				{//isbnMeta=formatter.formatCellValue(sheet.getRow(5).getCell(i1));					
-					isbnMeta=formatter.formatCellValue(sheet.getRow(2).getCell(i1));
+					isbnMeta=formatter.formatCellValue(sheet.getRow(3).getCell(i1));
 					System.out.println("isbnMeta: "+isbnMeta);
 					Log.info("isbnMeta: "+isbnMeta);
 					//String consumerKey, String consumerSecret,String string,String title,String author,String cat4
@@ -196,7 +196,8 @@ public class DIS_1979 {
 				//isbnMeta=detailisbn.get(i1);*/
 
 
-				String isbnURL=formatter.formatCellValue(sheet.getRow(3).getCell(0));
+				String isbnURL=formatter.formatCellValue(sheet.getRow(4).getCell(0));
+				Log.info("isbnURL : "+isbnURL);				
 				Response IngectEpub_res1 = IngectEpub.ingectEpub_ext(consumerKey, consumerSecret,""+isbnURL+"");
 				Log.info("URL : "+detail);
 				Validation.responseHeaderCodeValidation(IngectEpub_res1, HttpStatus.SC_OK);
@@ -205,7 +206,7 @@ public class DIS_1979 {
 				Validation.responseKeyValidation_key(IngectEpub_res1, "The request for the uploadEpub taken successfully.");
 				System.out.println("IngectEpub_res : "+IngectEpub_res1);
 
-				isbnURL=formatter.formatCellValue(sheet.getRow(3).getCell(1));
+				isbnURL=formatter.formatCellValue(sheet.getRow(4).getCell(1));
 				Response IngectEpub_res2 = IngectEpub.ingectEpub_ext(consumerKey, consumerSecret,""+isbnURL+"");
 				Log.info("URL : "+detail);
 				Validation.responseHeaderCodeValidation(IngectEpub_res2, HttpStatus.SC_OK);
@@ -214,7 +215,7 @@ public class DIS_1979 {
 				Validation.responseKeyValidation_key(IngectEpub_res2, "The request for the uploadEpub taken successfully.");
 				System.out.println("IngectEpub_res : "+IngectEpub_res2);
 
-				isbnURL=formatter.formatCellValue(sheet.getRow(3).getCell(2));
+				isbnURL=formatter.formatCellValue(sheet.getRow(4).getCell(2));
 				Response IngectEpub_res3 = IngectEpub.ingectEpub_ext(consumerKey, consumerSecret,""+isbnURL+"");
 				Log.info("URL : "+detail);
 				Validation.responseHeaderCodeValidation(IngectEpub_res3, HttpStatus.SC_OK);
@@ -223,7 +224,7 @@ public class DIS_1979 {
 				Validation.responseKeyValidation_key(IngectEpub_res3, "The request for the uploadEpub taken successfully.");
 				System.out.println("IngectEpub_res : "+IngectEpub_res3);
 
-				isbnURL=formatter.formatCellValue(sheet.getRow(3).getCell(3));
+				isbnURL=formatter.formatCellValue(sheet.getRow(4).getCell(3));
 				Response IngectEpub_res4 = IngectEpub.ingectEpub_ext(consumerKey, consumerSecret,""+isbnURL+"");
 				Log.info("URL : "+detail);
 				Validation.responseHeaderCodeValidation(IngectEpub_res4, HttpStatus.SC_OK);
@@ -232,7 +233,7 @@ public class DIS_1979 {
 				Validation.responseKeyValidation_key(IngectEpub_res4, "The request for the uploadEpub taken successfully.");
 				System.out.println("IngectEpub_res : "+IngectEpub_res4);
 
-				isbnURL=formatter.formatCellValue(sheet.getRow(3).getCell(4));
+				isbnURL=formatter.formatCellValue(sheet.getRow(4).getCell(4));
 				Response IngectEpub_res5 = IngectEpub.ingectEpub_ext(consumerKey, consumerSecret,""+isbnURL+"");
 				Log.info("URL : "+detail);
 				Validation.responseHeaderCodeValidation(IngectEpub_res5, HttpStatus.SC_OK);
@@ -241,7 +242,7 @@ public class DIS_1979 {
 				Validation.responseKeyValidation_key(IngectEpub_res5, "The request for the uploadEpub taken successfully.");
 				System.out.println("IngectEpub_res : "+IngectEpub_res5);
 
-				isbnURL=formatter.formatCellValue(sheet.getRow(3).getCell(5));
+				isbnURL=formatter.formatCellValue(sheet.getRow(4).getCell(5));
 				Response IngectEpub_res6 = IngectEpub.ingectEpub_ext(consumerKey, consumerSecret,""+isbnURL+"");
 				Log.info("URL : "+detail);
 				Validation.responseHeaderCodeValidation(IngectEpub_res6, HttpStatus.SC_OK);
@@ -250,7 +251,7 @@ public class DIS_1979 {
 				Validation.responseKeyValidation_key(IngectEpub_res6, "The request for the uploadEpub taken successfully.");
 				System.out.println("IngectEpub_res : "+IngectEpub_res6);
 
-				isbnURL=formatter.formatCellValue(sheet.getRow(3).getCell(6));
+				isbnURL=formatter.formatCellValue(sheet.getRow(4).getCell(6));
 				Response IngectEpub_res7 = IngectEpub.ingectEpub_ext(consumerKey, consumerSecret,""+isbnURL+"");
 				Log.info("URL : "+detail);
 				Validation.responseHeaderCodeValidation(IngectEpub_res7, HttpStatus.SC_OK);
@@ -259,7 +260,7 @@ public class DIS_1979 {
 				Validation.responseKeyValidation_key(IngectEpub_res7, "The request for the uploadEpub taken successfully.");
 				System.out.println("IngectEpub_res : "+IngectEpub_res7);
 
-				isbnURL=formatter.formatCellValue(sheet.getRow(3).getCell(7));
+				isbnURL=formatter.formatCellValue(sheet.getRow(4).getCell(7));
 				Response IngectEpub_res8= IngectEpub.ingectEpub_ext(consumerKey, consumerSecret,""+isbnURL+"");
 				Log.info("URL : "+detail);
 				Validation.responseHeaderCodeValidation(IngectEpub_res8, HttpStatus.SC_OK);
@@ -268,7 +269,7 @@ public class DIS_1979 {
 				Validation.responseKeyValidation_key(IngectEpub_res8, "The request for the uploadEpub taken successfully.");
 				System.out.println("IngectEpub_res : "+IngectEpub_res8);			
 
-				isbnURL=formatter.formatCellValue(sheet.getRow(3).getCell(8));
+				isbnURL=formatter.formatCellValue(sheet.getRow(4).getCell(8));
 				Response IngectEpub_res9 = IngectEpub.ingectEpub_ext(consumerKey, consumerSecret,""+isbnURL+"");
 				Log.info("URL : "+detail);
 				Validation.responseHeaderCodeValidation(IngectEpub_res9, HttpStatus.SC_OK);
@@ -277,7 +278,7 @@ public class DIS_1979 {
 				Validation.responseKeyValidation_key(IngectEpub_res9, "The request for the uploadEpub taken successfully.");
 				System.out.println("IngectEpub_res : "+IngectEpub_res9);					
 
-				isbnURL=formatter.formatCellValue(sheet.getRow(3).getCell(9));
+				isbnURL=formatter.formatCellValue(sheet.getRow(4).getCell(9));
 				Response IngectEpub_res10 = IngectEpub.ingectEpub_ext(consumerKey, consumerSecret,""+isbnURL+"");
 				Log.info("URL : "+detail);
 				Validation.responseHeaderCodeValidation(IngectEpub_res10, HttpStatus.SC_OK);
@@ -286,7 +287,7 @@ public class DIS_1979 {
 				Validation.responseKeyValidation_key(IngectEpub_res10, "The request for the uploadEpub taken successfully.");
 				System.out.println("IngectEpub_res : "+IngectEpub_res10);									
 
-				/*isbnURL=formatter.formatCellValue(sheet.getRow(3).getCell(10));
+				/*isbnURL=formatter.formatCellValue(sheet.getRow(4).getCell(10));
 				Response IngectEpub_res11 = IngectEpub.ingectEpub_ext(consumerKey, consumerSecret,""+isbnURL+"");
 				Validation.responseHeaderCodeValidation(IngectEpub_res11, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(IngectEpub_res11, HttpStatus.SC_OK);
@@ -599,8 +600,8 @@ public class DIS_1979 {
 			}
 		}catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
 			exp.printStackTrace();
 		}
 	}

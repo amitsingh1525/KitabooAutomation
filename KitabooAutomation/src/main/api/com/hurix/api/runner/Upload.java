@@ -237,8 +237,8 @@ public class Upload {
 			}
 		}catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
+			Log.fail(exp.getMessage());
+			Log.fail("Fails due to"+ exp.getCause());
 			exp.printStackTrace();
 		}
 	}

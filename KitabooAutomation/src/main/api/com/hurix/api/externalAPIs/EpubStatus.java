@@ -9,7 +9,7 @@ public class EpubStatus {
 	{		
 		Response jsonResponse = null;
 		try {
-			Log.startTestCase("EpubStatus_OAuth");
+			Log.startTestCase("EpubStatus");
 			
 			jsonResponse = given()
 					.auth()
@@ -23,11 +23,10 @@ public class EpubStatus {
 			Validation.responseKeyValidation_key(jsonResponse, "status");
 			Validation.responseKeyValidation_key(jsonResponse, "100");*/
 			
-			Log.info("EpubStatus_OAuth Response: "+jsonResponse.then().extract().response().prettyPrint());
+			Log.info("EpubStatus Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
+			Log.fail(exp.getMessage());
 			exp.printStackTrace();
 		}
 		Log.endTestCase("End");

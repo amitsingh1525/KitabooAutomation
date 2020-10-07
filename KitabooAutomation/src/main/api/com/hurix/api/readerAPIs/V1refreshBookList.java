@@ -1,10 +1,13 @@
 package com.hurix.api.readerAPIs;
 
 import static io.restassured.RestAssured.given;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 import io.restassured.response.Response;
+
 import com.hurix.automation.utility.*;
 
 public class V1refreshBookList {
@@ -51,8 +54,8 @@ public class V1refreshBookList {
 			Log.info("v1refreshBookList Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
 			exp.printStackTrace();
 		}
 		Log.endTestCase("End");
@@ -82,8 +85,8 @@ public class V1refreshBookList {
 			Log.info("v1refreshBookList_with_pagi Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
 			exp.printStackTrace();
 		}
 		Log.endTestCase("End");

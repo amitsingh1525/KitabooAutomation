@@ -517,7 +517,7 @@ public class DIS_1763 {
 			Validation.responseKeyValidation_key(fetchCategoriesCollectionsres,"name");
 			System.out.println("fetchCategoriesCollectionsres : "+fetchCategoriesCollectionsres);
 
-			Response fetchCategoriesCollectionsBooksres =FetchCategoriesCollectionsBooks.fetchCategoriesCollectionsBooks(userToken, "5489989",deviceT,"level4_upd",collectionName0);
+			Response fetchCategoriesCollectionsBooksres =FetchCategoriesCollectionsBooks.fetchCategoriesCollectionsBooks(userToken, "5489989",deviceT,"level4_upd",collectionName0,bookID1,sqlhost,sqlUsername,sqlPassword,catlevel);
 			Validation.responseHeaderCodeValidation(fetchCategoriesCollectionsBooksres, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(fetchCategoriesCollectionsBooksres,HttpStatus.SC_OK);
 			Validation.responseTimeValidation(fetchCategoriesCollectionsBooksres);
@@ -671,8 +671,8 @@ public class DIS_1763 {
 			}
 		} catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
 			exp.printStackTrace();
 		}
 		Log.endTestCase("End");
