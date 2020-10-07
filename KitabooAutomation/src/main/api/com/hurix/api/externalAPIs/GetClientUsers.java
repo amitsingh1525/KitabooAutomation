@@ -12,7 +12,9 @@ public class GetClientUsers {
 		try {
 			
 			Log.startTestCase("GetClientUsers");
-			//System.out.println("RequestURL:" +GETgetBookMetadataPath);
+			Log.info("consumerKey : "+consumerKey);
+			Log.info("consumerSecret : "+consumerSecret);
+			Log.info("URL:" +"/DistributionServices/ext/api/getClientUsers");
 			jsonResponse = given()
 					.auth()
 					.oauth(consumerKey, consumerSecret, "", "")
@@ -34,6 +36,10 @@ public class GetClientUsers {
 		Response jsonResponse = null;
 		try {			
 			Log.startTestCase("GetClientUsers");
+			Log.info("consumerKey : "+consumerKey);
+			Log.info("consumerSecret : "+consumerSecret);
+			Log.info("startIndex : "+startIndex);
+			Log.info("endindex : "+endindex);
 			//System.out.println("RequestURL:" +GETgetBookMetadataPath);
 			jsonResponse = given()
 					.auth()

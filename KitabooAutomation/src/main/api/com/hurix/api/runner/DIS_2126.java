@@ -14,7 +14,7 @@ import com.hurix.api.readerAPIs.*;
 import com.hurix.api.utility.*;
 import com.hurix.automation.utility.Log;
 
-public class DIS_1765 {
+public class DIS_2126 {
 
 	//static List<String> detailisbn =  ExcelUtils.getisbn();
 	DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
@@ -112,14 +112,14 @@ public class DIS_1765 {
 	//public static String consumerSecret=ExcelUtils.secret_key;
 
 	public static void   main(String []args) throws SQLException, JSONException{
-		Log.initialization("Sprint33.1/DIS-1765DIS-2126");	
+		Log.initialization("Sprint33.1/DIS-2126");	
 		//List<String> detail =  ExcelUtils.getuserDetails();
 		try {
 			//startDate=EpochTime.getEpochTime(""+startDate+"");
-			String excelPath="./testData/Sprint33.1/DIS-1765_DIS-2001.xlsx";
+			String excelPath="./testData/Sprint33.1/DIS-2126.xlsx";
 			workbook = new XSSFWorkbook(excelPath);
 			sheet= workbook.getSheet("Sheet1");
-			for(int i=1;i<=sheet.getLastRowNum();i++)
+			for(int i=2;i<=sheet.getLastRowNum();i++)
 			{DataFormatter formatter = new DataFormatter();
 			environMent = formatter.formatCellValue(sheet.getRow(i).getCell(0));
 			userName = formatter.formatCellValue(sheet.getRow(i).getCell(1));			
@@ -185,6 +185,9 @@ public class DIS_1765 {
 			//client_Id = 7;
 			consumerKey = JDBC_category.getCK(client_Id, sqlhost, sqlUsername, sqlPassword);
 			consumerSecret =JDBC_category.getSK(client_Id, sqlhost, sqlUsername, sqlPassword);
+			/*else if(environMent.equals("Staging"))
+			{consumerKey = JDBC_category.getCK(1337, sqlhost, sqlUsername, sqlPassword);
+			consumerSecret =JDBC_category.getSK(1337, sqlhost, sqlUsername, sqlPassword);}*/
 
 
 			for(int i5=1;i5<=10;i5++)
@@ -216,27 +219,48 @@ public class DIS_1765 {
 			Validation.responseCodeValidation1(fetchbooklist, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(fetchbooklist);
 			bookID1 = fetchbooklist.then().extract().path("bookList.book.id[0]");
-			System.out.println("bookID_1: "+bookID1);
+			Log.info("bookID_1: "+bookID1);
+			Log.info("environMent : "+environMent);
+			Log.info("userName : "+userName);
+
+			if(environMent.equals("BASE_US")&& userName.equals("willo.test1@yopmail.com") || environMent.equals("PROD_US") && userName.equals("willo.test1@yopmail.com"))
+			{Log.info("HEREREEEEEEEEEEEEEEEEEE");
+			bookID2 = fetchbooklist.then().extract().path("bookList.book.id[0]");
+			Log.info("bookID2: "+bookID2);
+			bookID3 = fetchbooklist.then().extract().path("bookList.book.id[0]");
+			Log.info("bookID3: "+bookID3);}
+			else
+			{Log.info("HEREREEEEEEEEEEEEEEEEEE");
 			bookID2 = fetchbooklist.then().extract().path("bookList.book.id[1]");
-			System.out.println("bookID: "+bookID2);
+			Log.info("bookID2: "+bookID2);
 			bookID3 = fetchbooklist.then().extract().path("bookList.book.id[2]");
-			System.out.println("bookID: "+bookID3);
+			Log.info("bookID3: "+bookID3);}
 			title = fetchbooklist.then().extract().path("bookList.book.title[0]");
-			System.out.println("title: "+title);
-			isbn = fetchbooklist.then().extract().path("bookList.book.isbn[1]");
-			System.out.println("isbn: "+isbn);
+			Log.info("title0: "+title);
+			isbn = fetchbooklist.then().extract().path("bookList.book.isbn[0]");
+			Log.info("isbn0: "+isbn);
 			ebookID1 = fetchbooklist.then().extract().path("bookList.book.ebookID[0]");
-			System.out.println("ebookID: "+ebookID1);
+			Log.info("ebookID: "+ebookID1);
+			if(environMent.equals("BASE_US") || environMent.equals("PROD_US") && userName.equals("willo.test1@yopmail.com"))
+			{assetType = fetchbooklist.then().extract().path("bookList.book.assetType[0]");
+			Log.info("assetType: "+assetType);
+			category1 = fetchbooklist.then().extract().path("bookList.book.category[0]");
+			Log.info("category1: "+category1);
+			collectionName1 = fetchbooklist.then().extract().path("bookList.book.collectionTitle[0]");
+			Log.info("collectionName1: "+collectionName1);
+			catname = ExtractCategory.extractCategory(category1);			
+			}
+			else{
 			assetType = fetchbooklist.then().extract().path("bookList.book.assetType[1]");
-			System.out.println("assetType: "+assetType);
+			Log.info("assetType1: "+assetType);
 			category1 = fetchbooklist.then().extract().path("bookList.book.category[1]");
-			System.out.println("category1: "+category1);
+			Log.info("category1: "+category1);
 			collectionName1 = fetchbooklist.then().extract().path("bookList.book.collectionTitle[1]");
-			System.out.println("collectionName1: "+collectionName1);
-			catname = ExtractCategory.extractCategory(category1);
-			System.out.println("catname: " +catname);
-			String archiveDate = fetchbooklist.then().extract().path("bookList.book.archiveDate[1]");
-			System.out.println("archiveDate:"+archiveDate);
+			Log.info("collectionName1: "+collectionName1);
+			catname = ExtractCategory.extractCategory(category1);}
+			Log.info("catname: " +catname);
+			String archiveDate = fetchbooklist.then().extract().path("bookList.book.archiveDate[0]");
+			Log.info("archiveDate:"+archiveDate);
 
 
 			Response bookdetails = Bookdetails.bookdetails(archiveDate,userToken_re,"fg3cg23",deviceT,bookID2,"");
@@ -385,7 +409,7 @@ public class DIS_1765 {
 			Validation.responseKeyValidation_key(fethcatcollection,"collections");
 			Validation.responseKeyValidation_key(fethcatcollection,"name");
 
-			Response fetchCategoriesCollectionsBooks = FetchCategoriesCollectionsBooks.fetchCategoriesCollectionsBooks(userToken_re,"fs424",deviceT,category1,collectionName1,bookID1,sqlhost,sqlUsername,sqlPassword,catlevel);
+			Response fetchCategoriesCollectionsBooks = FetchCategoriesCollectionsBooks.fetchCategoriesCollectionsBooks(userToken_re,"fs424",deviceT,category1,collectionName1,bookID2,sqlhost,sqlUsername,sqlPassword,catlevel);
 			Validation.responseHeaderCodeValidation(fetchCategoriesCollectionsBooks, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(fetchCategoriesCollectionsBooks,HttpStatus.SC_OK);
 			Validation.responseTimeValidation(fetchCategoriesCollectionsBooks);
@@ -474,7 +498,7 @@ public class DIS_1765 {
 			Validation.responseKeyValidation_key(CategoryBookListV2Res,"id");
 			Validation.responseKeyValidation_key(CategoryBookListV2Res,"title");
 
-			Response fetchcategorybooksV1 = FetchCategorybooksV1.fetchCategorybooksV1(""+category1+"", userToken_re);
+			Response fetchcategorybooksV1 = FetchCategorybooksV1.fetchCategorybooksV1(""+category1+"", userToken_re,bookID1, catlevel, sqlhost, sqlUsername, sqlPassword);
 			Validation.responseHeaderCodeValidation(fetchcategorybooksV1, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(fetchcategorybooksV1, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(fetchcategorybooksV1);
@@ -512,7 +536,7 @@ public class DIS_1765 {
 
 			Response books = ClientUserID_books.clientUserID_books(consumerKey, consumerSecret, searchV2TEXT, ""+clientUserID+"");
 			Validation.responseHeaderCodeValidation(books, HttpStatus.SC_OK);
-			Validation.responseCodeValidation1(books, HttpStatus.SC_OK);
+			//Validation.responseCodeValidation1(books, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(books);
 			Validation.responseKeyValidation_key(books, "id");
 			Validation.responseKeyValidation_key(books, "isbn");
@@ -601,8 +625,8 @@ public class DIS_1765 {
 		  }
 		}catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
 			exp.printStackTrace();
 		}
 	}

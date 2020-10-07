@@ -1,4 +1,4 @@
-package com.hurix.api.runner;
+package com.hurix.api.externalAPIs;
 
 import static io.restassured.RestAssured.given;
 import io.restassured.response.Response;
@@ -23,14 +23,14 @@ public class Order {
 					.queryParam("type", type)
 					.queryParam("deviceLimit", deviceLimit)	
 					.post("/DistributionServices/ext/api/order");*/
-					.post("DistributionServices/ext/api/order?orderNo="+orderNo+"&bookID="+BookID1+"&type="+type+"&keyCount="+keyCount+"&deviceLimit="+deviceLimit+"");
+					.post("/DistributionServices/ext/api/order?orderNo="+orderNo+"&bookID="+BookID1+"&type="+type+"&keyCount="+keyCount+"&deviceLimit="+deviceLimit+"");
 			
 			
 			Log.info("OrderV2."+BookID1+" Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
+			Log.fail(exp.getMessage());
+			Log.fail("Fails due to "+exp.getCause());
 			exp.printStackTrace();
 		}
 		Log.endTestCase("End");

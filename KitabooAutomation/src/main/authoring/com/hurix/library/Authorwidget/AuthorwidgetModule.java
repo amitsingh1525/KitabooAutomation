@@ -32,11 +32,8 @@ public class AuthorwidgetModule extends AuthorwidgetStepModule {
 			String wordsearchheader,String wordsearchquestion,String hiddenword,String EnterQuestion, String Format,String language,String theme) throws Exception {
 		
 		
-		linkActivites();
-		Driver.driver.navigate().refresh(); 
-		WebDriverWait wait = new WebDriverWait(Driver.driver,60); 
-		wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("iframeBody"));
-		//Driver.driver.switchTo().frame("iframeBody");
+		linkActivities();
+		
 		System.out.println("Frame switched");
 		createAuthorWidget(widgetName,category,tag,courseDescription);
 		
@@ -50,8 +47,8 @@ public class AuthorwidgetModule extends AuthorwidgetStepModule {
 		Driver.driver.manage().window().maximize();
 		Thread.sleep(5000);
 		Thread.sleep(5000);
+		
 		titleComponent(title,author);
-		/*titleComponent(title,author);
 		headerComponent(header);
 		textComponent(text);
 		imageComponent(imageheader,caption,uploadimage);
@@ -60,34 +57,31 @@ public class AuthorwidgetModule extends AuthorwidgetStepModule {
 		htmlInteractivityComponent(caption, uploadzip);
 	    tableComponent(NoOfRows,NoOfColumns,tableheader,caption);
 		staticSidebarComponent(staticSidebarheader,text,uploadimage,caption);
-		mcqComponent(MCQheader,MCQinstruction,question,Option1,Option2,Option3,Option4);*/
+		mcqComponent(MCQheader,MCQinstruction,question,Option1,Option2,Option3,Option4);
 		slideshowComponent(Slideshowtitle,uploadimage,subtitle,slidetitle,caption,placeholder,uploadvideo,text);
-		/*imageLabellingComponent(labellingtitle,labellingInstruction,Label1,Label2,caption,uploadimage2);
+		imageLabellingComponent(labellingtitle,labellingInstruction,Label1,Label2,caption,uploadimage2);
 		fillintheBlanksComponent(FillintheBlanksheader,FillintheBlanksinstruction,FillintheBlankssentence,FillintheBlanksOption1,FillintheBlanksOption2,FillintheBlanksOption3);
-		*/
 		highlightComponent(introduction,instruction,statement);
 		correctionComponent(correctionheader,instruction,statement,correctanswer);
-	/*	sortingComponent(sortingheader,instruction,statement,sortanswer);
+		sortingComponent(sortingheader,instruction,statement,sortanswer);
 		matchthepairsComponent(mtpheader,instruction,Element1,Element2,Question1,Answer1,Question2,Answer2,Question3,Answer3,Question4,Answer4);
 		sidebarComponent(sidebartitle,text);
 		clicktorevealComponent(ClicktoRevealheader,text,ButtonLabel);
 		wordSearchComponent(wordsearchheader,text,wordsearchquestion,hiddenword);
-		questionanswerComponent(EnterQuestion);*/
+		questionanswerComponent(EnterQuestion);
 		
-	/*	Thread.sleep(3000);
+		Thread.sleep(3000);
 		Driver.driver.close();
 // 		Old Window Handle
 	    Thread.sleep(5000);
 	    Driver.driver.switchTo().window(winHandleBefore);
 		
-		Driver.driver.navigate().refresh(); 
-		//WebDriverWait wait = new WebDriverWait(Driver.driver,60); 
+		Driver.driver.navigate().refresh();
 		wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("iframeBody"));
-		//Driver.driver.switchTo().frame("iframeBody");
-		System.out.println("Frame switched");*/
-
+		System.out.println("Frame switched");
+	
 	    
-/*	 //publish author widget and download (list view)
+	 //publish author widget and download (list view)
 	  	publishDownloadAuthorWidget(Format,language);
 	
 	//copy functionality
@@ -102,16 +96,26 @@ public class AuthorwidgetModule extends AuthorwidgetStepModule {
 	// Filter author widget and create widget Functionality
 		filterAuthorWidget();
 		
-	//Multiple publish author widget
-		multiplePublishDownload(theme,Format,language);
+	/*//Multiple publish author widget
+		multiplePublishDownload(theme,Format,language);*/
 		
 	// Change cover functionality
-		changeCover();*/
+		changeCover(uploadimage);
 		
 	// share functionaliy
-		shareAuthorWidget();
-		
+		shareAuthorWidgetlist();
+		//shareAuthorWidgetgrid();
+	
 	}
+
+
+	public static void linkActivities() {
+		linkActivites();
+		Driver.driver.navigate().refresh(); 
+		WebDriverWait wait = new WebDriverWait(Driver.driver,60); 
+		wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("iframeBody"));
+	}
+
 
 	public static void multiplePublishDownload(String theme,String Format,String language) throws Exception {
 		/*chkSelectAll();
@@ -201,14 +205,30 @@ public class AuthorwidgetModule extends AuthorwidgetStepModule {
 	public static void deleteAuthorWidget() {
 		btndelete();
 		btnconfirmdelete();
+		btnBlockMainPage();
 	}
 
-	public static void shareAuthorWidget() {
+	public static void shareAuthorWidgetlist() {
+		threadHold_5Sec();
 		btnlistview_share();
+		rdbtnoption_share();
+		/*String user=elementFinderByXpath(prop.getProperty("shareduser_txt_xpath"), "txt shared user").getText();
+		System.out.println("Shared User: "+ user);*/
+		txtSharedUser();
+		btnconfirm_share();
+		btnBlockMainPage();
+		//btngridview();
+		/*threadHold_5Sec();
+		btngridview_share();
 		rdbtnoption_share();
 		btnconfirm_share();
 		btnBlockMainPage();
+		btnlistview();*/
+	}
+	
+	public static void shareAuthorWidgetgrid() {
 		btngridview();
+		threadHold_5Sec();
 		btngridview_share();
 		rdbtnoption_share();
 		btnconfirm_share();
@@ -216,10 +236,13 @@ public class AuthorwidgetModule extends AuthorwidgetStepModule {
 		btnlistview();
 	}
 
-	public static void changeCover() {
+	public static void changeCover(String uploadimage) {
 		btngridview();
 		btngridview_changeCover();
-		Uploadpath.uploadpath("\\TestData\\photo.jpg");
+		threadHold_2Sec();
+		Uploadpath.uploadpath(uploadimage);
+		loader();
+		threadHold_5Sec();
 	}
 
 	public static void questionanswerComponent(String EnterQuestion) {
@@ -424,11 +447,13 @@ public class AuthorwidgetModule extends AuthorwidgetStepModule {
 		Uploadpath.uploadpath(uploadimage);
 		loader();
 		btnSlideshowNextSlide();
+		threadHold_5Sec();
 		chkbxSlideshowUploadVideo();
 		btnSlideshowUploadVideo2();
 		Uploadpath.uploadpath(uploadvideo);
 		loader();
 		btnSlideshowNextSlide();
+		threadHold_5Sec();
 		chkbxSlideshowAddText();
 		txtbxAddText(text);
 		saveActivity();
@@ -490,8 +515,10 @@ public class AuthorwidgetModule extends AuthorwidgetStepModule {
 		txtbx_instruction(instruction);
 		txtbx_1statement(statement);
 		SelectWord.selectword();
+		doubleClickAWord();
+		highlightelement();
+		SelectWord.selectword();
 		btnhighlight();
-		txtbx_1statement(statement);
 		saveActivity();
 		loader();
 	}
@@ -503,10 +530,18 @@ public class AuthorwidgetModule extends AuthorwidgetStepModule {
 		cmpCorrection();
 		txtbx_correctionHeader(correctionheader);
 		txtbx_correctionInstruction(instruction);
-		txtbx_statement(statement);
+		txtbx_1statement(statement);
+		SelectWord.selectword();
+		doubleClickAWord();
+		Strikeelement();
 		SelectWord.selectword();
 		btnstrikethrough();
 		txtbx_correctanswer(correctanswer);
+		
+		/*txtbx_statement(statement);
+		SelectWord.selectword();
+		btnstrikethrough();
+		txtbx_correctanswer(correctanswer);*/
 		saveActivity();
 		loader();
 	}
@@ -591,7 +626,7 @@ public class AuthorwidgetModule extends AuthorwidgetStepModule {
 		btngridview();
 		btnrenamewidget();
 		btnBlockMainPage();
-		txtbx_widgetname(WidgetName);
+		txtbx_widgetname("Test shared Authoring Widget ");
 		btnsavewidget();
 		btnBlockMainPage();
 	}
@@ -602,6 +637,13 @@ public class AuthorwidgetModule extends AuthorwidgetStepModule {
 		btngridview();
 		btngridview_copy();
 		btnBlockMainPage();
+	}
+	
+	public static String userLogOut(){
+		btnProfileIcon();
+		btnLogOut();
+		threadHold_2Sec();
+		return Driver.driver.getCurrentUrl();
 	}
 
 }

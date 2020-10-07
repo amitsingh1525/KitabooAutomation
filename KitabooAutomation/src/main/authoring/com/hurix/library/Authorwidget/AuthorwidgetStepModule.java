@@ -186,6 +186,24 @@ public static Properties prop = getProperty(System.getProperty("user.dir")+"/con
 		}
 	}
 	
+	public static void txtSharedUser(){
+		try {
+			String user=elementFinderByXpath(prop.getProperty("shareduser_txt_xpath"), "txt shared user").getText();
+			System.out.println("Shared User: "+ user);
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void txtanotherSharedUser(){
+		try {
+			String user=elementFinderByXpath(prop.getProperty("anothershareduser_txt_xpath"), "txt another shared user").getText();
+			System.out.println("Another Shared User: "+ user);
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
 	public static void btnconfirm_share(){
 		try {
 			elementFinderByID(prop.getProperty("shareconfirm_btn_Id"), "btn_confirm").click();
@@ -1152,7 +1170,7 @@ public static Properties prop = getProperty(System.getProperty("user.dir")+"/con
 		
 		public static void txtbxSlideshowSubTitle(String subtitle){
 			try {
-				//elementFinderByXpath(prop.getProperty("slideshow_subtitle_txtbx_Xpath "), "txtbx shideshow subtitle").clear();
+				elementFinderByXpath(prop.getProperty("slideshow_subtitle_txtbx_Xpath "), "txtbx shideshow subtitle").clear();
 				elementFinderByXpath(prop.getProperty("slideshow_subtitle_txtbx_Xpath"), "txtbx shideshow subtitle").sendKeys(subtitle);
 			} catch (Exception e) {
 				System.out.println("Element not present."+e.getMessage());
@@ -1484,9 +1502,31 @@ public static Properties prop = getProperty(System.getProperty("user.dir")+"/con
 			}
 		}
 		
+		public static void doubleClickAWord(){
+			try {
+				Actions action = new Actions(Driver.driver);
+				action.moveToElement(Driver.driver.findElement(By.xpath(prop.getProperty("highlighter_1statement_btn_Xpath")))).click().perform();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
 		public static void btnhighlight(){
 			try {
 				elementFinderByXpath(prop.getProperty("highlighter_myHighLight_btn_Xpath"), "btn highlight").click();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void highlightelement(){
+			try {
+				   WebElement element = Driver.driver.findElement(By.xpath(prop.getProperty("highlighter_myHighLight_btn_Xpath")));
+				   JavascriptExecutor js = (JavascriptExecutor) Driver.driver;
+		      	   js.executeScript("arguments[0].setAttribute('style', 'visibility: block;')",element);
+		      	   Thread.sleep(500);
+		      	   System.out.println("highlight  element");
+				//elementFinderByXpath(prop.getProperty("highlighter_myHighLight_btn_Xpath"), "btn highlight").click();
 			} catch (Exception e) {
 				System.out.println("Element not present."+e.getMessage());
 			}
@@ -1526,6 +1566,19 @@ public static Properties prop = getProperty(System.getProperty("user.dir")+"/con
 				elementFinderByXpath(prop.getProperty("correction_1statement_btn_Xpath"), "txtbx_statement").click();
 				elementFinderByXpath(prop.getProperty("correction_1statement_btn_Xpath"), "txtbx_statement").sendKeys(statement);
 				//elementFinderByXpath(prop.getProperty("highlighterinstruction_txtbx_Xpath"), "txtbx_instruction").click();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void Strikeelement(){
+			try {
+				   WebElement element = Driver.driver.findElement(By.xpath(prop.getProperty("correctionstrikethrough_btn_Xpath")));
+				   JavascriptExecutor js = (JavascriptExecutor) Driver.driver;
+		      	   js.executeScript("arguments[0].setAttribute('style', 'visibility: block;')",element);
+		      	   Thread.sleep(500);
+		      	   System.out.println("Strike element");
+				//elementFinderByXpath(prop.getProperty("highlighter_myHighLight_btn_Xpath"), "btn highlight").click();
 			} catch (Exception e) {
 				System.out.println("Element not present."+e.getMessage());
 			}
@@ -1894,6 +1947,21 @@ public static Properties prop = getProperty(System.getProperty("user.dir")+"/con
 				System.out.println("Element not present."+e.getMessage());
 			}
 		}
-
+    
+		public static void btnProfileIcon(){
+			try {
+				elementFinderByID(prop.getProperty("profileIcon_id"), "Click on profile icon.").click();
+			} catch (Exception e) {
+				System.out.println("Element not present. ERROR: "+e.getMessage());
+			}
+		}
+		
+		public static void btnLogOut(){
+			try {
+				elementFinderByID(prop.getProperty("LogOut_id"), "Click on Log out.").click();
+			} catch (Exception e) {
+				System.out.println("Element not present. ERROR: "+e.getMessage());
+			}
+		}
 	
 }

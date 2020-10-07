@@ -10,6 +10,7 @@ import org.openqa.selenium.interactions.Actions;
 
 import com.hurix.automation.utility.Driver;
 import com.hurix.automation.utility.Log;
+import com.hurix.automation.utility.UIElements;
 
 public class BookPlayerModule extends BookplayerStepModule
 {
@@ -459,7 +460,24 @@ public class BookPlayerModule extends BookplayerStepModule
 		//We need to change inside it's a static method always click on first node
 		btncontentsdrpdwn();
 		btncontentsChildlist();
-
 	}
+	
+	
+	public static void allmarkup(int pageNum,String title) {
+		threadHold_2Sec();
+		markup (pageNum, title);	
+		windowhandle();
+		threadHold_5Sec();
+		if(Driver.driver.getCurrentUrl().contains("https://read.kitaboo.com/reader/V5/reader/index.html")){
+			Log.pass("After click on Test go to book redirect to this page"+Driver.driver.getCurrentUrl());
+		}else{
+			Log.fail("Expected URL contain Test go to book but found "+Driver.driver.getCurrentUrl());
+		}
+		Driver.driver.close();
+		windowhandle();
+		
+	}
+
+	
 
 }

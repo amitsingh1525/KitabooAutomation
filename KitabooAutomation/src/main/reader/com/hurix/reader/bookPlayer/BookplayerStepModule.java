@@ -124,6 +124,51 @@ public class BookplayerStepModule extends UIElements {
 		}
 	}
 	
+<<<<<<< HEAD
+	public static void markup(int pageNum,String title){
+		try {
+			
+			threadHold_2Sec();
+			Driver.driver.switchTo().frame("epub_"+pageNum);
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@title=\""+title+"\"]")));
+			threadHold_2Sec();
+			WebElement ele = Driver.driver.findElement(By.xpath("//*[@title=\""+title+"\"]"));
+			JavascriptExecutor executor = (JavascriptExecutor)Driver.driver;
+			executor.executeScript("arguments[0].click();", ele);
+			Log.info("Click on "+title+" markup");
+			threadHold_2Sec();
+			/*Driver.driver.navigate().refresh();
+			Driver.driver.switchTo().alert().accept();
+			threadHold_5Sec();*/
+			Driver.driver.switchTo().defaultContent();
+			threadHold_2Sec();
+			
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+			Driver.driver.switchTo().defaultContent();
+		}
+	}
+	
+	public static void lstresources_list(){
+		try {
+			List<WebElement> element= elementsFinderByXpaths(prop.getProperty("resources_list_lstview_xpath"), "lst_resources_list");
+
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+
+	public static void lstresources_list_drpdwn(){
+		try {
+			List<WebElement> element= elementsFinderByXpaths(prop.getProperty("resources_list_drpdwn_lstview_xpath"), "lst_resources_list_drpdwn");
+
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+
+=======
+>>>>>>> branch 'master' of https://github.com/amitsingh1525/KitabooAutomation.git
 	public static void btncontents(){
 		try {
 			elementFinderByXpath(prop.getProperty("contents_xpath"), "Click on Contents.").click();
@@ -977,6 +1022,7 @@ public class BookplayerStepModule extends UIElements {
 		}
 	}
 
+	
 	public static void btnStickyClr_pink(){
 		try {
 			elementFinderByXpath(prop.getProperty("clrRedSticky_xpath"), "Pick up a pink colour from sticky notes.").click();

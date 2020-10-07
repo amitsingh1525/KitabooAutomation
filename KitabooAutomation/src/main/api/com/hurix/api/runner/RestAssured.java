@@ -1411,7 +1411,7 @@ public class RestAssured {
 				System.out.println("CategoryBookListV2Res : " +CategoryBookListV2Res_withpagi);
 
 
-				Response FetchCategorybooksV1Res = FetchCategorybooksV1.fetchCategorybooksV1(catname,userToken);
+				Response FetchCategorybooksV1Res = FetchCategorybooksV1.fetchCategorybooksV1(catname,userToken,bookID1, catlevel, sqlhost, sqlUsername, sqlPassword);
 				Validation.responseHeaderCodeValidation(FetchCategorybooksV1Res, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(FetchCategorybooksV1Res, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchCategorybooksV1Res);
@@ -2425,8 +2425,8 @@ public class RestAssured {
 		}
 		catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
 			exp.printStackTrace();
 		}
 	}

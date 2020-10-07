@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 
 import com.hurix.automation.utility.Driver;
 import com.hurix.automation.utility.Log;
+import com.hurix.reader.bookPlayer.BookPlayerModule;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -52,6 +53,8 @@ public class BookShelfModule extends BookShelfStepModule {
 	}
 
 	public static String privacyPolicy(){
+		Driver.driver.navigate().refresh();
+		BookPlayerModule.threadHold_2Sec();
 		btnProfileIcon();
 		linkPrivacyPolicy();
 		String parent_Window = Driver.driver.getWindowHandle();
@@ -59,11 +62,13 @@ public class BookShelfModule extends BookShelfStepModule {
 		String url =  Driver.driver.getCurrentUrl();
 		Driver.driver.close();
 		Driver.driver.switchTo().window(parent_Window);
-		btnProfileIcon();
+	//	btnProfileIcon();
 		return url;
 	}
 
 	public static String termAndCondition(){
+		Driver.driver.navigate().refresh();
+		BookPlayerModule.threadHold_2Sec();
 		btnProfileIcon();
 		linkTermsAndCondition();
 		String parent_Window = Driver.driver.getWindowHandle();
@@ -71,7 +76,7 @@ public class BookShelfModule extends BookShelfStepModule {
 		String url =  Driver.driver.getCurrentUrl();
 		Driver.driver.close();
 		Driver.driver.switchTo().window(parent_Window);
-		btnProfileIcon();
+	//	btnProfileIcon();
 		return url;
 	}
 
@@ -87,6 +92,7 @@ public class BookShelfModule extends BookShelfStepModule {
 
 	public static void changePassword(String currentPassword, String newPassword, String confirmPassword){
 		Driver.driver.navigate().refresh();
+		BookPlayerModule.threadHold_2Sec();
 		threadHold_5Sec();
 		btnProfileIcon();
 		linkChangePassword();
@@ -128,7 +134,7 @@ public class BookShelfModule extends BookShelfStepModule {
 		btnMoreInfo(i);
 		btnAnalytics();
 		threadHold_2Sec();
-		drpdwnStudentInfo();
+	//	drpdwnStudentInfo();
 		threadHold_2Sec();
 		String msg1 = getBookOpenedAssigned();
 		Log.info("Book Opened/Assigned: " + msg1);
