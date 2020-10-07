@@ -63,7 +63,7 @@ public class FetchBookList {
 
 		Response jsonResponse = null;
 		try {
-			
+
 			//assertTrue(Ordering.natural().isOrdered(list));
 
 			Log.startTestCase("fetchBookList_SortBy="+SortBy+".orderBy="+orderBy+"");
@@ -76,14 +76,14 @@ public class FetchBookList {
 			//List<String> jsonResponse1 = jsonResponse.jsonPath().getList(""+SortBy+"");
 			//boolean result= 
 			//assertTrue(Ordering.natural().isOrdered(jsonResponse1));
-			
-			
-				   // Using the orderBy function from lodash 
-				   // Read docs: https://lodash.com/docs/4.17.10#orderBy
-				   // var expectedSortedOrder = _.orderBy(responseBody.employees, ["firstname"],["asc"]);
 
-				    //pm.expect(responseBody.employees).to.eql(expectedSortedOrder);    
-					Log.info("fetchBookList_SortBy="+SortBy+".orderBy="+orderBy+" Response: "+jsonResponse.then().extract().response().prettyPrint());
+
+			// Using the orderBy function from lodash 
+			// Read docs: https://lodash.com/docs/4.17.10#orderBy
+			// var expectedSortedOrder = _.orderBy(responseBody.employees, ["firstname"],["asc"]);
+
+			//pm.expect(responseBody.employees).to.eql(expectedSortedOrder);    
+			Log.info("fetchBookList_SortBy="+SortBy+".orderBy="+orderBy+" Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 
 		{
 			System.out.println(exp.getMessage());
@@ -94,7 +94,6 @@ public class FetchBookList {
 		return jsonResponse;
 	}
 
-	
 	public static Response fetchBookList_withPAGI_permutation(String SortBy,String orderBy,int startIndex,int endIndex,String userToken,String DeviceID,String DeviceType)
 	{
 
@@ -120,4 +119,45 @@ public class FetchBookList {
 		Log.endTestCase("End");
 		return jsonResponse;
 	}
+	
+	public static Response fetchBookList(String userToken, String deviceID, String deviceType)
+	{
+		Response jsonResponse = null;
+		try {
+			jsonResponse = given().header("usertoken",userToken)
+					.get("/DistributionServices/services/api/reader/distribution/"+deviceID+"/"+deviceType+"/fetchBookList");
+		} catch (Exception e) 
+		{
+			Log.errorAPI("ERROR: Failed to getting response from fetchBookList API. "+e.getMessage());
+		}
+		return jsonResponse;
+	}
+
+	public static Response fetchBookList(String userToken, String deviceID, String deviceType, int startIndex,int endIndex, String sortBy,String orderBy)
+	{
+		Response jsonResponse = null;
+		try {
+			jsonResponse = given().header("usertoken",userToken).header("startIndex",startIndex).header("endIndex",endIndex).header("SortBy",sortBy).header("orderBy",orderBy)
+					.get("/DistributionServices/services/api/reader/distribution/"+deviceID+"/"+deviceType+"/fetchBookList");
+		} catch (Exception e) 
+		{
+			Log.errorAPI("ERROR: Failed to getting response from fetchBookList API. "+e.getMessage());
+		}
+		return jsonResponse;
+	}
+	
+	public static Response fetchBookList(String userToken, String deviceID, String deviceType, String sortBy,String orderBy)
+	{
+		Response jsonResponse = null;
+		try {
+			jsonResponse = given().header("usertoken",userToken).header("SortBy",sortBy).header("orderBy",orderBy)
+					.get("/DistributionServices/services/api/reader/distribution/"+deviceID+"/"+deviceType+"/fetchBookList");
+		} catch (Exception e) 
+		{
+			Log.errorAPI("ERROR: Failed to getting response from fetchBookList API. "+e.getMessage());
+		}
+		return jsonResponse;
+	}
+	
+	
 }

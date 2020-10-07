@@ -95,6 +95,17 @@ public class Log {
 			e.printStackTrace();
 		}
 	}
+	
+	public static void errorAPI(String message) {
+		try {
+			test.log(LogStatus.ERROR, message);
+			extent.flush();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public static void fatal(String message) {
 		test.log(LogStatus.FATAL, message);
 		extent.flush();
