@@ -124,7 +124,6 @@ public class BookplayerStepModule extends UIElements {
 		}
 	}
 	
-<<<<<<< HEAD
 	public static void markup(int pageNum,String title){
 		try {
 			
@@ -167,8 +166,6 @@ public class BookplayerStepModule extends UIElements {
 		}
 	}
 
-=======
->>>>>>> branch 'master' of https://github.com/amitsingh1525/KitabooAutomation.git
 	public static void btncontents(){
 		try {
 			elementFinderByXpath(prop.getProperty("contents_xpath"), "Click on Contents.").click();
