@@ -6,7 +6,7 @@ import org.apache.commons.codec.binary.Base64;
 
 import com.hurix.automation.utility.Log;
 
-public class JDBC_category {	
+public class JDBC_Queries {	
 
 	@SuppressWarnings("resource")
 	public static String getCategory(int bookID, String catLevel, String sqlhost, String sqlUsername, String sqlPassword)

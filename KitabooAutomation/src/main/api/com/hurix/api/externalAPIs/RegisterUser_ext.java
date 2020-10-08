@@ -4,10 +4,10 @@ import static io.restassured.RestAssured.given;
 import io.restassured.response.Response;
 import com.hurix.automation.utility.Log;
 
-public class RegisterUser {
+public class RegisterUser_ext {
 
 	static String registerUserBody=null;
-	public static Response registerUser(String consumerKey, String consumerSecret,String email,String firstName,String lastName,String userName,long clientUserID)
+	public static Response registerUser_ext(String consumerKey, String consumerSecret,String email,String firstName,String lastName,String userName,long clientUserID)
 	{	
 		registerUserBody ="{\"user\":{\"firstName\":\""+firstName+"\",\"lastName\":\""+lastName+"\",\"userName\":\""+userName+"\","
 				+ "\"password\":\"kitaboo@123\",\"clientUserID\":\""+clientUserID+"}\",\"email\":\""+email+"\"}}";

@@ -1,28 +1,18 @@
 package com.hurix.api.runner;
 
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.text.*;
 import java.util.Date;
-import java.util.List;
-
 import org.apache.http.HttpStatus;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.JSONException;
-
-
-
-//import static org.hamcrest.Matchers.*;
 import io.restassured.response.Response;
-
 import com.hurix.api.externalAPIs.*;
 import com.hurix.api.hashAPIs.*;
 import com.hurix.api.readerAPIs.*;
-import com.hurix.api.utility.ExcelUtils;
-import com.hurix.api.utility.ExtractCategory;
-import com.hurix.api.utility.Validation;
+import com.hurix.api.utility.*;
 import com.hurix.automation.utility.Log;
 
 /*
@@ -34,7 +24,6 @@ import com.hurix.automation.utility.Log;
 
 public class RestAssured {
 
-	static List<String> detailisbn =  ExcelUtils.getisbn();
 	DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
 	Date dateobj = new Date();
 	//System.out.println(df.format(dateobj));
@@ -102,14 +91,13 @@ public class RestAssured {
 	static String isbn9;
 	static String isbn10;
 	static String isbn11;
-	static String consumerKey=ExcelUtils.Consumer_key;
-	static String consumerSecret=ExcelUtils.secret_key;
+	static String deviceT;
+	static String consumerKey;
+	static String consumerSecret;
 
 	public static void   main(String []args) throws SQLException, JSONException{
 		Log.initialization("APITesting");	
 		//List<String> detail =  ExcelUtils.getuserDetails();
-		collectionName1="Col1";
-		catname1="History";
 		try {
 			String excelPath="./testData/ExcelData.xlsx";
 			workbook = new XSSFWorkbook(excelPath);
@@ -120,12 +108,14 @@ public class RestAssured {
 				environMent = formatter.formatCellValue(sheet.getRow(i).getCell(0));
 				userName=formatter.formatCellValue(sheet.getRow(i).getCell(1));			
 				password=formatter.formatCellValue(sheet.getRow(i).getCell(2));
-				consumerKey=formatter.formatCellValue(sheet.getRow(i).getCell(4));
-				consumerSecret=formatter.formatCellValue(sheet.getRow(i).getCell(5));
-				clientID=formatter.formatCellValue(sheet.getRow(i).getCell(3));	
-				catlevel=formatter.formatCellValue(sheet.getRow(i).getCell(6));	
+				catlevel=formatter.formatCellValue(sheet.getRow(i).getCell(3));	
+				deviceT=formatter.formatCellValue(sheet.getRow(i).getCell(4));	
+				String runY_N = formatter.formatCellValue(sheet.getRow(i).getCell(5));
 
-				switch(environMent){
+				Log.info("runY_N : "+runY_N);
+				if(runY_N.contains("NO")){Log.info("Permission to Run that Row is Denied!!..Please change YES in Ith row in Respective Sheet of Yours, Thank You");}
+				else if(runY_N.contains("YES"))
+				{switch(environMent){
 				case "QC":
 					detail = "http://qc.kitaboo.com";
 					sqlhost = "jdbc:mysql://172.18.10.147:3306";
@@ -143,7 +133,7 @@ public class RestAssured {
 					sqlhost="jdbc:mysql://localhost:12345";
 					sqlUsername="shweta-katare";
 					sqlPassword="J&P@O4A7HV";	
-					
+
 					break;
 				case "BASE_EU":
 					detail = "http://localhost:12347";
@@ -171,8 +161,19 @@ public class RestAssured {
 
 				io.restassured.RestAssured.baseURI = detail.replace("https", "http"); //http
 
-				Log.startTestCase("Authenticate");
-				Response authenticateValue = Authenticate.authenticate(clientID, userName, password,"65454","IPAD");
+
+				clientID = JDBC_Queries.getReader(userName, sqlhost, sqlUsername, sqlPassword);
+
+				
+				/*String[] deviceT = {"IPAD","ANDROID","WINDOWS","PC","HTML5"};
+				for(int i4=0; i4<=4 ;i4++)*/
+				Log.startTestCase("Authenticate."+deviceT+"");
+				Log.info("clientID : "+clientID);
+				Log.info("userName : "+userName);
+				Log.info("password : "+password);
+				Log.info("clientID : "+clientID);
+
+				Response authenticateValue = Authenticate.authenticate(clientID, userName, password,"65454",deviceT);
 				Log.info("Authenticate Response: "+authenticateValue.then().extract().response().prettyPrint());
 				Validation.responseHeaderCodeValidation(authenticateValue, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(authenticateValue, HttpStatus.SC_OK);
@@ -188,17 +189,27 @@ public class RestAssured {
 				Validation.responseKeyValidation_key(authenticateValue, "profilePicURL");
 				Validation.responseKeyValidation_key(authenticateValue, "sessionCount");
 				Validation.responseKeyValidation_key(authenticateValue, "userToken");
-				System.out.println("here");
+				Log.info("here");
 				userName = authenticateValue.then().extract().path("user.userName");
 				userID = authenticateValue.then().extract().path("user.id");
-				System.out.println("userID: "+userID);
+				Log.info("userID: "+userID);
+				collectionName1="Col1";
+				catname1="History";
 				userToken = authenticateValue.then().extract().path("userToken");
-				System.out.println("userToken:"+userToken);
+				Log.info("userToken:"+userToken);
 				clientUserID = authenticateValue.then().extract().path("user.clientUserID");
-				System.out.println("clientUserID:"+clientUserID);
+				Log.info("clientUserID:"+clientUserID);
 				Log.endTestCase("End");
-				
-				Response fetchBookList_with_pagination = FetchBookList.fetchBookList_with_pagination(0,15,userToken,"45616452","IPAD");
+				int client_Id = authenticateValue.then().extract().path("user.clientID");
+				Log.info("client_Id:"+client_Id);
+
+
+
+				consumerKey = JDBC_Queries.getCK(client_Id, sqlhost, sqlUsername, sqlPassword);
+				consumerSecret =JDBC_Queries.getSK(client_Id, sqlhost, sqlUsername, sqlPassword);
+
+
+				Response fetchBookList_with_pagination = FetchBookList.fetchBookList_with_pagination(0,15,userToken,"45616452",deviceT);
 				Validation.responseCodeValidation1(fetchBookList_with_pagination, HttpStatus.SC_OK);
 				Validation.responseHeaderCodeValidation(fetchBookList_with_pagination, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(fetchBookList_with_pagination);
@@ -226,143 +237,129 @@ public class RestAssured {
 				System.out.println("!@#$%^%#$%^%$#$%$#   totalbooks : "+totalbooks);
 				Log.info("totalbooks : "+totalbooks);
 				Validation.responseISGreater("totalbooks", totalbooks, 4);
-				System.out.println("fetchBookList_with_pagination_RES : " +fetchBookList_with_pagination);
+
 
 
 				//******START FETCHBOOKLIST PERMUTATION
-				Response FetchbookListPermutation=FetchBookList.fetchBookList_with_permutation("isbn", "ASC", userToken, "464", "IPAD");
+				Response FetchbookListPermutation=FetchBookList.fetchBookList_with_permutation("isbn", "ASC", userToken, "464", deviceT);
 				Validation.responseCodeValidation1(FetchbookListPermutation, HttpStatus.SC_OK);
 				Validation.responseHeaderCodeValidation(FetchbookListPermutation, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchbookListPermutation);
-				System.out.println("FetchbookListPermutation : "+FetchbookListPermutation);
 
 
-				Response FetchbookListPermutation_withpagi=FetchBookList.fetchBookList_withPAGI_permutation("isbn","ASC",0,8,userToken, "464", "IPAD");
+				Response FetchbookListPermutation_withpagi=FetchBookList.fetchBookList_withPAGI_permutation("isbn","ASC",0,8,userToken, "464", deviceT);
 				Validation.responseCodeValidation1(FetchbookListPermutation_withpagi, HttpStatus.SC_OK);
 				Validation.responseHeaderCodeValidation(FetchbookListPermutation_withpagi, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchbookListPermutation_withpagi);
-				System.out.println("FetchbookListPermutation_withpagi : "+FetchbookListPermutation_withpagi);
 
-				Response FetchbookListPermutationDEC=FetchBookList.fetchBookList_with_permutation("isbn","DESC",userToken,"464","IPAD");
+
+				Response FetchbookListPermutationDEC=FetchBookList.fetchBookList_with_permutation("isbn","DESC",userToken,"464",deviceT);
 				Validation.responseCodeValidation1(FetchbookListPermutationDEC, HttpStatus.SC_OK);
 				Validation.responseHeaderCodeValidation(FetchbookListPermutationDEC, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchbookListPermutationDEC);
-				System.out.println("FetchbookListPermutation.DEC : "+FetchbookListPermutationDEC);
 
-				Response FetchbookListPermutation_withpagiDEC=FetchBookList.fetchBookList_withPAGI_permutation("isbn","DESC",0,8,userToken, "464", "IPAD");
+
+				Response FetchbookListPermutation_withpagiDEC=FetchBookList.fetchBookList_withPAGI_permutation("isbn","DESC",0,8,userToken, "464", deviceT);
 				Validation.responseCodeValidation1(FetchbookListPermutation_withpagiDEC, HttpStatus.SC_OK);
 				Validation.responseHeaderCodeValidation(FetchbookListPermutation_withpagiDEC, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchbookListPermutation_withpagiDEC);
-				System.out.println("FetchbookListPermutation_withpagi : "+FetchbookListPermutation_withpagiDEC);	
 
 
-				Response FetchbookListPermutation2=FetchBookList.fetchBookList_with_permutation("title", "ASC", userToken, "464", "IPAD");
+				Response FetchbookListPermutation2=FetchBookList.fetchBookList_with_permutation("title", "ASC", userToken, "464", deviceT);
 				Validation.responseCodeValidation1(FetchbookListPermutation2, HttpStatus.SC_OK);
 				Validation.responseHeaderCodeValidation(FetchbookListPermutation2, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchbookListPermutation2);
-				System.out.println("FetchbookListPermutation : "+FetchbookListPermutation2);
 
 
-				Response FetchbookListPermutation_withpagi21=FetchBookList.fetchBookList_withPAGI_permutation("title","ASC",0,8,userToken, "464", "IPAD");
+				Response FetchbookListPermutation_withpagi21=FetchBookList.fetchBookList_withPAGI_permutation("title","ASC",0,8,userToken, "464", deviceT);
 				Validation.responseCodeValidation1(FetchbookListPermutation_withpagi21, HttpStatus.SC_OK);
 				Validation.responseHeaderCodeValidation(FetchbookListPermutation_withpagi21, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchbookListPermutation_withpagi21);
-				System.out.println("FetchbookListPermutation_withpagi : "+FetchbookListPermutation_withpagi21);
 
-				Response FetchbookListPermutationDEC22=FetchBookList.fetchBookList_with_permutation("title","DESC",userToken,"464","IPAD");
+				Response FetchbookListPermutationDEC22=FetchBookList.fetchBookList_with_permutation("title","DESC",userToken,"464",deviceT);
 				Validation.responseCodeValidation1(FetchbookListPermutationDEC22, HttpStatus.SC_OK);
 				Validation.responseHeaderCodeValidation(FetchbookListPermutationDEC22, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchbookListPermutationDEC22);
-				System.out.println("FetchbookListPermutation.DEC : "+FetchbookListPermutationDEC22);
 
 
-				Response FetchbookListPermutation_withpagiDEC23=FetchBookList.fetchBookList_withPAGI_permutation("title","DESC",0,8,userToken, "464", "IPAD");
+				Response FetchbookListPermutation_withpagiDEC23=FetchBookList.fetchBookList_withPAGI_permutation("title","DESC",0,8,userToken, "464", deviceT);
 				Validation.responseCodeValidation1(FetchbookListPermutation_withpagiDEC23, HttpStatus.SC_OK);
 				Validation.responseHeaderCodeValidation(FetchbookListPermutation_withpagiDEC23, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchbookListPermutation_withpagiDEC23);
-				System.out.println("FetchbookListPermutation_withpagi : "+FetchbookListPermutation_withpagiDEC23);
 
-				Response FetchbookListPermutation3=FetchBookList.fetchBookList_with_permutation("title", "ASC", userToken, "464", "IPAD");
+				Response FetchbookListPermutation3=FetchBookList.fetchBookList_with_permutation("title", "ASC", userToken, "464", deviceT);
 				Validation.responseCodeValidation1(FetchbookListPermutation3, HttpStatus.SC_OK);
 				Validation.responseHeaderCodeValidation(FetchbookListPermutation3, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchbookListPermutation3);
-				System.out.println("FetchbookListPermutation : "+FetchbookListPermutation3);
 
 
-				Response FetchbookListPermutation_withpagi31=FetchBookList.fetchBookList_withPAGI_permutation("title","ASC",0,8,userToken, "464", "IPAD");
+				Response FetchbookListPermutation_withpagi31=FetchBookList.fetchBookList_withPAGI_permutation("title","ASC",0,8,userToken, "464", deviceT);
 				Validation.responseCodeValidation1(FetchbookListPermutation_withpagi31, HttpStatus.SC_OK);
 				Validation.responseHeaderCodeValidation(FetchbookListPermutation_withpagi31, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchbookListPermutation_withpagi31);
-				System.out.println("FetchbookListPermutation_withpagi : "+FetchbookListPermutation_withpagi31);
 
-				Response FetchbookListPermutationDEC32=FetchBookList.fetchBookList_with_permutation("title","DESC",userToken,"464","IPAD");
+				Response FetchbookListPermutationDEC32=FetchBookList.fetchBookList_with_permutation("title","DESC",userToken,"464",deviceT);
 				Validation.responseCodeValidation1(FetchbookListPermutationDEC32, HttpStatus.SC_OK);
 				Validation.responseHeaderCodeValidation(FetchbookListPermutationDEC32, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchbookListPermutationDEC32);
-				System.out.println("FetchbookListPermutation.DEC : "+FetchbookListPermutationDEC32);
 
 
-				Response FetchbookListPermutation_withpagiDEC33=FetchBookList.fetchBookList_withPAGI_permutation("title","DESC",0,8,userToken, "464", "IPAD");
+				Response FetchbookListPermutation_withpagiDEC33=FetchBookList.fetchBookList_withPAGI_permutation("title","DESC",0,8,userToken, "464", deviceT);
 				Validation.responseCodeValidation1(FetchbookListPermutation_withpagiDEC33, HttpStatus.SC_OK);
 				Validation.responseHeaderCodeValidation(FetchbookListPermutation_withpagiDEC33, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchbookListPermutation_withpagiDEC33);
-				System.out.println("FetchbookListPermutation_withpagi : "+FetchbookListPermutation_withpagiDEC33);
 
-				Response FetchbookListPermutation4=FetchBookList.fetchBookList_with_permutation("author", "ASC", userToken, "464", "IPAD");
+				Response FetchbookListPermutation4=FetchBookList.fetchBookList_with_permutation("author", "ASC", userToken, "464", deviceT);
 				Validation.responseCodeValidation1(FetchbookListPermutation4, HttpStatus.SC_OK);
 				Validation.responseHeaderCodeValidation(FetchbookListPermutation4, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchbookListPermutation4);
-				System.out.println("FetchbookListPermutation : "+FetchbookListPermutation4);
 
 
-				Response FetchbookListPermutation_withpagi41=FetchBookList.fetchBookList_withPAGI_permutation("author","ASC",0,8,userToken, "464", "IPAD");
+				Response FetchbookListPermutation_withpagi41=FetchBookList.fetchBookList_withPAGI_permutation("author","ASC",0,8,userToken, "464", deviceT);
 				Validation.responseCodeValidation1(FetchbookListPermutation_withpagi41, HttpStatus.SC_OK);
 				Validation.responseHeaderCodeValidation(FetchbookListPermutation_withpagi41, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchbookListPermutation_withpagi41);
-				System.out.println("FetchbookListPermutation_withpagi : "+FetchbookListPermutation_withpagi41);
 
-				Response FetchbookListPermutationDEC42=FetchBookList.fetchBookList_with_permutation("author","DESC",userToken,"464","IPAD");
+				Response FetchbookListPermutationDEC42=FetchBookList.fetchBookList_with_permutation("author","DESC",userToken,"464",deviceT);
 				Validation.responseCodeValidation1(FetchbookListPermutationDEC42, HttpStatus.SC_OK);
 				Validation.responseHeaderCodeValidation(FetchbookListPermutationDEC42, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchbookListPermutationDEC42);
-				System.out.println("FetchbookListPermutation.DEC : "+FetchbookListPermutationDEC42);
 
 
-				Response FetchbookListPermutation_withpagiDEC43=FetchBookList.fetchBookList_withPAGI_permutation("author","DESC",0,8,userToken, "464", "IPAD");
+				Response FetchbookListPermutation_withpagiDEC43=FetchBookList.fetchBookList_withPAGI_permutation("author","DESC",0,8,userToken, "464", deviceT);
 				Validation.responseCodeValidation1(FetchbookListPermutation_withpagiDEC43, HttpStatus.SC_OK);
 				Validation.responseHeaderCodeValidation(FetchbookListPermutation_withpagiDEC43, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchbookListPermutation_withpagiDEC43);
-				System.out.println("FetchbookListPermutation_withpagi : "+FetchbookListPermutation_withpagiDEC43);
 
-				Response FetchbookListPermutation5=FetchBookList.fetchBookList_with_permutation("archive_Date", "ASC", userToken, "464", "IPAD");
+				Response FetchbookListPermutation5=FetchBookList.fetchBookList_with_permutation("archive_Date", "ASC", userToken, "464", deviceT);
 				Validation.responseCodeValidation1(FetchbookListPermutation5, HttpStatus.SC_OK);
 				Validation.responseHeaderCodeValidation(FetchbookListPermutation5, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchbookListPermutation5);
-				System.out.println("FetchbookListPermutation : "+FetchbookListPermutation5);
 
 
-				Response FetchbookListPermutation_withpagi51=FetchBookList.fetchBookList_withPAGI_permutation("archive_Date","ASC",0,8,userToken, "464", "IPAD");
+
+				Response FetchbookListPermutation_withpagi51=FetchBookList.fetchBookList_withPAGI_permutation("archive_Date","ASC",0,8,userToken, "464", deviceT);
 				Validation.responseCodeValidation1(FetchbookListPermutation_withpagi51, HttpStatus.SC_OK);
 				Validation.responseHeaderCodeValidation(FetchbookListPermutation_withpagi51, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchbookListPermutation_withpagi51);
-				System.out.println("FetchbookListPermutation_withpagi : "+FetchbookListPermutation_withpagi51);
 
-				FetchbookListPermutation_withpagi51=FetchBookList.fetchBookList_with_permutation("archive_Date","DESC",userToken,"464","IPAD");
+
+				FetchbookListPermutation_withpagi51=FetchBookList.fetchBookList_with_permutation("archive_Date","DESC",userToken,"464",deviceT);
 				Validation.responseCodeValidation1(FetchbookListPermutation_withpagi51, HttpStatus.SC_OK);
 				Validation.responseHeaderCodeValidation(FetchbookListPermutation_withpagi51, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchbookListPermutation_withpagi51);
-				System.out.println("FetchbookListPermutation.DEC : "+FetchbookListPermutation_withpagi51);
 
 
-				Response FetchbookListPermutation_withpagiDEC53=FetchBookList.fetchBookList_withPAGI_permutation("archive_Date","DESC",0,8,userToken, "464", "IPAD");
+
+				Response FetchbookListPermutation_withpagiDEC53=FetchBookList.fetchBookList_withPAGI_permutation("archive_Date","DESC",0,8,userToken, "464", deviceT);
 				Validation.responseCodeValidation1(FetchbookListPermutation_withpagiDEC53, HttpStatus.SC_OK);
 				Validation.responseHeaderCodeValidation(FetchbookListPermutation_withpagiDEC53, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchbookListPermutation_withpagiDEC53);
-				System.out.println("FetchbookListPermutation_withpagi : "+FetchbookListPermutation_withpagiDEC53);
+
 
 				////$$$$$$$$ END FETCHBOOKLIST PERMUTATION
 
-				Response fetchBookList_without_pagination = FetchBookList.fetchBookList_without_pagination(userToken,"45616452","IPAD");
+				Response fetchBookList_without_pagination = FetchBookList.fetchBookList_without_pagination(userToken,"45616452",deviceT);
 				Validation.responseCodeValidation1(fetchBookList_without_pagination, HttpStatus.SC_OK);
 				Validation.responseHeaderCodeValidation(fetchBookList_without_pagination, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(fetchBookList_without_pagination);
@@ -386,46 +383,46 @@ public class RestAssured {
 				Validation.responseKeyValidation_key(fetchBookList_without_pagination, "classID");
 				//Validation.responseKeyValidation_key(jsonResponse, Title)
 				bookID1 = fetchBookList_without_pagination.then().extract().path("bookList.book.id[0]");
-				System.out.println("bookID_1: "+bookID1);
+				Log.info("bookID_1: "+bookID1);
 				bookID2 = fetchBookList_without_pagination.then().extract().path("bookList.book.id[1]");			
-				System.out.println("bookID2: "+bookID2);
+				Log.info("bookID2: "+bookID2);
 				bookID3 = fetchBookList_without_pagination.then().extract().path("bookList.book.id[2]");			
-				System.out.println("bookID3: "+bookID3);
+				Log.info("bookID3: "+bookID3);
 				bookID6 = fetchBookList_without_pagination.then().extract().path("bookList.book.id[6]");
-				System.out.println("bookID6 :: "+bookID6);
+				Log.info("bookID6 :: "+bookID6);
 				isbn = fetchBookList_without_pagination.then().extract().path("bookList.book.isbn[1]");
-				System.out.println("isbn: "+isbn);
+				Log.info("isbn: "+isbn);
 				type=fetchBookList_without_pagination.then().extract().path("bookList.book.type[0]");
-				System.out.println("type: "+type);
+				Log.info("type: "+type);
 				ebookID1 = fetchBookList_without_pagination.then().extract().path("bookList.book.ebookID[0]");
-				System.out.println("ebookID: "+ebookID1);
+				Log.info("ebookID: "+ebookID1);
 				assetType = fetchBookList_without_pagination.then().extract().path("bookList.book.assetType[0]");
-				System.out.println("assetType: "+assetType);
+				Log.info("assetType: "+assetType);
 				category1 = fetchBookList_without_pagination.then().extract().path("bookList.book.category[0]");
-				System.out.println("category1: "+category1);
+				Log.info("category1: "+category1);
 				collectionName0 = fetchBookList_without_pagination.then().extract().path("bookList.book.collectionTitle[0]");
-				System.out.println("collectionName0: "+collectionName0);
+				Log.info("collectionName0: "+collectionName0);
 				catname = ExtractCategory.extractCategory(category1);
-				System.out.println("catname: " +catname);
+				Log.info("catname: " +catname);
 				/*forName = fetchBookList_without_pagination.then().extract().path("bookList.book.formats.name[0]");
 				Log.info("$#@$#@#@#@##@#$!@#$%^#@#$%^ forName :: "+forName);*/
 				archiveDate = fetchBookList_without_pagination.then().extract().path("bookList.book.archiveDate[0]");
-				System.out.println("archiveDate:"+archiveDate);
+				Log.info("archiveDate:"+archiveDate);
 				archiveDate6=fetchBookList_without_pagination.then().extract().path("bookList.book.archiveDate[6]");
-				System.out.println("archiveDate:"+archiveDate);
+				Log.info("archiveDate:"+archiveDate);
 
-				Response GETfetchBookCount_res = FetchBookCount.fetchBookCount(userToken,"45616452","IPAD");
+
+				Response GETfetchBookCount_res = FetchBookCount.fetchBookCount(userToken,"45616452",deviceT);
 				Validation.responseHeaderCodeValidation(GETfetchBookCount_res, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(GETfetchBookCount_res,HttpStatus.SC_OK);
 				Validation.responseTimeValidation(GETfetchBookCount_res);
 				Validation.responseKeyValidation_key(GETfetchBookCount_res, "totalbooks");
 				Validation.responseKeyValidation_key(GETfetchBookCount_res, "timestamp");
-				System.out.println("fetchBookCount_res : "+GETfetchBookCount_res);
+
 
 
 				//HASH APIS
-
-				Response FetchBookListHash_res = FetchBookListHash.fetchBookListHash(userToken,"45616452","IPAD");
+				Response FetchBookListHash_res = FetchBookListHash.fetchBookListHash(userToken,"45616452",deviceT);
 				Validation.responseHeaderCodeValidation(FetchBookListHash_res, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(FetchBookListHash_res,HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchBookListHash_res);
@@ -448,9 +445,9 @@ public class RestAssured {
 				Validation.responseKeyValidation_key(FetchBookListHash_res, "formats");
 				Validation.responseKeyValidation_key(FetchBookListHash_res, "readingPercentage");
 				Validation.responseKeyValidation_key(FetchBookListHash_res, "classID");
-				System.out.println("FetchBookListHash_res: "+FetchBookListHash_res);
 
-				Response FetchCatBookList_res =FetchCatBookList.fetchCatBookList(catname,userToken,"45616452","IPAD");
+
+				Response FetchCatBookList_res =FetchCatBookList.fetchCatBookList(catname,userToken,"45616452",deviceT);
 				Validation.responseHeaderCodeValidation(FetchCatBookList_res, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(FetchCatBookList_res,HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchCatBookList_res);
@@ -468,9 +465,9 @@ public class RestAssured {
 				Validation.responseKeyValidation_key(FetchCatBookList_res, "collectionType");
 				Validation.responseKeyValidation_key(FetchCatBookList_res, "description");
 				Validation.responseKeyValidation_key(FetchCatBookList_res, "ebookID");
-				System.out.println("FetchCatBookList_res: "+FetchCatBookList_res);
 
-				Response CategoriesV1Hash_res = CategoriesV1Hash.categoriesV1Hash(userToken,"45616452","IPAD");
+
+				Response CategoriesV1Hash_res = CategoriesV1Hash.categoriesV1Hash(userToken,"45616452",deviceT);
 				Validation.responseHeaderCodeValidation(CategoriesV1Hash_res, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(CategoriesV1Hash_res,HttpStatus.SC_OK);
 				Validation.responseTimeValidation(CategoriesV1Hash_res);
@@ -483,10 +480,9 @@ public class RestAssured {
 				categoriesname=CategoriesV1Hash_res.then().extract().path("categories[0].name");
 				Validation.responseKeyAndValue(CategoriesV1Hash_res, "name",categoriesname);
 				Validation.responseISGreater("totalCategories", totalCategories, 3);				 
-				System.out.println("CategoriesV1Hash_res : "+CategoriesV1Hash_res);
 
 
-				Response CategoriesV2Hash_res = CategoriesV2Hash.categoriesV2Hash(userToken,"45616452","IPAD");
+				Response CategoriesV2Hash_res = CategoriesV2Hash.categoriesV2Hash(userToken,"45616452",deviceT);
 				Validation.responseHeaderCodeValidation(CategoriesV2Hash_res, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(CategoriesV2Hash_res,HttpStatus.SC_OK);
 				Validation.responseTimeValidation(CategoriesV2Hash_res);
@@ -498,9 +494,9 @@ public class RestAssured {
 				categoriesname=CategoriesV2Hash_res.then().extract().path("categories[0].name");
 				Validation.responseKeyAndValue(CategoriesV2Hash_res, "name",categoriesname);
 				Validation.responseISGreater("totalCategories", totalCategories, 3);	
-				System.out.println("CategoriesV2Hash_res: "+CategoriesV2Hash_res);
 
-				Response RefreshBookList_Hash = RefreshBookListHash.refreshBookListHash(userToken,"45616452","IPAD");
+
+				Response RefreshBookList_Hash = RefreshBookListHash.refreshBookListHash(userToken,"45616452",deviceT);
 				Validation.responseHeaderCodeValidation(RefreshBookList_Hash, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(RefreshBookList_Hash, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(RefreshBookList_Hash);
@@ -522,20 +518,20 @@ public class RestAssured {
 				Validation.responseKeyValidation_key(RefreshBookList_Hash, "ebookID");
 				Validation.responseKeyValidation_key(RefreshBookList_Hash, "expiryDate");
 				Validation.responseKeyValidation_key(RefreshBookList_Hash, "favourite");
-				System.out.println("RefreshBookList_Hash: "+RefreshBookList_Hash);
 
-				
+
+
 				SimpleDateFormat formatter1 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");  
 				Date date = new Date();  
 				String  time=formatter1.format(date);
-				Response Savesessionhistory = SaveSessionHistory.saveSessionHistory(userToken, "dssat3323", "IPAD", bookID1,time);
+				Response Savesessionhistory = SaveSessionHistory.saveSessionHistory(userToken, "dssat3323", deviceT, bookID1,time);
 				Log.info("TIME : "+time);
 				Validation.responseHeaderCodeValidation(Savesessionhistory, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(Savesessionhistory, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(Savesessionhistory);
-				
-				
-				Response FetchRecentlyViewedBook_Hash = FetchRecentlyViewedBooksSecuredHash.fetchRecentlyViewedBooksSecuredHash(userToken,"45616452","IPAD",bookID1);
+
+
+				Response FetchRecentlyViewedBook_Hash = FetchRecentlyViewedBooksSecuredHash.fetchRecentlyViewedBooksSecuredHash(userToken,"45616452",deviceT,bookID1);
 				Validation.responseHeaderCodeValidation(FetchRecentlyViewedBook_Hash, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(FetchRecentlyViewedBook_Hash, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchRecentlyViewedBook_Hash);
@@ -558,9 +554,10 @@ public class RestAssured {
 				Validation.responseKeyValidation_key(FetchRecentlyViewedBook_Hash, "pages");
 				Validation.responseKeyValidation_key(FetchRecentlyViewedBook_Hash, "readingPercentage");
 				Validation.responseKeyValidation_key(FetchRecentlyViewedBook_Hash, "encryption");
-				System.out.println("FetchRecentlyViewedBook_Hash: "+FetchRecentlyViewedBook_Hash);
 
-				Response GetBookDetailsSecured_Hash = GetBookDetailsSecuredHash.getBookDetailsSecuredHash(""+archiveDate+"", userToken, "5489989","IPAD",bookID1,""+assetType+"");
+
+
+				Response GetBookDetailsSecured_Hash = GetBookDetailsSecuredHash.getBookDetailsSecuredHash(""+archiveDate+"", userToken, "5489989",deviceT,bookID1,""+assetType+"");
 				Validation.responseHeaderCodeValidation(GetBookDetailsSecured_Hash, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(GetBookDetailsSecured_Hash, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(GetBookDetailsSecured_Hash);
@@ -570,33 +567,39 @@ public class RestAssured {
 				Validation.responseKeyValidation_key(GetBookDetailsSecured_Hash, "bookId");
 				Validation.responseKeyValidation_key(GetBookDetailsSecured_Hash, "category");
 				Validation.responseKeyValidation_key(GetBookDetailsSecured_Hash, "archiveDate");
-				System.out.println("GetBookDetailsSecured_Hash: "+GetBookDetailsSecured_Hash);
 
-				Response MarkAsFavourite_Hash = MarkAsFavouriteHash.markAsFavouriteHash(bookID1,userToken,"56454", "IPAD");
-				System.out.println("MarkAsFavourite_Hash: "+MarkAsFavourite_Hash);
+
+
+				Response MarkAsFavourite_Hash = MarkAsFavouriteHash.markAsFavouriteHash(bookID1,userToken,"56454", deviceT);
+				Validation.responseHeaderCodeValidation(MarkAsFavourite_Hash, HttpStatus.SC_OK);
+				Validation.responseCodeValidation1(MarkAsFavourite_Hash, HttpStatus.SC_OK);
+				Validation.responseTimeValidation(MarkAsFavourite_Hash);
 				int markesAsFav=bookID1;
-				Response FetchFavouriteSecured_Hash = FetchFavouriteSecuredHash.fetchFavouriteSecuredHash(userToken,"56454", "IPAD");
+
+
+				Response FetchFavouriteSecured_Hash = FetchFavouriteSecuredHash.fetchFavouriteSecuredHash(userToken,"56454", deviceT);
 				Validation.responseHeaderCodeValidation(FetchFavouriteSecured_Hash, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(FetchFavouriteSecured_Hash, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchFavouriteSecured_Hash);
 				Validation.responseKeyValidation_key(FetchFavouriteSecured_Hash, ""+bookID1+"");
-				System.out.println("FetchFavouriteSecured_Hash: "+FetchFavouriteSecured_Hash);
 
-				Response UnMarkAsFavourite_Hash = UnMarkAsFavouriteHash.unMarkAsFavourite(markesAsFav,userToken,"56454", "IPAD");
+
+				Response UnMarkAsFavourite_Hash = UnMarkAsFavouriteHash.unMarkAsFavourite(markesAsFav,userToken,"56454", deviceT);
 				Validation.responseHeaderCodeValidation(UnMarkAsFavourite_Hash, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(UnMarkAsFavourite_Hash, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(UnMarkAsFavourite_Hash);
 				Validation.responseNOTKeyValidation_key(UnMarkAsFavourite_Hash, ""+markesAsFav+"");
-				System.out.println("UnMarkAsFavourite_Hash: "+UnMarkAsFavourite_Hash);
 
-				Response FetchFavouriteSecured_Hash1 = FetchFavouriteSecuredHash.fetchFavouriteSecuredHash(userToken,"56454", "IPAD");
+
+				Response FetchFavouriteSecured_Hash1 = FetchFavouriteSecuredHash.fetchFavouriteSecuredHash(userToken,"56454", deviceT);
 				Validation.responseHeaderCodeValidation(FetchFavouriteSecured_Hash1, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(FetchFavouriteSecured_Hash1, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchFavouriteSecured_Hash1);
 				Validation.responseNOTKeyValidation_key(FetchFavouriteSecured_Hash1, ""+bookID1+"");
-				System.out.println("FetchFavouriteSecured_Hash: "+FetchFavouriteSecured_Hash1);
 
-				Response FetchCategoriesCollectionsBooksHash = FetchCategoriesCollectionsBooks_Hash.fetchCategoriesCollectionsBooks_Hash(userToken,catname1,collectionName1,"5454gdf","IPAD");
+
+
+				Response FetchCategoriesCollectionsBooksHash = FetchCategoriesCollectionsBooks_Hash.fetchCategoriesCollectionsBooks_Hash(userToken,catname1,collectionName1,"5454gdf",deviceT);
 				Validation.responseHeaderCodeValidation(FetchCategoriesCollectionsBooksHash, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(FetchCategoriesCollectionsBooksHash,HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchCategoriesCollectionsBooksHash);
@@ -615,9 +618,9 @@ public class RestAssured {
 				Validation.responseKeyValidation_key(FetchCategoriesCollectionsBooksHash, "collectionType");
 				Validation.responseKeyValidation_key(FetchCategoriesCollectionsBooksHash, "description");
 				Validation.responseKeyValidation_key(FetchCategoriesCollectionsBooksHash, "ebookID");				
-				System.out.println("FetchCategoriesCollectionsBooksHash: "+FetchCategoriesCollectionsBooksHash);
 
-				Response FetchCategoriesCollectionsBooks_Hash = FetchCatCollectionBooks.fetchCatCollectionBooks(userToken,"5454gdf","IPAD",catname1,collectionName1);
+
+				Response FetchCategoriesCollectionsBooks_Hash = FetchCatCollectionBooks.fetchCatCollectionBooks(userToken,"5454gdf",deviceT,catname1,collectionName1);
 				Validation.responseHeaderCodeValidation(FetchCategoriesCollectionsBooks_Hash, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(FetchCategoriesCollectionsBooks_Hash, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchCategoriesCollectionsBooks_Hash);
@@ -636,11 +639,11 @@ public class RestAssured {
 				Validation.responseKeyValidation_key(FetchCategoriesCollectionsBooks_Hash, "ebookID");
 				Validation.responseKeyValidation_key(FetchCategoriesCollectionsBooks_Hash, "collectionID");
 				Validation.responseKeyValidation_key(FetchCategoriesCollectionsBooks_Hash, "collectionTitle");
-				System.out.println("FetchCatCollection_Books: "+FetchCategoriesCollectionsBooks_Hash);
+
 
 
 				//"2019/10/31 14:46:04"
-				Response V1RefreshBooks_hash = V1RefreshBooksHash.v1refreshBooks(""+archiveDate+"",bookID1,bookID2,userToken,"56454","IPAD");
+				Response V1RefreshBooks_hash = V1RefreshBooksHash.v1refreshBooks(""+archiveDate+"",bookID1,bookID2,userToken,"56454",deviceT);
 				Validation.responseHeaderCodeValidation(V1RefreshBooks_hash, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(V1RefreshBooks_hash, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(V1RefreshBooks_hash);
@@ -649,9 +652,9 @@ public class RestAssured {
 				Validation.responseKeyValidation_key(V1RefreshBooks_hash, "collectionID");
 				Validation.responseKeyValidation_key(V1RefreshBooks_hash, "collectionTitle");
 				Validation.responseKeyValidation_key(V1RefreshBooks_hash, "collectionThumbnail");
-				System.out.println("V1RefreshBooks_hash: "+V1RefreshBooks_hash);
 
-				Response V1RefreshBooks_hash2 = V1RefreshBooksHash.v1refreshBooks_op(""+archiveDate+"",bookID6,bookID2,"UPDATE","NEW",userToken,"56454","IPAD");
+
+				Response V1RefreshBooks_hash2 = V1RefreshBooksHash.v1refreshBooks_op(""+archiveDate+"",bookID6,bookID2,"UPDATE","NEW",userToken,"56454",deviceT);
 				Validation.responseHeaderCodeValidation(V1RefreshBooks_hash2, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(V1RefreshBooks_hash2, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(V1RefreshBooks_hash2);
@@ -660,18 +663,18 @@ public class RestAssured {
 				Validation.responseKeyValidation_key(V1RefreshBooks_hash2, "collectionID");
 				Validation.responseKeyValidation_key(V1RefreshBooks_hash2, "collectionTitle");
 				Validation.responseKeyValidation_key(V1RefreshBooks_hash2, "collectionThumbnail");			
-				System.out.println("V1RefreshBooks_hash: "+V1RefreshBooks_hash2);
+
 
 				//HASH APIS ENDS 
 
-				Response fetchPreferredLocale_res = FetchPreferredLocale.fetchPreferredLocale(userToken,"56454", "IPAD");
+				Response fetchPreferredLocale_res = FetchPreferredLocale.fetchPreferredLocale(userToken,"56454", deviceT);
 				Validation.responseHeaderCodeValidation(fetchPreferredLocale_res, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(fetchPreferredLocale_res, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(fetchPreferredLocale_res);
 				Validation.responseKeyValidation_key(fetchPreferredLocale_res,"locale");
 				Validation.responseKeyValidation_key(fetchPreferredLocale_res,"responseMsg");
 				Validation.responseKeyValidation_key(fetchPreferredLocale_res,"Ok");
-				System.out.println("fetchPreferredLocale_res: "+fetchPreferredLocale_res);
+
 
 				/*Log.info("BEFORE under for loop");
 				for(int i2=1;i2<=2;i2++)
@@ -693,7 +696,7 @@ public class RestAssured {
 				Validation.responseKeyValidation_key(downloadBookForANDROID_offline,"fileSize");
 				Validation.responseKeyValidation_key(downloadBookForANDROID_offline,"responseMsg");
 				Validation.responseKeyValidation_key(downloadBookForANDROID_offline,"timestamp");
-				System.out.println("downloadBookForANDROID_offline: "+downloadBookForANDROID_offline);
+				
 
 
 				Response downloadBookForANDROID_online = DownloadBook.downloadBook(userToken,"ds9465","ANDROID",bookID1,"online");
@@ -706,9 +709,9 @@ public class RestAssured {
 				Validation.responseKeyValidation_key(downloadBookForANDROID_online,"fileSize");
 				Validation.responseKeyValidation_key(downloadBookForANDROID_online,"responseMsg");
 				Validation.responseKeyValidation_key(downloadBookForANDROID_online,"timestamp");
-				System.out.println("downloadBookForANDROID_online: "+downloadBookForANDROID_online);
 
-				Response downloadBookForIPAD_online = DownloadBook.downloadBook(userToken,"ds9465","IPAD",bookID1,"online");
+
+				Response downloadBookForIPAD_online = DownloadBook.downloadBook(userToken,"ds9465",deviceT,bookID1,"online");
 				Validation.responseHeaderCodeValidation(downloadBookForIPAD_online, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(downloadBookForIPAD_online, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(downloadBookForIPAD_online);
@@ -718,9 +721,9 @@ public class RestAssured {
 				Validation.responseKeyValidation_key(downloadBookForIPAD_online,"fileSize");
 				Validation.responseKeyValidation_key(downloadBookForIPAD_online,"responseMsg");
 				Validation.responseKeyValidation_key(downloadBookForIPAD_online,"timestamp");
-				System.out.println("downloadBookForIPAD_online: "+downloadBookForIPAD_online);
 
-				Response downloadBookForIPAD_offline = DownloadBook.downloadBook(userToken,"ds9465","IPAD",bookID1,"offline");
+
+				Response downloadBookForIPAD_offline = DownloadBook.downloadBook(userToken,"ds9465",deviceT,bookID1,"offline");
 				Validation.responseHeaderCodeValidation(downloadBookForIPAD_offline, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(downloadBookForIPAD_offline, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(downloadBookForIPAD_offline);
@@ -730,7 +733,7 @@ public class RestAssured {
 				Validation.responseKeyValidation_key(downloadBookForIPAD_offline,"fileSize");
 				Validation.responseKeyValidation_key(downloadBookForIPAD_offline,"responseMsg");
 				Validation.responseKeyValidation_key(downloadBookForIPAD_offline,"timestamp");
-				System.out.println("downloadBookForIPAD_offline: "+downloadBookForIPAD_offline);
+
 
 				Response downloadBookForWINDOWNS_offline = DownloadBook.downloadBook(userToken,"ds9465","WINDOWNS",bookID1,"offline");
 				Validation.responseHeaderCodeValidation(downloadBookForWINDOWNS_offline, HttpStatus.SC_OK);
@@ -742,7 +745,7 @@ public class RestAssured {
 				Validation.responseKeyValidation_key(downloadBookForWINDOWNS_offline,"fileSize");
 				Validation.responseKeyValidation_key(downloadBookForWINDOWNS_offline,"responseMsg");
 				Validation.responseKeyValidation_key(downloadBookForWINDOWNS_offline,"timestamp");
-				System.out.println("downloadBookForWINDOWNS_offline: "+downloadBookForWINDOWNS_offline);
+
 
 				Response downloadBookForWINDOWNS_online = DownloadBook.downloadBook(userToken,"ds9465","WINDOWNS",bookID1,"online");
 				Validation.responseHeaderCodeValidation(downloadBookForWINDOWNS_online, HttpStatus.SC_OK);
@@ -754,7 +757,7 @@ public class RestAssured {
 				Validation.responseKeyValidation_key(downloadBookForWINDOWNS_online,"fileSize");
 				Validation.responseKeyValidation_key(downloadBookForWINDOWNS_online,"responseMsg");
 				Validation.responseKeyValidation_key(downloadBookForWINDOWNS_online,"timestamp");
-				System.out.println("downloadBookForWINDOWNS_online: "+downloadBookForWINDOWNS_online);
+
 
 				Response downloadBookForHTPM5_offline = DownloadBook.downloadBook(userToken,"ds9465","HTML5",bookID1,"offline");
 				Validation.responseHeaderCodeValidation(downloadBookForHTPM5_offline, HttpStatus.SC_OK);
@@ -766,7 +769,7 @@ public class RestAssured {
 				Validation.responseKeyValidation_key(downloadBookForHTPM5_offline,"fileSize");
 				Validation.responseKeyValidation_key(downloadBookForHTPM5_offline,"responseMsg");
 				Validation.responseKeyValidation_key(downloadBookForHTPM5_offline,"timestamp");
-				System.out.println("downloadBookForHTPM5_offline: "+downloadBookForHTPM5_offline);
+
 
 				Response downloadBookForPC_ONLINE = DownloadBook.downloadBook(userToken,"ds9465","PC",bookID1,"online");
 				Validation.responseHeaderCodeValidation(downloadBookForPC_ONLINE, HttpStatus.SC_OK);
@@ -777,7 +780,7 @@ public class RestAssured {
 				Validation.responseKeyAndValue(downloadBookForPC_ONLINE, "content_ownership", "FALSE");
 				Validation.responseKeyValidation_key(downloadBookForPC_ONLINE,"responseMsg");
 				Validation.responseKeyValidation_key(downloadBookForPC_ONLINE,"timestamp");
-				System.out.println("downloadBookForPC_ONLINE: "+downloadBookForPC_ONLINE);
+
 
 
 				System.out.println("consumerKey: "+consumerKey);
@@ -797,7 +800,7 @@ public class RestAssured {
 				total=searchV2res.then().extract().path("searchResult.hits.total");
 				Validation.responseKeyValidation_key(searchV2res, "total");
 				Validation.responseISGreater("total", total, 1);
-				System.out.println("searchV2res : "+searchV2res);
+
 
 				Response SearchV2_OAuthres = SearchV2_OAuth.searchV2_OAuth("Native",consumerKey, consumerSecret,clientUserID);
 				Validation.responseHeaderCodeValidation(SearchV2_OAuthres, HttpStatus.SC_OK);
@@ -814,9 +817,9 @@ public class RestAssured {
 				total=SearchV2_OAuthres.then().extract().path("searchResult.hits.total");
 				Validation.responseKeyValidation_key(SearchV2_OAuthres, "");
 				Validation.responseISGreater("total", total, 1);
-				System.out.println("SearchV2_OAuthres : "+SearchV2_OAuthres);
 
-				Response searchV2_AdvanceFilterres =SearchV2_AdvanceFilter.searchV2_AdvanceFilter("Native",userToken, "5454545","IPAD",clientUserID);
+
+				Response searchV2_AdvanceFilterres =SearchV2_AdvanceFilter.searchV2_AdvanceFilter("Native",userToken, "5454545",deviceT,clientUserID);
 				Validation.responseHeaderCodeValidation(searchV2_AdvanceFilterres, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(searchV2_AdvanceFilterres, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(searchV2_AdvanceFilterres);
@@ -831,9 +834,9 @@ public class RestAssured {
 				total=searchV2_AdvanceFilterres.then().extract().path("searchResult.hits.total");
 				Validation.responseKeyValidation_key(searchV2_AdvanceFilterres, "");
 				Validation.responseISGreater("total", total, 1);
-				System.out.println("searchV2_AdvanceFilterres : "+searchV2_AdvanceFilterres);
 
-				Response Booklist = BookList.bookList(userToken,"56454", "IPAD");
+
+				Response Booklist = BookList.bookList(userToken,"56454", deviceT);
 				Validation.responseHeaderCodeValidation(Booklist, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(Booklist, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(Booklist);
@@ -850,118 +853,117 @@ public class RestAssured {
 				Validation.responseKeyValidation_key(Booklist,"title");
 				Validation.responseKeyValidation_key(Booklist,"reflow");
 				Validation.responseKeyValidation_key(Booklist,"version");
-				System.out.println("Booklist_res : "+Booklist);
+
 
 				//START BOOKLIST PERMUTATION
-				Response Booklist1 = BookList.bookList_per("isbn","ASC",userToken,"56454", "IPAD");
+				Response Booklist1 = BookList.bookList_per("isbn","ASC",userToken,"56454", deviceT);
 				Validation.responseHeaderCodeValidation(Booklist1, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(Booklist1, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(Booklist1);
-				System.out.println("Booklist : "+Booklist1);
 
-				Response Booklist11 = BookList.bookList_per_withPagi("isbn","ASC",0,10,userToken,"56454", "IPAD");
+
+
+				Response Booklist11 = BookList.bookList_per_withPagi("isbn","ASC",0,10,userToken,"56454", deviceT);
 				Validation.responseHeaderCodeValidation(Booklist11, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(Booklist11, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(Booklist11);
-				System.out.println("Booklist : "+Booklist11);
 
-				Response Booklist12 = BookList.bookList_per("isbn","DESC",userToken,"56454", "IPAD");
+
+				Response Booklist12 = BookList.bookList_per("isbn","DESC",userToken,"56454", deviceT);
 				Validation.responseHeaderCodeValidation(Booklist12, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(Booklist12, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(Booklist12);
-				System.out.println("Booklist : "+Booklist12);
 
-				Response Booklist13 = BookList.bookList_per_withPagi("isbn","DESC",0,10,userToken,"56454", "IPAD");
+
+				Response Booklist13 = BookList.bookList_per_withPagi("isbn","DESC",0,10,userToken,"56454", deviceT);
 				Validation.responseHeaderCodeValidation(Booklist13, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(Booklist13, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(Booklist13);
-				System.out.println("Booklist : "+Booklist13);
 
-				Response Booklist2 = BookList.bookList_per("author","ASC",userToken,"56454", "IPAD");
+
+
+				Response Booklist2 = BookList.bookList_per("author","ASC",userToken,"56454", deviceT);
 				Validation.responseHeaderCodeValidation(Booklist2, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(Booklist2, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(Booklist2);
-				System.out.println("Booklist : "+Booklist2);
 
-				Response Booklist21 = BookList.bookList_per_withPagi("author","ASC",0,10,userToken,"56454", "IPAD");
+
+				Response Booklist21 = BookList.bookList_per_withPagi("author","ASC",0,10,userToken,"56454", deviceT);
 				Validation.responseHeaderCodeValidation(Booklist21, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(Booklist21, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(Booklist21);
-				System.out.println("Booklist : "+Booklist21);
 
-				Response Booklist22 = BookList.bookList_per("author","DESC",userToken,"56454", "IPAD");
+
+				Response Booklist22 = BookList.bookList_per("author","DESC",userToken,"56454", deviceT);
 				Validation.responseHeaderCodeValidation(Booklist22, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(Booklist22, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(Booklist22);
-				System.out.println("Booklist : "+Booklist22);
 
-				Response Booklist23 = BookList.bookList_per_withPagi("author","DESC",0,10,userToken,"56454", "IPAD");
+
+				Response Booklist23 = BookList.bookList_per_withPagi("author","DESC",0,10,userToken,"56454", deviceT);
 				Validation.responseHeaderCodeValidation(Booklist23, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(Booklist23, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(Booklist23);
-				System.out.println("Booklist : "+Booklist23);
 
-				Response Booklist3 = BookList.bookList_per("title","ASC",userToken,"56454", "IPAD");
+
+				Response Booklist3 = BookList.bookList_per("title","ASC",userToken,"56454", deviceT);
 				Validation.responseHeaderCodeValidation(Booklist3, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(Booklist3, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(Booklist3);
-				System.out.println("Booklist : "+Booklist3);
 
-				Response Booklist31 = BookList.bookList_per_withPagi("title","ASC",0,10,userToken,"56454", "IPAD");
+				Response Booklist31 = BookList.bookList_per_withPagi("title","ASC",0,10,userToken,"56454", deviceT);
 				Validation.responseHeaderCodeValidation(Booklist31, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(Booklist31, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(Booklist31);
-				System.out.println("Booklist : "+Booklist31);
 
-				Response Booklist32 = BookList.bookList_per("title","DESC",userToken,"56454", "IPAD");
+
+				Response Booklist32 = BookList.bookList_per("title","DESC",userToken,"56454", deviceT);
 				Validation.responseHeaderCodeValidation(Booklist32, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(Booklist32, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(Booklist32);
-				System.out.println("Booklist : "+Booklist32);
 
-				Response Booklist33 = BookList.bookList_per_withPagi("title","DESC",0,10,userToken,"56454", "IPAD");
+
+				Response Booklist33 = BookList.bookList_per_withPagi("title","DESC",0,10,userToken,"56454", deviceT);
 				Validation.responseHeaderCodeValidation(Booklist33, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(Booklist33, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(Booklist33);
-				System.out.println("Booklist : "+Booklist33);
 
-				Response Booklist4 = BookList.bookList_per("archive_date","ASC",userToken,"56454", "IPAD");
+				Response Booklist4 = BookList.bookList_per("archive_date","ASC",userToken,"56454", deviceT);
 				Validation.responseHeaderCodeValidation(Booklist4, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(Booklist4, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(Booklist4);
-				System.out.println("Booklist : "+Booklist4);
 
-				Response Booklist41 = BookList.bookList_per_withPagi("archive_date","ASC",0,10,userToken,"56454", "IPAD");
+
+				Response Booklist41 = BookList.bookList_per_withPagi("archive_date","ASC",0,10,userToken,"56454", deviceT);
 				Validation.responseHeaderCodeValidation(Booklist41, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(Booklist41, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(Booklist41);
-				System.out.println("Booklist : "+Booklist41);
 
-				Response Booklist42 = BookList.bookList_per("archive_date","DESC",userToken,"56454", "IPAD");
+
+				Response Booklist42 = BookList.bookList_per("archive_date","DESC",userToken,"56454", deviceT);
 				Validation.responseHeaderCodeValidation(Booklist42, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(Booklist42, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(Booklist42);
-				System.out.println("Booklist : "+Booklist42);
 
-				Response Booklist43 = BookList.bookList_per_withPagi("archive_date","DESC",0,10,userToken,"56454", "IPAD");
+
+				Response Booklist43 = BookList.bookList_per_withPagi("archive_date","DESC",0,10,userToken,"56454", deviceT);
 				Validation.responseHeaderCodeValidation(Booklist43, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(Booklist43, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(Booklist43);
-				System.out.println("Booklist : "+Booklist43);
 				//END BOOKLIST PERMUTATION
 
 
-				Response getSecureURLres =GetSecureURL.getSecureURL(userToken, "5489989","IPAD",3);
+				Response getSecureURLres =GetSecureURL.getSecureURL(userToken, "5489989",deviceT,3);
 				Validation.responseHeaderCodeValidation(getSecureURLres, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(getSecureURLres, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(getSecureURLres);
 				Validation.responseKeyValidation_key(getSecureURLres,"responseMsg");
 				responseMsg = getSecureURLres.then().extract().path("responseMsg");
 				Validation.responseNOTKeyValidation_key(getSecureURLres, "URL_NOT_FORMED");
-				System.out.println("getSecureURLres : "+getSecureURLres);
+
 
 				System.out.println("startDate :: "+startDate);
-				Response bookdetails_res = Bookdetails.bookdetails(""+archiveDate+"", userToken, "5489989","IPAD",bookID1,""+assetType+"");
+				Response bookdetails_res = Bookdetails.bookdetails(""+archiveDate+"", userToken, "5489989",deviceT,bookID1,""+assetType+"");
 				Validation.responseHeaderCodeValidation(bookdetails_res, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(bookdetails_res, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(bookdetails_res);
@@ -977,9 +979,9 @@ public class RestAssured {
 				Validation.responseKeyValidation_key(bookdetails_res,"collectionThumbnail");
 				Validation.responseKeyValidation_key(bookdetails_res,"collectionTitle");
 				Validation.responseKeyValidation_key(bookdetails_res,"collectionType");
-				System.out.println("bookdetails_res : "+bookdetails_res);
 
-				Response fetchCategoriesCollectionsres =FetchCategoriesCollections.fetchCategoriesCollections(userToken, "5489989","IPAD");
+
+				Response fetchCategoriesCollectionsres =FetchCategoriesCollections.fetchCategoriesCollections(userToken, "5489989",deviceT);
 				Validation.responseHeaderCodeValidation(fetchCategoriesCollectionsres, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(fetchCategoriesCollectionsres, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(fetchCategoriesCollectionsres);
@@ -988,9 +990,9 @@ public class RestAssured {
 				Validation.responseKeyValidation_key(fetchCategoriesCollectionsres,"numberOfBooks");
 				Validation.responseKeyValidation_key(fetchCategoriesCollectionsres,"collections");
 				Validation.responseKeyValidation_key(fetchCategoriesCollectionsres,"name");
-				System.out.println("fetchCategoriesCollectionsres : "+fetchCategoriesCollectionsres);
 
-				Response fetchCategoriesCollectionsBooksres =FetchCategoriesCollectionsBooks.fetchCategoriesCollectionsBooks(userToken, "5489989","IPAD",catname1,collectionName1,bookID1,sqlhost,sqlUsername,sqlPassword,catlevel);
+
+				Response fetchCategoriesCollectionsBooksres =FetchCategoriesCollectionsBooks.fetchCategoriesCollectionsBooks(userToken, "5489989",deviceT,catname1,collectionName1,bookID1,sqlhost,sqlUsername,sqlPassword,catlevel);
 				Validation.responseHeaderCodeValidation(fetchCategoriesCollectionsBooksres, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(fetchCategoriesCollectionsBooksres,HttpStatus.SC_OK);
 				Validation.responseTimeValidation(fetchCategoriesCollectionsBooksres);
@@ -1009,17 +1011,16 @@ public class RestAssured {
 				Validation.responseKeyValidation_key(fetchCategoriesCollectionsBooksres, "collectionType");
 				Validation.responseKeyValidation_key(fetchCategoriesCollectionsBooksres, "description");
 				Validation.responseKeyValidation_key(fetchCategoriesCollectionsBooksres, "ebookID");
-				System.out.println("fetchCategoriesCollectionsBooksres : "+fetchCategoriesCollectionsBooksres);
 
 				//START fetchCategoriesCollectionsBooks PERMUTATION
 
-				Response fetchCategoriesCollectionsBooks1 =FetchCategoriesCollectionsBooks.fetchCategoriesCollectionsBooks_per("isbn","ASC",userToken, "5489989","IPAD",catname1,collectionName1,bookID1,sqlhost,sqlUsername,sqlPassword,catlevel);
+				Response fetchCategoriesCollectionsBooks1 =FetchCategoriesCollectionsBooks.fetchCategoriesCollectionsBooks_per("isbn","ASC",userToken, "5489989",deviceT,catname1,collectionName1,bookID1,sqlhost,sqlUsername,sqlPassword,catlevel);
 				Validation.responseHeaderCodeValidation(fetchCategoriesCollectionsBooks1, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(fetchCategoriesCollectionsBooks1,HttpStatus.SC_OK);
 				Validation.responseTimeValidation(fetchCategoriesCollectionsBooks1);
-				System.out.println("fetchCategoriesCollectionsBooksres : "+fetchCategoriesCollectionsBooks1);
 
-				Response fetchCategoriesCollectionsBooks11 =FetchCategoriesCollectionsBooks.fetchCategoriesCollectionsBooks_per_withpagi("isbn","ASC",0,10,userToken, "5489989","IPAD",catname1,collectionName1,bookID1,sqlhost,sqlUsername,sqlPassword,catlevel);
+
+				Response fetchCategoriesCollectionsBooks11 =FetchCategoriesCollectionsBooks.fetchCategoriesCollectionsBooks_per_withpagi("isbn","ASC",0,10,userToken, "5489989",deviceT,catname1,collectionName1,bookID1,sqlhost,sqlUsername,sqlPassword,catlevel);
 				Validation.responseHeaderCodeValidation(fetchCategoriesCollectionsBooks11, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(fetchCategoriesCollectionsBooks11,HttpStatus.SC_OK);
 				Validation.responseTimeValidation(fetchCategoriesCollectionsBooks11);
@@ -1028,15 +1029,15 @@ public class RestAssured {
 				System.out.println("numberOfBooks : "+numberOfBooks);
 				int numberOfBooks1= Integer.parseInt(""+numberOfBooks+"");
 				Validation.responseISGreater("numberOfBooks", numberOfBooks1, 3);
-				System.out.println("fetchCategoriesCollectionsBooksres : "+fetchCategoriesCollectionsBooks11);
 
-				Response fetchCategoriesCollectionsBooks12 =FetchCategoriesCollectionsBooks.fetchCategoriesCollectionsBooks_per("isbn","DESC",userToken, "5489989","IPAD",catname1,collectionName1,bookID1,sqlhost,sqlUsername,sqlPassword,catlevel);
+
+				Response fetchCategoriesCollectionsBooks12 =FetchCategoriesCollectionsBooks.fetchCategoriesCollectionsBooks_per("isbn","DESC",userToken, "5489989",deviceT,catname1,collectionName1,bookID1,sqlhost,sqlUsername,sqlPassword,catlevel);
 				Validation.responseHeaderCodeValidation(fetchCategoriesCollectionsBooks12, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(fetchCategoriesCollectionsBooks12,HttpStatus.SC_OK);
 				Validation.responseTimeValidation(fetchCategoriesCollectionsBooks12);
-				System.out.println("fetchCategoriesCollectionsBooksres : "+fetchCategoriesCollectionsBooks12);
 
-				Response fetchCategoriesCollectionsBooks13 =FetchCategoriesCollectionsBooks.fetchCategoriesCollectionsBooks_per_withpagi("isbn","DESC",0,10,userToken, "5489989","IPAD",catname1,collectionName1,bookID1,sqlhost,sqlUsername,sqlPassword,catlevel);
+
+				Response fetchCategoriesCollectionsBooks13 =FetchCategoriesCollectionsBooks.fetchCategoriesCollectionsBooks_per_withpagi("isbn","DESC",0,10,userToken, "5489989",deviceT,catname1,collectionName1,bookID1,sqlhost,sqlUsername,sqlPassword,catlevel);
 				Validation.responseHeaderCodeValidation(fetchCategoriesCollectionsBooks13, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(fetchCategoriesCollectionsBooks13,HttpStatus.SC_OK);
 				numberOfBooks=fetchCategoriesCollectionsBooks11.then().extract().path("category.numberOfBooks");
@@ -1045,16 +1046,15 @@ public class RestAssured {
 				numberOfBooks1= Integer.parseInt(""+numberOfBooks+"");
 				Validation.responseISGreater("numberOfBooks", numberOfBooks1, 3);
 				Validation.responseTimeValidation(fetchCategoriesCollectionsBooks13);				
-				System.out.println("fetchCategoriesCollectionsBooksres : "+fetchCategoriesCollectionsBooks13);
 
 
-				Response fetchCategoriesCollectionsBooks2 =FetchCategoriesCollectionsBooks.fetchCategoriesCollectionsBooks_per("title","ASC",userToken, "5489989","IPAD",catname1,collectionName1,bookID1,sqlhost,sqlUsername,sqlPassword,catlevel);
+				Response fetchCategoriesCollectionsBooks2 =FetchCategoriesCollectionsBooks.fetchCategoriesCollectionsBooks_per("title","ASC",userToken, "5489989",deviceT,catname1,collectionName1,bookID1,sqlhost,sqlUsername,sqlPassword,catlevel);
 				Validation.responseHeaderCodeValidation(fetchCategoriesCollectionsBooks2, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(fetchCategoriesCollectionsBooks2,HttpStatus.SC_OK);
 				Validation.responseTimeValidation(fetchCategoriesCollectionsBooks2);
-				System.out.println("fetchCategoriesCollectionsBooksres : "+fetchCategoriesCollectionsBooks2);
 
-				Response fetchCategoriesCollectionsBooks21 =FetchCategoriesCollectionsBooks.fetchCategoriesCollectionsBooks_per_withpagi("title","ASC",0,10,userToken, "5489989","IPAD",catname1,collectionName1,bookID1,sqlhost,sqlUsername,sqlPassword,catlevel);
+
+				Response fetchCategoriesCollectionsBooks21 =FetchCategoriesCollectionsBooks.fetchCategoriesCollectionsBooks_per_withpagi("title","ASC",0,10,userToken, "5489989",deviceT,catname1,collectionName1,bookID1,sqlhost,sqlUsername,sqlPassword,catlevel);
 				Validation.responseHeaderCodeValidation(fetchCategoriesCollectionsBooks21, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(fetchCategoriesCollectionsBooks21,HttpStatus.SC_OK);
 				Validation.responseTimeValidation(fetchCategoriesCollectionsBooks21);
@@ -1063,15 +1063,13 @@ public class RestAssured {
 				System.out.println("numberOfBooks : "+numberOfBooks);
 				numberOfBooks1= Integer.parseInt(""+numberOfBooks+"");
 				Validation.responseISGreater("numberOfBooks", numberOfBooks1, 3);
-				System.out.println("fetchCategoriesCollectionsBooksres : "+fetchCategoriesCollectionsBooks21);
 
-				Response fetchCategoriesCollectionsBooks22 =FetchCategoriesCollectionsBooks.fetchCategoriesCollectionsBooks_per("title","DESC",userToken, "5489989","IPAD",catname1,collectionName1,bookID1,sqlhost,sqlUsername,sqlPassword,catlevel);
+				Response fetchCategoriesCollectionsBooks22 =FetchCategoriesCollectionsBooks.fetchCategoriesCollectionsBooks_per("title","DESC",userToken, "5489989",deviceT,catname1,collectionName1,bookID1,sqlhost,sqlUsername,sqlPassword,catlevel);
 				Validation.responseHeaderCodeValidation(fetchCategoriesCollectionsBooks22, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(fetchCategoriesCollectionsBooks22,HttpStatus.SC_OK);
 				Validation.responseTimeValidation(fetchCategoriesCollectionsBooks22);
-				System.out.println("fetchCategoriesCollectionsBooksres : "+fetchCategoriesCollectionsBooks22);
 
-				Response fetchCategoriesCollectionsBooks23 =FetchCategoriesCollectionsBooks.fetchCategoriesCollectionsBooks_per_withpagi("title","DESC",0,10,userToken, "5489989","IPAD",catname1,collectionName1,bookID1,sqlhost,sqlUsername,sqlPassword,catlevel);
+				Response fetchCategoriesCollectionsBooks23 =FetchCategoriesCollectionsBooks.fetchCategoriesCollectionsBooks_per_withpagi("title","DESC",0,10,userToken, "5489989",deviceT,catname1,collectionName1,bookID1,sqlhost,sqlUsername,sqlPassword,catlevel);
 				Validation.responseHeaderCodeValidation(fetchCategoriesCollectionsBooks23, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(fetchCategoriesCollectionsBooks23,HttpStatus.SC_OK);
 				numberOfBooks=fetchCategoriesCollectionsBooks23.then().extract().path("category.numberOfBooks");
@@ -1080,15 +1078,13 @@ public class RestAssured {
 				numberOfBooks1= Integer.parseInt(""+numberOfBooks+"");
 				Validation.responseISGreater("numberOfBooks", numberOfBooks1, 3);
 				Validation.responseTimeValidation(fetchCategoriesCollectionsBooks23);				
-				System.out.println("fetchCategoriesCollectionsBooksres : "+fetchCategoriesCollectionsBooks23);
 
-				Response fetchCategoriesCollectionsBooks3 =FetchCategoriesCollectionsBooks.fetchCategoriesCollectionsBooks_per("author","ASC",userToken, "5489989","IPAD",catname1,collectionName1,bookID1,sqlhost,sqlUsername,sqlPassword,catlevel);
+				Response fetchCategoriesCollectionsBooks3 =FetchCategoriesCollectionsBooks.fetchCategoriesCollectionsBooks_per("author","ASC",userToken, "5489989",deviceT,catname1,collectionName1,bookID1,sqlhost,sqlUsername,sqlPassword,catlevel);
 				Validation.responseHeaderCodeValidation(fetchCategoriesCollectionsBooks3, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(fetchCategoriesCollectionsBooks3,HttpStatus.SC_OK);
 				Validation.responseTimeValidation(fetchCategoriesCollectionsBooks3);
-				System.out.println("fetchCategoriesCollectionsBooksres : "+fetchCategoriesCollectionsBooks3);
 
-				Response fetchCategoriesCollectionsBooks31 =FetchCategoriesCollectionsBooks.fetchCategoriesCollectionsBooks_per_withpagi("author","ASC",0,10,userToken, "5489989","IPAD",catname1,collectionName1,bookID1,sqlhost,sqlUsername,sqlPassword,catlevel);
+				Response fetchCategoriesCollectionsBooks31 =FetchCategoriesCollectionsBooks.fetchCategoriesCollectionsBooks_per_withpagi("author","ASC",0,10,userToken, "5489989",deviceT,catname1,collectionName1,bookID1,sqlhost,sqlUsername,sqlPassword,catlevel);
 				Validation.responseHeaderCodeValidation(fetchCategoriesCollectionsBooks31, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(fetchCategoriesCollectionsBooks31,HttpStatus.SC_OK);
 				Validation.responseTimeValidation(fetchCategoriesCollectionsBooks31);
@@ -1097,15 +1093,15 @@ public class RestAssured {
 				System.out.println("numberOfBooks : "+numberOfBooks);
 				numberOfBooks1= Integer.parseInt(""+numberOfBooks+"");
 				Validation.responseISGreater("numberOfBooks", numberOfBooks1, 3);
-				System.out.println("fetchCategoriesCollectionsBooksres : "+fetchCategoriesCollectionsBooks31);
 
-				Response fetchCategoriesCollectionsBooks32 =FetchCategoriesCollectionsBooks.fetchCategoriesCollectionsBooks_per("author","DESC",userToken, "5489989","IPAD",catname1,collectionName1,bookID1,sqlhost,sqlUsername,sqlPassword,catlevel);
+
+				Response fetchCategoriesCollectionsBooks32 =FetchCategoriesCollectionsBooks.fetchCategoriesCollectionsBooks_per("author","DESC",userToken, "5489989",deviceT,catname1,collectionName1,bookID1,sqlhost,sqlUsername,sqlPassword,catlevel);
 				Validation.responseHeaderCodeValidation(fetchCategoriesCollectionsBooks32, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(fetchCategoriesCollectionsBooks32,HttpStatus.SC_OK);
 				Validation.responseTimeValidation(fetchCategoriesCollectionsBooks32);
-				System.out.println("fetchCategoriesCollectionsBooksres : "+fetchCategoriesCollectionsBooks32);
 
-				Response fetchCategoriesCollectionsBooks33 =FetchCategoriesCollectionsBooks.fetchCategoriesCollectionsBooks_per_withpagi("author","DESC",0,10,userToken, "5489989","IPAD",catname1,collectionName1,bookID1,sqlhost,sqlUsername,sqlPassword,catlevel);
+
+				Response fetchCategoriesCollectionsBooks33 =FetchCategoriesCollectionsBooks.fetchCategoriesCollectionsBooks_per_withpagi("author","DESC",0,10,userToken, "5489989",deviceT,catname1,collectionName1,bookID1,sqlhost,sqlUsername,sqlPassword,catlevel);
 				Validation.responseHeaderCodeValidation(fetchCategoriesCollectionsBooks33, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(fetchCategoriesCollectionsBooks33,HttpStatus.SC_OK);
 				numberOfBooks=fetchCategoriesCollectionsBooks33.then().extract().path("category.numberOfBooks");
@@ -1114,15 +1110,14 @@ public class RestAssured {
 				numberOfBooks1= Integer.parseInt(""+numberOfBooks+"");
 				Validation.responseISGreater("numberOfBooks", numberOfBooks1, 3);
 				Validation.responseTimeValidation(fetchCategoriesCollectionsBooks33);				
-				System.out.println("fetchCategoriesCollectionsBooksres : "+fetchCategoriesCollectionsBooks33);
 
-				Response fetchCategoriesCollectionsBooks4 =FetchCategoriesCollectionsBooks.fetchCategoriesCollectionsBooks_per("author","ASC",userToken, "5489989","IPAD",catname1,collectionName1,bookID1,sqlhost,sqlUsername,sqlPassword,catlevel);
+				Response fetchCategoriesCollectionsBooks4 =FetchCategoriesCollectionsBooks.fetchCategoriesCollectionsBooks_per("author","ASC",userToken, "5489989",deviceT,catname1,collectionName1,bookID1,sqlhost,sqlUsername,sqlPassword,catlevel);
 				Validation.responseHeaderCodeValidation(fetchCategoriesCollectionsBooks4, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(fetchCategoriesCollectionsBooks4,HttpStatus.SC_OK);
 				Validation.responseTimeValidation(fetchCategoriesCollectionsBooks4);
-				System.out.println("fetchCategoriesCollectionsBooksres : "+fetchCategoriesCollectionsBooks3);
 
-				Response fetchCategoriesCollectionsBooks41 =FetchCategoriesCollectionsBooks.fetchCategoriesCollectionsBooks_per_withpagi("author","ASC",0,10,userToken, "5489989","IPAD",catname1,collectionName1,bookID1,sqlhost,sqlUsername,sqlPassword,catlevel);
+
+				Response fetchCategoriesCollectionsBooks41 =FetchCategoriesCollectionsBooks.fetchCategoriesCollectionsBooks_per_withpagi("author","ASC",0,10,userToken, "5489989",deviceT,catname1,collectionName1,bookID1,sqlhost,sqlUsername,sqlPassword,catlevel);
 				Validation.responseHeaderCodeValidation(fetchCategoriesCollectionsBooks41, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(fetchCategoriesCollectionsBooks41,HttpStatus.SC_OK);
 				Validation.responseTimeValidation(fetchCategoriesCollectionsBooks41);
@@ -1131,15 +1126,15 @@ public class RestAssured {
 				System.out.println("numberOfBooks : "+numberOfBooks);
 				numberOfBooks1= Integer.parseInt(""+numberOfBooks+"");
 				Validation.responseISGreater("numberOfBooks", numberOfBooks1, 3);
-				System.out.println("fetchCategoriesCollectionsBooksres : "+fetchCategoriesCollectionsBooks41);
 
-				Response fetchCategoriesCollectionsBooks42 =FetchCategoriesCollectionsBooks.fetchCategoriesCollectionsBooks_per("author","DESC",userToken, "5489989","IPAD",catname1,collectionName1,bookID1,sqlhost,sqlUsername,sqlPassword,catlevel);
+
+				Response fetchCategoriesCollectionsBooks42 =FetchCategoriesCollectionsBooks.fetchCategoriesCollectionsBooks_per("author","DESC",userToken, "5489989",deviceT,catname1,collectionName1,bookID1,sqlhost,sqlUsername,sqlPassword,catlevel);
 				Validation.responseHeaderCodeValidation(fetchCategoriesCollectionsBooks42, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(fetchCategoriesCollectionsBooks42,HttpStatus.SC_OK);
 				Validation.responseTimeValidation(fetchCategoriesCollectionsBooks42);
-				System.out.println("fetchCategoriesCollectionsBooksres : "+fetchCategoriesCollectionsBooks42);
 
-				Response fetchCategoriesCollectionsBooks43 =FetchCategoriesCollectionsBooks.fetchCategoriesCollectionsBooks_per_withpagi("author","DESC",0,10,userToken, "5489989","IPAD",catname1,collectionName1,bookID1,sqlhost,sqlUsername,sqlPassword,catlevel);
+
+				Response fetchCategoriesCollectionsBooks43 =FetchCategoriesCollectionsBooks.fetchCategoriesCollectionsBooks_per_withpagi("author","DESC",0,10,userToken, "5489989",deviceT,catname1,collectionName1,bookID1,sqlhost,sqlUsername,sqlPassword,catlevel);
 				Validation.responseHeaderCodeValidation(fetchCategoriesCollectionsBooks43, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(fetchCategoriesCollectionsBooks43,HttpStatus.SC_OK);
 				numberOfBooks=fetchCategoriesCollectionsBooks43.then().extract().path("category.numberOfBooks");
@@ -1148,15 +1143,15 @@ public class RestAssured {
 				numberOfBooks1= Integer.parseInt(""+numberOfBooks+"");
 				Validation.responseISGreater("numberOfBooks", numberOfBooks1, 3);
 				Validation.responseTimeValidation(fetchCategoriesCollectionsBooks43);				
-				System.out.println("fetchCategoriesCollectionsBooksres : "+fetchCategoriesCollectionsBooks43);
 
-				Response fetchCategoriesCollectionsBooks5 =FetchCategoriesCollectionsBooks.fetchCategoriesCollectionsBooks_per("archive_date","ASC",userToken, "5489989","IPAD",catname1,collectionName1,bookID1,sqlhost,sqlUsername,sqlPassword,catlevel);
+
+				Response fetchCategoriesCollectionsBooks5 =FetchCategoriesCollectionsBooks.fetchCategoriesCollectionsBooks_per("archive_date","ASC",userToken, "5489989",deviceT,catname1,collectionName1,bookID1,sqlhost,sqlUsername,sqlPassword,catlevel);
 				Validation.responseHeaderCodeValidation(fetchCategoriesCollectionsBooks5, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(fetchCategoriesCollectionsBooks5,HttpStatus.SC_OK);
 				Validation.responseTimeValidation(fetchCategoriesCollectionsBooks5);
-				System.out.println("fetchCategoriesCollectionsBooksres : "+fetchCategoriesCollectionsBooks5);
 
-				Response fetchCategoriesCollectionsBooks51 =FetchCategoriesCollectionsBooks.fetchCategoriesCollectionsBooks_per_withpagi("archive_date","ASC",0,10,userToken, "5489989","IPAD",catname1,collectionName1,bookID1,sqlhost,sqlUsername,sqlPassword,catlevel);
+
+				Response fetchCategoriesCollectionsBooks51 =FetchCategoriesCollectionsBooks.fetchCategoriesCollectionsBooks_per_withpagi("archive_date","ASC",0,10,userToken, "5489989",deviceT,catname1,collectionName1,bookID1,sqlhost,sqlUsername,sqlPassword,catlevel);
 				Validation.responseHeaderCodeValidation(fetchCategoriesCollectionsBooks51, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(fetchCategoriesCollectionsBooks51,HttpStatus.SC_OK);
 				Validation.responseTimeValidation(fetchCategoriesCollectionsBooks51);
@@ -1165,15 +1160,14 @@ public class RestAssured {
 				System.out.println("numberOfBooks : "+numberOfBooks);
 				numberOfBooks1= Integer.parseInt(""+numberOfBooks+"");
 				Validation.responseISGreater("numberOfBooks", numberOfBooks1, 3);
-				System.out.println("fetchCategoriesCollectionsBooksres : "+fetchCategoriesCollectionsBooks51);
 
-				Response fetchCategoriesCollectionsBooks52 =FetchCategoriesCollectionsBooks.fetchCategoriesCollectionsBooks_per("archive_date","DESC",userToken, "5489989","IPAD",catname1,collectionName1,bookID1,sqlhost,sqlUsername,sqlPassword,catlevel);
+
+				Response fetchCategoriesCollectionsBooks52 =FetchCategoriesCollectionsBooks.fetchCategoriesCollectionsBooks_per("archive_date","DESC",userToken, "5489989",deviceT,catname1,collectionName1,bookID1,sqlhost,sqlUsername,sqlPassword,catlevel);
 				Validation.responseHeaderCodeValidation(fetchCategoriesCollectionsBooks52, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(fetchCategoriesCollectionsBooks52,HttpStatus.SC_OK);
 				Validation.responseTimeValidation(fetchCategoriesCollectionsBooks52);
-				System.out.println("fetchCategoriesCollectionsBooksres : "+fetchCategoriesCollectionsBooks52);
 
-				Response fetchCategoriesCollectionsBooks53 =FetchCategoriesCollectionsBooks.fetchCategoriesCollectionsBooks_per_withpagi("archive_date","DESC",0,10,userToken, "5489989","IPAD",catname1,collectionName1,bookID1,sqlhost,sqlUsername,sqlPassword,catlevel);
+				Response fetchCategoriesCollectionsBooks53 =FetchCategoriesCollectionsBooks.fetchCategoriesCollectionsBooks_per_withpagi("archive_date","DESC",0,10,userToken, "5489989",deviceT,catname1,collectionName1,bookID1,sqlhost,sqlUsername,sqlPassword,catlevel);
 				Validation.responseHeaderCodeValidation(fetchCategoriesCollectionsBooks53, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(fetchCategoriesCollectionsBooks53,HttpStatus.SC_OK);
 				numberOfBooks=fetchCategoriesCollectionsBooks53.then().extract().path("category.numberOfBooks");
@@ -1182,11 +1176,11 @@ public class RestAssured {
 				numberOfBooks1= Integer.parseInt(""+numberOfBooks+"");
 				Validation.responseISGreater("numberOfBooks", numberOfBooks1, 3);
 				Validation.responseTimeValidation(fetchCategoriesCollectionsBooks53);				
-				System.out.println("fetchCategoriesCollectionsBooksres : "+fetchCategoriesCollectionsBooks53);
+
 
 				//END fetchCategoriesCollectionsBooks PERMUTATION
 
-				Response categoriesV1res = CategoriesV1.categoriesV1(userToken, "5489989","IPAD");
+				Response categoriesV1res = CategoriesV1.categoriesV1(userToken, "5489989",deviceT);
 				Validation.responseHeaderCodeValidation(categoriesV1res, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(categoriesV1res,HttpStatus.SC_OK);
 				Validation.responseTimeValidation(categoriesV1res);
@@ -1198,9 +1192,9 @@ public class RestAssured {
 				categoriesname=categoriesV1res.then().extract().path("categories[0].name");
 				Validation.responseKeyAndValue(categoriesV1res, "name",categoriesname);
 				Validation.responseISGreater("totalCategories", totalCategories, 3);	
-				System.out.println("categoriesV1res : "+categoriesV1res);
 
-				Response categoriesV2res =CategoriesV2.categoriesV2(userToken, "5489989","IPAD");
+
+				Response categoriesV2res =CategoriesV2.categoriesV2(userToken, "5489989",deviceT);
 				Validation.responseHeaderCodeValidation(categoriesV2res, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(categoriesV2res,HttpStatus.SC_OK);
 				Validation.responseTimeValidation(categoriesV2res);
@@ -1212,14 +1206,14 @@ public class RestAssured {
 				categoriesname=categoriesV2res.then().extract().path("categories[0].name");
 				Validation.responseKeyAndValue(categoriesV2res, "name",categoriesname);
 				Validation.responseISGreater("totalCategories", totalCategories, 3);
-				System.out.println("categoriesV2res : " +categoriesV2res);
+
 
 
 				//String sqlhost="jdbc:mysql://hurix-staging-db.cbum2u9r6xyc.us-east-1.rds.amazonaws.com";
 				//String sqlUsername="qcteam";
 				//String sqlPassword="JB88F-WT2Q3-DPXTT";		
 
-				Response categoryBookListV1res = CategoryBookListV1.categoryBookListV1(""+category1+"",userToken,"56454", "IPAD",bookID1,catlevel,sqlhost,sqlUsername,sqlPassword);
+				Response categoryBookListV1res = CategoryBookListV1.categoryBookListV1(""+category1+"",userToken,"56454", deviceT,bookID1,catlevel,sqlhost,sqlUsername,sqlPassword);
 				Validation.responseHeaderCodeValidation(categoryBookListV1res, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(categoryBookListV1res, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(categoryBookListV1res);
@@ -1241,125 +1235,128 @@ public class RestAssured {
 				Validation.responseKeyValidation_key(categoryBookListV1res,"isbn");
 				Validation.responseKeyValidation_key(categoryBookListV1res,"id");
 				Validation.responseKeyValidation_key(categoryBookListV1res,"title");					
-				System.out.println("categoryBookListV1res : " +categoryBookListV1res);
+
 
 
 				//START categoryBookLisyV1 PERMUTATION
-				Response categoryBookListV1res1 = CategoryBookListV1.categoryBookListV1_per("isbn","ASC",""+category1+"",userToken,"56454", "IPAD",bookID1,catlevel,sqlhost,sqlUsername,sqlPassword);
+				Response categoryBookListV1res1 = CategoryBookListV1.categoryBookListV1_per("isbn","ASC",""+category1+"",userToken,"56454", deviceT,bookID1,catlevel,sqlhost,sqlUsername,sqlPassword);
 				Validation.responseHeaderCodeValidation(categoryBookListV1res1, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(categoryBookListV1res1, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(categoryBookListV1res1);
-				System.out.println("categoryBookListV1res1 : "+categoryBookListV1res1);
 
-				Response categoryBookListV1res11 = CategoryBookListV1.categoryBookListV1_per_withPagi("isbn","ASC",0,10,""+category1+"",userToken,"56454", "IPAD",bookID1,catlevel,sqlhost,sqlUsername,sqlPassword);
+
+				Response categoryBookListV1res11 = CategoryBookListV1.categoryBookListV1_per_withPagi("isbn","ASC",0,10,""+category1+"",userToken,"56454", deviceT,bookID1,catlevel,sqlhost,sqlUsername,sqlPassword);
 				Validation.responseHeaderCodeValidation(categoryBookListV1res11, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(categoryBookListV1res11, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(categoryBookListV1res11);
 				totalbooks=categoryBookListV1res11.then().extract().path("totalbooks");
 				Validation.responseISGreater("totalbooks", totalbooks, 2);
-				System.out.println("categoryBookListV1res1 : "+categoryBookListV1res11);
 
-				Response categoryBookListV1res12 = CategoryBookListV1.categoryBookListV1_per("isbn","DESC",""+category1+"",userToken,"56454", "IPAD",bookID1,catlevel,sqlhost,sqlUsername,sqlPassword);
+
+				Response categoryBookListV1res12 = CategoryBookListV1.categoryBookListV1_per("isbn","DESC",""+category1+"",userToken,"56454", deviceT,bookID1,catlevel,sqlhost,sqlUsername,sqlPassword);
 				Validation.responseHeaderCodeValidation(categoryBookListV1res12, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(categoryBookListV1res12, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(categoryBookListV1res12);
 				System.out.println("categoryBookListV1res1 : "+categoryBookListV1res12);
 
-				Response categoryBookListV1res13 = CategoryBookListV1.categoryBookListV1_per_withPagi("isbn","DESC",0,10,""+category1+"",userToken,"56454", "IPAD",bookID1,catlevel,sqlhost,sqlUsername,sqlPassword);
+				Response categoryBookListV1res13 = CategoryBookListV1.categoryBookListV1_per_withPagi("isbn","DESC",0,10,""+category1+"",userToken,"56454", deviceT,bookID1,catlevel,sqlhost,sqlUsername,sqlPassword);
 				Validation.responseHeaderCodeValidation(categoryBookListV1res13, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(categoryBookListV1res13, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(categoryBookListV1res13);
 				totalbooks=categoryBookListV1res13.then().extract().path("totalbooks");
 				Validation.responseISGreater("totalbooks", totalbooks, 2);
-				System.out.println("categoryBookListV1res1 : "+categoryBookListV1res13);
 
-				Response categoryBookListV1res2 = CategoryBookListV1.categoryBookListV1_per("title","ASC",""+category1+"",userToken,"56454", "IPAD",bookID1,catlevel,sqlhost,sqlUsername,sqlPassword);
+
+				Response categoryBookListV1res2 = CategoryBookListV1.categoryBookListV1_per("title","ASC",""+category1+"",userToken,"56454", deviceT,bookID1,catlevel,sqlhost,sqlUsername,sqlPassword);
 				Validation.responseHeaderCodeValidation(categoryBookListV1res2, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(categoryBookListV1res2, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(categoryBookListV1res2);
-				System.out.println("categoryBookListV1res1 : "+categoryBookListV1res2);
 
-				Response categoryBookListV1res21 = CategoryBookListV1.categoryBookListV1_per_withPagi("title","ASC",0,10,""+category1+"",userToken,"56454", "IPAD",bookID1,catlevel,sqlhost,sqlUsername,sqlPassword);
+
+				Response categoryBookListV1res21 = CategoryBookListV1.categoryBookListV1_per_withPagi("title","ASC",0,10,""+category1+"",userToken,"56454", deviceT,bookID1,catlevel,sqlhost,sqlUsername,sqlPassword);
 				Validation.responseHeaderCodeValidation(categoryBookListV1res21, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(categoryBookListV1res21, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(categoryBookListV1res21);
 				totalbooks=categoryBookListV1res21.then().extract().path("totalbooks");
 				Validation.responseISGreater("totalbooks", totalbooks, 2);
-				System.out.println("categoryBookListV1res1 : "+categoryBookListV1res21);
 
-				Response categoryBookListV1res22 = CategoryBookListV1.categoryBookListV1_per("title","DESC",""+category1+"",userToken,"56454", "IPAD",bookID1,catlevel,sqlhost,sqlUsername,sqlPassword);
+
+				Response categoryBookListV1res22 = CategoryBookListV1.categoryBookListV1_per("title","DESC",""+category1+"",userToken,"56454", deviceT,bookID1,catlevel,sqlhost,sqlUsername,sqlPassword);
 				Validation.responseHeaderCodeValidation(categoryBookListV1res22, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(categoryBookListV1res22, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(categoryBookListV1res22);
-				System.out.println("categoryBookListV1res1 : "+categoryBookListV1res22);
 
-				Response categoryBookListV1res23 = CategoryBookListV1.categoryBookListV1_per_withPagi("title","DESC",0,10,""+category1+"",userToken,"56454", "IPAD",bookID1,catlevel,sqlhost,sqlUsername,sqlPassword);
+
+				Response categoryBookListV1res23 = CategoryBookListV1.categoryBookListV1_per_withPagi("title","DESC",0,10,""+category1+"",userToken,"56454", deviceT,bookID1,catlevel,sqlhost,sqlUsername,sqlPassword);
 				Validation.responseHeaderCodeValidation(categoryBookListV1res23, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(categoryBookListV1res23, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(categoryBookListV1res23);
 				totalbooks=categoryBookListV1res23.then().extract().path("totalbooks");
 				Validation.responseISGreater("totalbooks", totalbooks, 2);
-				System.out.println("categoryBookListV1res1 : "+categoryBookListV1res23);
 
-				Response categoryBookListV1res3 = CategoryBookListV1.categoryBookListV1_per("author","ASC",""+category1+"",userToken,"56454", "IPAD",bookID1,catlevel,sqlhost,sqlUsername,sqlPassword);
+
+				Response categoryBookListV1res3 = CategoryBookListV1.categoryBookListV1_per("author","ASC",""+category1+"",userToken,"56454", deviceT,bookID1,catlevel,sqlhost,sqlUsername,sqlPassword);
 				Validation.responseHeaderCodeValidation(categoryBookListV1res3, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(categoryBookListV1res3, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(categoryBookListV1res3);
-				System.out.println("categoryBookListV1res1 : "+categoryBookListV1res3);
 
-				Response categoryBookListV1res31 = CategoryBookListV1.categoryBookListV1_per_withPagi("author","ASC",0,10,""+category1+"",userToken,"56454", "IPAD",bookID1,catlevel,sqlhost,sqlUsername,sqlPassword);
+
+				Response categoryBookListV1res31 = CategoryBookListV1.categoryBookListV1_per_withPagi("author","ASC",0,10,""+category1+"",userToken,"56454", deviceT,bookID1,catlevel,sqlhost,sqlUsername,sqlPassword);
 				Validation.responseHeaderCodeValidation(categoryBookListV1res31, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(categoryBookListV1res31, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(categoryBookListV1res31);
 				totalbooks=categoryBookListV1res31.then().extract().path("totalbooks");
 				Validation.responseISGreater("totalbooks", totalbooks, 2);
-				System.out.println("categoryBookListV1res1 : "+categoryBookListV1res31);
 
-				Response categoryBookListV1res32 = CategoryBookListV1.categoryBookListV1_per("author","DESC",""+category1+"",userToken,"56454", "IPAD",bookID1,catlevel,sqlhost,sqlUsername,sqlPassword);
+
+				Response categoryBookListV1res32 = CategoryBookListV1.categoryBookListV1_per("author","DESC",""+category1+"",userToken,"56454", deviceT,bookID1,catlevel,sqlhost,sqlUsername,sqlPassword);
 				Validation.responseHeaderCodeValidation(categoryBookListV1res32, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(categoryBookListV1res32, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(categoryBookListV1res32);
-				System.out.println("categoryBookListV1res1 : "+categoryBookListV1res32);
 
-				Response categoryBookListV1res33 = CategoryBookListV1.categoryBookListV1_per_withPagi("author","DESC",0,10,""+category1+"",userToken,"56454", "IPAD",bookID1,catlevel,sqlhost,sqlUsername,sqlPassword);
+
+				Response categoryBookListV1res33 = CategoryBookListV1.categoryBookListV1_per_withPagi("author","DESC",0,10,""+category1+"",userToken,"56454", deviceT,bookID1,catlevel,sqlhost,sqlUsername,sqlPassword);
 				Validation.responseHeaderCodeValidation(categoryBookListV1res33, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(categoryBookListV1res33, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(categoryBookListV1res33);
 				totalbooks=categoryBookListV1res33.then().extract().path("totalbooks");
 				Validation.responseISGreater("totalbooks", totalbooks, 2);
-				System.out.println("categoryBookListV1res1 : "+categoryBookListV1res33);
 
-				Response categoryBookListV1res4 = CategoryBookListV1.categoryBookListV1_per("archive_date","ASC",""+category1+"",userToken,"56454", "IPAD",bookID1,catlevel,sqlhost,sqlUsername,sqlPassword);
+
+				Response categoryBookListV1res4 = CategoryBookListV1.categoryBookListV1_per("archive_date","ASC",""+category1+"",userToken,"56454", deviceT,bookID1,catlevel,sqlhost,sqlUsername,sqlPassword);
 				Validation.responseHeaderCodeValidation(categoryBookListV1res4, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(categoryBookListV1res4, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(categoryBookListV1res4);
-				System.out.println("categoryBookListV1res1 : "+categoryBookListV1res4);
 
-				Response categoryBookListV1res41 = CategoryBookListV1.categoryBookListV1_per_withPagi("archive_date","ASC",0,10,""+category1+"",userToken,"56454", "IPAD",bookID1,catlevel,sqlhost,sqlUsername,sqlPassword);
+
+				Response categoryBookListV1res41 = CategoryBookListV1.categoryBookListV1_per_withPagi("archive_date","ASC",0,10,""+category1+"",userToken,"56454", deviceT,bookID1,catlevel,sqlhost,sqlUsername,sqlPassword);
 				Validation.responseHeaderCodeValidation(categoryBookListV1res41, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(categoryBookListV1res41, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(categoryBookListV1res41);
 				totalbooks=categoryBookListV1res41.then().extract().path("totalbooks");
 				Validation.responseISGreater("totalbooks", totalbooks, 2);
-				System.out.println("categoryBookListV1res1 : "+categoryBookListV1res41);
 
-				Response categoryBookListV1res42 = CategoryBookListV1.categoryBookListV1_per("archive_date","DESC",""+category1+"",userToken,"56454", "IPAD",bookID1,catlevel,sqlhost,sqlUsername,sqlPassword);
+
+
+				Response categoryBookListV1res42 = CategoryBookListV1.categoryBookListV1_per("archive_date","DESC",""+category1+"",userToken,"56454", deviceT,bookID1,catlevel,sqlhost,sqlUsername,sqlPassword);
 				Validation.responseHeaderCodeValidation(categoryBookListV1res42, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(categoryBookListV1res42, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(categoryBookListV1res42);
-				System.out.println("categoryBookListV1res1 : "+categoryBookListV1res42);
 
-				Response categoryBookListV1res43 = CategoryBookListV1.categoryBookListV1_per_withPagi("archive_date","DESC",0,10,""+category1+"",userToken,"56454", "IPAD",bookID1,catlevel,sqlhost,sqlUsername,sqlPassword);
+
+
+				Response categoryBookListV1res43 = CategoryBookListV1.categoryBookListV1_per_withPagi("archive_date","DESC",0,10,""+category1+"",userToken,"56454", deviceT,bookID1,catlevel,sqlhost,sqlUsername,sqlPassword);
 				Validation.responseHeaderCodeValidation(categoryBookListV1res43, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(categoryBookListV1res43, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(categoryBookListV1res43);
 				totalbooks=categoryBookListV1res43.then().extract().path("totalbooks");
 				Validation.responseISGreater("totalbooks", totalbooks, 2);
-				System.out.println("categoryBookListV1res1 : "+categoryBookListV1res43);
+
+
 
 				//END categoryBooklistv1 Permutation
 
-				Response CategoryBookListV2Res = CategoryBookListV2.categoryBookListV2(""+category1+"",userToken,"56454", "IPAD",bookID1,catlevel,sqlhost,sqlUsername,sqlPassword);
+				Response CategoryBookListV2Res = CategoryBookListV2.categoryBookListV2(""+category1+"",userToken,"56454", deviceT,bookID1,catlevel,sqlhost,sqlUsername,sqlPassword);
 				Validation.responseHeaderCodeValidation(CategoryBookListV2Res, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(CategoryBookListV2Res, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(CategoryBookListV2Res);
@@ -1381,9 +1378,9 @@ public class RestAssured {
 				Validation.responseKeyValidation_key(CategoryBookListV2Res,"isbn");
 				Validation.responseKeyValidation_key(CategoryBookListV2Res,"id");
 				Validation.responseKeyValidation_key(CategoryBookListV2Res,"title");
-				System.out.println("CategoryBookListV2Res : " +CategoryBookListV2Res);
 
-				Response CategoryBookListV2Res_withpagi = CategoryBookListV2.categoryBookListV2_withpagi(0,10,""+category1+"",userToken,"56454", "IPAD",bookID1,catlevel,sqlhost,sqlUsername,sqlPassword);
+
+				Response CategoryBookListV2Res_withpagi = CategoryBookListV2.categoryBookListV2_withpagi(0,10,""+category1+"",userToken,"56454", deviceT,bookID1,catlevel,sqlhost,sqlUsername,sqlPassword);
 				Validation.responseHeaderCodeValidation(CategoryBookListV2Res_withpagi, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(CategoryBookListV2Res_withpagi, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(CategoryBookListV2Res_withpagi);
@@ -1408,7 +1405,6 @@ public class RestAssured {
 				Validation.responseKeyValidation_key(CategoryBookListV2Res_withpagi,"isbn");
 				Validation.responseKeyValidation_key(CategoryBookListV2Res_withpagi,"id");
 				Validation.responseKeyValidation_key(CategoryBookListV2Res_withpagi,"title");
-				System.out.println("CategoryBookListV2Res : " +CategoryBookListV2Res_withpagi);
 
 
 				Response FetchCategorybooksV1Res = FetchCategorybooksV1.fetchCategorybooksV1(catname,userToken,bookID1, catlevel, sqlhost, sqlUsername, sqlPassword);
@@ -1429,27 +1425,26 @@ public class RestAssured {
 				Validation.responseKeyValidation_key(FetchCategorybooksV1Res, "description");
 				Validation.responseKeyValidation_key(FetchCategorybooksV1Res, "ebookID");
 				Validation.responseKeyValidation_key(FetchCategorybooksV1Res, "expiryDate");
-				System.out.println("FetchCategorybooksV1Res : " +FetchCategorybooksV1Res);
 
 
-				Response multiCategories_res = MultiCategories.multiCategories(catlevel,userToken,"fs445","IPAD");
+
 				if(catlevel.contains ("1")){}			
-				else{Validation.responseHeaderCodeValidation(multiCategories_res, HttpStatus.SC_OK);
+				else{Response multiCategories_res = MultiCategories.multiCategories(catlevel,userToken,"fs445",deviceT);
+				Validation.responseHeaderCodeValidation(multiCategories_res, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(multiCategories_res, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(multiCategories_res);
 				Validation.responseKeyValidation_key(multiCategories_res, "categories");
 				Validation.responseKeyValidation_key(multiCategories_res, "collectionCount");
 				Validation.responseKeyValidation_key(multiCategories_res, "bookCount");
 				Validation.responseKeyValidation_key(multiCategories_res, "hash");
-				Validation.responseKeyValidation_key(multiCategories_res, "id");
-				System.out.println("multiCategories_res : "+multiCategories_res);}
+				Validation.responseKeyValidation_key(multiCategories_res, "id");}
 
 				//int bookID=bookID1;
 
 
-				Response MultiCategoryBookList_res = MultiCategoryBookList.multiCategoryBookList(catlevel,bookID1,sqlhost,sqlUsername,sqlPassword,userToken,"45564595","IPAD");
 				if(catlevel.contains ("1")){}			
-				else{Validation.responseHeaderCodeValidation(MultiCategoryBookList_res, HttpStatus.SC_OK);
+				else{Response MultiCategoryBookList_res = MultiCategoryBookList.multiCategoryBookList(catlevel,bookID1,sqlhost,sqlUsername,sqlPassword,userToken,"45564595",deviceT);
+				Validation.responseHeaderCodeValidation(MultiCategoryBookList_res, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(MultiCategoryBookList_res, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(MultiCategoryBookList_res);
 				Validation.responseKeyValidation_key(MultiCategoryBookList_res, "totalbooks");
@@ -1470,143 +1465,131 @@ public class RestAssured {
 				Validation.responseKeyValidation_key(MultiCategoryBookList_res, "title");
 				Validation.responseKeyValidation_key(MultiCategoryBookList_res, "keywords");
 				Validation.responseKeyValidation_key(MultiCategoryBookList_res, "pages");
-				Validation.responseKeyValidation_key(MultiCategoryBookList_res, "readingPercentage");
-				System.out.println("MultiCategoryBookList_res : "+MultiCategoryBookList_res);}
+				Validation.responseKeyValidation_key(MultiCategoryBookList_res, "readingPercentage");}
+
 
 
 				//START MultcategoryBookList PERMUTATION
-				Response MultiCategoryBookList1 = MultiCategoryBookList.multiCategoryBookList_Per("isbn","ASC",catlevel,bookID1,sqlhost,sqlUsername,sqlPassword,userToken,"45564595","IPAD");
+				Response MultiCategoryBookList1 = MultiCategoryBookList.multiCategoryBookList_Per("isbn","ASC",catlevel,bookID1,sqlhost,sqlUsername,sqlPassword,userToken,"45564595",deviceT);
 				if(catlevel.contains ("1")){}			
 				else{Validation.responseHeaderCodeValidation(MultiCategoryBookList1, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(MultiCategoryBookList1, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(MultiCategoryBookList1);
-				System.out.println("MultiCategoryBookList : "+MultiCategoryBookList1);}
+				}
 
 
-				Response MultiCategoryBookList11 = MultiCategoryBookList.multiCategoryBookList_Per_withPagi("isbn","ASC",0,10,catlevel,bookID1,sqlhost,sqlUsername,sqlPassword,userToken,"45564595","IPAD");
 				if(catlevel .contains ("1")){}			
-				else{Validation.responseHeaderCodeValidation(MultiCategoryBookList11, HttpStatus.SC_OK);
+				else{Response MultiCategoryBookList11 = MultiCategoryBookList.multiCategoryBookList_Per_withPagi("isbn","ASC",0,10,catlevel,bookID1,sqlhost,sqlUsername,sqlPassword,userToken,"45564595",deviceT);
+				Validation.responseHeaderCodeValidation(MultiCategoryBookList11, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(MultiCategoryBookList11, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(MultiCategoryBookList11);
-				System.out.println("MultiCategoryBookList : "+MultiCategoryBookList11);}
+				}
 
 
-				Response MultiCategoryBookList12 = MultiCategoryBookList.multiCategoryBookList_Per("isbn","DESC",catlevel,bookID1,sqlhost,sqlUsername,sqlPassword,userToken,"45564595","IPAD");
 				if(catlevel.contains ("1")){}			
-				else{Validation.responseHeaderCodeValidation(MultiCategoryBookList12, HttpStatus.SC_OK);
+				else{Response MultiCategoryBookList12 = MultiCategoryBookList.multiCategoryBookList_Per("isbn","DESC",catlevel,bookID1,sqlhost,sqlUsername,sqlPassword,userToken,"45564595",deviceT);
+				Validation.responseHeaderCodeValidation(MultiCategoryBookList12, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(MultiCategoryBookList12, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(MultiCategoryBookList12);
-				System.out.println("MultiCategoryBookList : "+MultiCategoryBookList12);}
+				}
 
 
-				Response MultiCategoryBookList13 = MultiCategoryBookList.multiCategoryBookList_Per_withPagi("isbn","DESC",0,10,catlevel,bookID1,sqlhost,sqlUsername,sqlPassword,userToken,"45564595","IPAD");
 				if(catlevel.contains ("1")){}			
-				else{Validation.responseHeaderCodeValidation(MultiCategoryBookList13, HttpStatus.SC_OK);
+				else{Response MultiCategoryBookList13 = MultiCategoryBookList.multiCategoryBookList_Per_withPagi("isbn","DESC",0,10,catlevel,bookID1,sqlhost,sqlUsername,sqlPassword,userToken,"45564595",deviceT);
+				Validation.responseHeaderCodeValidation(MultiCategoryBookList13, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(MultiCategoryBookList13, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(MultiCategoryBookList13);
-				System.out.println("MultiCategoryBookList : "+MultiCategoryBookList13);}
+				}
 
 
-				Response MultiCategoryBookList2 = MultiCategoryBookList.multiCategoryBookList_Per("title","ASC",catlevel,bookID1,sqlhost,sqlUsername,sqlPassword,userToken,"45564595","IPAD");
 				if(catlevel.contains ("1")){}			
-				else{Validation.responseHeaderCodeValidation(MultiCategoryBookList2, HttpStatus.SC_OK);
+				else{Response MultiCategoryBookList2 = MultiCategoryBookList.multiCategoryBookList_Per("title","ASC",catlevel,bookID1,sqlhost,sqlUsername,sqlPassword,userToken,"45564595",deviceT);
+				Validation.responseHeaderCodeValidation(MultiCategoryBookList2, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(MultiCategoryBookList2, HttpStatus.SC_OK);
-				Validation.responseTimeValidation(MultiCategoryBookList2);
-				System.out.println("MultiCategoryBookList : "+MultiCategoryBookList2);}
+				Validation.responseTimeValidation(MultiCategoryBookList2);}
 
 
-				Response MultiCategoryBookList21 = MultiCategoryBookList.multiCategoryBookList_Per_withPagi("title","ASC",0,10,catlevel,bookID1,sqlhost,sqlUsername,sqlPassword,userToken,"45564595","IPAD");
 				if(catlevel.contains ("1")){}			
-				else{Validation.responseHeaderCodeValidation(MultiCategoryBookList21, HttpStatus.SC_OK);
+				else{Response MultiCategoryBookList21 = MultiCategoryBookList.multiCategoryBookList_Per_withPagi("title","ASC",0,10,catlevel,bookID1,sqlhost,sqlUsername,sqlPassword,userToken,"45564595",deviceT);
+				Validation.responseHeaderCodeValidation(MultiCategoryBookList21, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(MultiCategoryBookList21, HttpStatus.SC_OK);
-				Validation.responseTimeValidation(MultiCategoryBookList21);
-				System.out.println("MultiCategoryBookList : "+MultiCategoryBookList21);}
+				Validation.responseTimeValidation(MultiCategoryBookList21);}
 
 
-				Response MultiCategoryBookList22 = MultiCategoryBookList.multiCategoryBookList_Per("title","DESC",catlevel,bookID1,sqlhost,sqlUsername,sqlPassword,userToken,"45564595","IPAD");
 				if(catlevel.contains ("1")){}			
-				else{Validation.responseHeaderCodeValidation(MultiCategoryBookList22, HttpStatus.SC_OK);
+				else{Response MultiCategoryBookList22 = MultiCategoryBookList.multiCategoryBookList_Per("title","DESC",catlevel,bookID1,sqlhost,sqlUsername,sqlPassword,userToken,"45564595",deviceT);
+				Validation.responseHeaderCodeValidation(MultiCategoryBookList22, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(MultiCategoryBookList22, HttpStatus.SC_OK);
-				Validation.responseTimeValidation(MultiCategoryBookList22);
-				System.out.println("MultiCategoryBookList : "+MultiCategoryBookList22);}
+				Validation.responseTimeValidation(MultiCategoryBookList22);}
 
 
-				Response MultiCategoryBookList23 = MultiCategoryBookList.multiCategoryBookList_Per_withPagi("title","DESC",0,10,catlevel,bookID1,sqlhost,sqlUsername,sqlPassword,userToken,"45564595","IPAD");
 				if(catlevel.contains ("1")){}			
-				else{Validation.responseHeaderCodeValidation(MultiCategoryBookList23, HttpStatus.SC_OK);
+				else{Response MultiCategoryBookList23 = MultiCategoryBookList.multiCategoryBookList_Per_withPagi("title","DESC",0,10,catlevel,bookID1,sqlhost,sqlUsername,sqlPassword,userToken,"45564595",deviceT);
+				Validation.responseHeaderCodeValidation(MultiCategoryBookList23, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(MultiCategoryBookList23, HttpStatus.SC_OK);
-				Validation.responseTimeValidation(MultiCategoryBookList23);
-				System.out.println("MultiCategoryBookList : "+MultiCategoryBookList23);}
+				Validation.responseTimeValidation(MultiCategoryBookList23);}
 
-				Response MultiCategoryBookList3 = MultiCategoryBookList.multiCategoryBookList_Per("author","ASC",catlevel,bookID1,sqlhost,sqlUsername,sqlPassword,userToken,"45564595","IPAD");
 				if(catlevel.contains ("1")){}			
-				else{Validation.responseHeaderCodeValidation(MultiCategoryBookList3, HttpStatus.SC_OK);
+				else{Response MultiCategoryBookList3 = MultiCategoryBookList.multiCategoryBookList_Per("author","ASC",catlevel,bookID1,sqlhost,sqlUsername,sqlPassword,userToken,"45564595",deviceT);
+				Validation.responseHeaderCodeValidation(MultiCategoryBookList3, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(MultiCategoryBookList3, HttpStatus.SC_OK);
-				Validation.responseTimeValidation(MultiCategoryBookList3);
-				System.out.println("MultiCategoryBookList : "+MultiCategoryBookList3);}
+				Validation.responseTimeValidation(MultiCategoryBookList3);}
 
 
-				Response MultiCategoryBookList31 = MultiCategoryBookList.multiCategoryBookList_Per_withPagi("author","ASC",0,10,catlevel,bookID1,sqlhost,sqlUsername,sqlPassword,userToken,"45564595","IPAD");
 				if(catlevel.contains ("1")){}			
-				else{Validation.responseHeaderCodeValidation(MultiCategoryBookList31, HttpStatus.SC_OK);
+				else{Response MultiCategoryBookList31 = MultiCategoryBookList.multiCategoryBookList_Per_withPagi("author","ASC",0,10,catlevel,bookID1,sqlhost,sqlUsername,sqlPassword,userToken,"45564595",deviceT);
+				Validation.responseHeaderCodeValidation(MultiCategoryBookList31, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(MultiCategoryBookList31, HttpStatus.SC_OK);
-				Validation.responseTimeValidation(MultiCategoryBookList31);
-				System.out.println("MultiCategoryBookList : "+MultiCategoryBookList31);}
+				Validation.responseTimeValidation(MultiCategoryBookList31);}
 
 
-				Response MultiCategoryBookList32 = MultiCategoryBookList.multiCategoryBookList_Per("author","DESC",catlevel,bookID1,sqlhost,sqlUsername,sqlPassword,userToken,"45564595","IPAD");
 				if(catlevel.contains ("1")){}			
-				else{Validation.responseHeaderCodeValidation(MultiCategoryBookList32, HttpStatus.SC_OK);
+				else{Response MultiCategoryBookList32 = MultiCategoryBookList.multiCategoryBookList_Per("author","DESC",catlevel,bookID1,sqlhost,sqlUsername,sqlPassword,userToken,"45564595",deviceT);
+				Validation.responseHeaderCodeValidation(MultiCategoryBookList32, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(MultiCategoryBookList32, HttpStatus.SC_OK);
-				Validation.responseTimeValidation(MultiCategoryBookList32);
-				System.out.println("MultiCategoryBookList : "+MultiCategoryBookList32);}
+				Validation.responseTimeValidation(MultiCategoryBookList32);}
 
-				Response MultiCategoryBookList33 = MultiCategoryBookList.multiCategoryBookList_Per_withPagi("author","DESC",0,10,catlevel,bookID1,sqlhost,sqlUsername,sqlPassword,userToken,"45564595","IPAD");
 				if(catlevel .contains ("1")){}			
-				else{Validation.responseHeaderCodeValidation(MultiCategoryBookList33, HttpStatus.SC_OK);
+				else{Response MultiCategoryBookList33 = MultiCategoryBookList.multiCategoryBookList_Per_withPagi("author","DESC",0,10,catlevel,bookID1,sqlhost,sqlUsername,sqlPassword,userToken,"45564595",deviceT);
+				Validation.responseHeaderCodeValidation(MultiCategoryBookList33, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(MultiCategoryBookList33, HttpStatus.SC_OK);
-				Validation.responseTimeValidation(MultiCategoryBookList33);
-				System.out.println("MultiCategoryBookList : "+MultiCategoryBookList33);}
+				Validation.responseTimeValidation(MultiCategoryBookList33);}
 
 
-				Response MultiCategoryBookList4 = MultiCategoryBookList.multiCategoryBookList_Per("archive_date","ASC",catlevel,bookID1,sqlhost,sqlUsername,sqlPassword,userToken,"45564595","IPAD");
 				if(catlevel.contains ("1")){}			
-				else{Validation.responseHeaderCodeValidation(MultiCategoryBookList4, HttpStatus.SC_OK);
+				else{Response MultiCategoryBookList4 = MultiCategoryBookList.multiCategoryBookList_Per("archive_date","ASC",catlevel,bookID1,sqlhost,sqlUsername,sqlPassword,userToken,"45564595",deviceT);
+				Validation.responseHeaderCodeValidation(MultiCategoryBookList4, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(MultiCategoryBookList4, HttpStatus.SC_OK);
-				Validation.responseTimeValidation(MultiCategoryBookList4);
-				System.out.println("MultiCategoryBookList : "+MultiCategoryBookList4);}
+				Validation.responseTimeValidation(MultiCategoryBookList4);}
 
 
-				Response MultiCategoryBookList41 = MultiCategoryBookList.multiCategoryBookList_Per_withPagi("archive_date","ASC",0,10,catlevel,bookID1,sqlhost,sqlUsername,sqlPassword,userToken,"45564595","IPAD");
 				if(catlevel .contains ("1")){}			
-				else{Validation.responseHeaderCodeValidation(MultiCategoryBookList41, HttpStatus.SC_OK);
+				else{Response MultiCategoryBookList41 = MultiCategoryBookList.multiCategoryBookList_Per_withPagi("archive_date","ASC",0,10,catlevel,bookID1,sqlhost,sqlUsername,sqlPassword,userToken,"45564595",deviceT);
+				Validation.responseHeaderCodeValidation(MultiCategoryBookList41, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(MultiCategoryBookList41, HttpStatus.SC_OK);
-				Validation.responseTimeValidation(MultiCategoryBookList41);
-				System.out.println("MultiCategoryBookList : "+MultiCategoryBookList41);}
+				Validation.responseTimeValidation(MultiCategoryBookList41);}
 
 
-				Response MultiCategoryBookList42 = MultiCategoryBookList.multiCategoryBookList_Per("archive_date","DESC",catlevel,bookID1,sqlhost,sqlUsername,sqlPassword,userToken,"45564595","IPAD");
 				if(catlevel.contains ("1")){}			
-				else{Validation.responseHeaderCodeValidation(MultiCategoryBookList42, HttpStatus.SC_OK);
+				else{Response MultiCategoryBookList42 = MultiCategoryBookList.multiCategoryBookList_Per("archive_date","DESC",catlevel,bookID1,sqlhost,sqlUsername,sqlPassword,userToken,"45564595",deviceT);
+				Validation.responseHeaderCodeValidation(MultiCategoryBookList42, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(MultiCategoryBookList42, HttpStatus.SC_OK);
-				Validation.responseTimeValidation(MultiCategoryBookList42);
-				System.out.println("MultiCategoryBookList : "+MultiCategoryBookList42);}
+				Validation.responseTimeValidation(MultiCategoryBookList42);}
 
 
-				Response MultiCategoryBookList43 = MultiCategoryBookList.multiCategoryBookList_Per_withPagi("archive_date","DESC",0,10,catlevel,bookID1,sqlhost,sqlUsername,sqlPassword,userToken,"45564595","IPAD");
 				if(catlevel.contains("1")){}			
-				else{Validation.responseHeaderCodeValidation(MultiCategoryBookList43, HttpStatus.SC_OK);
+				else{Response MultiCategoryBookList43 = MultiCategoryBookList.multiCategoryBookList_Per_withPagi("archive_date","DESC",0,10,catlevel,bookID1,sqlhost,sqlUsername,sqlPassword,userToken,"45564595",deviceT);
+				Validation.responseHeaderCodeValidation(MultiCategoryBookList43, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(MultiCategoryBookList43, HttpStatus.SC_OK);
-				Validation.responseTimeValidation(MultiCategoryBookList43);
-				System.out.println("MultiCategoryBookList : "+MultiCategoryBookList43);}
+				Validation.responseTimeValidation(MultiCategoryBookList43);}
 
 
 				//END MultcategoryBookList PERMUTATION
 
 
-				Response MultiCategoryCollection_BookList=MultiCategoryCollectionBookList.multiCategoryCollectionBookList(catlevel, bookID1, sqlhost, sqlUsername, sqlPassword, userToken, "4524242", "IPAD", collectionName0);
 				if(catlevel.contains ("1")){}			
-				else{Validation.responseHeaderCodeValidation(MultiCategoryCollection_BookList, HttpStatus.SC_OK);
+				else{Response MultiCategoryCollection_BookList=MultiCategoryCollectionBookList.multiCategoryCollectionBookList(catlevel, bookID1, sqlhost, sqlUsername, sqlPassword, userToken, "4524242", deviceT, collectionName0);
+				Validation.responseHeaderCodeValidation(MultiCategoryCollection_BookList, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(MultiCategoryCollection_BookList, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(MultiCategoryCollection_BookList);
 				Validation.responseKeyValidation_key(MultiCategoryCollection_BookList, "totalbooks");
@@ -1627,120 +1610,119 @@ public class RestAssured {
 				Validation.responseKeyValidation_key(MultiCategoryCollection_BookList, "title");
 				Validation.responseKeyValidation_key(MultiCategoryCollection_BookList, "keywords");
 				Validation.responseKeyValidation_key(MultiCategoryCollection_BookList, "pages");
-				Validation.responseKeyValidation_key(MultiCategoryCollection_BookList, "readingPercentage");
-				System.out.println("MultiCategoryCollection_BookList : "+MultiCategoryCollection_BookList);}
+				Validation.responseKeyValidation_key(MultiCategoryCollection_BookList, "readingPercentage");}
 
-				Response MultiCategoryCollectionBookList1=MultiCategoryCollectionBookList.multiCategoryCollectionBookList_Per("isbn","ASC",catlevel, bookID1, sqlhost, sqlUsername, sqlPassword, userToken, "4524242", "IPAD", collectionName0);
 				if(catlevel.contains ("1")){}			
-				else{Validation.responseHeaderCodeValidation(MultiCategoryCollectionBookList1, HttpStatus.SC_OK);
+				else{Response MultiCategoryCollectionBookList1=MultiCategoryCollectionBookList.multiCategoryCollectionBookList_Per("isbn","ASC",catlevel, bookID1, sqlhost, sqlUsername, sqlPassword, userToken, "4524242", deviceT, collectionName0);
+				Validation.responseHeaderCodeValidation(MultiCategoryCollectionBookList1, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(MultiCategoryCollectionBookList1);}
 
-				Response MultiCategoryCollectionBookList11=MultiCategoryCollectionBookList.multiCategoryCollectionBookList_Per_withpagi("isbn","ASC",0,5,catlevel, bookID1, sqlhost, sqlUsername, sqlPassword, userToken, "4524242", "IPAD", collectionName0);
 				if(catlevel.contains ("1")){}			
-				else{Validation.responseHeaderCodeValidation(MultiCategoryCollectionBookList11, HttpStatus.SC_OK);
+				else{Response MultiCategoryCollectionBookList11=MultiCategoryCollectionBookList.multiCategoryCollectionBookList_Per_withpagi("isbn","ASC",0,5,catlevel, bookID1, sqlhost, sqlUsername, sqlPassword, userToken, "4524242", deviceT, collectionName0);
+				Validation.responseHeaderCodeValidation(MultiCategoryCollectionBookList11, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(MultiCategoryCollectionBookList11, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(MultiCategoryCollectionBookList11);
 				totalbooks=MultiCategoryCollectionBookList11.then().extract().path("totalbooks");
 				Validation.responseISGreater("totalbooks", totalbooks, 3);}
 
-				Response MultiCategoryCollectionBookList12=MultiCategoryCollectionBookList.multiCategoryCollectionBookList_Per("isbn","DESC",catlevel, bookID1, sqlhost, sqlUsername, sqlPassword, userToken, "4524242", "IPAD", collectionName0);
 				if(catlevel.contains ("1")){}			
-				else{Validation.responseHeaderCodeValidation(MultiCategoryCollectionBookList12, HttpStatus.SC_OK);
+				else{Response MultiCategoryCollectionBookList12=MultiCategoryCollectionBookList.multiCategoryCollectionBookList_Per("isbn","DESC",catlevel, bookID1, sqlhost, sqlUsername, sqlPassword, userToken, "4524242", deviceT, collectionName0);
+				Validation.responseHeaderCodeValidation(MultiCategoryCollectionBookList12, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(MultiCategoryCollectionBookList12, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(MultiCategoryCollectionBookList12);}
 
-				Response MultiCategoryCollectionBookList13=MultiCategoryCollectionBookList.multiCategoryCollectionBookList_Per_withpagi("isbn","DESC",0,5,catlevel, bookID1, sqlhost, sqlUsername, sqlPassword, userToken, "4524242", "IPAD", collectionName0);
 				if(catlevel.contains ("1")){}			
-				else{Validation.responseHeaderCodeValidation(MultiCategoryCollectionBookList13, HttpStatus.SC_OK);
+				else{Response MultiCategoryCollectionBookList13=MultiCategoryCollectionBookList.multiCategoryCollectionBookList_Per_withpagi("isbn","DESC",0,5,catlevel, bookID1, sqlhost, sqlUsername, sqlPassword, userToken, "4524242", deviceT, collectionName0);
+				Validation.responseHeaderCodeValidation(MultiCategoryCollectionBookList13, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(MultiCategoryCollectionBookList13, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(MultiCategoryCollectionBookList13);
 				totalbooks=MultiCategoryCollectionBookList13.then().extract().path("totalbooks");
 				Validation.responseISGreater("totalbooks", totalbooks, 3);}
 
-				Response MultiCategoryCollectionBookList2=MultiCategoryCollectionBookList.multiCategoryCollectionBookList_Per("title","ASC",catlevel, bookID1, sqlhost, sqlUsername, sqlPassword, userToken, "4524242", "IPAD", collectionName0);
 				if(catlevel.contains ("1")){}			
-				else{Validation.responseHeaderCodeValidation(MultiCategoryCollectionBookList2, HttpStatus.SC_OK);
+				else{Response MultiCategoryCollectionBookList2=MultiCategoryCollectionBookList.multiCategoryCollectionBookList_Per("title","ASC",catlevel, bookID1, sqlhost, sqlUsername, sqlPassword, userToken, "4524242", deviceT, collectionName0);
+				Validation.responseHeaderCodeValidation(MultiCategoryCollectionBookList2, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(MultiCategoryCollectionBookList2, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(MultiCategoryCollectionBookList2);}
 
-				Response MultiCategoryCollectionBookList21=MultiCategoryCollectionBookList.multiCategoryCollectionBookList_Per_withpagi("title","ASC",0,5,catlevel, bookID1, sqlhost, sqlUsername, sqlPassword, userToken, "4524242", "IPAD", collectionName0);
 				if(catlevel.contains ("1")){}			
-				else{Validation.responseHeaderCodeValidation(MultiCategoryCollectionBookList21, HttpStatus.SC_OK);
+				else{Response MultiCategoryCollectionBookList21=MultiCategoryCollectionBookList.multiCategoryCollectionBookList_Per_withpagi("title","ASC",0,5,catlevel, bookID1, sqlhost, sqlUsername, sqlPassword, userToken, "4524242", deviceT, collectionName0);
+				Validation.responseHeaderCodeValidation(MultiCategoryCollectionBookList21, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(MultiCategoryCollectionBookList21, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(MultiCategoryCollectionBookList21);
 				totalbooks=MultiCategoryCollectionBookList21.then().extract().path("totalbooks");
 				Validation.responseISGreater("totalbooks", totalbooks, 3);}
 
-				Response MultiCategoryCollectionBookList22=MultiCategoryCollectionBookList.multiCategoryCollectionBookList_Per("title","DESC",catlevel, bookID1, sqlhost, sqlUsername, sqlPassword, userToken, "4524242", "IPAD", collectionName0);
 				if(catlevel.contains ("1")){}			
-				else{Validation.responseHeaderCodeValidation(MultiCategoryCollectionBookList22, HttpStatus.SC_OK);
+				else{Response MultiCategoryCollectionBookList22=MultiCategoryCollectionBookList.multiCategoryCollectionBookList_Per("title","DESC",catlevel, bookID1, sqlhost, sqlUsername, sqlPassword, userToken, "4524242", deviceT, collectionName0);
+				Validation.responseHeaderCodeValidation(MultiCategoryCollectionBookList22, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(MultiCategoryCollectionBookList22, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(MultiCategoryCollectionBookList22);}
 
-				Response MultiCategoryCollectionBookList23=MultiCategoryCollectionBookList.multiCategoryCollectionBookList_Per_withpagi("title","DESC",0,5,catlevel, bookID1, sqlhost, sqlUsername, sqlPassword, userToken, "4524242", "IPAD", collectionName0);
 				if(catlevel.contains ("1")){}			
-				else{Validation.responseHeaderCodeValidation(MultiCategoryCollectionBookList23, HttpStatus.SC_OK);
+				else{Response MultiCategoryCollectionBookList23=MultiCategoryCollectionBookList.multiCategoryCollectionBookList_Per_withpagi("title","DESC",0,5,catlevel, bookID1, sqlhost, sqlUsername, sqlPassword, userToken, "4524242", deviceT, collectionName0);
+				Validation.responseHeaderCodeValidation(MultiCategoryCollectionBookList23, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(MultiCategoryCollectionBookList23, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(MultiCategoryCollectionBookList23);
 				Validation.responseTimeValidation(MultiCategoryCollectionBookList23);
 				totalbooks=MultiCategoryCollectionBookList23.then().extract().path("totalbooks");
 				Validation.responseISGreater("totalbooks", totalbooks, 3);}
 
-				Response MultiCategoryCollectionBookList3=MultiCategoryCollectionBookList.multiCategoryCollectionBookList_Per("author","ASC",catlevel, bookID1, sqlhost, sqlUsername, sqlPassword, userToken, "4524242", "IPAD", collectionName0);
 				if(catlevel.contains ("1")){}			
-				else{Validation.responseHeaderCodeValidation(MultiCategoryCollectionBookList3, HttpStatus.SC_OK);
+				else{Response MultiCategoryCollectionBookList3=MultiCategoryCollectionBookList.multiCategoryCollectionBookList_Per("author","ASC",catlevel, bookID1, sqlhost, sqlUsername, sqlPassword, userToken, "4524242", deviceT, collectionName0);
+				Validation.responseHeaderCodeValidation(MultiCategoryCollectionBookList3, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(MultiCategoryCollectionBookList3, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(MultiCategoryCollectionBookList3);}
 
-				Response MultiCategoryCollectionBookList31=MultiCategoryCollectionBookList.multiCategoryCollectionBookList_Per_withpagi("author","ASC",0,5,catlevel, bookID1, sqlhost, sqlUsername, sqlPassword, userToken, "4524242", "IPAD", collectionName0);
 				if(catlevel.contains ("1")){}			
-				else{Validation.responseHeaderCodeValidation(MultiCategoryCollectionBookList31, HttpStatus.SC_OK);
+				else{Response MultiCategoryCollectionBookList31=MultiCategoryCollectionBookList.multiCategoryCollectionBookList_Per_withpagi("author","ASC",0,5,catlevel, bookID1, sqlhost, sqlUsername, sqlPassword, userToken, "4524242", deviceT, collectionName0);
+				Validation.responseHeaderCodeValidation(MultiCategoryCollectionBookList31, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(MultiCategoryCollectionBookList31, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(MultiCategoryCollectionBookList31);
 				Validation.responseTimeValidation(MultiCategoryCollectionBookList31);
 				totalbooks=MultiCategoryCollectionBookList31.then().extract().path("totalbooks");
 				Validation.responseISGreater("totalbooks", totalbooks, 3);}
 
-				Response MultiCategoryCollectionBookList32=MultiCategoryCollectionBookList.multiCategoryCollectionBookList_Per("author","DESC",catlevel, bookID1, sqlhost, sqlUsername, sqlPassword, userToken, "4524242", "IPAD", collectionName0);
 				if(catlevel.contains ("1")){}			
-				else{Validation.responseHeaderCodeValidation(MultiCategoryCollectionBookList32, HttpStatus.SC_OK);
+				else{Response MultiCategoryCollectionBookList32=MultiCategoryCollectionBookList.multiCategoryCollectionBookList_Per("author","DESC",catlevel, bookID1, sqlhost, sqlUsername, sqlPassword, userToken, "4524242", deviceT, collectionName0);
+				Validation.responseHeaderCodeValidation(MultiCategoryCollectionBookList32, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(MultiCategoryCollectionBookList32, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(MultiCategoryCollectionBookList32);}
 
-				Response MultiCategoryCollectionBookList33=MultiCategoryCollectionBookList.multiCategoryCollectionBookList_Per_withpagi("author","DESC",0,5,catlevel, bookID1, sqlhost, sqlUsername, sqlPassword, userToken, "4524242", "IPAD", collectionName0);
 				if(catlevel.contains ("1")){}			
-				else{Validation.responseHeaderCodeValidation(MultiCategoryCollectionBookList33, HttpStatus.SC_OK);
+				else{Response MultiCategoryCollectionBookList33=MultiCategoryCollectionBookList.multiCategoryCollectionBookList_Per_withpagi("author","DESC",0,5,catlevel, bookID1, sqlhost, sqlUsername, sqlPassword, userToken, "4524242", deviceT, collectionName0);
+				Validation.responseHeaderCodeValidation(MultiCategoryCollectionBookList33, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(MultiCategoryCollectionBookList33, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(MultiCategoryCollectionBookList33);Validation.responseTimeValidation(MultiCategoryCollectionBookList33);
 				totalbooks=MultiCategoryCollectionBookList33.then().extract().path("totalbooks");
 				Validation.responseISGreater("totalbooks", totalbooks, 3);}
 
-				Response MultiCategoryCollectionBookList4=MultiCategoryCollectionBookList.multiCategoryCollectionBookList_Per("archive_date","ASC",catlevel, bookID1, sqlhost, sqlUsername, sqlPassword, userToken, "4524242", "IPAD", collectionName0);
 				if(catlevel.contains ("1")){}			
-				else{Validation.responseHeaderCodeValidation(MultiCategoryCollectionBookList4, HttpStatus.SC_OK);
+				else{Response MultiCategoryCollectionBookList4=MultiCategoryCollectionBookList.multiCategoryCollectionBookList_Per("archive_date","ASC",catlevel, bookID1, sqlhost, sqlUsername, sqlPassword, userToken, "4524242", deviceT, collectionName0);
+				Validation.responseHeaderCodeValidation(MultiCategoryCollectionBookList4, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(MultiCategoryCollectionBookList4, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(MultiCategoryCollectionBookList4);}
 
-				Response MultiCategoryCollectionBookList41=MultiCategoryCollectionBookList.multiCategoryCollectionBookList_Per_withpagi("archive_date","ASC",0,5,catlevel, bookID1, sqlhost, sqlUsername, sqlPassword, userToken, "4524242", "IPAD", collectionName0);
 				if(catlevel.contains ("1")){}			
-				else{Validation.responseHeaderCodeValidation(MultiCategoryCollectionBookList41, HttpStatus.SC_OK);
+				else{Response MultiCategoryCollectionBookList41=MultiCategoryCollectionBookList.multiCategoryCollectionBookList_Per_withpagi("archive_date","ASC",0,5,catlevel, bookID1, sqlhost, sqlUsername, sqlPassword, userToken, "4524242", deviceT, collectionName0);
+				Validation.responseHeaderCodeValidation(MultiCategoryCollectionBookList41, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(MultiCategoryCollectionBookList41, HttpStatus.SC_OK);
-				Validation.responseTimeValidation(MultiCategoryCollectionBookList41);Validation.responseTimeValidation(MultiCategoryCollectionBookList33);
+				Validation.responseTimeValidation(MultiCategoryCollectionBookList41);Validation.responseTimeValidation(MultiCategoryCollectionBookList41);
 				totalbooks=MultiCategoryCollectionBookList41.then().extract().path("totalbooks");
 				Validation.responseISGreater("totalbooks", totalbooks, 3);}
 
-				Response MultiCategoryCollectionBookList42=MultiCategoryCollectionBookList.multiCategoryCollectionBookList_Per("archive_date","DESC",catlevel, bookID1, sqlhost, sqlUsername, sqlPassword, userToken, "4524242", "IPAD", collectionName0);
 				if(catlevel.contains ("1")){}			
-				else{Validation.responseHeaderCodeValidation(MultiCategoryCollectionBookList42, HttpStatus.SC_OK);
+				else{Response MultiCategoryCollectionBookList42=MultiCategoryCollectionBookList.multiCategoryCollectionBookList_Per("archive_date","DESC",catlevel, bookID1, sqlhost, sqlUsername, sqlPassword, userToken, "4524242", deviceT, collectionName0);
+				Validation.responseHeaderCodeValidation(MultiCategoryCollectionBookList42, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(MultiCategoryCollectionBookList42, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(MultiCategoryCollectionBookList42);}
 
-				Response MultiCategoryCollectionBookList43=MultiCategoryCollectionBookList.multiCategoryCollectionBookList_Per_withpagi("archive_date","DESC",0,5,catlevel, bookID1, sqlhost, sqlUsername, sqlPassword, userToken, "4524242", "IPAD", collectionName0);
 				if(catlevel.contains ("1")){}			
-				else{Validation.responseHeaderCodeValidation(MultiCategoryCollectionBookList43, HttpStatus.SC_OK);
+				else{Response MultiCategoryCollectionBookList43=MultiCategoryCollectionBookList.multiCategoryCollectionBookList_Per_withpagi("archive_date","DESC",0,5,catlevel, bookID1, sqlhost, sqlUsername, sqlPassword, userToken, "4524242", deviceT, collectionName0);
+				Validation.responseHeaderCodeValidation(MultiCategoryCollectionBookList43, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(MultiCategoryCollectionBookList43, HttpStatus.SC_OK);
-				Validation.responseTimeValidation(MultiCategoryCollectionBookList33);
-				totalbooks=MultiCategoryCollectionBookList33.then().extract().path("totalbooks");
+				Validation.responseTimeValidation(MultiCategoryCollectionBookList43);
+				totalbooks=MultiCategoryCollectionBookList43.then().extract().path("totalbooks");
 				Validation.responseISGreater("totalbooks", totalbooks, 3);}
 
 				Response books_OAuthres = Books_OAuth.books_OAuth(consumerKey, consumerSecret);
@@ -1756,7 +1738,7 @@ public class RestAssured {
 				Validation.responseKeyValidation_key(books_OAuthres, "category");
 				Validation.responseKeyValidation_key(books_OAuthres, "categoryList");
 				Validation.responseKeyValidation_key(books_OAuthres, "bookActive");
-				System.out.println("books_OAuthres : " +books_OAuthres);
+
 
 				Response ListBooksV1_OAuth_With_Pagi_res = ListBooksV1_OAuth.listBooksV1_OAuth_With_Pagi(0, 60, consumerKey, consumerSecret);
 				Validation.responseHeaderCodeValidation(ListBooksV1_OAuth_With_Pagi_res, HttpStatus.SC_OK);
@@ -1771,7 +1753,7 @@ public class RestAssured {
 				Validation.responseKeyValidation_key(ListBooksV1_OAuth_With_Pagi_res, "category");
 				Validation.responseKeyValidation_key(ListBooksV1_OAuth_With_Pagi_res, "categoryList");
 				Validation.responseKeyValidation_key(ListBooksV1_OAuth_With_Pagi_res, "version");
-				System.out.println("ListBooksV1_OAuth_With_Pagi_res : "+ListBooksV1_OAuth_With_Pagi_res);
+
 
 				Response ListBooksV1_OAuth_With_Pageno_res = ListBooksV1_OAuth.listBooksV1_OAuth_With_PageNO(0, 6, consumerKey, consumerSecret);
 				Validation.responseHeaderCodeValidation(ListBooksV1_OAuth_With_Pageno_res, HttpStatus.SC_OK);
@@ -1786,7 +1768,7 @@ public class RestAssured {
 				Validation.responseKeyValidation_key(ListBooksV1_OAuth_With_Pageno_res, "category");
 				Validation.responseKeyValidation_key(ListBooksV1_OAuth_With_Pageno_res, "categoryList");
 				Validation.responseKeyValidation_key(ListBooksV1_OAuth_With_Pageno_res, "version");
-				System.out.println("ListBooksV1_OAuth_With_Pageno_res : "+ListBooksV1_OAuth_With_Pageno_res);
+
 
 				Response listBooksV1_OAuth_without_pagires =ListBooksV1_OAuth.listBooksV1_OAuth_without_pagi(consumerKey, consumerSecret);
 				Validation.responseHeaderCodeValidation(listBooksV1_OAuth_without_pagires, HttpStatus.SC_OK);
@@ -1801,7 +1783,7 @@ public class RestAssured {
 				Validation.responseKeyValidation_key(listBooksV1_OAuth_without_pagires, "category");
 				Validation.responseKeyValidation_key(listBooksV1_OAuth_without_pagires, "categoryList");
 				Validation.responseKeyValidation_key(listBooksV1_OAuth_without_pagires, "version");
-				System.out.println("listBooksV1_OAuth_without_pagires : "+listBooksV1_OAuth_without_pagires);
+
 
 				Response ListBooks_OAuth_withpagi_res= ListBooks_OAuth.listBooks_OAuth_With_Pagi(0, 60, consumerKey, consumerSecret);
 				Validation.responseHeaderCodeValidation(ListBooks_OAuth_withpagi_res, HttpStatus.SC_OK);
@@ -1816,7 +1798,7 @@ public class RestAssured {
 				Validation.responseKeyValidation_key(ListBooks_OAuth_withpagi_res, "category");
 				Validation.responseKeyValidation_key(ListBooks_OAuth_withpagi_res, "categoryList");
 				Validation.responseKeyValidation_key(ListBooks_OAuth_withpagi_res, "version");
-				System.out.println("ListBooks_OAuth_withpagi_res : "+ListBooks_OAuth_withpagi_res);
+
 
 				Response ListBooks_OAuth_without_Pagi_res = ListBooks_OAuth.listBooks_OAuth_withoutpagi(consumerKey, consumerSecret);
 				System.out.println("ListBooks_OAuth_res : "+ListBooks_OAuth_without_Pagi_res);
@@ -1835,8 +1817,7 @@ public class RestAssured {
 				clientBookID = ListBooks_OAuth_without_Pagi_res.then().extract().path("bookList.book.clientBookID[1]");
 				System.out.println("clientBookID1: " +clientBookID);
 
-				Response ListBooks_with_pageno=ListBooks_OAuth.listBooks_OAuth_With_PageNO(0, 5, consumerKey, consumerSecret);
-				System.out.println("ListBooks_OAuth_res : "+ListBooks_with_pageno);
+				Response ListBooks_with_pageno=ListBooks_OAuth.listBooks_OAuth_With_PageNO(0, 5, consumerKey, consumerSecret);				
 				Validation.responseHeaderCodeValidation(ListBooks_with_pageno, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(ListBooks_with_pageno, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(ListBooks_with_pageno);
@@ -1849,7 +1830,7 @@ public class RestAssured {
 				Validation.responseKeyValidation_key(ListBooks_with_pageno, "category");
 				Validation.responseKeyValidation_key(ListBooks_with_pageno, "categoryList");
 				Validation.responseKeyValidation_key(ListBooks_with_pageno, "version");
-				System.out.println("ListBooks_with_pageno :: "+ListBooks_with_pageno);
+
 
 
 				Response getBookMetadata_res = GetBookMetadata.getBookMetadata(consumerKey, consumerSecret,clientBookID);
@@ -1872,7 +1853,7 @@ public class RestAssured {
 				Validation.responseKeyValidation_key(getBookMetadata_res, "author");
 				Validation.responseKeyValidation_key(getBookMetadata_res, "description");
 				Validation.responseKeyValidation_key(getBookMetadata_res, "categoryIdList");
-				System.out.println("getBookMetadata_res : " +getBookMetadata_res);
+
 
 				Response bookMetadata_res = BookMetadata.bookMetadata(consumerKey, consumerSecret,bookID1);
 				Validation.responseHeaderCodeValidation(bookMetadata_res, HttpStatus.SC_OK);
@@ -1894,7 +1875,7 @@ public class RestAssured {
 				Validation.responseKeyValidation_key(bookMetadata_res, "author");
 				Validation.responseKeyValidation_key(bookMetadata_res, "description");
 				Validation.responseKeyValidation_key(bookMetadata_res, "categoryIdList");
-				System.out.println("bookMetadata_res : " +bookMetadata_res);
+
 
 
 				Response clientUserID_books_res = ClientUserID_books.clientUserID_books(consumerKey, consumerSecret, search,clientUserID);
@@ -1911,7 +1892,7 @@ public class RestAssured {
 				Validation.responseKeyValidation_key(clientUserID_books_res, "category");
 				Validation.responseKeyValidation_key(clientUserID_books_res, "categoryList");
 				Validation.responseKeyValidation_key(clientUserID_books_res, "bookActive");
-				System.out.println("clientUserID_books_res : "+clientUserID_books_res);
+
 
 				Response userAssignedBooks_res = UserAssignedBooks_OAuth.userAssignedBooks_OAuth(consumerKey, consumerSecret,clientUserID);
 				Validation.responseHeaderCodeValidation(userAssignedBooks_res, HttpStatus.SC_OK);
@@ -1931,7 +1912,7 @@ public class RestAssured {
 				Validation.responseKeyValidation_key(userAssignedBooks_res, "pages");
 				Validation.responseKeyValidation_key(userAssignedBooks_res, "refId");
 				Validation.responseKeyValidation_key(userAssignedBooks_res, "version");
-				System.out.println("userAssignedBooks_res : "+userAssignedBooks_res);
+
 
 				Response userAssignedBooks_withPagi_Res = UserAssignedBooks_OAuth.userAssignedBooks_OAuth_with_pagi(0, 80, consumerKey, consumerSecret,clientUserID);
 				Validation.responseHeaderCodeValidation(userAssignedBooks_withPagi_Res, HttpStatus.SC_OK);
@@ -1955,9 +1936,9 @@ public class RestAssured {
 				totalbooks=userAssignedBooks_withPagi_Res.then().extract().path("totalbooks");
 				Log.info("totalbooks: "+totalbooks);
 				Validation.responseISGreater("totalbooks", totalbooks, 3);
-				System.out.println("userAssignedBooks_withPagi_Res : "+userAssignedBooks_withPagi_Res);
 
-				Response refreshBookListres = RefreshBookList.refreshBookList(userToken,"56496","IPAD");
+
+				Response refreshBookListres = RefreshBookList.refreshBookList(userToken,"56496",deviceT);
 				Validation.responseHeaderCodeValidation(refreshBookListres, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(refreshBookListres, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(refreshBookListres);
@@ -1979,11 +1960,11 @@ public class RestAssured {
 				Validation.responseKeyValidation_key(refreshBookListres, "ebookID");
 				Validation.responseKeyValidation_key(refreshBookListres, "expiryDate");
 				Validation.responseKeyValidation_key(refreshBookListres, "favourite");
-				System.out.println("refreshBookListres : "+refreshBookListres);
+
 
 
 				//2019/10/31 14:46:04
-				Response v1refreshBookList_res =V1refreshBookList.v1refreshBookList(""+archiveDate+"","NEW","UPDATE",bookID1,bookID2,userToken,"56454", "IPAD",clientID);
+				Response v1refreshBookList_res =V1refreshBookList.v1refreshBookList(""+archiveDate+"","NEW","UPDATE",bookID1,bookID2,userToken,"56454", deviceT,clientID);
 				Validation.responseHeaderCodeValidation(v1refreshBookList_res, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(v1refreshBookList_res, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(v1refreshBookList_res);
@@ -2009,31 +1990,33 @@ public class RestAssured {
 				operation1=v1refreshBookList_res.then().extract().path("bookList.book.operation[1]");
 				Validation.responseKeyAndValue(v1refreshBookList_res, "operation", operation0);
 				Validation.responseKeyAndValue(v1refreshBookList_res, "operation", operation1);
-				System.out.println("v1/v1refreshBookList_res : "+v1refreshBookList_res);
 
 
-				Response markAsFavourite_res = MarkAsFavourite.markAsFavourite(bookID1,userToken,"45564595","IPAD");
+
+				Response markAsFavourite_res = MarkAsFavourite.markAsFavourite(bookID1,userToken,"45564595",deviceT);
 				BookID_mark1 = bookID1;
 				Validation.responseHeaderCodeValidation(markAsFavourite_res, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(markAsFavourite_res, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(markAsFavourite_res);
-				System.out.println("markAsFavourite_res : "+markAsFavourite_res);
 
-				Response markAsFavourite_res1 = MarkAsFavourite.markAsFavourite(bookID2,userToken,"45564595","IPAD");
+
+				Response markAsFavourite_res1 = MarkAsFavourite.markAsFavourite(bookID2,userToken,"45564595",deviceT);
 				BookID_mark2 = bookID2;
 				Validation.responseHeaderCodeValidation(markAsFavourite_res1, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(markAsFavourite_res1, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(markAsFavourite_res1);
-				System.out.println("markAsFavourite_res : "+markAsFavourite_res1);
 
-				Response markAsFavourite_res3 = MarkAsFavourite.markAsFavourite(bookID3,userToken,"45564595","IPAD");
+
+
+				Response markAsFavourite_res3 = MarkAsFavourite.markAsFavourite(bookID3,userToken,"45564595",deviceT);
 				BookID_mark3 = bookID3;
 				Validation.responseHeaderCodeValidation(markAsFavourite_res3, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(markAsFavourite_res3, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(markAsFavourite_res3);
-				System.out.println("markAsFavourite_res : "+markAsFavourite_res3);
 
-				Response FetchFavouriteBooks_res = FetchFavouriteBooks.fetchFavouriteBooks(userToken,"45564595","IPAD");
+
+
+				Response FetchFavouriteBooks_res = FetchFavouriteBooks.fetchFavouriteBooks(userToken,"45564595",deviceT);
 				Validation.responseHeaderCodeValidation(FetchFavouriteBooks_res, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(FetchFavouriteBooks_res, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchFavouriteBooks_res);
@@ -2063,191 +2046,192 @@ public class RestAssured {
 				Validation.responseINTEGERKeyAndValue(FetchFavouriteBooks_res, "id", BookID_mark1);
 				Validation.responseINTEGERKeyAndValue(FetchFavouriteBooks_res, "id", BookID_mark2);
 				Validation.responseINTEGERKeyAndValue(FetchFavouriteBooks_res, "id", BookID_mark3);
-				System.out.println("FetchFavouriteBooks_res : "+FetchFavouriteBooks_res);
+
 
 				//******START FETCHFAVOURATESBOOKS PERMUTATION
-				Response FetchFavouriteBooks_res1 = FetchFavouriteBooks.fetchFavouriteBooks_per("isbn", "ASC", userToken, "464", "IPAD");
+				Response FetchFavouriteBooks_res1 = FetchFavouriteBooks.fetchFavouriteBooks_per("isbn", "ASC", userToken, "464", deviceT);
 				Validation.responseHeaderCodeValidation(FetchFavouriteBooks_res1, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(FetchFavouriteBooks_res1, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchFavouriteBooks_res1);
-				System.out.println("FetchFavouriteBooks_res1 :: "+FetchFavouriteBooks_res1);
 
-				Response FetchFavouriteBooks_res11 = FetchFavouriteBooks.fetchFavouriteBooks_per_withPagi("isbn", "ASC",0,10, userToken, "464", "IPAD");
+
+
+				Response FetchFavouriteBooks_res11 = FetchFavouriteBooks.fetchFavouriteBooks_per_withPagi("isbn", "ASC",0,10, userToken, "464", deviceT);
 				Validation.responseHeaderCodeValidation(FetchFavouriteBooks_res11, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(FetchFavouriteBooks_res11, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchFavouriteBooks_res11);
-				System.out.println("FetchFavouriteBooks_res1 :: "+FetchFavouriteBooks_res11);
 
-				Response FetchFavouriteBooks_res12 = FetchFavouriteBooks.fetchFavouriteBooks_per("isbn","DESC",userToken,"464","IPAD");
+
+				Response FetchFavouriteBooks_res12 = FetchFavouriteBooks.fetchFavouriteBooks_per("isbn","DESC",userToken,"464",deviceT);
 				Validation.responseHeaderCodeValidation(FetchFavouriteBooks_res12, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(FetchFavouriteBooks_res12, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchFavouriteBooks_res12);
-				System.out.println("FetchFavouriteBooks_res1 :: "+FetchFavouriteBooks_res12);
 
-				Response FetchFavouriteBooks_res13 = FetchFavouriteBooks.fetchFavouriteBooks_per_withPagi("isbn","DESC",0,10,userToken,"464","IPAD");
+
+				Response FetchFavouriteBooks_res13 = FetchFavouriteBooks.fetchFavouriteBooks_per_withPagi("isbn","DESC",0,10,userToken,"464",deviceT);
 				Validation.responseHeaderCodeValidation(FetchFavouriteBooks_res13, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(FetchFavouriteBooks_res13, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchFavouriteBooks_res13);
-				System.out.println("FetchFavouriteBooks_res1 :: "+FetchFavouriteBooks_res13);
 
-				Response FetchFavouriteBooks_res2 = FetchFavouriteBooks.fetchFavouriteBooks_per("title", "ASC", userToken, "464", "IPAD");
+
+				Response FetchFavouriteBooks_res2 = FetchFavouriteBooks.fetchFavouriteBooks_per("title", "ASC", userToken, "464", deviceT);
 				Validation.responseHeaderCodeValidation(FetchFavouriteBooks_res2, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(FetchFavouriteBooks_res2, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchFavouriteBooks_res2);
-				System.out.println("FetchFavouriteBooks_res1 :: "+FetchFavouriteBooks_res2);
 
-				Response FetchFavouriteBooks_res21 = FetchFavouriteBooks.fetchFavouriteBooks_per_withPagi("title", "ASC",0,10, userToken, "464", "IPAD");
+
+				Response FetchFavouriteBooks_res21 = FetchFavouriteBooks.fetchFavouriteBooks_per_withPagi("title", "ASC",0,10, userToken, "464", deviceT);
 				Validation.responseHeaderCodeValidation(FetchFavouriteBooks_res21, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(FetchFavouriteBooks_res21, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchFavouriteBooks_res21);
-				System.out.println("FetchFavouriteBooks_res1 :: "+FetchFavouriteBooks_res21);
 
-				Response FetchFavouriteBooks_res22 = FetchFavouriteBooks.fetchFavouriteBooks_per("title","DESC",userToken,"464","IPAD");
+
+				Response FetchFavouriteBooks_res22 = FetchFavouriteBooks.fetchFavouriteBooks_per("title","DESC",userToken,"464",deviceT);
 				Validation.responseHeaderCodeValidation(FetchFavouriteBooks_res22, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(FetchFavouriteBooks_res22, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchFavouriteBooks_res22);
-				System.out.println("FetchFavouriteBooks_res1 :: "+FetchFavouriteBooks_res12);
 
-				Response FetchFavouriteBooks_res23 = FetchFavouriteBooks.fetchFavouriteBooks_per_withPagi("title","DESC",0,10,userToken,"464","IPAD");
+
+				Response FetchFavouriteBooks_res23 = FetchFavouriteBooks.fetchFavouriteBooks_per_withPagi("title","DESC",0,10,userToken,"464",deviceT);
 				Validation.responseHeaderCodeValidation(FetchFavouriteBooks_res23, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(FetchFavouriteBooks_res23, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchFavouriteBooks_res23);
-				System.out.println("FetchFavouriteBooks_res1 :: "+FetchFavouriteBooks_res23);
 
-				Response FetchFavouriteBooks_res3 = FetchFavouriteBooks.fetchFavouriteBooks_per("title", "ASC", userToken, "464", "IPAD");
+
+				Response FetchFavouriteBooks_res3 = FetchFavouriteBooks.fetchFavouriteBooks_per("title", "ASC", userToken, "464", deviceT);
 				Validation.responseHeaderCodeValidation(FetchFavouriteBooks_res3, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(FetchFavouriteBooks_res3, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchFavouriteBooks_res3);
-				System.out.println("FetchFavouriteBooks_res1 :: "+FetchFavouriteBooks_res3);
 
-				Response FetchFavouriteBooks_res31 = FetchFavouriteBooks.fetchFavouriteBooks_per_withPagi("title", "ASC",0,10, userToken, "464", "IPAD");
+
+				Response FetchFavouriteBooks_res31 = FetchFavouriteBooks.fetchFavouriteBooks_per_withPagi("title", "ASC",0,10, userToken, "464", deviceT);
 				Validation.responseHeaderCodeValidation(FetchFavouriteBooks_res31, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(FetchFavouriteBooks_res31, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchFavouriteBooks_res31);
-				System.out.println("FetchFavouriteBooks_res1 :: "+FetchFavouriteBooks_res31);
 
-				Response FetchFavouriteBooks_res32 = FetchFavouriteBooks.fetchFavouriteBooks_per("title","DESC",userToken,"464","IPAD");
+
+				Response FetchFavouriteBooks_res32 = FetchFavouriteBooks.fetchFavouriteBooks_per("title","DESC",userToken,"464",deviceT);
 				Validation.responseHeaderCodeValidation(FetchFavouriteBooks_res32, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(FetchFavouriteBooks_res32, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchFavouriteBooks_res32);
-				System.out.println("FetchFavouriteBooks_res1 :: "+FetchFavouriteBooks_res32);
 
-				Response FetchFavouriteBooks_res33 = FetchFavouriteBooks.fetchFavouriteBooks_per_withPagi("title","DESC",0,10,userToken,"464","IPAD");
+
+				Response FetchFavouriteBooks_res33 = FetchFavouriteBooks.fetchFavouriteBooks_per_withPagi("title","DESC",0,10,userToken,"464",deviceT);
 				Validation.responseHeaderCodeValidation(FetchFavouriteBooks_res33, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(FetchFavouriteBooks_res33, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchFavouriteBooks_res33);
-				System.out.println("FetchFavouriteBooks_res1 :: "+FetchFavouriteBooks_res33);
 
-				Response FetchFavouriteBooks_res4 = FetchFavouriteBooks.fetchFavouriteBooks_per("author", "ASC", userToken, "464", "IPAD");
+
+				Response FetchFavouriteBooks_res4 = FetchFavouriteBooks.fetchFavouriteBooks_per("author", "ASC", userToken, "464", deviceT);
 				Validation.responseHeaderCodeValidation(FetchFavouriteBooks_res4, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(FetchFavouriteBooks_res4, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchFavouriteBooks_res4);
-				System.out.println("FetchFavouriteBooks_res1 :: "+FetchFavouriteBooks_res4);
 
-				Response FetchFavouriteBooks_res41 = FetchFavouriteBooks.fetchFavouriteBooks_per_withPagi("author", "ASC",0,10, userToken, "464", "IPAD");
+
+				Response FetchFavouriteBooks_res41 = FetchFavouriteBooks.fetchFavouriteBooks_per_withPagi("author", "ASC",0,10, userToken, "464", deviceT);
 				Validation.responseHeaderCodeValidation(FetchFavouriteBooks_res41, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(FetchFavouriteBooks_res41, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchFavouriteBooks_res41);
-				System.out.println("FetchFavouriteBooks_res1 :: "+FetchFavouriteBooks_res41);
 
-				Response FetchFavouriteBooks_res42 = FetchFavouriteBooks.fetchFavouriteBooks_per("author","DESC",userToken,"464","IPAD");
+
+				Response FetchFavouriteBooks_res42 = FetchFavouriteBooks.fetchFavouriteBooks_per("author","DESC",userToken,"464",deviceT);
 				Validation.responseHeaderCodeValidation(FetchFavouriteBooks_res42, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(FetchFavouriteBooks_res42, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchFavouriteBooks_res42);
-				System.out.println("FetchFavouriteBooks_res1 :: "+FetchFavouriteBooks_res42);
 
-				Response FetchFavouriteBooks_res43 = FetchFavouriteBooks.fetchFavouriteBooks_per_withPagi("author","DESC",0,10,userToken,"464","IPAD");
+
+				Response FetchFavouriteBooks_res43 = FetchFavouriteBooks.fetchFavouriteBooks_per_withPagi("author","DESC",0,10,userToken,"464",deviceT);
 				Validation.responseHeaderCodeValidation(FetchFavouriteBooks_res43, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(FetchFavouriteBooks_res43, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchFavouriteBooks_res43);
-				System.out.println("FetchFavouriteBooks_res1 :: "+FetchFavouriteBooks_res43);
 
-				Response FetchFavouriteBooks_res5 = FetchFavouriteBooks.fetchFavouriteBooks_per("archive_date", "ASC", userToken, "464", "IPAD");
+
+				Response FetchFavouriteBooks_res5 = FetchFavouriteBooks.fetchFavouriteBooks_per("archive_date", "ASC", userToken, "464", deviceT);
 				Validation.responseHeaderCodeValidation(FetchFavouriteBooks_res5, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(FetchFavouriteBooks_res5, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchFavouriteBooks_res5);
-				System.out.println("FetchFavouriteBooks_res1 :: "+FetchFavouriteBooks_res5);
 
-				Response FetchFavouriteBooks_res51 = FetchFavouriteBooks.fetchFavouriteBooks_per_withPagi("archive_date", "ASC",0,10, userToken, "464", "IPAD");
+
+				Response FetchFavouriteBooks_res51 = FetchFavouriteBooks.fetchFavouriteBooks_per_withPagi("archive_date", "ASC",0,10, userToken, "464", deviceT);
 				Validation.responseHeaderCodeValidation(FetchFavouriteBooks_res51, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(FetchFavouriteBooks_res51, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchFavouriteBooks_res51);
-				System.out.println("FetchFavouriteBooks_res1 :: "+FetchFavouriteBooks_res51);
 
-				Response FetchFavouriteBooks_res52 = FetchFavouriteBooks.fetchFavouriteBooks_per("archive_date","DESC",userToken,"464","IPAD");
+
+				Response FetchFavouriteBooks_res52 = FetchFavouriteBooks.fetchFavouriteBooks_per("archive_date","DESC",userToken,"464",deviceT);
 				Validation.responseHeaderCodeValidation(FetchFavouriteBooks_res52, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(FetchFavouriteBooks_res52, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchFavouriteBooks_res52);
-				System.out.println("FetchFavouriteBooks_res1 :: "+FetchFavouriteBooks_res52);
 
-				Response FetchFavouriteBooks_res53 = FetchFavouriteBooks.fetchFavouriteBooks_per_withPagi("archive_date","DESC",0,10,userToken,"464","IPAD");
+
+				Response FetchFavouriteBooks_res53 = FetchFavouriteBooks.fetchFavouriteBooks_per_withPagi("archive_date","DESC",0,10,userToken,"464",deviceT);
 				Validation.responseHeaderCodeValidation(FetchFavouriteBooks_res53, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(FetchFavouriteBooks_res53, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchFavouriteBooks_res53);
-				System.out.println("FetchFavouriteBooks_res1 :: "+FetchFavouriteBooks_res53);
+
 
 
 				//********* END FETCHFAVOURATESBOOKS PERMUTATION
 
-				Response unMarkAsFavourite_res = UnMarkAsFavourite.unMarkAsFavourite(BookID_mark1,userToken,"45564595","IPAD");
+				Response unMarkAsFavourite_res = UnMarkAsFavourite.unMarkAsFavourite(BookID_mark1,userToken,"45564595",deviceT);
 				Validation.responseHeaderCodeValidation(unMarkAsFavourite_res, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(unMarkAsFavourite_res, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(unMarkAsFavourite_res);
-				System.out.println("unMarkAsFavourite_res : "+unMarkAsFavourite_res);
 
-				Response unMarkAsFavourite_res1 = UnMarkAsFavourite.unMarkAsFavourite(BookID_mark2,userToken,"45564595","IPAD");
+
+				Response unMarkAsFavourite_res1 = UnMarkAsFavourite.unMarkAsFavourite(BookID_mark2,userToken,"45564595",deviceT);
 				Validation.responseHeaderCodeValidation(unMarkAsFavourite_res1, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(unMarkAsFavourite_res1, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(unMarkAsFavourite_res1);
-				System.out.println("unMarkAsFavourite_res : "+unMarkAsFavourite_res1);
 
-				Response unMarkAsFavourite_res3 = UnMarkAsFavourite.unMarkAsFavourite(BookID_mark3,userToken,"45564595","IPAD");
+
+				Response unMarkAsFavourite_res3 = UnMarkAsFavourite.unMarkAsFavourite(BookID_mark3,userToken,"45564595",deviceT);
 				Validation.responseHeaderCodeValidation(unMarkAsFavourite_res3, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(unMarkAsFavourite_res3, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(unMarkAsFavourite_res3);
-				System.out.println("unMarkAsFavourite_res : "+unMarkAsFavourite_res3);
 
-				Response FetchFavouriteBooks_resA= FetchFavouriteBooks.fetchFavouriteBooks(userToken,"45564595","IPAD");
+
+				Response FetchFavouriteBooks_resA= FetchFavouriteBooks.fetchFavouriteBooks(userToken,"45564595",deviceT);
 				Validation.responseHeaderCodeValidation(FetchFavouriteBooks_resA, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(FetchFavouriteBooks_resA, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchFavouriteBooks_resA);
 				Validation.responseNOTKeyValidation_key(FetchFavouriteBooks_resA, ""+BookID_mark1+"");
 				Validation.responseNOTKeyValidation_key(FetchFavouriteBooks_resA, ""+BookID_mark2+"");
 				Validation.responseNOTKeyValidation_key(FetchFavouriteBooks_resA, ""+BookID_mark3+"");
-				System.out.println("FetchFavouriteBooks_res1 : "+FetchFavouriteBooks_resA);
+
 
 
 				SimpleDateFormat formatter11 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");  
 				Date date1 = new Date();  
 				String  time1=formatter11.format(date1);
-				Response saveSessionHistory_res = SaveSessionHistory.saveSessionHistory(userToken,"45564595","IPAD",bookID1,time1);
+				Response saveSessionHistory_res = SaveSessionHistory.saveSessionHistory(userToken,"45564595",deviceT,bookID1,time1);
 				Log.info("TIME : "+time);
 				Validation.responseHeaderCodeValidation(saveSessionHistory_res, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(saveSessionHistory_res, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(saveSessionHistory_res);
 				Validation.responseKeyValidation_key(saveSessionHistory_res, "ok");
-				System.out.println("saveSessionHistory_res : "+saveSessionHistory_res);
-				
+
+
 				time1 = formatter11.format(date1);
-				Response saveSessionHistory_res2 = SaveSessionHistory.saveSessionHistory(userToken,"45564595","IPAD",bookID2,time1);
+				Response saveSessionHistory_res2 = SaveSessionHistory.saveSessionHistory(userToken,"45564595",deviceT,bookID2,time1);
 				Log.info("TIME : "+time1);
 				Validation.responseHeaderCodeValidation(saveSessionHistory_res2, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(saveSessionHistory_res2, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(saveSessionHistory_res2);
 				Validation.responseKeyValidation_key(saveSessionHistory_res2, "ok");
-				System.out.println("saveSessionHistory_res : "+saveSessionHistory_res2);
-				
+
+
 				time1 = formatter11.format(date1);
-				Response saveSessionHistory_res3 = SaveSessionHistory.saveSessionHistory(userToken,"45564595","IPAD",bookID3,time);
+				Response saveSessionHistory_res3 = SaveSessionHistory.saveSessionHistory(userToken,"45564595",deviceT,bookID3,time);
 				Log.info("TIME : "+time1);
 				Validation.responseHeaderCodeValidation(saveSessionHistory_res3, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(saveSessionHistory_res3, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(saveSessionHistory_res3);
 				Validation.responseKeyValidation_key(saveSessionHistory_res3, "ok");
-				System.out.println("saveSessionHistory_res : "+saveSessionHistory_res3);
 
 
-				Response FetchRecentlyViewed_res = FetchRecentlyViewed.fetchRecentlyViewed_without_pagi(userToken,"54254fd","IPAD");
+
+				Response FetchRecentlyViewed_res = FetchRecentlyViewed.fetchRecentlyViewed_without_pagi(userToken,"54254fd",deviceT);
 				Validation.responseHeaderCodeValidation(FetchRecentlyViewed_res, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(FetchRecentlyViewed_res, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(FetchRecentlyViewed_res);
@@ -2270,134 +2254,135 @@ public class RestAssured {
 				Validation.responseKeyValidation_key(FetchRecentlyViewed_res, "pages");
 				Validation.responseKeyValidation_key(FetchRecentlyViewed_res, "readingPercentage");
 				Validation.responseKeyValidation_key(FetchRecentlyViewed_res, "encryption");
-				System.out.println("FetchRecentlyViewed_res : "+FetchRecentlyViewed_res);
+
 
 
 				//START Recently viewed BOOKS PERMUTATION
-				Response fetchRecentlyViewed_permu1 = FetchRecentlyViewed.fetchRecentlyViewed_permu("isbn", "ASC", userToken,"da31131","IPAD");
+				Response fetchRecentlyViewed_permu1 = FetchRecentlyViewed.fetchRecentlyViewed_permu("isbn", "ASC", userToken,"da31131",deviceT);
 				Validation.responseHeaderCodeValidation(fetchRecentlyViewed_permu1, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(fetchRecentlyViewed_permu1, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(fetchRecentlyViewed_permu1);
-				System.out.println("fetchRecentlyViewed_permu1 : "+fetchRecentlyViewed_permu1);
 
-				Response fetchRecentlyViewed_permu11 = FetchRecentlyViewed.fetchRecentlyViewed_permu_withpagi("isbn","ASC",0,10,userToken,"da31131","IPAD");
+
+				Response fetchRecentlyViewed_permu11 = FetchRecentlyViewed.fetchRecentlyViewed_permu_withpagi("isbn","ASC",0,10,userToken,"da31131",deviceT);
 				Validation.responseHeaderCodeValidation(fetchRecentlyViewed_permu11, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(fetchRecentlyViewed_permu11, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(fetchRecentlyViewed_permu11);
 				totalbooks=fetchRecentlyViewed_permu11.then().extract().path("totalbooks");
 				Log.info("totalbooks : "+totalbooks);
 				Validation.responseISGreater("totalbooks", totalbooks, 3);
-				System.out.println("fetchRecentlyViewed_permu1 : "+fetchRecentlyViewed_permu11);
 
-				Response fetchRecentlyViewed_permu12 = FetchRecentlyViewed.fetchRecentlyViewed_permu("isbn", "DESC", userToken,"da31131","IPAD");
+
+				Response fetchRecentlyViewed_permu12 = FetchRecentlyViewed.fetchRecentlyViewed_permu("isbn", "DESC", userToken,"da31131",deviceT);
 				Validation.responseHeaderCodeValidation(fetchRecentlyViewed_permu12, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(fetchRecentlyViewed_permu12, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(fetchRecentlyViewed_permu12);
-				System.out.println("fetchRecentlyViewed_permu1 : "+fetchRecentlyViewed_permu12);
 
-				Response fetchRecentlyViewed_permu13 = FetchRecentlyViewed.fetchRecentlyViewed_permu_withpagi("isbn","DESC",0,10,userToken,"da31131","IPAD");
+
+				Response fetchRecentlyViewed_permu13 = FetchRecentlyViewed.fetchRecentlyViewed_permu_withpagi("isbn","DESC",0,10,userToken,"da31131",deviceT);
 				Validation.responseHeaderCodeValidation(fetchRecentlyViewed_permu13, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(fetchRecentlyViewed_permu13, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(fetchRecentlyViewed_permu13);
 				totalbooks=fetchRecentlyViewed_permu13.then().extract().path("totalbooks");
 				Log.info("totalbooks : "+totalbooks);
 				Validation.responseISGreater("totalbooks", totalbooks, 3);
-				System.out.println("fetchRecentlyViewed_permu1 : "+fetchRecentlyViewed_permu13);
 
-				Response fetchRecentlyViewed_permu2 = FetchRecentlyViewed.fetchRecentlyViewed_permu("title", "ASC", userToken,"da31131","IPAD");
+
+				Response fetchRecentlyViewed_permu2 = FetchRecentlyViewed.fetchRecentlyViewed_permu("title", "ASC", userToken,"da31131",deviceT);
 				Validation.responseHeaderCodeValidation(fetchRecentlyViewed_permu2, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(fetchRecentlyViewed_permu2, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(fetchRecentlyViewed_permu2);
-				System.out.println("fetchRecentlyViewed_permu1 : "+fetchRecentlyViewed_permu2);
 
-				Response fetchRecentlyViewed_permu21 = FetchRecentlyViewed.fetchRecentlyViewed_permu_withpagi("title","ASC",0,10,userToken,"da31131","IPAD");
+
+				Response fetchRecentlyViewed_permu21 = FetchRecentlyViewed.fetchRecentlyViewed_permu_withpagi("title","ASC",0,10,userToken,"da31131",deviceT);
 				Validation.responseHeaderCodeValidation(fetchRecentlyViewed_permu21, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(fetchRecentlyViewed_permu21, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(fetchRecentlyViewed_permu21);
 				totalbooks=fetchRecentlyViewed_permu21.then().extract().path("totalbooks");
 				Log.info("totalbooks : "+totalbooks);
 				Validation.responseISGreater("totalbooks", totalbooks, 3);
-				System.out.println("fetchRecentlyViewed_permu1 : "+fetchRecentlyViewed_permu21);
 
-				Response fetchRecentlyViewed_permu22 = FetchRecentlyViewed.fetchRecentlyViewed_permu("title", "DESC", userToken,"da31131","IPAD");
+
+				Response fetchRecentlyViewed_permu22 = FetchRecentlyViewed.fetchRecentlyViewed_permu("title", "DESC", userToken,"da31131",deviceT);
 				Validation.responseHeaderCodeValidation(fetchRecentlyViewed_permu22, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(fetchRecentlyViewed_permu22, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(fetchRecentlyViewed_permu22);
-				System.out.println("fetchRecentlyViewed_permu1 : "+fetchRecentlyViewed_permu22);
 
-				Response fetchRecentlyViewed_permu23 = FetchRecentlyViewed.fetchRecentlyViewed_permu_withpagi("title","DESC",0,10,userToken,"da31131","IPAD");
+
+				Response fetchRecentlyViewed_permu23 = FetchRecentlyViewed.fetchRecentlyViewed_permu_withpagi("title","DESC",0,10,userToken,"da31131",deviceT);
 				Validation.responseHeaderCodeValidation(fetchRecentlyViewed_permu23, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(fetchRecentlyViewed_permu23, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(fetchRecentlyViewed_permu23);
 				totalbooks=fetchRecentlyViewed_permu23.then().extract().path("totalbooks");
 				Log.info("totalbooks : "+totalbooks);
 				Validation.responseISGreater("totalbooks", totalbooks, 3);
-				System.out.println("fetchRecentlyViewed_permu1 : "+fetchRecentlyViewed_permu23);
 
-				Response fetchRecentlyViewed_permu3 = FetchRecentlyViewed.fetchRecentlyViewed_permu("archive_date", "ASC", userToken,"da31131","IPAD");
+
+				Response fetchRecentlyViewed_permu3 = FetchRecentlyViewed.fetchRecentlyViewed_permu("archive_date", "ASC", userToken,"da31131",deviceT);
 				Validation.responseHeaderCodeValidation(fetchRecentlyViewed_permu3, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(fetchRecentlyViewed_permu3, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(fetchRecentlyViewed_permu3);
-				System.out.println("fetchRecentlyViewed_permu1 : "+fetchRecentlyViewed_permu3);
 
-				Response fetchRecentlyViewed_permu31 = FetchRecentlyViewed.fetchRecentlyViewed_permu_withpagi("archive_date","ASC",0,10,userToken,"da31131","IPAD");
+
+				Response fetchRecentlyViewed_permu31 = FetchRecentlyViewed.fetchRecentlyViewed_permu_withpagi("archive_date","ASC",0,10,userToken,"da31131",deviceT);
 				Validation.responseHeaderCodeValidation(fetchRecentlyViewed_permu31, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(fetchRecentlyViewed_permu31, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(fetchRecentlyViewed_permu31);
 				totalbooks=fetchRecentlyViewed_permu31.then().extract().path("totalbooks");
 				Log.info("totalbooks : "+totalbooks);
 				Validation.responseISGreater("totalbooks", totalbooks, 3);
-				System.out.println("fetchRecentlyViewed_permu1 : "+fetchRecentlyViewed_permu31);
 
-				Response fetchRecentlyViewed_permu32 = FetchRecentlyViewed.fetchRecentlyViewed_permu("archive_date", "DESC", userToken,"da31131","IPAD");
+
+				Response fetchRecentlyViewed_permu32 = FetchRecentlyViewed.fetchRecentlyViewed_permu("archive_date", "DESC", userToken,"da31131",deviceT);
 				Validation.responseHeaderCodeValidation(fetchRecentlyViewed_permu32, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(fetchRecentlyViewed_permu32, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(fetchRecentlyViewed_permu32);
 				System.out.println("fetchRecentlyViewed_permu1 : "+fetchRecentlyViewed_permu32);
 
-				Response fetchRecentlyViewed_permu33 = FetchRecentlyViewed.fetchRecentlyViewed_permu_withpagi("archive_date","DESC",0,10,userToken,"da31131","IPAD");
+				Response fetchRecentlyViewed_permu33 = FetchRecentlyViewed.fetchRecentlyViewed_permu_withpagi("archive_date","DESC",0,10,userToken,"da31131",deviceT);
 				Validation.responseHeaderCodeValidation(fetchRecentlyViewed_permu33, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(fetchRecentlyViewed_permu33, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(fetchRecentlyViewed_permu33);
 				totalbooks=fetchRecentlyViewed_permu33.then().extract().path("totalbooks");
 				Log.info("totalbooks : "+totalbooks);
 				Validation.responseISGreater("totalbooks", totalbooks, 3);
-				System.out.println("fetchRecentlyViewed_permu1 : "+fetchRecentlyViewed_permu33);
 
-				Response fetchRecentlyViewed_permu4 = FetchRecentlyViewed.fetchRecentlyViewed_permu("author", "ASC", userToken,"da31131","IPAD");
+
+				Response fetchRecentlyViewed_permu4 = FetchRecentlyViewed.fetchRecentlyViewed_permu("author", "ASC", userToken,"da31131",deviceT);
 				Validation.responseHeaderCodeValidation(fetchRecentlyViewed_permu4, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(fetchRecentlyViewed_permu4, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(fetchRecentlyViewed_permu4);
-				System.out.println("fetchRecentlyViewed_permu1 : "+fetchRecentlyViewed_permu4);
 
-				Response fetchRecentlyViewed_permu41 = FetchRecentlyViewed.fetchRecentlyViewed_permu_withpagi("author","ASC",0,10,userToken,"da31131","IPAD");
+
+
+				Response fetchRecentlyViewed_permu41 = FetchRecentlyViewed.fetchRecentlyViewed_permu_withpagi("author","ASC",0,10,userToken,"da31131",deviceT);
 				Validation.responseHeaderCodeValidation(fetchRecentlyViewed_permu41, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(fetchRecentlyViewed_permu41, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(fetchRecentlyViewed_permu41);
 				totalbooks=fetchRecentlyViewed_permu41.then().extract().path("totalbooks");
 				Log.info("totalbooks : "+totalbooks);
 				Validation.responseISGreater("totalbooks", totalbooks, 3);
-				System.out.println("fetchRecentlyViewed_permu1 : "+fetchRecentlyViewed_permu41);
 
-				Response fetchRecentlyViewed_permu42 = FetchRecentlyViewed.fetchRecentlyViewed_permu("author", "DESC", userToken,"da31131","IPAD");
+
+				Response fetchRecentlyViewed_permu42 = FetchRecentlyViewed.fetchRecentlyViewed_permu("author", "DESC", userToken,"da31131",deviceT);
 				Validation.responseHeaderCodeValidation(fetchRecentlyViewed_permu42, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(fetchRecentlyViewed_permu42, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(fetchRecentlyViewed_permu42);
-				System.out.println("fetchRecentlyViewed_permu1 : "+fetchRecentlyViewed_permu42);
 
-				Response fetchRecentlyViewed_permu43 = FetchRecentlyViewed.fetchRecentlyViewed_permu_withpagi("author","DESC",0,10,userToken,"da31131","IPAD");
+
+				Response fetchRecentlyViewed_permu43 = FetchRecentlyViewed.fetchRecentlyViewed_permu_withpagi("author","DESC",0,10,userToken,"da31131",deviceT);
 				Validation.responseHeaderCodeValidation(fetchRecentlyViewed_permu43, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(fetchRecentlyViewed_permu43, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(fetchRecentlyViewed_permu43);
 				totalbooks=fetchRecentlyViewed_permu43.then().extract().path("totalbooks");
 				Log.info("totalbooks : "+totalbooks);
 				Validation.responseISGreater("totalbooks", totalbooks, 3);
-				System.out.println("fetchRecentlyViewed_permu1 : "+fetchRecentlyViewed_permu43);
+
 
 				//END Rectently viewed BOOKS PERMUTATION
 
 
-				Response fetchRecentlyViewed_with_pagi_res = FetchRecentlyViewed.fetchRecentlyViewed_with_pagi(0,20,userToken,"hf454","IPAD");
+				Response fetchRecentlyViewed_with_pagi_res = FetchRecentlyViewed.fetchRecentlyViewed_with_pagi(0,20,userToken,"hf454",deviceT);
 				Validation.responseHeaderCodeValidation(fetchRecentlyViewed_with_pagi_res, HttpStatus.SC_OK);
 				Validation.responseCodeValidation1(fetchRecentlyViewed_with_pagi_res, HttpStatus.SC_OK);
 				Validation.responseTimeValidation(fetchRecentlyViewed_with_pagi_res);
@@ -2420,15 +2405,13 @@ public class RestAssured {
 				Validation.responseKeyValidation_key(fetchRecentlyViewed_with_pagi_res, "pages");
 				Validation.responseKeyValidation_key(fetchRecentlyViewed_with_pagi_res, "readingPercentage");
 				Validation.responseKeyValidation_key(fetchRecentlyViewed_with_pagi_res, "encryption");
-				System.out.println("fetchRecentlyViewed_with_pagi_res : "+fetchRecentlyViewed_with_pagi_res);
+				}
 			}
 		}
 		catch (Exception exp) 
 		{
 			Log.fail(exp.getMessage());
 			Log.fail("fails due to"+ exp.getCause());
-			exp.printStackTrace();
 		}
 	}
-
 }

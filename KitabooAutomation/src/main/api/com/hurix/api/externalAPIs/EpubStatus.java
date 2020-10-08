@@ -33,6 +33,4 @@ public class EpubStatus {
 		return jsonResponse;
 		
 	}
-	
-
 }

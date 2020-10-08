@@ -6,13 +6,8 @@ import io.restassured.response.Response;
 import com.hurix.automation.utility.Log;
 
 public class DownloadBook {
-	public static String downloadBookPathANDROID;
-	public static String downloadBookPathIpad;
-	public static String downloadBookPathwindows;
-	public static String downloadBookPathHtml5;
-
-	public static int bookID;
-
+	
+	
 	public static Response downloadBook(String userToken,String deviceID,String deviceType,int bookID1,String State)
 	{		
 		Response jsonResponse = null;

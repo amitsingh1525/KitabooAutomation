@@ -1,12 +1,7 @@
 package com.hurix.api.externalAPIs;
 
 import static io.restassured.RestAssured.given;
-
-import org.apache.http.HttpStatus;
-
 import io.restassured.response.Response;
-
-import com.hurix.api.utility.Validation;
 import com.hurix.automation.utility.Log;
 
 public class UserAssignedBooks_OAuth {
@@ -22,12 +17,7 @@ public class UserAssignedBooks_OAuth {
 					.auth()
 					.oauth(consumerKey, consumerSecret, "", "")
 					.get("/DistributionServices/ext/api/userAssignedBooks?clientUserId="+clientUserID+"");
-			/*Validation.responseHeaderCodeValidation(jsonResponse, HttpStatus.SC_OK);
-			Validation.responseCodeValidation1(jsonResponse, HttpStatus.SC_OK);
-			Validation.responseTimeValidation(jsonResponse);
-			Validation.responseKeyValidation_key(jsonResponse, "isbn");
-			Validation.responseKeyValidation_key(jsonResponse, "formats");
-			Validation.responseKeyValidation_key(jsonResponse, "id");*/
+			
 			Log.info("UserAssignedBooks_OAuth Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 
 		{
@@ -50,12 +40,7 @@ public class UserAssignedBooks_OAuth {
 					.header("startIndex",startIndex)
 					.header("endIndex", endIndex)
 					.get("/DistributionServices/ext/api/userAssignedBooks?clientUserId="+clientUserID+"");
-			Validation.responseHeaderCodeValidation(jsonResponse, HttpStatus.SC_OK);
-			Validation.responseCodeValidation1(jsonResponse, HttpStatus.SC_OK);
-			Validation.responseTimeValidation(jsonResponse);
-			Validation.responseKeyValidation_key(jsonResponse, "isbn");
-			Validation.responseKeyValidation_key(jsonResponse, "formats");
-			Validation.responseKeyValidation_key(jsonResponse, "id");
+			
 			Log.info("UserAssignedBooks_OAuth_with_pagi Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 
 		{

@@ -95,9 +95,7 @@ public class DIS_2125 {
 			}				
 			io.restassured.RestAssured.baseURI = detail;
 
-
-			if(userName.contains("ent_lear_cat2@yopmail.com")){clientID ="cHJvZi1raXRhYm9v";}
-			else{clientID =JDBC_category.getReader(userName, sqlhost, sqlUsername, sqlPassword);}
+			clientID =JDBC_Queries.getReader(userName, sqlhost, sqlUsername, sqlPassword);
 			Log.startTestCase("Authenticate");
 			Log.info("detail : "+detail);
 			Log.info("userName : "+userName);
@@ -105,29 +103,29 @@ public class DIS_2125 {
 			Log.info("ReaderKey : "+clientID);
 			Response authenticateValue = Authenticate.authenticate(clientID, userName, password,"514185",deviceT);
 			Log.info("Authenticate Response: "+authenticateValue.then().extract().response().prettyPrint());				
-			System.out.println("HERE_Before");
+			Log.info("HERE_Before");
 			Log.info("clientID : "+clientID);
 			Validation.responseHeaderCodeValidation(authenticateValue, HttpStatus.SC_OK);
 			//Validation.responseCodeValidation1(authenticateValue, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(authenticateValue);
 			Validation.responseKeyValidation_key(authenticateValue, "userName");
 			Validation.responseKeyValidation_key(authenticateValue, userName);			
-			System.out.println("HERE_After");
-			System.out.println("here");
+			Log.info("HERE_After");
+			Log.info("here");
 			userName = authenticateValue.then().extract().path("user.userName");///userName="excel"
 			Validation.responseKeyAndValue(authenticateValue, "userName", userName);
 			int userID = authenticateValue.then().extract().path("user.id");
-			System.out.println("userID: "+userID);
+			Log.info("userID: "+userID);
 			String userToken = authenticateValue.then().extract().path("userToken");
-			System.out.println("userToken:"+userToken);
+			Log.info("userToken:"+userToken);
 			String clientUserID = authenticateValue.then().extract().path("user.clientUserID");
-			System.out.println("clientUserID:"+clientUserID);
+			Log.info("clientUserID:"+clientUserID);
 			int client_Id = authenticateValue.then().extract().path("user.clientID");
-			System.out.println("client_Id:"+client_Id);
+			Log.info("client_Id:"+client_Id);
 			Log.endTestCase("End");
 
-			consumerKey = JDBC_category.getCK(client_Id, sqlhost, sqlUsername, sqlPassword);
-			consumerSecret =JDBC_category.getSK(client_Id, sqlhost, sqlUsername, sqlPassword);
+			consumerKey = JDBC_Queries.getCK(client_Id, sqlhost, sqlUsername, sqlPassword);
+			consumerSecret =JDBC_Queries.getSK(client_Id, sqlhost, sqlUsername, sqlPassword);
 
 			Response getclientsUser=null;
 
@@ -196,8 +194,7 @@ public class DIS_2125 {
 			Validation.responseKeyAndValue(getclientsUser, "username", ""+userName+"");
 			Validation.responseKeyAndValue(getclientsUser, "userid", ""+userId1+"");
 			Validation.responseKeyAndValue(getclientsUser, "username", ""+userName1+"");
-			System.out.println("getclientsUser : "+getclientsUser);
-
+			
 
 			Response getUsers_0_100 = Getusers.getusers_pagi(0, 100, consumerKey, consumerSecret, clientUserID);
 			Validation.responseHeaderCodeValidation(getUsers_0_100, HttpStatus.SC_OK);
