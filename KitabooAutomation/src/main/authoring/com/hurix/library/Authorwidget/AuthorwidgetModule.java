@@ -645,5 +645,39 @@ public class AuthorwidgetModule extends AuthorwidgetStepModule {
 		threadHold_2Sec();
 		return Driver.driver.getCurrentUrl();
 	}
+	
+	public static void UploadDocbook(String uploaddocbook,String title, String author) throws Exception {
+		linkepubBooks();
+		loaderinprogress();
+		btnAddNew();
+		btnUploadDocbook();
+		wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("filepicker_dialog"));
+		System.out.println("Frame switched");
+		btnChooseFile();
+		Uploadpath.uploadpath(uploaddocbook);
+		loaderimage();
+		btnDocbookResume();
+		//New Window Handle	
+				Thread.sleep(5000);
+				String winHandleBefore = Driver.driver.getWindowHandle();
+				for(String winHandle : Driver.driver.getWindowHandles()){
+					Driver.driver.switchTo().window(winHandle);
+				}
+				Log.info("Handle the new window");
+				Driver.driver.manage().window().maximize();
+				Thread.sleep(5000);
+				Thread.sleep(5000);
+				titleComponent(title,author);
+				
+				Thread.sleep(3000);
+				Driver.driver.close();
+//		 		Old Window Handle
+			    Thread.sleep(5000);
+			    Driver.driver.switchTo().window(winHandleBefore);
+	}
+	
+	public static void Enrich() throws Exception {
+		
+	}
 
 }
