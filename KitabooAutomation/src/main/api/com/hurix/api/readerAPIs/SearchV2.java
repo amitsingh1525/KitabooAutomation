@@ -44,7 +44,5 @@ public class SearchV2 {
 		}
 		Log.endTestCase("End");
 		return jsonResponse;
-
 	}	
-
 }

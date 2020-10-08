@@ -28,6 +28,7 @@ public class FetchCategoriesCollectionsBooks {
 			Log.startTestCase("fetchCategoriesCollectionsBooks");
 			Log.info("collecName1 : "+collecName1);
 			Log.info("catname1 : "+catname1);
+			Log.info("bookID : "+bookID);
 			Connection con = DriverManager.getConnection(sqlhost,sqlUsername,sqlPassword);
 			Statement stmt = con.createStatement();
 			ResultSet result = null;

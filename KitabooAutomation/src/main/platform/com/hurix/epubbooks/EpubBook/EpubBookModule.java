@@ -1,5 +1,8 @@
 package com.hurix.epubbooks.EpubBook;
 
+import java.util.Iterator;
+import java.util.Set;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -50,13 +53,15 @@ public class EpubBookModule extends EpubBookStepModule
 	
 	public static void fileuplod(String pdffilepath, String pdfanswer, String coveranswer, String coverfilepath)
 	{
-		String parentWin = Driver.driver.getWindowHandle();
+		String parent = Driver.driver.getWindowHandle();
+		Log.info(parent);
 		pdffileupload(pdfanswer,pdffilepath);
 		uploadcoverimage(coveranswer, coverfilepath);
 		btnfinishepubbook();
 		btncontinueepubbooks();
-		Driver.driver.switchTo().window(parentWin);
-			
+		windowswitchtoparent();
+		Log.info(parent);		//switch to the parent window
+		
 	}
 	
 	

@@ -7,8 +7,6 @@ import com.hurix.automation.utility.Log;
 
 public class FetchPreferredLocale {
 
-	public static String FetchPreferredLocale;
-
 	public static Response fetchPreferredLocale(String userToken,String deviceID,String deviceType)
 	{
 

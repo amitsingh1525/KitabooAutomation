@@ -1,9 +1,18 @@
 package com.hurix.subpublisher;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Properties;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import com.hurix.automation.utility.Driver;
 import com.hurix.automation.utility.UIElements;
 
 public class SubpublisherStepModule extends UIElements {
@@ -57,8 +66,8 @@ public class SubpublisherStepModule extends UIElements {
 	
 	public static void txtbxAdminEmailId(String AdminEmailId){
 		try {
-			elementFinderByID(prop.getProperty("txtbxAdministratorLastName_id"), "Admin EmailId textbox clicked.").click();
-			elementFinderByID(prop.getProperty("txtbxAdministratorLastName_id"), "Entered data in Admin EmailId textbox is: '"+AdminEmailId+"'.").sendKeys(AdminEmailId);
+			elementFinderByID(prop.getProperty("txtbxAdminEmailId_id"), "Admin EmailId textbox clicked.").click();
+			elementFinderByID(prop.getProperty("txtbxAdminEmailId_id"), "Entered data in Admin EmailId textbox is: '"+AdminEmailId+"'.").sendKeys(AdminEmailId);
 		} catch (Exception e) {
 			System.out.println("Element not present.");
 		}
@@ -110,8 +119,26 @@ public class SubpublisherStepModule extends UIElements {
 	
 	public static void btnBrowsefile(String filepath){
 		try {
-			elementFinderByID(prop.getProperty("btnBrowse_id"), "File uploaded is: '"+filepath+"'.").sendKeys("filepath");
-		} catch (Exception e) {
+				threadHold_2Sec();
+					//System.out.println("audiopath"+audiopath);
+				
+					/*wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("loader_image")));
+					Driver.driver.switchTo().frame(prop.getProperty("Audioframe_id"));*/ 	
+					Actions action = new Actions(Driver.driver);
+					threadHold_2Sec();
+					action.sendKeys(Keys.PAGE_DOWN).build().perform();
+					threadHold_2Sec();
+					int size= Driver.driver.findElements(By.xpath("//*[@id='fileuploader_input']")).size();
+					System.out.println(size);
+					Driver.driver.findElement(By.xpath("//*[@id='fileuploader_input']")).sendKeys(filepath);
+					//elementFinderByXpath(prop.getProperty("uploadAudio_xpath"), "btnuploadAudio").sendKeys(path);
+					Driver.driver.switchTo().parentFrame();
+					Driver.driver.switchTo().defaultContent();
+					wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("loader_image")));
+				} 
+			
+					//elementFinderByID(prop.getProperty("btnBrowse_id"), "File uploaded is: '"+filepath+"'.").sendKeys("filepath");
+		catch (Exception e) {
 			// TODO Auto-generated catch block
 			System.out.println("Element not present.");
 		}
@@ -141,6 +168,35 @@ public class SubpublisherStepModule extends UIElements {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			System.out.println("Element not present.");
+		}
+	}
+	
+	public static void selectdate(String startdate, String enddate){
+		try {
+			threadHold_2Sec();
+			int increaseDate = Integer.parseInt(startdate);
+			DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+			Calendar c = Calendar.getInstance();    
+			c.add(Calendar.DATE, increaseDate);
+			startdate = dateFormat.format(c.getTime());
+			System.out.println("Start: "+startdate);
+			
+			int increaseDate1 = Integer.parseInt(enddate);
+			DateFormat dateFormat1 = new SimpleDateFormat("MM/dd/yyyy");
+			Calendar c1 = Calendar.getInstance();    
+			c1.add(Calendar.DATE, increaseDate1);
+			enddate = dateFormat1.format(c1.getTime());
+			System.out.println("Exp: "+enddate);
+			
+			((JavascriptExecutor)Driver.driver).executeScript ("document.getElementById('startDate_input').removeAttribute('readonly',0);");
+			elementFinderByID(prop.getProperty("bxStartDate_id"), "start date textbox click").clear();
+			elementFinderByID(prop.getProperty("bxStartDate_id"), "start date textbox click").sendKeys(startdate);
+			((JavascriptExecutor)Driver.driver).executeScript ("document.getElementById('endDate_input').removeAttribute('readonly',0);");
+			elementFinderByID(prop.getProperty("bxEndDate_id"), "start date textbox click").clear();
+			elementFinderByID(prop.getProperty("bxEndDate_id"), "start date textbox click").sendKeys(enddate);
+			
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
 		}
 	}
 

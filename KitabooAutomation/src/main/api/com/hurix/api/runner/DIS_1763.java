@@ -167,13 +167,13 @@ public class DIS_1763 {
 			}				
 			io.restassured.RestAssured.baseURI = detail;
 
-			clientID = JDBC_category.getReader(userName, sqlhost, sqlUsername, sqlPassword);
+			clientID = JDBC_Queries.getReader(userName, sqlhost, sqlUsername, sqlPassword);
 			Log.startTestCase("Authenticate");
 			Log.info("detail : "+detail);
 			Log.info("userName : "+userName);
 			Log.info("password : "+password);
 			Log.info("clientID : "+clientID);
-			clientID =JDBC_category.getReader(userName, sqlhost, sqlUsername, sqlPassword);
+			clientID =JDBC_Queries.getReader(userName, sqlhost, sqlUsername, sqlPassword);
 			Log.info("ReaderKey : "+clientID);
 			Response authenticateValue = Authenticate.authenticate(clientID, userName, password,"514185",deviceT);
 			Log.info("Authenticate Response: "+authenticateValue.then().extract().response().prettyPrint());				
@@ -197,8 +197,8 @@ public class DIS_1763 {
 			System.out.println("client_Id:"+client_Id);
 			Log.endTestCase("End");
 
-			consumerKey = JDBC_category.getCK(client_Id, sqlhost, sqlUsername, sqlPassword);
-			consumerSecret = JDBC_category.getSK(client_Id, sqlhost, sqlUsername, sqlPassword);
+			consumerKey = JDBC_Queries.getCK(client_Id, sqlhost, sqlUsername, sqlPassword);
+			consumerSecret = JDBC_Queries.getSK(client_Id, sqlhost, sqlUsername, sqlPassword);
 
 
 			Response fetchBookList_without_pagination = FetchBookList.fetchBookList_without_pagination(userToken,"45616452",deviceT);
@@ -257,13 +257,13 @@ public class DIS_1763 {
 			System.out.println("archiveDate:"+archiveDate);	}
 
 			if(catlevel.contains("1"))
-			{bookID20=JDBC_category.getBookId(client_Id,"Audio_cat1_UPD",sqlhost,sqlUsername,sqlPassword);
-			category1=JDBC_category.getCategoryNAME(client_Id, "Audio_cat1_UPD", sqlhost, sqlUsername, sqlPassword);
+			{bookID20=JDBC_Queries.getBookId(client_Id,"Audio_cat1_UPD",sqlhost,sqlUsername,sqlPassword);
+			category1=JDBC_Queries.getCategoryNAME(client_Id, "Audio_cat1_UPD", sqlhost, sqlUsername, sqlPassword);
 			bookID20=fetchBookList_without_pagination.then().extract().path("bookList.book.id[23]");
 			System.out.println("bookID20:"+bookID20);}
 			else
-			{bookID20=JDBC_category.getBookId(client_Id,"Audio_cat2_UPD",sqlhost,sqlUsername,sqlPassword);
-			category1=JDBC_category.getCategoryNAME(client_Id, "Audio_cat2_UPD", sqlhost, sqlUsername, sqlPassword);
+			{bookID20=JDBC_Queries.getBookId(client_Id,"Audio_cat2_UPD",sqlhost,sqlUsername,sqlPassword);
+			category1=JDBC_Queries.getCategoryNAME(client_Id, "Audio_cat2_UPD", sqlhost, sqlUsername, sqlPassword);
 			bookID20=fetchBookList_without_pagination.then().extract().path("bookList.book.id[26]");
 			System.out.println("bookID20:"+bookID20);}
 			Response downloadBookForANDROID_online1 = DownloadBook.downloadBook(userToken,"ds9465","FIXED_EPUB_IMAGE",bookID20,"online");
@@ -317,11 +317,11 @@ public class DIS_1763 {
 
 			Response CategoryBookListV2Res =null;
 			if(catlevel.contains ("1"))
-			{category1=JDBC_category.getCategoryNAME(client_Id, "Audio_cat1_UPD", sqlhost, sqlUsername, sqlPassword);
+			{category1=JDBC_Queries.getCategoryNAME(client_Id, "Audio_cat1_UPD", sqlhost, sqlUsername, sqlPassword);
 			CategoryBookListV2Res = CategoryBookListV2.categoryBookListV2_cat(category1,userToken,"56454", deviceT,bookID20,catlevel,sqlhost,sqlUsername,sqlPassword);
 			}
 			else //if(catlevel.contains ("2"))
-			{category1=JDBC_category.getCategoryNAME(client_Id, "Audio_cat2_UPD", sqlhost, sqlUsername, sqlPassword);}
+			{category1=JDBC_Queries.getCategoryNAME(client_Id, "Audio_cat2_UPD", sqlhost, sqlUsername, sqlPassword);}
 			CategoryBookListV2Res = CategoryBookListV2.categoryBookListV2(category1,userToken,"56454", deviceT,bookID20,catlevel,sqlhost,sqlUsername,sqlPassword);
 			Log.info("category1 : "+category1);
 			Validation.responseHeaderCodeValidation(CategoryBookListV2Res, HttpStatus.SC_OK);
@@ -421,9 +421,9 @@ public class DIS_1763 {
 
 			//2019/10/31 14:46:04  //
 			if(catlevel .contains("1"))				
-			{archiveDate = JDBC_category.getArchiveDate(client_Id, "Audio_cat1_UPD", sqlhost, sqlUsername, sqlPassword);}
+			{archiveDate = JDBC_Queries.getArchiveDate(client_Id, "Audio_cat1_UPD", sqlhost, sqlUsername, sqlPassword);}
 			else if(catlevel .contains("2"))				
-			{archiveDate = JDBC_category.getArchiveDate(client_Id, "Audio_cat2_UPD", sqlhost, sqlUsername, sqlPassword);}
+			{archiveDate = JDBC_Queries.getArchiveDate(client_Id, "Audio_cat2_UPD", sqlhost, sqlUsername, sqlPassword);}
 			Response v1refreshBookList_res  =V1refreshBookList.v1refreshBookList(archiveDate,"NEW","UPDATE",bookID20,bookID2,userToken,"56454", deviceT,clientID);
 			Log.info("archiveDate : "+archiveDate);
 			Validation.responseHeaderCodeValidation(v1refreshBookList_res, HttpStatus.SC_OK);
@@ -453,9 +453,9 @@ public class DIS_1763 {
 			Validation.responseKeyAndValue(v1refreshBookList_res, "operation", operation1);
 			System.out.println("v1/v1refreshBookList_res : "+v1refreshBookList_res);
 
-			Response MultiCategoryBookList_res = MultiCategoryBookList.multiCategoryBookList(catlevel,bookID20,sqlhost,sqlUsername,sqlPassword,userToken,"45564595",deviceT);
 			if(catlevel.contains ("1")){}			
-			else{Validation.responseHeaderCodeValidation(MultiCategoryBookList_res, HttpStatus.SC_OK);
+			else{Response MultiCategoryBookList_res = MultiCategoryBookList.multiCategoryBookList(catlevel,bookID20,sqlhost,sqlUsername,sqlPassword,userToken,"45564595",deviceT);
+			Validation.responseHeaderCodeValidation(MultiCategoryBookList_res, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(MultiCategoryBookList_res, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(MultiCategoryBookList_res);
 			Validation.responseKeyValidation_key(MultiCategoryBookList_res, "totalbooks");
@@ -652,7 +652,7 @@ public class DIS_1763 {
 			Log.info("assetType: "+assetType);
 			assetType = fetchBookList_without_pagination.then().extract().path("bookList.book.assetType[2]");
 			Log.info("assetType: "+assetType);
-			assetType=JDBC_category.getAsset(client_Id, "Audio_cat1_UPD", sqlhost, sqlUsername, sqlPassword);
+			assetType=JDBC_Queries.getAsset(client_Id, "Audio_cat1_UPD", sqlhost, sqlUsername, sqlPassword);
 			Response bulkDownloadBook = null;
 			if(catlevel.contains("1"))					
 			{bulkDownloadBook= BulkDownloadBook.bulkDownloadBook(userToken, "GHgah242",deviceT, bookID20, bookID2, bookID3, "offline");}
@@ -671,8 +671,8 @@ public class DIS_1763 {
 			}
 		} catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
 			exp.printStackTrace();
 		}
 		Log.endTestCase("End");

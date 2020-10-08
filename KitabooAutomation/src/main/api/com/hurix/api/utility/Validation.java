@@ -1,9 +1,12 @@
 package com.hurix.api.utility;
 
 import java.util.List;
+
 import org.junit.Assert;
+
 import com.relevantcodes.extentreports.ExtentReports;
 import com.hurix.automation.utility.*;
+
 import io.restassured.response.*;
 
 public class Validation {
@@ -32,6 +35,7 @@ public class Validation {
 
 		} catch (Exception e) {
 			Log.fail(e.getMessage());
+			Log.fail("fails due to"+ e.getCause());
 		}
 	}
 
@@ -133,9 +137,9 @@ public class Validation {
 		}
 	}
 
-	public static void responseISGreater_String(String  variable , int key,int value)
+	public static void responseISGreater_String(Response variable,String key1,int value)
 	{
-		//int key= Integer.parseInt(""+key1+"");	
+		int key= Integer.parseInt(""+key1+"");	
 
 		if(key >= value)
 		{

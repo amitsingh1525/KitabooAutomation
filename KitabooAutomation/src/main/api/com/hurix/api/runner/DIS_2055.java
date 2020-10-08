@@ -174,7 +174,7 @@ public class DIS_2055 {
 				break;
 			}				
 			io.restassured.RestAssured.baseURI = detail;
-			clientID=JDBC_category.getReader(userName, sqlhost, sqlUsername, sqlPassword);
+			clientID=JDBC_Queries.getReader(userName, sqlhost, sqlUsername, sqlPassword);
 			Log.info("clientID : "+clientID);
 			Log.info("detail : "+detail);
 			Log.info("SHEET LOOP"+sheet.getLastRowNum());
@@ -205,8 +205,8 @@ public class DIS_2055 {
 			System.out.println("client_Id:"+client_Id);
 			Log.endTestCase("End");
 
-			consumerKey = JDBC_category.getCK(client_Id, sqlhost, sqlUsername, sqlPassword);
-			consumerSecret =JDBC_category.getSK(client_Id, sqlhost, sqlUsername, sqlPassword);
+			consumerKey = JDBC_Queries.getCK(client_Id, sqlhost, sqlUsername, sqlPassword);
+			consumerSecret =JDBC_Queries.getSK(client_Id, sqlhost, sqlUsername, sqlPassword);
 
 			Response fetchBookList_without_pagination = FetchBookList.fetchBookList_without_pagination(userToken,"45616452",deviceT);
 			Validation.responseCodeValidation1(fetchBookList_without_pagination, HttpStatus.SC_OK);
@@ -351,8 +351,8 @@ public class DIS_2055 {
 			}
 		}catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
 			exp.printStackTrace();
 		}
 	}

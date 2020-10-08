@@ -1,24 +1,18 @@
 package com.hurix.api.runner;
 
 import io.restassured.response.Response;
-
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.text.*;
+import java.util.*;
 import java.util.List;
-
 import org.apache.http.HttpStatus;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.JSONException;
-
 import com.hurix.api.externalAPIs.*;
 import com.hurix.api.readerAPIs.*;
-import com.hurix.api.utility.ExcelUtils;
-import com.hurix.api.utility.JDBC_category;
-import com.hurix.api.utility.Validation;
+import com.hurix.api.utility.*;
 import com.hurix.automation.utility.Log;
 
 
@@ -181,7 +175,7 @@ public class Upload {
 			io.restassured.RestAssured.baseURI = detail;
 
 			if(i==1)
-			{String reader_key = JDBC_category.getReader(userName, sqlhost, sqlUsername, sqlPassword);
+			{String reader_key = JDBC_Queries.getReader(userName, sqlhost, sqlUsername, sqlPassword);
 			Log.info("reader_key : "+reader_key);
 			Log.startTestCase("Authenticate");
 			Log.info("TotalRows : "+sheet.getLastRowNum());
@@ -212,11 +206,11 @@ public class Upload {
 			Log.endTestCase("End");}
 
 		
-			client_Id=JDBC_category.getClientId(userID, sqlhost, sqlUsername, sqlPassword);
+			client_Id=JDBC_Queries.getClientId(userID, sqlhost, sqlUsername, sqlPassword);
 			
-			consumerKey=JDBC_category.getCK(client_Id, sqlhost, sqlUsername, sqlPassword);
+			consumerKey=JDBC_Queries.getCK(client_Id, sqlhost, sqlUsername, sqlPassword);
 			
-			consumerSecret=JDBC_category.getSK(client_Id, sqlhost, sqlUsername, sqlPassword);
+			consumerSecret=JDBC_Queries.getSK(client_Id, sqlhost, sqlUsername, sqlPassword);
 			
 			
 			Response uploadEPup=UploadEpub.uploadEpub_OAuth(consumerKey, consumerSecret, filePath, ""+title_prefix+""+Title+"", author, category, isbn, description);	
@@ -237,8 +231,8 @@ public class Upload {
 			}
 		}catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
+			Log.fail(exp.getMessage());
+			Log.fail("Fails due to"+ exp.getCause());
 			exp.printStackTrace();
 		}
 	}

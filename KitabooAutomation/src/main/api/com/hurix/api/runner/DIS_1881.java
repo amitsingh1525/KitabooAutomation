@@ -168,7 +168,7 @@ public class DIS_1881 {
 			}				
 			io.restassured.RestAssured.baseURI = detail;
 
-			clientID = JDBC_category.getReader(userName, sqlhost, sqlUsername, sqlPassword);
+			clientID = JDBC_Queries.getReader(userName, sqlhost, sqlUsername, sqlPassword);
 
 
 			Log.startTestCase("Authenticate");
@@ -178,7 +178,7 @@ public class DIS_1881 {
 			Log.info("clientID : "+clientID);
 
 
-			//clientID =JDBC_category.getReader(userName, sqlhost, sqlUsername, sqlPassword);
+			//clientID =JDBC_Queries.getReader(userName, sqlhost, sqlUsername, sqlPassword);
 			Log.info("ReaderKey : "+clientID);
 
 
@@ -205,8 +205,8 @@ public class DIS_1881 {
 			Log.endTestCase("End");
 
 
-			consumerKey = JDBC_category.getCK(client_Id, sqlhost, sqlUsername, sqlPassword);
-			consumerSecret =JDBC_category.getSK(client_Id, sqlhost, sqlUsername, sqlPassword);
+			consumerKey = JDBC_Queries.getCK(client_Id, sqlhost, sqlUsername, sqlPassword);
+			consumerSecret =JDBC_Queries.getSK(client_Id, sqlhost, sqlUsername, sqlPassword);
 
 			/*long nowEpochTime = Instant.now().toEpochMilli();
 			Response  UploadEpub_res= UploadEpub.uploadEpub_OAuth(consumerKey, consumerSecret, filePath ,title+""+nowEpochTime+"",""+title+""+nowEpochTime+"","level4_upd",""+nowEpochTime+"",""+title+""+nowEpochTime+"");
@@ -267,8 +267,8 @@ public class DIS_1881 {
 			}
 		} catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
 			exp.printStackTrace();
 		}
 		Log.endTestCase("End");

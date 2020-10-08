@@ -18,10 +18,10 @@ public class MultiCategoryBookList {
 			{
 				jsonResponse = given()
 						.header("usertoken",userToken)
-						.header("base64CategoryLevel1", JDBC_category.getCategory(bookID, "level1", sqlhost,sqlUsername,sqlPassword))
-						.header("base64CategoryLevel2", JDBC_category.getCategory(bookID, "level2", sqlhost,sqlUsername,sqlPassword))
-						.header("base64CategoryLevel3", JDBC_category.getCategory(bookID, "level3", sqlhost,sqlUsername,sqlPassword))
-						.header("base64CategoryLevel4", JDBC_category.getCategory(bookID, "level4", sqlhost,sqlUsername,sqlPassword))
+						.header("base64CategoryLevel1", JDBC_Queries.getCategory(bookID, "level1", sqlhost,sqlUsername,sqlPassword))
+						.header("base64CategoryLevel2", JDBC_Queries.getCategory(bookID, "level2", sqlhost,sqlUsername,sqlPassword))
+						.header("base64CategoryLevel3", JDBC_Queries.getCategory(bookID, "level3", sqlhost,sqlUsername,sqlPassword))
+						.header("base64CategoryLevel4", JDBC_Queries.getCategory(bookID, "level4", sqlhost,sqlUsername,sqlPassword))
 						.get("/DistributionServices/services/api/reader/user/"+deviceID+"/"+deviceType+"/multiCategoryBookList");
 
 				Log.info("MultiCategoryBookList: "+catLevel+ " Response: "+jsonResponse.then().extract().response().prettyPrint());
@@ -30,9 +30,9 @@ public class MultiCategoryBookList {
 			{
 				jsonResponse = given()
 						.header("usertoken",userToken)
-						.header("base64CategoryLevel1", JDBC_category.getCategory(bookID, "level1", sqlhost,sqlUsername,sqlPassword))
-						.header("base64CategoryLevel2", JDBC_category.getCategory(bookID, "level2", sqlhost,sqlUsername,sqlPassword))
-						.header("base64CategoryLevel3", JDBC_category.getCategory(bookID, "level3", sqlhost,sqlUsername,sqlPassword))
+						.header("base64CategoryLevel1", JDBC_Queries.getCategory(bookID, "level1", sqlhost,sqlUsername,sqlPassword))
+						.header("base64CategoryLevel2", JDBC_Queries.getCategory(bookID, "level2", sqlhost,sqlUsername,sqlPassword))
+						.header("base64CategoryLevel3", JDBC_Queries.getCategory(bookID, "level3", sqlhost,sqlUsername,sqlPassword))
 						.get("/DistributionServices/services/api/reader/user/123/IPAD/multiCategoryBookList");
 
 				Log.info("MultiCategoryBookList: "+catLevel+ " Response: "+jsonResponse.then().extract().response().prettyPrint());
@@ -41,8 +41,8 @@ public class MultiCategoryBookList {
 			{
 				jsonResponse = given()
 						.header("usertoken",userToken)
-						.header("base64CategoryLevel1", JDBC_category.getCategory(bookID, "level1", sqlhost,sqlUsername,sqlPassword))
-						.header("base64CategoryLevel2", JDBC_category.getCategory(bookID, "level2", sqlhost,sqlUsername,sqlPassword))
+						.header("base64CategoryLevel1", JDBC_Queries.getCategory(bookID, "level1", sqlhost,sqlUsername,sqlPassword))
+						.header("base64CategoryLevel2", JDBC_Queries.getCategory(bookID, "level2", sqlhost,sqlUsername,sqlPassword))
 						.get("/DistributionServices/services/api/reader/user/123/IPAD/multiCategoryBookList");
 
 				Log.info("MultiCategoryBookList: "+catLevel+ " Response: "+jsonResponse.then().extract().response().prettyPrint());
@@ -69,10 +69,10 @@ public class MultiCategoryBookList {
 						.header("usertoken",userToken)
 						.header("SortBy",SortBy)
 						.header("orderBy",orderBy)
-						.header("base64CategoryLevel1", JDBC_category.getCategory(bookID, "level1", sqlhost,sqlUsername,sqlPassword))
-						.header("base64CategoryLevel2", JDBC_category.getCategory(bookID, "level2", sqlhost,sqlUsername,sqlPassword))
-						.header("base64CategoryLevel3", JDBC_category.getCategory(bookID, "level3", sqlhost,sqlUsername,sqlPassword))
-						.header("base64CategoryLevel4", JDBC_category.getCategory(bookID, "level4", sqlhost,sqlUsername,sqlPassword))
+						.header("base64CategoryLevel1", JDBC_Queries.getCategory(bookID, "level1", sqlhost,sqlUsername,sqlPassword))
+						.header("base64CategoryLevel2", JDBC_Queries.getCategory(bookID, "level2", sqlhost,sqlUsername,sqlPassword))
+						.header("base64CategoryLevel3", JDBC_Queries.getCategory(bookID, "level3", sqlhost,sqlUsername,sqlPassword))
+						.header("base64CategoryLevel4", JDBC_Queries.getCategory(bookID, "level4", sqlhost,sqlUsername,sqlPassword))
 						.get("/DistributionServices/services/api/reader/user/"+deviceID+"/"+deviceType+"/multiCategoryBookList");
 
 			}
@@ -82,9 +82,9 @@ public class MultiCategoryBookList {
 						.header("usertoken",userToken)
 						.header("SortBy",SortBy)
 						.header("orderBy",orderBy)
-						.header("base64CategoryLevel1", JDBC_category.getCategory(bookID, "level1", sqlhost,sqlUsername,sqlPassword))
-						.header("base64CategoryLevel2", JDBC_category.getCategory(bookID, "level2", sqlhost,sqlUsername,sqlPassword))
-						.header("base64CategoryLevel3", JDBC_category.getCategory(bookID, "level3", sqlhost,sqlUsername,sqlPassword))
+						.header("base64CategoryLevel1", JDBC_Queries.getCategory(bookID, "level1", sqlhost,sqlUsername,sqlPassword))
+						.header("base64CategoryLevel2", JDBC_Queries.getCategory(bookID, "level2", sqlhost,sqlUsername,sqlPassword))
+						.header("base64CategoryLevel3", JDBC_Queries.getCategory(bookID, "level3", sqlhost,sqlUsername,sqlPassword))
 						.get("/DistributionServices/services/api/reader/user/123/IPAD/multiCategoryBookList");
 
 			}
@@ -94,8 +94,8 @@ public class MultiCategoryBookList {
 						.header("usertoken",userToken)
 						.header("SortBy",SortBy)
 						.header("orderBy",orderBy)
-						.header("base64CategoryLevel1", JDBC_category.getCategory(bookID, "level1", sqlhost,sqlUsername,sqlPassword))
-						.header("base64CategoryLevel2", JDBC_category.getCategory(bookID, "level2", sqlhost,sqlUsername,sqlPassword))
+						.header("base64CategoryLevel1", JDBC_Queries.getCategory(bookID, "level1", sqlhost,sqlUsername,sqlPassword))
+						.header("base64CategoryLevel2", JDBC_Queries.getCategory(bookID, "level2", sqlhost,sqlUsername,sqlPassword))
 						.get("/DistributionServices/services/api/reader/user/123/IPAD/multiCategoryBookList");
 			}
 			Log.info("MultiCategoryBookList:"+catLevel+".SortBy="+SortBy+".orderBy="+orderBy+" Response: "+catLevel+ " Response: "+jsonResponse.then().extract().response().prettyPrint());
@@ -124,10 +124,10 @@ public class MultiCategoryBookList {
 						.header("orderBy",orderBy)
 						.header("startIndex",startIndex)
 						.header("endIndex",endIndex)
-						.header("base64CategoryLevel1", JDBC_category.getCategory(bookID, "level1", sqlhost,sqlUsername,sqlPassword))
-						.header("base64CategoryLevel2", JDBC_category.getCategory(bookID, "level2", sqlhost,sqlUsername,sqlPassword))
-						.header("base64CategoryLevel3", JDBC_category.getCategory(bookID, "level3", sqlhost,sqlUsername,sqlPassword))
-						.header("base64CategoryLevel4", JDBC_category.getCategory(bookID, "level4", sqlhost,sqlUsername,sqlPassword))
+						.header("base64CategoryLevel1", JDBC_Queries.getCategory(bookID, "level1", sqlhost,sqlUsername,sqlPassword))
+						.header("base64CategoryLevel2", JDBC_Queries.getCategory(bookID, "level2", sqlhost,sqlUsername,sqlPassword))
+						.header("base64CategoryLevel3", JDBC_Queries.getCategory(bookID, "level3", sqlhost,sqlUsername,sqlPassword))
+						.header("base64CategoryLevel4", JDBC_Queries.getCategory(bookID, "level4", sqlhost,sqlUsername,sqlPassword))
 						.get("/DistributionServices/services/api/reader/user/"+deviceID+"/"+deviceType+"/multiCategoryBookList");
 
 			}
@@ -139,9 +139,9 @@ public class MultiCategoryBookList {
 						.header("orderBy",orderBy)
 						.header("startIndex",startIndex)
 						.header("endIndex",endIndex)
-						.header("base64CategoryLevel1", JDBC_category.getCategory(bookID, "level1", sqlhost,sqlUsername,sqlPassword))
-						.header("base64CategoryLevel2", JDBC_category.getCategory(bookID, "level2", sqlhost,sqlUsername,sqlPassword))
-						.header("base64CategoryLevel3", JDBC_category.getCategory(bookID, "level3", sqlhost,sqlUsername,sqlPassword))
+						.header("base64CategoryLevel1", JDBC_Queries.getCategory(bookID, "level1", sqlhost,sqlUsername,sqlPassword))
+						.header("base64CategoryLevel2", JDBC_Queries.getCategory(bookID, "level2", sqlhost,sqlUsername,sqlPassword))
+						.header("base64CategoryLevel3", JDBC_Queries.getCategory(bookID, "level3", sqlhost,sqlUsername,sqlPassword))
 						.get("/DistributionServices/services/api/reader/user/123/IPAD/multiCategoryBookList");
 
 			}
@@ -153,8 +153,8 @@ public class MultiCategoryBookList {
 						.header("orderBy",orderBy)
 						.header("startIndex",startIndex)
 						.header("endIndex",endIndex)
-						.header("base64CategoryLevel1", JDBC_category.getCategory(bookID, "level1", sqlhost,sqlUsername,sqlPassword))
-						.header("base64CategoryLevel2", JDBC_category.getCategory(bookID, "level2", sqlhost,sqlUsername,sqlPassword))
+						.header("base64CategoryLevel1", JDBC_Queries.getCategory(bookID, "level1", sqlhost,sqlUsername,sqlPassword))
+						.header("base64CategoryLevel2", JDBC_Queries.getCategory(bookID, "level2", sqlhost,sqlUsername,sqlPassword))
 						.get("/DistributionServices/services/api/reader/user/123/IPAD/multiCategoryBookList");
 			}
 			Log.info("MultiCategoryBookList:"+catLevel+".SortBy="+SortBy+".orderBy="+orderBy+" Response: "+catLevel+ " Response: "+jsonResponse.then().extract().response().prettyPrint());

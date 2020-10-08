@@ -12,6 +12,17 @@ public class OrderV2 {
 		try {
 			Log.startTestCase("orderV2_with.BookID."+BookID1+"");
 			Log.info("userName :"+ "\""+userName+"\"");
+			
+			Log.info("userID : "+userID);
+			Log.info("consumerKey : " +consumerKey);
+			Log.info("consumerSecret : " +consumerSecret);
+			Log.info("bookID1 : " +BookID1);
+			Log.info("activationDate : " +activationDate);
+			Log.info("firstName : "+firstName);
+			Log.info("lastName : "+lastName);
+			Log.info("userName : "+userName);
+			Log.info("password : "+password);
+			Log.info("email : "+email);
 			jsonResponse = given()
 					.auth()
 					.oauth(consumerKey, consumerSecret, "", "")
@@ -83,6 +94,18 @@ public class OrderV2 {
 		Response jsonResponse = null;
 		try {
 			Log.startTestCase("orderV2_with.CollectionRefID."+collectionRefID+"");
+			Log.info("collectionRefID : "+collectionRefID);
+			Log.info("userID : "+userID);
+			Log.info("type : "+type);
+			Log.info("consumerKey : " +consumerKey);
+			Log.info("consumerSecret : " +consumerSecret);
+			Log.info("bookID1 : " +BookID1);
+			Log.info("activationDate : " +activationDate);
+			Log.info("firstName : "+firstName);
+			Log.info("lastName : "+lastName);
+			Log.info("userName : "+userName);
+			Log.info("password : "+password);
+
 			Log.info("collectionRefID : "+collectionRefID);
 			jsonResponse = given()
 					.auth()
@@ -163,6 +186,7 @@ public class OrderV2 {
 		Response jsonResponse = null;
 		try {
 			Log.startTestCase("orderV2_with.RefID."+refID+"");
+			Log.info("HERE we are  : "+refID);
 			Log.info("refID : "+refID);
 			Log.info("email : "+email);
 			jsonResponse = given()
