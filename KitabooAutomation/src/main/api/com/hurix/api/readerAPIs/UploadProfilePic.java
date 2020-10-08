@@ -6,6 +6,7 @@ import io.restassured.response.Response;
 import com.hurix.automation.utility.Log;
 
 public class UploadProfilePic {
+	
 	private static String uploadProfilePic;
 	
 	public static Response uploadProfilePic(String userToken,String deviceID,String deviceType)

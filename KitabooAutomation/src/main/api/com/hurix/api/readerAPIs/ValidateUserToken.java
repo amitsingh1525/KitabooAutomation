@@ -1,4 +1,4 @@
-package com.hurix.api.runner;
+package com.hurix.api.readerAPIs;
 
 import static io.restassured.RestAssured.given;
 import io.restassured.response.Response;

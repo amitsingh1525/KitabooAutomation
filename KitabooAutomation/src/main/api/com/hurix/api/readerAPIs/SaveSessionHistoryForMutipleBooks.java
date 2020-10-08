@@ -10,10 +10,10 @@ public class SaveSessionHistoryForMutipleBooks {
 	public static Response saveSessionHistoryForMutipleBooks(int bookID1,int bookID2,String time,String userToken,String deviceID,String deviceType)
 	{
 		Response jsonResponse = null;
-		try {
+		try {//2020-08-07 08:43:20
 			saveSessionHistoryForMutipleBooksBody = "{\"sessionHistory\":[{\"collection_book_id\":\""+bookID1+"\","
-					+ "\"time\":\"2020-07-07 08:43:20\"},{\"collection_book_id\":\""+bookID2+"\",\"time\":"
-					+ "\"07-10-2020 07:06:31\"}]}";
+					+ "\"time\":\""+time+"\"},{\"collection_book_id\":\""+bookID2+"\",\"time\":"
+					+ "\"2020-08-07 04:43:20\"}]}";
 			//System.out.println("POSTsaveSessionHistoryRequestURL:" +POSTsaveSessionHistoryPath);
 			Log.startTestCase("SaveSessionHistoryForMutipleBooks");
 			Log.info("saveSessionHistoryForMutipleBooksBody: "+saveSessionHistoryForMutipleBooksBody);

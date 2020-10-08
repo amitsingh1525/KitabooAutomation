@@ -1638,7 +1638,7 @@ public class Dummy {
 			Validation.responseKeyValidation_key(saveSessionHistory, "ok");
 			
 			
-			SimpleDateFormat formatter11 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");  
+			SimpleDateFormat formatter11 = new SimpleDateFormat("YYYY-MM-DD HH:mm:ss");  
 			Date date1 = new Date();  
 			String  time1=formatter11.format(date1);
 			Response saveSessionHistoryForMutipleBooks = SaveSessionHistoryForMutipleBooks.saveSessionHistoryForMutipleBooks(bookID1, bookID2,time1, userToken, "fgh45", deviceType);
@@ -1648,7 +1648,48 @@ public class Dummy {
 			Validation.responseKeyValidation_key(saveSessionHistoryForMutipleBooks, "ok");
 			
 			
-			//Response checkClientSession =CheckClientSession.
+			Response checkClientSession =CheckClientSession.checkClientSession(bookID1, userToken, "dfg345", deviceType);
+			Validation.responseHeaderCodeValidation(checkClientSession, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(checkClientSession, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(checkClientSession);
+			Validation.responseKeyValidation_key(checkClientSession, "OK");
+
+			Response saveHighlightSetting = SaveHighlightSetting.saveHighlightSetting(bookID1, userID, userToken, "tre3456", deviceType);
+			Validation.responseHeaderCodeValidation(saveHighlightSetting, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(saveHighlightSetting, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(saveHighlightSetting);
+			Validation.responseKeyValidation_key(saveHighlightSetting, "OK");
+			
+			
+			Response uploadProfilePic = UploadProfilePic.uploadProfilePic(userToken, "oi987", deviceType);
+			Validation.responseHeaderCodeValidation(uploadProfilePic, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(uploadProfilePic, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(uploadProfilePic);
+			Validation.responseKeyValidation_key(uploadProfilePic, "OK");
+			Validation.responseKeyValidation_key(uploadProfilePic, "clientID");
+			Validation.responseKeyValidation_key(uploadProfilePic, "user");
+			Validation.responseKeyValidation_key(uploadProfilePic, "usernameForInstitute");
+			Validation.responseKeyValidation_key(uploadProfilePic, "trialUser");
+			Validation.responseKeyValidation_key(uploadProfilePic, "profilePicURL");
+			
+			Response fetchSessionTimeout = FetchSessionTimeout.fetchSessionTimeout(userToken, "wert345", deviceType);
+			Validation.responseHeaderCodeValidation(fetchSessionTimeout, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(fetchSessionTimeout, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(fetchSessionTimeout);
+			Validation.responseKeyValidation_key(fetchSessionTimeout, "ok");
+			
+			Response changePassword = ChangePassword.changePassword(email, password, userToken, "sdfg345", deviceType);
+			Validation.responseHeaderCodeValidation(changePassword, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(changePassword, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(changePassword);
+			Validation.responseKeyValidation_key(changePassword, "OK");
+			
+			
+			
+			
+			
+			
+			
 			
 			
 			
