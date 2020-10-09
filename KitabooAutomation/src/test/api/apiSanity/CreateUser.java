@@ -70,16 +70,15 @@ public class CreateUser {
 					
 					io.restassured.RestAssured.baseURI = env;
 					try {
-						
-						Response regUser = RegisterUser.registerUser("cHJvZi1raXRhYm9v", firstName, lastName, emailID, emailID, password, accessCode);
-						String email = regUser.then().extract().path("user.email");
-						Log.info("registerUser Response: "+regUser.then().extract().response().prettyPrint());
-						if(email.equals(emailID)) {
-							Log.pass("User Created!");
-						}else {
-							Log.fail("ERROR: Expected: "+emailID+" But Found: "+email);
-						}
-					} catch (Exception e) {
+						/*
+						 * 
+						 * Response regUser = RegisterUser.registerUser("cHJvZi1raXRhYm9v", firstName,
+						 * lastName, emailID, emailID, password, accessCode); String email =
+						 * regUser.then().extract().path("user.email");
+						 * Log.info("registerUser Response: "+regUser.then().extract().response().
+						 * prettyPrint()); if(email.equals(emailID)) { Log.pass("User Created!"); }else
+						 * { Log.fail("ERROR: Expected: "+emailID+" But Found: "+email); }
+						 */} catch (Exception e) {
 						// TODO Auto-generated catch block
 						Log.fail("ERROR: "+e.getMessage());
 						continue;
