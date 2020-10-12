@@ -5,8 +5,7 @@ import io.restassured.response.Response;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import org.apache.http.HttpStatus;
 import org.apache.poi.ss.usermodel.DataFormatter;
@@ -14,30 +13,9 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.JSONException;
 
-import com.hurix.api.externalAPIs.Books_OAuth;
-import com.hurix.api.externalAPIs.ClientUserID_books;
-import com.hurix.api.readerAPIs.Authenticate;
-import com.hurix.api.readerAPIs.BookList;
-import com.hurix.api.readerAPIs.BulkDownloadBook;
-import com.hurix.api.readerAPIs.CategoryBookListV1;
-import com.hurix.api.readerAPIs.CategoryBookListV2;
-import com.hurix.api.readerAPIs.DownloadBook;
-import com.hurix.api.readerAPIs.FetchBookCount;
-import com.hurix.api.readerAPIs.FetchBookList;
-import com.hurix.api.readerAPIs.FetchCategoriesCollections;
-import com.hurix.api.readerAPIs.FetchCategoriesCollectionsBooks;
-import com.hurix.api.readerAPIs.FetchFavouriteBooks;
-import com.hurix.api.readerAPIs.MarkAsFavourite;
-import com.hurix.api.readerAPIs.MultiCategoryBookList;
-import com.hurix.api.readerAPIs.MultiCategoryCollectionBookList;
-import com.hurix.api.readerAPIs.RefreshBookList;
-import com.hurix.api.readerAPIs.SearchV2;
-import com.hurix.api.readerAPIs.UnMarkAsFavourite;
-import com.hurix.api.readerAPIs.V1refreshBookList;
-import com.hurix.api.utility.ExcelUtils;
-import com.hurix.api.utility.ExtractCategory;
-import com.hurix.api.utility.JDBC_category;
-import com.hurix.api.utility.Validation;
+import com.hurix.api.externalAPIs.*;
+import com.hurix.api.readerAPIs.*;
+import com.hurix.api.utility.*;
 import com.hurix.automation.utility.Log;
 
 public class DIS_1964 {
@@ -193,14 +171,14 @@ public class DIS_1964 {
 			int user_Id1=0;
 			if(environMent.equals("Staging") && userName.equals("Individual_stag@yopmail.com"))
 			{user_Id1 = Integer.parseInt(""+user_Id+"");
-			clientID = JDBC_category.getReader_user_ID(user_Id1, sqlhost, sqlUsername, sqlPassword);}
+			clientID = JDBC_Queries.getReader_user_ID(user_Id1, sqlhost, sqlUsername, sqlPassword);}
 
 			else if(environMent.equals("Staging") && userName.equals("group_pushstag@yopmail.com"))
 			{Log.info("****************here 2*********");
 			user_Id1 = Integer.parseInt(""+user_Id+"");
-			clientID =JDBC_category.getReader_user_ID(user_Id1, sqlhost, sqlUsername, sqlPassword);}
+			clientID =JDBC_Queries.getReader_user_ID(user_Id1, sqlhost, sqlUsername, sqlPassword);}
 
-			else{clientID =JDBC_category.getReader(userName, sqlhost, sqlUsername, sqlPassword);}
+			else{clientID =JDBC_Queries.getReader(userName, sqlhost, sqlUsername, sqlPassword);}
 
 			String[] deviceT = {"IPAD","ANDROID","WINDOWS","PC","HTML5"};
 			for(int i4=0; i4<=3; i4++)
@@ -210,7 +188,7 @@ public class DIS_1964 {
 				Log.info("userName : "+userName);
 				Log.info("password : "+password);
 				Log.info("clientID : "+clientID);
-				//clientID =JDBC_category.getReader(userName, sqlhost, sqlUsername, sqlPassword);
+				//clientID =JDBC_Queries.getReader(userName, sqlhost, sqlUsername, sqlPassword);
 				Log.info("ReaderKey : "+clientID);
 				Response authenticateValue = Authenticate.authenticate(clientID, userName, password,"514185",deviceT[i4]);
 				Log.info("Authenticate Response: "+authenticateValue.then().extract().response().prettyPrint());				
@@ -239,8 +217,8 @@ public class DIS_1964 {
 				else if(environMent.equals("Staging") && userName.equals("group_pushstag@yopmail.com"))
 				{Log.info("here in group user");client_Id=1283;}
 				else{}
-				consumerKey = JDBC_category.getCK(client_Id, sqlhost, sqlUsername, sqlPassword);
-				consumerSecret = JDBC_category.getSK(client_Id, sqlhost, sqlUsername, sqlPassword);
+				consumerKey = JDBC_Queries.getCK(client_Id, sqlhost, sqlUsername, sqlPassword);
+				consumerSecret = JDBC_Queries.getSK(client_Id, sqlhost, sqlUsername, sqlPassword);
 
 
 				Response fetchBookList_without_pagination = FetchBookList.fetchBookList_without_pagination(userToken,"45616452",deviceT[i4]);

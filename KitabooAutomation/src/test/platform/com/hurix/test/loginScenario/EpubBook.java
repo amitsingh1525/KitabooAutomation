@@ -35,13 +35,13 @@ public class EpubBook {
 	{
 		Log.initialization("Conver to epub");
 		String path="\\testData\\TestData.xlsx";
-		ExcelFile.setExcelFile(path, "Create_Kitaboo_Credential");
+		ExcelFile.setExcelFile(path, "Convertto_ePub");
 		int size = ExcelFile.getRowCount();
-		for(int j=2;j<=2;j++)
+		for(int j=1;j<=1;j++)
 		{
 			String username = ExcelFile.getCellData(j, 0);
 			String password = ExcelFile.getCellData(j, 1);
-			String url = ExcelFile.getCellData(1, 2);
+			String url = ExcelFile.getCellData(j, 2);
 			Log.info(username);
 			Log.info(password);
 			Log.info(url);
@@ -50,7 +50,7 @@ public class EpubBook {
 			BrowserConfigure.browserConfigure("Chrome");
 			Driver.driver.navigate().to(url);
 			LoginModule.loginScenario(username, password);
-			AudioStepModule.popupmsg();
+			//AudioStepModule.popupmsg();
 			Log.endTestCase("End Login");
 			Log.startTestCase("Convertto_ePub");
 			ExcelFile.setExcelFile(path, "Convertto_ePub");
@@ -58,27 +58,27 @@ public class EpubBook {
 			int epubsize = ExcelFile.getRowCount();
 			for(int i=1;i<=epubsize;i++)
 			{
-				String title = ExcelFile.getCellData(i,0);
-				String isbn = ExcelFile.getCellData(i,1);
-				String bookorentation = ExcelFile.getCellData(i,2);
-				String language = ExcelFile.getCellData(i,3); 
-				String spreadtype = ExcelFile.getCellData(i,4);
-				String pdfanswer = ExcelFile.getCellData(i,5);
-				String filepickeranswer = ExcelFile.getCellData(i,6);
-				String tocanswer = ExcelFile.getCellData(i,7);
-				String coveranswer = ExcelFile.getCellData(i,8);
-				String pdffilepath = ExcelFile.getCellData(i,9);
-				String filepath = ExcelFile.getCellData(i,10);
-				String tocpath = ExcelFile.getCellData(i,11);
-				String coverfilepath = ExcelFile.getCellData(i,12);
-				String epubtype = ExcelFile.getCellData(i,13);
-				String picformate = ExcelFile.getCellData(i,14);
-				String font = ExcelFile.getCellData(i,15);
+				String title = ExcelFile.getCellData(i,3);
+				String isbn = ExcelFile.getCellData(i,4);
+				String bookorentation = ExcelFile.getCellData(i,5);
+				String language = ExcelFile.getCellData(i,6); 
+				String spreadtype = ExcelFile.getCellData(i,7);
+				String pdfanswer = ExcelFile.getCellData(i,8);
+				String filepickeranswer = ExcelFile.getCellData(i,9);
+				String tocanswer = ExcelFile.getCellData(i,10);
+				String coveranswer = ExcelFile.getCellData(i,11);
+				String pdffilepath = ExcelFile.getCellData(i,12);
+				String filepath = ExcelFile.getCellData(i,13);
+				String tocpath = ExcelFile.getCellData(i,14);
+				String coverfilepath = ExcelFile.getCellData(i,15);
+				String epubtype = ExcelFile.getCellData(i,16);
+				String picformate = ExcelFile.getCellData(i,17);
+				String font = ExcelFile.getCellData(i,18);
 
 				EpubBookModule.epubhtmlbookcreate();
 				EpubBookModule.metadata(isbn, title+nowEpochTime, language, spreadtype, bookorentation, epubtype, font, picformate);
 				EpubBookModule.fileuplod(pdffilepath, pdfanswer, coveranswer, coverfilepath);
-				
+				//Driver.driver.switchTo().defaultContent();
 				Log.endTestCase("End");
 			}
 			ExcelFile.setExcelFile(path, "Create_Kitaboo_Credential");	

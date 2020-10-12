@@ -176,7 +176,7 @@ public class DIS_1765_WilloPin {
 			io.restassured.RestAssured.baseURI = detail;
 
 			//if(environMent.equals("Staging") &&  userName.contains(""))
-			//clientID = JDBC_category.getReader(userName, sqlhost, sqlUsername, sqlPassword);
+			//clientID = JDBC_Queries.getReader(userName, sqlhost, sqlUsername, sqlPassword);
 			//String client_Id1 = formatter.formatCellValue(sheet.getRow(i).getCell(9));
 			//int client_Id = Integer.parseInt(""+client_Id1+"");
 
@@ -191,7 +191,7 @@ public class DIS_1765_WilloPin {
 			
 			//String reader_key =null;
 			
-			clientID = JDBC_category.getReader(userName, sqlhost, sqlUsername, sqlPassword);
+			clientID = JDBC_Queries.getReader(userName, sqlhost, sqlUsername, sqlPassword);
 			Log.info("clientID : "+clientID);
 			
 			if(environMent.equals("Staging") &&  userName.contains("ent_lear_cat2@yopmail.com")){}			
@@ -221,11 +221,11 @@ public class DIS_1765_WilloPin {
 
 			if(environMent.equals("Staging") &&  userName.contains("ent_lear_cat2@yopmail.com"))
 			{client_Id = 1337;
-			consumerKey = JDBC_category.getCK(client_Id, sqlhost, sqlUsername, sqlPassword);
-			consumerSecret =JDBC_category.getSK(client_Id, sqlhost, sqlUsername, sqlPassword);}else{}
+			consumerKey = JDBC_Queries.getCK(client_Id, sqlhost, sqlUsername, sqlPassword);
+			consumerSecret =JDBC_Queries.getSK(client_Id, sqlhost, sqlUsername, sqlPassword);}else{}
 			
-			consumerKey = JDBC_category.getCK(client_Id, sqlhost, sqlUsername, sqlPassword);
-			consumerSecret =JDBC_category.getSK(client_Id, sqlhost, sqlUsername, sqlPassword);
+			consumerKey = JDBC_Queries.getCK(client_Id, sqlhost, sqlUsername, sqlPassword);
+			consumerSecret =JDBC_Queries.getSK(client_Id, sqlhost, sqlUsername, sqlPassword);
 
 			Log.startTestCase("GeneratePin");
 			Response generatePin = GeneratePin.generatePin(userToken,"15331",deviceT[i4]);
@@ -241,7 +241,7 @@ public class DIS_1765_WilloPin {
 			Validation.responseKeyAndValue(generatePin, "pinPair", pinPair);
 
 			//userID=95744541;
-			if(environMent.equals("QC")){clientID = JDBC_category.getReader(userName, sqlhost, sqlUsername, sqlPassword);}
+			if(environMent.equals("QC")){clientID = JDBC_Queries.getReader(userName, sqlhost, sqlUsername, sqlPassword);}
 			//clientID = formatter.formatCellValue(sheet.getRow(i).getCell(9));
 
 			Response validatePin = ValidatePin.validatePin(clientID,pinKey,pinPair,"15331",deviceT[i4]);
@@ -744,7 +744,7 @@ public class DIS_1765_WilloPin {
 
 			//userID=95744541;
 			
-			clientID = JDBC_category.getReader(userName, sqlhost, sqlUsername, sqlPassword);
+			clientID = JDBC_Queries.getReader(userName, sqlhost, sqlUsername, sqlPassword);
 			//clientID = formatter.formatCellValue(sheet.getRow(i).getCell(9));
 
 			Log.info("*********validate for 10 mins Check************");

@@ -21,7 +21,7 @@ import com.hurix.api.readerAPIs.MultiCategoryCollectionBookList;
 import com.hurix.api.readerAPIs.RefreshCategory;
 import com.hurix.api.utility.ExcelUtils;
 import com.hurix.api.utility.ExtractCategory;
-import com.hurix.api.utility.JDBC_category;
+import com.hurix.api.utility.JDBC_Queries;
 import com.hurix.api.utility.Validation;
 import com.hurix.automation.utility.Log;
 
@@ -173,7 +173,7 @@ public class DIS_1838 {
 			}				
 			io.restassured.RestAssured.baseURI = detail;
 
-			clientID=JDBC_category.getReader(userName, sqlhost, sqlUsername, sqlPassword);
+			clientID=JDBC_Queries.getReader(userName, sqlhost, sqlUsername, sqlPassword);
 			Log.info("clientID : "+clientID);
 			Log.startTestCase("Authenticate");
 			Log.info("TotalRows : "+sheet.getLastRowNum());
@@ -203,9 +203,9 @@ public class DIS_1838 {
 			System.out.println("client_Id:"+client_Id);
 			Log.endTestCase("End");
 
-			consumerKey = JDBC_category.getCK(client_Id, sqlhost, sqlUsername, sqlPassword);
-			consumerSecret =JDBC_category.getSK(client_Id, sqlhost, sqlUsername, sqlPassword);
-			//clientID =JDBC_category.getreader(client_Id, sqlhost, sqlUsername, sqlPassword);
+			consumerKey = JDBC_Queries.getCK(client_Id, sqlhost, sqlUsername, sqlPassword);
+			consumerSecret =JDBC_Queries.getSK(client_Id, sqlhost, sqlUsername, sqlPassword);
+			//clientID =JDBC_Queries.getreader(client_Id, sqlhost, sqlUsername, sqlPassword);
 
 			Response fetchBookList_without_pagination = FetchBookList.fetchBookList_without_pagination(userToken,"ssc5454",deviceT);
 			Validation.responseCodeValidation1(fetchBookList_without_pagination, HttpStatus.SC_OK);

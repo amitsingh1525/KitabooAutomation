@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -14,9 +15,11 @@ import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.google.api.client.auth.oauth2.Credential;
 import com.hurix.asset.audio.AudioModule;
 import com.hurix.asset.audio.AudioStepModule;
 import com.hurix.automation.utility.BrowserConfigure;
+import com.hurix.automation.utility.Credentials;
 import com.hurix.automation.utility.Driver;
 import com.hurix.automation.utility.ExcelFile;
 import com.hurix.automation.utility.Log;
@@ -35,6 +38,8 @@ public class audio {
 			int size = ExcelFile.getRowCount();
 			for(int j=1;j<=1;j++)
 			{
+				//List<String> credentials = Credentials.getCredentials("platform", "distribution");
+				//System.out.println("Username: "+credentials.get(0) +" Password: "+credentials.get(1));
 				String username = ExcelFile.getCellData(j, 0);
 				String password = ExcelFile.getCellData(j, 1);
 				String url = ExcelFile.getCellData(1, 2);
@@ -73,26 +78,26 @@ public class audio {
 					audiofile = ExcelFile.getCellData(i,6);	
 					AudioModule.audio(audiofile,"18CreateAudiosecond"+nowEpochTime,description,tags,subject,transcriptfile,coverpath,invalidaudiofilepath,wrongtranscriptfile);
 				}
-				for(i=1;i<=1;i++)
+			/*	for(i=1;i<=1;i++)
 				{
 					audiofile = ExcelFile.getCellData(i,6);	
 					AudioModule.cancelaudio(audiofile,"18cancelAudio"+nowEpochTime,description,tags,subject,transcriptfile,coverpath,invalidaudiofilepath,wrongtranscriptfile);
-				}
-				for(i=4;i<=4;i++)
+				}*/
+				/*for(i=4;i<=4;i++)
 				{
 					audiofile = ExcelFile.getCellData(i,6);	
-					AudioModule.changeaudio(audiofile,"18changeAudio"+nowEpochTime,description,tags,subject,transcriptfile,coverpath,invalidaudiofilepath,wrongtranscriptfile);
-				}
-				for(i=1;i<=1;i++)
+					AudioModule.changeaudio(audiofile,"30changeAudio"+nowEpochTime,description,tags,subject,transcriptfile,coverpath,invalidaudiofilepath,wrongtranscriptfile);
+				}*/
+			/*	for(i=1;i<=1;i++)
 				{
 					audiofile = ExcelFile.getCellData(i,6);	
 					AudioModule.audio(audiofile,"18CreateAudiothird"+nowEpochTime,description,tags,subject,transcriptfile,coverpath,invalidaudiofilepath,wrongtranscriptfile);
 				}
-				
+			*/	
 					for(i=5;i<=5;i++)
 				{
 					audiofile = ExcelFile.getCellData(i,6);	
-					AudioModule.Editaudio(audiofile,"18editaudio"+nowEpochTime,"edit"+description,"edit"+tags,"edit"+subject,transcriptfile,coverpath,invalidaudiofilepath,wrongtranscriptfile);
+					AudioModule.Editaudio(audiofile,"30editaudio"+nowEpochTime,"edit"+description,"edit"+tags,"edit"+subject,transcriptfile,coverpath,invalidaudiofilepath,wrongtranscriptfile);
 				}
 				
 					/*	for(i=6;i<=6;i++)

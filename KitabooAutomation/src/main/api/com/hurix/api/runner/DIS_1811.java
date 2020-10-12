@@ -168,8 +168,8 @@ public class DIS_1811 {
 				client_Id = authenticateValue.then().extract().path("user.clientID");
 				System.out.println("client_Id:"+client_Id);
 				Log.endTestCase("End");
-				consumerKey=JDBC_category.getCK(client_Id, sqlhost, sqlUsername, sqlPassword);
-				consumerSecret=JDBC_category.getSK(client_Id, sqlhost, sqlUsername, sqlPassword);
+				consumerKey=JDBC_Queries.getCK(client_Id, sqlhost, sqlUsername, sqlPassword);
+				consumerSecret=JDBC_Queries.getSK(client_Id, sqlhost, sqlUsername, sqlPassword);
 
 				/*Response fetchBookList_with_pagination = FetchBookList.fetchBookList_with_pagination(0,10,userToken,"45616452",deviceT);
 				Validation.responseCodeValidation1(fetchBookList_with_pagination, HttpStatus.SC_OK);
@@ -377,7 +377,7 @@ public class DIS_1811 {
 				Validation.responseKeyValidation_key(fetchBookList_without_pagination_again,"level4");
 				System.out.println("fetchBookList_without_pagination_again :: " +fetchBookList_without_pagination_again);	
 
-				String catM=JDBC_category.getCat(client_Id, "Reflow_epub_UPD_", sqlhost, sqlUsername, sqlPassword);
+				String catM=JDBC_Queries.getCat(client_Id, "Reflow_epub_UPD_", sqlhost, sqlUsername, sqlPassword);
 				Log.info("catM : "+catM);
 				//Log.info("title12112 : "+title12112);
 				Response CategoryBookListV1s = CategoryBookListV1.categoryBookListV1(catM,userToken,"56454", "IPAD",bookID1,catlevel,sqlhost,sqlUsername,sqlPassword);
@@ -393,10 +393,10 @@ public class DIS_1811 {
 				Validation.responseKeyValidation_key(CategoryBookListV1s,"description");				
 				System.out.println("CategoryBookListV1_res : "+CategoryBookListV1s);
 
-				bookID1=JDBC_category.getBookId(client_Id, "Reflow_epub_UPD_", sqlhost, sqlUsername, sqlPassword);
+				bookID1=JDBC_Queries.getBookId(client_Id, "Reflow_epub_UPD_", sqlhost, sqlUsername, sqlPassword);
 				Log.info("bookID1 : "+bookID1);
 				Log.info("sqlhost : "+sqlhost);
-				String catN=JDBC_category.getCat(client_Id, "Reflow_epub_UPD_", sqlhost, sqlUsername, sqlPassword);
+				String catN=JDBC_Queries.getCat(client_Id, "Reflow_epub_UPD_", sqlhost, sqlUsername, sqlPassword);
 				Log.info("catN before : "+catN);
 				//catN=ExtractCategory.extractCategory(catN);
 				//Log.info("catN after : "+catN);
@@ -412,7 +412,7 @@ public class DIS_1811 {
 				Validation.responseKeyValidation_key(CategoryBook_ListV2,"description");	
 				System.out.println("CategoryBookListV2_res : "+CategoryBook_ListV2);
 
-				bookID1=JDBC_category.getBookId(client_Id, "Reflow_epub_UPD_", sqlhost, sqlUsername, sqlPassword);
+				bookID1=JDBC_Queries.getBookId(client_Id, "Reflow_epub_UPD_", sqlhost, sqlUsername, sqlPassword);
 				Log.info("bookID1 : "+bookID1);
 				Response markAsFav= MarkAsFavourite.markAsFavourite(bookID1,userToken,"8742685",deviceT);
 				Validation.responseHeaderCodeValidation(markAsFav, HttpStatus.SC_OK);
@@ -455,9 +455,9 @@ public class DIS_1811 {
 				//assetType = fetchBookList_without_pagination.then().extract().path("bookList.book.assetType[66]");
 				Log.info("assetType: "+assetType);
 
-				ebookID1=JDBC_category.getEbookId(client_Id, "Reflow_epub_UPD_", sqlhost, sqlUsername, sqlPassword);
+				ebookID1=JDBC_Queries.getEbookId(client_Id, "Reflow_epub_UPD_", sqlhost, sqlUsername, sqlPassword);
 				Log.info("ebookID1: "+ebookID1);
-				assetType= JDBC_category.getAsset(client_Id, "Reflow_epub_UPD_", sqlhost, sqlUsername, sqlPassword);
+				assetType= JDBC_Queries.getAsset(client_Id, "Reflow_epub_UPD_", sqlhost, sqlUsername, sqlPassword);
 				Log.info("assetType: "+assetType);
 
 				Response Bookdetails_Res = Bookdetails.bookdetails(""+archiveDate+"", userToken, "5489989",deviceT,bookID1,""+assetType+"");
@@ -483,9 +483,9 @@ public class DIS_1811 {
 				System.out.println("RefreshBookList_res : "+Refresh_BookList);
 
 
-				bookID1=JDBC_category.getBookId(client_Id, "Reflow_epub_UPD_", sqlhost, sqlUsername, sqlPassword);
+				bookID1=JDBC_Queries.getBookId(client_Id, "Reflow_epub_UPD_", sqlhost, sqlUsername, sqlPassword);
 				Log.info("bookID1 : "+bookID1);
-				archiveDate=JDBC_category.getArchiveDate(client_Id, "Reflow_epub_UPD_", sqlhost, sqlUsername, sqlPassword);
+				archiveDate=JDBC_Queries.getArchiveDate(client_Id, "Reflow_epub_UPD_", sqlhost, sqlUsername, sqlPassword);
 				Log.info("archiveDate : "+archiveDate);
 				Response V1refresh_BookList = V1refreshBookList.v1refreshBookList(""+archiveDate+"","NEW","UPDATE",bookID1,bookID2,userToken,"eadasd4343", deviceT,clientID);
 				Validation.responseHeaderCodeValidation(V1refresh_BookList, HttpStatus.SC_OK);
@@ -518,7 +518,7 @@ public class DIS_1811 {
 				Validation.responseKeyValidation_key(downloadBookForANDROID_online,"timestamp");
 				System.out.println("downloadBookForANDROID_online: "+downloadBookForANDROID_online);
 
-				bookID1=JDBC_category.getBookId(client_Id, "Reflow_epub_UPD_", sqlhost, sqlUsername, sqlPassword);
+				bookID1=JDBC_Queries.getBookId(client_Id, "Reflow_epub_UPD_", sqlhost, sqlUsername, sqlPassword);
 				Log.info("bookID1 : "+bookID1);
 				Response bulkDownlaod =BulkDownloadBook.bulkDownloadBook(userToken, "463b43n4v3", "FIXED_EPUB_IMAGE", bookID1, bookID2, bookID3, "offline");
 				Log.info("bookID1 : "+bookID1);
@@ -543,7 +543,7 @@ public class DIS_1811 {
 				Validation.responseKeyValidation_key(BookList_Res, "Reflow_epub_02");
 				System.out.println("BookList_Res : "+BookList_Res);
 
-				bookID1=JDBC_category.getBookId(client_Id, "Reflow_epub_UPD", sqlhost, sqlUsername, sqlPassword);
+				bookID1=JDBC_Queries.getBookId(client_Id, "Reflow_epub_UPD", sqlhost, sqlUsername, sqlPassword);
 				Log.info("bookID1 : "+bookID1);
 
 				Response MultiCategory_BookList = MultiCategoryBookList.multiCategoryBookList(catlevel, bookID1,sqlhost,sqlUsername,sqlPassword,userToken,"8545748",deviceT);
@@ -560,7 +560,7 @@ public class DIS_1811 {
 				System.out.println("MultiCategoryBookList_Res : "+MultiCategory_BookList);
 
 
-				bookID1=JDBC_category.getBookId(client_Id, "Reflow_epub_UPD_", sqlhost, sqlUsername, sqlPassword);
+				bookID1=JDBC_Queries.getBookId(client_Id, "Reflow_epub_UPD_", sqlhost, sqlUsername, sqlPassword);
 				Response MultiCategory_CollectionBookList = MultiCategoryCollectionBookList.multiCategoryCollectionBookList(catlevel, bookID1, sqlhost,sqlUsername,sqlPassword, userToken, "8545748",deviceT, "Reflow_epub_UPD_1600668288909");
 				Log.info("bookID1 : "+bookID1);
 				Validation.responseHeaderCodeValidation(MultiCategory_CollectionBookList, HttpStatus.SC_OK);

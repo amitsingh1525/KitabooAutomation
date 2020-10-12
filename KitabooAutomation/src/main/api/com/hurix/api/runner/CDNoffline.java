@@ -10,13 +10,10 @@ import org.apache.http.HttpStatus;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
-import com.hurix.api.readerAPIs.Authenticate;
+import com.hurix.api.readerAPIs.*;
 import com.hurix.api.readerAPIs.DownloadBook;
 import com.hurix.api.readerAPIs.FetchBookList;
-import com.hurix.api.utility.ExcelUtils;
-import com.hurix.api.utility.JDBC_category;
-import com.hurix.api.utility.Validation;
+import com.hurix.api.utility.*;
 import com.hurix.automation.utility.Log;
 
 public class CDNoffline {
@@ -130,7 +127,7 @@ public class CDNoffline {
 				String  time=formatter1.format(date);
 				System.out.println("time : "+time);
 				if(i==1 || i==8|| i==15){
-				clientID =JDBC_category.getReader(userName, sqlhost, sqlUsername, sqlPassword);
+				clientID =JDBC_Queries.getReader(userName, sqlhost, sqlUsername, sqlPassword);
 				//int client_Id = Integer.parseInt(""+client_Id+"");					
 				Log.startTestCase("Authenticate");
 				Log.info("TotalRows : "+sheet.getLastRowNum());

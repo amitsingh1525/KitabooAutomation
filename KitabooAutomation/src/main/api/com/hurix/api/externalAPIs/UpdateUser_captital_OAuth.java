@@ -1,12 +1,8 @@
 package com.hurix.api.externalAPIs;
 
 import static io.restassured.RestAssured.given;
-
-import java.sql.SQLException;
-
 import com.hurix.api.utility.ExcelUtils;
 import com.hurix.automation.utility.Log;
-
 import io.restassured.response.Response;
 
 
@@ -25,7 +21,7 @@ public class UpdateUser_captital_OAuth {
 	//private static String updateUserBody = "{\"user\":{\"firstName\":\"ent_learner\",\"lastName\":\"cat4\",\"userName\":\"ent_lear_cat4@yopmail.com\",\"password\":\"kitaboo!123\",\"clientUserID\":\"95750033\",\"email\":\"ent_lear_cat4@yopmail.com\"}}";
 
 
-	public static Response updateUser_captital_OAuth(String consumerKey, String consumerSecret)
+	public static Response updateUser_captital_OAuth(String firstName,String lastName,String email,String userName ,String role ,int userID,String consumerKey, String consumerSecret)
 	{
 		//System.out.println("updateUser_OAuthPathPath: " +updateUser_OAuthPath);		
 		Response jsonResponse = null;
@@ -36,25 +32,18 @@ public class UpdateUser_captital_OAuth {
 					.oauth(consumerKey, consumerSecret, "", "")
 					.header("Content-Type","application/x-www-form-urlencoded")	
 					//.contentType(ContentType.URLENC.withCharset("UTF-8"))
-					.formParam("firstName", "ent_learner")
-					.formParam("lastName", "cat4")
-					.formParam("email", "ent_lear_cat4@yopmail.com ")
-					.formParam("userName", "ent_lear_cat4@yopmail.com ")
+					.formParam("firstName", firstName)
+					.formParam("lastName", lastName)
+					.formParam("email", email)
+					.formParam("userName",userName)
 					.formParam("password", "kitaboo!123")
-					.formParam("Role", "2")
-					.formParam("userID", "95750033")
+					.formParam("Role", role)
+					.formParam("userID", userID)
 					.post("/DistributionServices/ext/api/UpdateUser");
 
-			/*.header("firstName", username)
-					.header("lastName", lastName)
-					.header("email", email)
-					.header("username", email)
-					.header("password",password)
-					.header("Role", 2)
-					.header("userID", 95750033)
-					.post(updateUser_OAuthPath);*/
+			
 
-			System.out.println("updateUser_captital_OAuth Response: "+jsonResponse.then().extract().response().prettyPrint());
+			Log.info("updateUser_captital_OAuth Response: "+jsonResponse.then().extract().response().prettyPrint());
 			//Log.info("updateUser_captital_OAuth Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 
 		{
@@ -65,8 +54,8 @@ public class UpdateUser_captital_OAuth {
 		return jsonResponse;
 
 	}
-	public static void   main(String []args) throws SQLException{
+	/*public static void   main(String []args) throws SQLException{
 
-		updateUser_captital_OAuth(consumerKey,consumerSecret);
-	}
+		updateUser_captital_OAuth(consumerKey,consumerSecret,"testingent","cat","");
+	}*/
 }
