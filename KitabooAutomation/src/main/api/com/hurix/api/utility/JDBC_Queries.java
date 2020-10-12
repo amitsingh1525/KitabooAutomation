@@ -650,6 +650,28 @@ public class JDBC_Queries {
 		}
 		return CLIENT_INST_ID;		
 	}	
+	
+	public static String isbn_Title(String title,String sqlhost, String sqlUsername, String sqlPassword)
+	{
+		String isbn = null;		
+		try {
+			//Connection con = DriverManager.getConnection("jdbc:mysql://172.18.10.147:3306","readonly","readonly@123");
+			Connection con = DriverManager.getConnection(sqlhost,sqlUsername,sqlPassword);
+			Statement stmt = con.createStatement();
+			ResultSet result = null;
+			Log.info("title : " +title);
+			result= stmt.executeQuery("SELECT isbn FROM cloudCore.BOOKS WHERE title='"+title+"';");
+			result.next();
+			isbn = result.getString("isbn");
+			Log.info("Result ISBN : " +isbn);
+			stmt.close();
+			con.close();
+		} catch (SQLException exp) {
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
+		}
+		return isbn;		
+	}
 			
 }
 
