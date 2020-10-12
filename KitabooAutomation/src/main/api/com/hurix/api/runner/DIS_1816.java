@@ -314,7 +314,7 @@ public class DIS_1816 {
 			System.out.println("readingPercentage9: "+readingPercentage9);
 
 
-			Response Readingspeed = ReadingSpeed.readingSpeed(bookID1, bookID2, bookID3,bookID4,bookID5,bookID6,bookID7,bookID8,bookID9, userToken, "ds313131",deviceT);
+			Response Readingspeed = ReadingSpeed.readingSpeed(bookID1, bookID2, bookID3,bookID4,bookID5, userToken, "ds313131",deviceT);
 			Validation.responseCodeValidation1(Readingspeed, HttpStatus.SC_OK);
 			Validation.responseHeaderCodeValidation(Readingspeed, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(Readingspeed);
@@ -362,7 +362,7 @@ public class DIS_1816 {
 			Validation.responseTimeValidation(saveReadingPercentage1);
 			System.out.println("saveReadingPercentage: "+saveReadingPercentage1);
 
-			Readingspeed = ReadingSpeed.readingSpeed(bookID1, bookID2, bookID3,bookID4,bookID5,bookID6,bookID7,bookID8,bookID9, userToken, "ds313131", deviceT);
+			Readingspeed = ReadingSpeed.readingSpeed(bookID5,bookID6,bookID7,bookID8,bookID9, userToken, "ds313131", deviceT);
 			Validation.responseCodeValidation1(Readingspeed, HttpStatus.SC_OK);
 			Validation.responseHeaderCodeValidation(Readingspeed, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(Readingspeed);

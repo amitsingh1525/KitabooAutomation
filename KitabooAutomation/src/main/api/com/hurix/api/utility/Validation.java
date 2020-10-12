@@ -141,15 +141,15 @@ public class Validation {
 
 	public static void responseISGreater_String(Response variable,String key1,int value)
 	{
-		int key= Integer.parseInt(""+key1+"");	
+		int key= Integer.parseInt(""+key1+"");			
 
 		if(key >= value)
 		{
-			Log.pass("size Validation pass is : " + ""+variable+""+" =$GREATER THEN EQUALS TO$: "+value);
+			Log.pass("size Validation pass is : " +""+key1+""+" =$GREATER THEN EQUALS TO$: "+value);
 		}
 		else
 		{
-			Log.fail("size Validation pass is : " +""+variable+""+" =$GREATER THEN EQUALS TO$: "+value);
+			Log.fail("size Validation pass is : " +""+key1+""+" =$GREATER THEN EQUALS TO$: "+value);
 		}
 	}
 	public static void responseKeyAndValue(Response jsonResponse, String key,String value)

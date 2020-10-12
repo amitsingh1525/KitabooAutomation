@@ -25,10 +25,19 @@ public class ExcelFile {
 		try {
 			FileInputStream inputStream = new FileInputStream(new File(filePath));
 			ExcelWBook = getWorkbook(inputStream, filePath);
+			ExcelWSheet = setSheetName(SheetName);
+		} catch (Exception e){
+			throw (e);
+		}
+	}
+	
+	public static Sheet setSheetName(String SheetName) throws Exception {
+		try {
 			ExcelWSheet = ExcelWBook.getSheet(SheetName);
 		} catch (Exception e){
 			throw (e);
 		}
+		return ExcelWSheet;
 	}
 	
 	public static String getCellData(int RowNum, int ColNum) throws Exception{
@@ -86,7 +95,6 @@ public class ExcelFile {
 	public static int getRowCount() throws Exception {
 		try{
 			int RowCount = ExcelWSheet.getLastRowNum();
-			Log.info("Total number of Row used return as < " + RowCount + " >.");		
 			return RowCount;
 		}catch (Exception e){
 			Log.error("Class ExcelUtil | Method getRowUsed | Exception desc : "+e.getMessage());

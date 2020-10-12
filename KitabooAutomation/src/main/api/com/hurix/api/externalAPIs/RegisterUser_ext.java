@@ -10,11 +10,11 @@ public class RegisterUser_ext {
 	public static Response registerUser_ext(String consumerKey, String consumerSecret,String email,String firstName,String lastName,String userName,long clientUserID)
 	{	
 		registerUserBody ="{\"user\":{\"firstName\":\""+firstName+"\",\"lastName\":\""+lastName+"\",\"userName\":\""+userName+"\","
-				+ "\"password\":\"kitaboo@123\",\"clientUserID\":\""+clientUserID+"}\",\"email\":\""+email+"\"}}";
+				+ "\"password\":\"kitaboo@123\",\"clientUserID\":\""+clientUserID+"\",\"email\":\""+email+"\"}}";
 
 		Response jsonResponse = null;
 		try {
-			//Log.startTestCase("RegisterUser");
+			Log.startTestCase("RegisterUser");
 			Log.info("consumerKey : "+consumerKey);
 			Log.info("consumerSecret : "+consumerSecret);
 			Log.info("email : "+email);

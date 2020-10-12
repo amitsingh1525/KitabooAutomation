@@ -39,5 +39,4 @@ public class SearchV2_OAuth {
 		Log.endTestCase("End");
 		return jsonResponse;
 	}
-
 }

@@ -619,5 +619,37 @@ public class JDBC_Queries {
 		}
 		return format;		
 	}
+		
+	public static String getclientInstituteID(int bookID1,String instiName,int client_Id,String sqlhost, String sqlUsername, String sqlPassword)
+	{
+		String CLIENT_INST_ID = null;		
+		try {
+			//Connection con = DriverManager.getConnection("jdbc:mysql://172.18.10.147:3306","readonly","readonly@123");
+			Connection con = DriverManager.getConnection(sqlhost,sqlUsername,sqlPassword);
+			Statement stmt = con.createStatement();
+			ResultSet result = null;
+			Log.info("instiName : " +instiName);
+			Log.info("bookID1 : " +bookID1);
+			result= stmt.executeQuery("SELECT schemaNAme FROM cloudCore.CLIENT WHERE Id IN (SELECT client_id FROM cloudCore.BOOKS WHERE ID IN (SELECT book_id FROM cloudCore.COLLECTION_BOOK_MAP WHERE ID = "+bookID1+"))");
+			result.next();
+			String schemaNAme = result.getString("schemaNAme");
+			System.out.println("schemaNAme : " +schemaNAme);
+			
+			result= stmt.executeQuery("SELECT CLIENT_INST_ID FROM "+schemaNAme+".INSTITUTE WHERE client_id = "+client_Id+" AND NAME='"+instiName+"' LIMIT 1;");
+			result.next();
+			Log.info("HERE : " +"SELECT CLIENT_INST_ID FROM "+schemaNAme+".INSTITUTE WHERE client_id = "+client_Id+" AND NAME='"+instiName+"' LIMIT 1;");
+			//client_id= Integer.parseInt(""+client_id+"");
+			CLIENT_INST_ID = result.getString("CLIENT_INST_ID");
+			//CLIENT_INST_ID = Integer.parseInt(""+CLIENT_INST_ID1+"");
+			Log.info("Result CLIENT_INST_ID : " +CLIENT_INST_ID);
+			stmt.close();
+			con.close();
+		} catch (SQLException exp) {
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
+		}
+		return CLIENT_INST_ID;		
+	}	
+			
 }
 

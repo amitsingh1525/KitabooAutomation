@@ -17,12 +17,7 @@ public class EpubStatus {
 					.header("Content-Type","application/json")
 					.queryParam("id", epubID)
 					.get("/DistributionServices/ext/api/epubStatus");
-			/*Validation.responseHeaderCodeValidation(jsonResponse, HttpStatus.SC_OK);
-			Validation.responseCodeValidation1(jsonResponse, HttpStatus.SC_OK);
-			Validation.responseTimeValidation(jsonResponse);
-			Validation.responseKeyValidation_key(jsonResponse, "status");
-			Validation.responseKeyValidation_key(jsonResponse, "100");*/
-			
+						
 			Log.info("EpubStatus Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 
 		{
@@ -30,7 +25,6 @@ public class EpubStatus {
 			exp.printStackTrace();
 		}
 		Log.endTestCase("End");
-		return jsonResponse;
-		
+		return jsonResponse;		
 	}
 }

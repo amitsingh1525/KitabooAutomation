@@ -7,18 +7,20 @@ import com.hurix.automation.utility.Log;
 
 public class ReadingSpeed {
 	
-	public static Response readingSpeed(int bookID1,int bookID2,int bookID3,int bookID4,int bookID5,int bookID6,int bookID7,int bookID8,int bookID9,String usertoken,String deviceID,String deviceType)
+	public static Response readingSpeed(int bookID1,int bookID2,int bookID3,int bookID4,int bookID5,String userToken,String deviceID,String deviceType)
 	{
 		Response jsonResponse = null;
 		try {
 			Log.startTestCase("ReadingSpeed.device:"+deviceType+".id1="+bookID1+".id2="+bookID2+".id3="+bookID3+"");
+			Log.info("ReadingSpeed URL : "+"/DistributionServices/services/api/readerExt/user/"+deviceID+"/"+deviceType+"/fetchReadingPercentage");
+
 			jsonResponse = given()
 					.header("Content-Type","application/json")
-					.queryParam("usertoken", usertoken)
-					.body("{\"bookIds\":["+bookID1+","+bookID2+","+bookID3+","+bookID4+","+bookID5+","+bookID6+","+bookID7+","+bookID8+","+bookID9+"]}")					
+					.queryParam("usertoken", userToken)
+					.body("{\"bookIds\":["+bookID1+","+bookID2+","+bookID3+","+bookID4+","+bookID5+"]}")	
+					
 					.post("/DistributionServices/services/api/readerExt/user/"+deviceID+"/"+deviceType+"/fetchReadingPercentage");
-			Log.info("ReadingSpeed URL : "+"/DistributionServices/services/api/readerExt/user/"+deviceID+"/"+deviceType+"/fetchReadingPercentage");
-			Log.info("usertoken : "+usertoken);
+			
 			Log.info("ReadingSpeed.device:"+deviceType+".id1="+bookID1+".id2="+bookID2+".id3="+bookID3+" Response: "+jsonResponse.then().extract().response().prettyPrint());
 
 		} catch (Exception exp) 
