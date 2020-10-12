@@ -15,6 +15,7 @@ public class SaveHighlightSetting {
 			//System.out.println("POSTsaveSessionHistoryRequestURL:" +POSTsaveSessionHistoryPath);
 			Log.startTestCase("SaveHighlightSetting");
 			Log.info("SaveHighlightSettingBody: "+saveSessionHistoryForMutipleBooksBody);
+			Log.info("URL: "+"/DistributionServices/services/api/reader/user/"+deviceID+"/"+deviceType+"/"+bookID1+"/saveHighlightSetting");
 			jsonResponse = given()
 					.header("Content-Type","application/json")
 					.header("usertoken",userToken)

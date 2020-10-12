@@ -12,7 +12,7 @@ public class SaveSessionHistoryForMutipleBooks {
 		Response jsonResponse = null;
 		try {//2020-08-07 08:43:20
 			saveSessionHistoryForMutipleBooksBody = "{\"sessionHistory\":[{\"collection_book_id\":\""+bookID1+"\","
-					+ "\"time\":\""+time+"\"},{\"collection_book_id\":\""+bookID2+"\",\"time\":"
+					+ "\"time\":\"2020-08-07 08:43:20\"},{\"collection_book_id\":\""+bookID2+"\",\"time\":"
 					+ "\"2020-08-07 04:43:20\"}]}";
 			//System.out.println("POSTsaveSessionHistoryRequestURL:" +POSTsaveSessionHistoryPath);
 			Log.startTestCase("SaveSessionHistoryForMutipleBooks");

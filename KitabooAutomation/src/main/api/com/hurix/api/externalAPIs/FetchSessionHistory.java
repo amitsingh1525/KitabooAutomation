@@ -38,7 +38,8 @@ public class FetchSessionHistory {
 
 			Log.info("FetchSessionHistory Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception e) {
-			e.printStackTrace();
+			Log.fail(e.getMessage());
+			Log.fail("fails due to"+ e.getCause());
 		}
 		Log.endTestCase("End");
 		return jsonResponse;

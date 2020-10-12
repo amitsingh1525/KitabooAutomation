@@ -17,7 +17,7 @@ public class BulkDownloadBook {
 			String[] state1 = {"online","offline"};
 			for(int i=0; i<=1 ;i++)
 			{
-				Log.startTestCase("BulkDownloadBook."+deviceType+"_"+State+".bookID1:"+bookID1+".bookID2:"+bookID2+".bookID3:"+bookID3+"");
+				Log.startTestCase("BulkDownloadBook."+deviceType+"_"+state1[i]+".bookID1:"+bookID1+".bookID2:"+bookID2+".bookID3:"+bookID3+"");
 				Log.info("deviceType : "+deviceType);
 				Log.info("userToken: "+userToken);
 				Log.info("bookID1 : "+bookID1+ "bookID2: " +bookID2+  "bookID3: " +bookID3);
@@ -30,7 +30,7 @@ public class BulkDownloadBook {
 						.body(bulkDownload)
 						.post("/DistributionServices/services/api/reader/distribution/"+deviceID+"/"+deviceType+"/bulkDownloadBook?state="+state1[i]+"");
 
-				Log.info("BulkDownloadBook."+deviceType+"_"+State+" Response: "+jsonResponse.then().extract().response().prettyPrint());
+				Log.info("BulkDownloadBook."+deviceType+"_"+state1[i]+" Response: "+jsonResponse.then().extract().response().prettyPrint());
 			}
 		} catch (Exception exp) 
 		{

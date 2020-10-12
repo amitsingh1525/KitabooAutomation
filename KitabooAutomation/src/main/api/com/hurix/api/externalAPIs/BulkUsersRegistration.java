@@ -58,6 +58,7 @@ public class BulkUsersRegistration {
 		} catch (Exception exp) 
 		{
 			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
 		}
 		Log.endTestCase("End");
 		return jsonResponse;

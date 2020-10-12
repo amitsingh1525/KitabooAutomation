@@ -2,7 +2,6 @@ package com.hurix.api.externalAPIs;
 
 import static io.restassured.RestAssured.given;
 import io.restassured.response.Response;
-import com.hurix.api.utility.*;
 import com.hurix.automation.utility.Log;
 
 public class Savecollection {
@@ -23,15 +22,14 @@ public class Savecollection {
 					.header("Content-Type","application/json")
 					.body(Savecollection)
 					.post("/DistributionServices/ext/api/collection");
-			Validation.responseHeaderCodeValidation(jsonResponse, 200);
-			Validation.responseCodeValidation1(jsonResponse, 200);
-			Validation.responseTimeValidation(jsonResponse);
+			
 			
 			Log.info("Savecollection Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 
 		{
 			Log.fail(exp.getMessage());
-			exp.printStackTrace();
+			Log.fail("fails due to"+ exp.getCause());
+			//exp.printStackTrace();
 		}
 		Log.endTestCase("End");
 		return jsonResponse;

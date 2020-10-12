@@ -38,7 +38,7 @@ public class CompUserBook {
 		{
 			Log.fail(exp.getMessage());
 			Log.fail("fails due to"+ exp.getCause());
-			exp.printStackTrace();
+			
 		}
 		Log.endTestCase("End");
 		return jsonResponse;

@@ -13,7 +13,7 @@ public class GetLastPageAccessed {
 			Log.startTestCase("GetLastPageAccessed.device:"+deviceType+".bookID1:"+bookID1+"");
 			jsonResponse = given()
 					.header("usertoken",userToken)
-					.get("DistributionServices/services/api/reader/books/"+deviceID+"/"+deviceType+"/"+bookID1+"/getLastPageAccessed");
+					.get("/DistributionServices/services/api/reader/books/"+deviceID+"/"+deviceType+"/"+bookID1+"/getLastPageAccessed");
 			Log.info("usertoken : "+userToken);
 			Log.info("GetLastPageAccessed.device:"+deviceType+".bookID1:"+bookID1+" Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 

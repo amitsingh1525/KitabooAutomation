@@ -42,7 +42,8 @@ public class GetRawTrackingData{
 
 			Log.info("GetRawTrackingData Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception e) {
-			e.printStackTrace();
+			Log.fail(e.getMessage());
+			Log.fail("fails due to"+ e.getCause());
 		}
 		Log.endTestCase("End");
 		return jsonResponse;
@@ -61,7 +62,7 @@ public class GetRawTrackingData{
 			long endDate1 = datenew1.getTime();
 			endDate1=endDate1/1000;
 			
-			Log.startTestCase("getRawTracking");
+			Log.startTestCase("GetRawTrackingData_V1");
 			Log.info("startDate1 : "+startDate1);
 			Log.info("endDate1 : "+endDate1);
 			
@@ -75,8 +76,9 @@ public class GetRawTrackingData{
 					.get("/DistributionServices/ext/api/v1/getRawTrackingData");
 
 			Log.info("Response: "+jsonResponse.then().extract().response().prettyPrint());
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Exception exp) {
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
 		}
 		Log.endTestCase("End");
 		return jsonResponse;

@@ -35,10 +35,9 @@ public class Order {
 		{
 			Log.fail(exp.getMessage());
 			Log.fail("Fails due to "+exp.getCause());
-			exp.printStackTrace();
+			//exp.printStackTrace();
 		}
 		Log.endTestCase("End");
 		return jsonResponse;		
 	}
-
 }

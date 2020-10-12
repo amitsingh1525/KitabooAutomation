@@ -26,8 +26,7 @@ public class BookMetadata {
 		} catch (Exception exp) 
 		{
 			Log.fail(exp.getMessage());
-			//System.out.println(exp.getCause());
-			exp.printStackTrace();
+			Log.fail("fails due to"+ exp.getCause());
 		}
 		Log.endTestCase("End");
 		return jsonResponse;

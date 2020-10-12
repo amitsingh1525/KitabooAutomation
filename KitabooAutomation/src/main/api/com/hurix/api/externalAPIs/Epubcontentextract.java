@@ -25,7 +25,7 @@ public class Epubcontentextract {
 		{
 			Log.fail(exp.getMessage());
 			Log.fail("fails due to"+ exp.getCause());
-			exp.printStackTrace();
+			//exp.printStackTrace();
 		}
 		Log.endTestCase("End");
 		return jsonResponse;		
