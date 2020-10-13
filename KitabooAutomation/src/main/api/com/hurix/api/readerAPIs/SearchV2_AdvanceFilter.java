@@ -1,12 +1,7 @@
 package com.hurix.api.readerAPIs;
 
 import static io.restassured.RestAssured.given;
-
-import org.apache.http.HttpStatus;
-
 import io.restassured.response.Response;
-
-import com.hurix.api.utility.Validation;
 import com.hurix.automation.utility.Log;
 
 public class SearchV2_AdvanceFilter {
@@ -29,12 +24,7 @@ public class SearchV2_AdvanceFilter {
 					.header("usertoken",userToken)
 					.body(searchV2Body)					
 					.post("/DistributionServices/services/api/elasticsearch/distribution/"+deviceID+"/"+deviceType+"/searchV2");
-			Validation.responseHeaderCodeValidation(jsonResponse, HttpStatus.SC_OK);
-			Validation.responseCodeValidation1(jsonResponse, HttpStatus.SC_OK);
-			Validation.responseTimeValidation(jsonResponse);
-			Validation.responseKeyValidation_key(jsonResponse, "searchText");
-			Validation.responseKeyValidation_key(jsonResponse, "bookTitle");
-			Validation.responseKeyValidation_key(jsonResponse, "description");
+			
 
 			Log.info("SearchV2_AdvanceFilter Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 

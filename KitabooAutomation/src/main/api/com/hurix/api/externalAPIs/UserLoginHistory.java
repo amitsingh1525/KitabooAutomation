@@ -37,8 +37,9 @@ public class UserLoginHistory {
 					.get("/DistributionServices/ext/api/userLoginHistory");
 
 			Log.info("UserLoginHistory Response: "+jsonResponse.then().extract().response().prettyPrint());
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Exception exp) {
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
 		}
 		Log.endTestCase("End");
 		return jsonResponse;

@@ -84,9 +84,9 @@ public class ProdUS_Sanity {
 		Log.initialization("ProdUS_Sanity");
 		try {
 			//startDate=EpochTime.getEpochTime(""+startDate+"");
-			excelPath="./testData/ProdUS_Sanity.xlsx";
+			excelPath="./testData/Rest_Sanity.xlsx";
 			workbook = new XSSFWorkbook(excelPath);
-			sheet= workbook.getSheet("Sheet1");
+			sheet= workbook.getSheet("prodUS");
 			sheet1= workbook.getSheet("RegisterUSER");
 			for(int i=1;i<=sheet.getLastRowNum();i++)
 			{DataFormatter formatter = new DataFormatter();
@@ -222,7 +222,7 @@ public class ProdUS_Sanity {
 			//String userNameTT = authenticateValueT.then().extract().path("user.userName");
 			Validation.responseKeyAndValue(authenticateValueT, "userName", userNameT);
 			int userIDT = authenticateValueT.then().extract().path("user.userID");
-			Log.info("userIDT : "+userID);
+			Log.info("userIDT : "+userIDT);
 			String userTokenT = authenticateValueT.then().extract().path("userToken");
 			Log.info("userTokenT :"+userTokenT);
 			String clientUserIDT = authenticateValueT.then().extract().path("user.clientUserID");
@@ -340,12 +340,14 @@ public class ProdUS_Sanity {
 			Log.info("bookID2: "+bookID2);
 			bookID3 = fetchBookList_without_pagination.then().extract().path("bookList.book.id[2]");			
 			Log.info("bookID3: "+bookID3);
-			bookID4 = fetchBookList_without_pagination.then().extract().path("bookList.book.id[3]");
+						
+			try {bookID4 = fetchBookList_without_pagination.then().extract().path("bookList.book.id[3]");
 			Log.info("bookID4 :: "+bookID4);
 			bookID5 = fetchBookList_without_pagination.then().extract().path("bookList.book.id[4]");
 			Log.info("bookID5 :: "+bookID5);
 			bookID6 = fetchBookList_without_pagination.then().extract().path("bookList.book.id[5]");
 			Log.info("bookID6 :: "+bookID6);
+			} catch (Exception e) {Log.fail(e.getMessage());}
 			isbn = fetchBookList_without_pagination.then().extract().path("bookList.book.isbn[1]");
 			Log.info("isbn: "+isbn);
 			int type=fetchBookList_without_pagination.then().extract().path("bookList.book.type[0]");
@@ -360,8 +362,8 @@ public class ProdUS_Sanity {
 			Log.info("collectionName0: "+collectionName0);
 			catname = ExtractCategory.extractCategory(category1);
 			Log.info("catname: " +catname);
-			/*forName = fetchBookList_without_pagination.then().extract().path("bookList.book.formats.name[0]");
-			Log.info("$#@$#@#@#@##@#$!@#$%^#@#$%^ forName :: "+forName);*/
+			String forName = fetchBookList_without_pagination.then().extract().path("bookList.book.formats[0].name[0]");
+			Log.info("$#@$#@#@#@##@#$!@#$%^#@#$%^ forName :: "+forName);
 			archiveDate = fetchBookList_without_pagination.then().extract().path("bookList.book.archiveDate[0]");
 			Log.info("archiveDate:"+archiveDate);
 			archiveDate6=fetchBookList_without_pagination.then().extract().path("bookList.book.archiveDate[6]");
@@ -377,6 +379,8 @@ public class ProdUS_Sanity {
 			Log.info("classID: "+classID);
 			version = fetchBookList_without_pagination.then().extract().path("bookList.book.version[0]");
 			Log.info("version: "+version);
+			Object categoryIdList = fetchBookList_without_pagination.then().extract().path("bookList.book.categoryIdList[0]");
+			Log.info("categoryIdList: "+categoryIdList);
 
 
 
@@ -408,11 +412,11 @@ public class ProdUS_Sanity {
 			Validation.responseCodeValidation1(UploadEpub_res, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(UploadEpub_res);
 			Validation.responseKeyValidation_key(UploadEpub_res, "The request for the uploadEpub taken successfully.");
-			//epubId = UploadEpub_res.then().extract().path("epubId");
-			Log.info("epubId: "+epubId);
+			try {epubId = UploadEpub_res.then().extract().path("epubId");
+			Log.info("epubId: "+epubId);} catch (Exception e2) {Log.fail(e2.getMessage());}
 
 
-			Thread.sleep(9000);
+			Thread.sleep(4000);
 			Response EpubStatus_res = EpubStatus.epubStatus(consumerKey, consumerSecret,epubId);
 			Validation.responseHeaderCodeValidation(EpubStatus_res, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(EpubStatus_res, HttpStatus.SC_OK);
@@ -886,10 +890,10 @@ public class ProdUS_Sanity {
 			Validation.responseKeyValidation_key(fetchBookClassExpandedAnalytics, "bookOpened");
 			Validation.responseKeyValidation_key(fetchBookClassExpandedAnalytics, "bookAssigned");
 			Validation.responseKeyValidation_key(fetchBookClassExpandedAnalytics, "studentAnalytics");
-			/*try 
+			try 
 			{Validation.responseKeyValidation_key(fetchBookClassExpandedAnalytics, "totalSession");
 			int totalSession = fetchBookClassExpandedAnalytics.then().extract().path("analytics.studentAnalytics[0].totalSession");
-			Log.info("totalSession : "+totalSession);} catch (Exception e) {Log.fail(e.getMessage());}*/
+			Log.info("totalSession : "+totalSession);} catch (Exception e) {Log.fail(e.getMessage());}
 
 
 			Response fetchBookClassUserExpandedAnalytics = FetchBookClassUserExpandedAnalytics.fetchBookClassUserExpandedAnalytics(bookID1, classID, userID, userToken, "asdfg345", deviceType);
@@ -966,7 +970,9 @@ public class ProdUS_Sanity {
 			Validation.responseINTEGERKeyAndValue(listCollection, "id", kitabooCollectionId);
 
 
-			Response deleteClientCollection = DeleteClientCollection.deleteClientCollection(clientCollectionId, consumerKey,consumerSecret);
+			String clientCollectionID = JDBC_Queries.getclientCollectionID(bookID1, client_Id, "Hey World", sqlhost, sqlUsername,sqlPassword);
+			
+			Response deleteClientCollection = DeleteClientCollection.deleteClientCollection(clientCollectionID, consumerKey,consumerSecret);
 			Validation.responseCodeValidation1(deleteClientCollection, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(deleteClientCollection, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(deleteClientCollection);
@@ -983,7 +989,7 @@ public class ProdUS_Sanity {
 			int kitabooCollectionId1 =	savecollection.then().extract().path("kitabooCollectionId");
 			Log.info("kitabooCollectionId1 : "+kitabooCollectionId1);
 
-			deleteClientCollection = DeleteClientCollection.deleteClientCollection(clientCollectionId1, consumerKey,consumerSecret);
+			deleteClientCollection = DeleteClientCollection.deleteClientCollection(""+clientCollectionId1+"", consumerKey,consumerSecret);
 			Validation.responseCodeValidation1(deleteClientCollection, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(deleteClientCollection, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(deleteClientCollection);
@@ -1047,6 +1053,12 @@ public class ProdUS_Sanity {
 			Validation.responseKeyValidation_key(fetchDefaultCBMId, "defaultkitabooId");
 			Validation.responseKeyAndValue(fetchDefaultCBMId, "responseMsg","OK");
 
+			Response refreshCategory = RefreshCategory.refreshCategory(categoryIdList, userToken, "23456asd", deviceType);
+			Validation.responseHeaderCodeValidation(refreshCategory, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(refreshCategory, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(refreshCategory);
+			
+			
 			Response fetchCollectionCBMId = FetchCollectionCBMId.fetchCollectionCBMId(bookID3, userToken, "kjh9876", deviceType);
 			Validation.responseCodeValidation1(fetchCollectionCBMId, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(fetchCollectionCBMId, HttpStatus.SC_OK);
@@ -1829,9 +1841,9 @@ public class ProdUS_Sanity {
 			String consumerSecret1=null;
 			consumerKey1 = JDBC_Queries.getCK(881, sqlhost, sqlUsername, sqlPassword);
 			consumerSecret1 = JDBC_Queries.getSK(881, sqlhost, sqlUsername, sqlPassword);
-			/*if(environMent.equals("Staging"))
+			if(environMent.equals("Staging"))
 			{consumerKey1 = JDBC_Queries.getCK(881, sqlhost, sqlUsername, sqlPassword);
-			consumerSecret1 = JDBC_Queries.getSK(881, sqlhost, sqlUsername, sqlPassword);}*/
+			consumerSecret1 = JDBC_Queries.getSK(881, sqlhost, sqlUsername, sqlPassword);}
 
 
 			Response fetchInstitutes = FetchInstitutes.fetchInstitutes(consumerKey1, consumerSecret1);
@@ -1875,7 +1887,7 @@ public class ProdUS_Sanity {
 			Validation.responseTimeValidation(fetchAllOrdersForInstitute);
 			Validation.responseKeyAndValue(fetchAllOrdersForInstitute,"responseMsg","OK");
 
-			String clientInstituteID =JDBC_Queries.getclientInstituteID(bookID1, "sales admin1602513838000", client_Id, sqlhost, sqlUsername, sqlPassword);
+			String clientInstituteID =JDBC_Queries.getclientInstituteID(bookID1, "sales admin1602514160000", client_Id, sqlhost, sqlUsername, sqlPassword);
 
 			fetchAllOrdersForInstitute = FetchAllOrdersForInstitute.fetchAllOrdersForInstitute(clientInstituteID, consumerKey, consumerSecret, "asdf234", deviceType);
 			Validation.responseHeaderCodeValidation(fetchAllOrdersForInstitute, HttpStatus.SC_OK);
@@ -1967,13 +1979,13 @@ public class ProdUS_Sanity {
 			Validation.responseHeaderCodeValidation(fetchClientBookClassAnalytics, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(fetchClientBookClassAnalytics, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(fetchClientBookClassAnalytics);
-			
+
 
 			Response fetchClassAnalyticsResponse = FetchClassAnalyticsResponse.fetchClassAnalyticsResponse(tokenId, consumerKey, consumerSecret);
 			Validation.responseHeaderCodeValidation(fetchClassAnalyticsResponse, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(fetchClassAnalyticsResponse, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(fetchClassAnalyticsResponse);
-			
+
 
 			Response fetchClientBookClassAnalytics1 = FetchClientBookClassAnalytics.fetchClientBookClassAnalytics_useID(bookID1, userID, consumerKey, consumerSecret);
 			Validation.responseHeaderCodeValidation(fetchClientBookClassAnalytics1, HttpStatus.SC_OK);
@@ -1987,7 +1999,7 @@ public class ProdUS_Sanity {
 			Validation.responseKeyValidation_key(fetchClientBookClassAnalytics1, "pagesRead");
 			Validation.responseKeyValidation_key(fetchClientBookClassAnalytics1, "avgPageReadPerSession");
 			Validation.responseKeyValidation_key(fetchClientBookClassAnalytics1, "bookCompleted");
-			
+
 
 			Response fetchClientBookClassAnalytics_ClientClassID = FetchClientBookClassAnalytics.fetchClientBookClassAnalytics_ClientClassID(userID,bookID1, clientClassID1, consumerKey, consumerSecret);
 			Validation.responseHeaderCodeValidation(fetchClientBookClassAnalytics_ClientClassID, HttpStatus.SC_OK);
@@ -2018,7 +2030,7 @@ public class ProdUS_Sanity {
 			Validation.responseKeyValidation_key(listBooks, "version");
 			String clientBookID = listBooks.then().extract().path("bookList[3].book.clientBookID");
 			Log.info("clientBookID : "+clientBookID);
-			
+
 
 			Response listBooksV1 = ListBooksV1_OAuth.listBooksV1_OAuth_without_pagi(consumerKey, consumerSecret);
 			Validation.responseHeaderCodeValidation(listBooksV1, HttpStatus.SC_OK);
@@ -2033,13 +2045,13 @@ public class ProdUS_Sanity {
 			Validation.responseKeyValidation_key(listBooksV1, "category");
 			Validation.responseKeyValidation_key(listBooksV1, "categoryList");
 			Validation.responseKeyValidation_key(listBooksV1, "version");
-			
+
 
 			Response getChapterDetails = GetChapterDetails.getChapterDetails(clientBookID, consumerKey, consumerSecret);
 			Validation.responseHeaderCodeValidation(getChapterDetails, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(getChapterDetails, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(getChapterDetails);
-			
+
 
 			long client_user_id=EpochTime.current();
 			String usernameFinal=userNameT1+""+EpochTime.current()+"";
@@ -2061,7 +2073,7 @@ public class ProdUS_Sanity {
 			Validation.responseCodeValidation1(updateUser, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(updateUser);
 			Validation.responseKeyAndValue(updateUser,"responseMsg","OK");
-			
+
 
 			Response getUsers = Getusers.getusers_pagi(0, 100,consumerKey, consumerSecret, clientUserID);
 			Validation.responseHeaderCodeValidation(getUsers, HttpStatus.SC_OK);
@@ -2078,23 +2090,26 @@ public class ProdUS_Sanity {
 			Validation.responseHeaderCodeValidation(fetchbookDeviceIDs, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(fetchbookDeviceIDs, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(fetchbookDeviceIDs);
-			
+
 
 			Response fetchDeviceIds = FetchDeviceIds.fetchDeviceIds("514185", consumerKey, consumerSecret);
 			Validation.responseHeaderCodeValidation(fetchDeviceIds, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(fetchDeviceIds, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(fetchDeviceIds);
-			
+
 
 			String time11 = time;
 			SaveSessionHistory.saveSessionHistory(userToken, "514185", deviceType,bookID1, time);
 
-			Response fetchSessionHistory= FetchSessionHistory.fetchSessionHistory(time11, "12-10-2020 20:50:20", consumerKey, consumerSecret);
+			SimpleDateFormat formatter111 = new SimpleDateFormat("dd-MM-yyyy");
+			String strDate= formatter111.format(date);
+			System.out.println(strDate);
+			Response fetchSessionHistory= FetchSessionHistory.fetchSessionHistory(time11, ""+strDate+" 24:50:20", consumerKey, consumerSecret);
 			Validation.responseHeaderCodeValidation(fetchSessionHistory, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(fetchSessionHistory, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(fetchSessionHistory);
 			Validation.responseKeyAndValue(fetchSessionHistory,"responseMsg","OK");
-			
+
 
 			Response getUserBookDetails = GetUserBookDetails.getUserBookDetails(""+userIDT+"", consumerKey, consumerSecret);
 			Validation.responseHeaderCodeValidation(getUserBookDetails, HttpStatus.SC_OK);
@@ -2115,9 +2130,12 @@ public class ProdUS_Sanity {
 			Validation.responseKeyValidation_key(getUserBookDetails, "userToken");
 			Validation.responseKeyValidation_key(getUserBookDetails, "instituteID");
 			Validation.responseKeyValidation_key(getUserBookDetails, "clientID");
-			
 
-			Response userLoginHistory = UserLoginHistory.userLoginHistory(time11, "12-10-2020 20:50:20", consumerKey, consumerSecret);
+
+			SimpleDateFormat formatter1111 = new SimpleDateFormat("dd-MM-yyyy");
+			String strDate1= formatter1111.format(date);
+			Log.info(strDate1);
+			Response userLoginHistory = UserLoginHistory.userLoginHistory(time11, ""+strDate1+" 24:50:20", consumerKey, consumerSecret);
 			Validation.responseHeaderCodeValidation(userLoginHistory, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(userLoginHistory, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(userLoginHistory);
@@ -2145,7 +2163,7 @@ public class ProdUS_Sanity {
 			Validation.responseKeyValidation_key(getBookMetadata, "pages");
 			Validation.responseKeyValidation_key(getBookMetadata, "version");
 			Validation.responseKeyValidation_key(getBookMetadata, "categoryIdList");
-			
+
 
 			Response bookMetadata = BookMetadata.bookMetadata(consumerKey, consumerSecret, bookID2);
 			Validation.responseHeaderCodeValidation(bookMetadata, HttpStatus.SC_OK);
@@ -2175,14 +2193,14 @@ public class ProdUS_Sanity {
 			Log.info("kitabooId : "+kitabooId);			
 			String isbn = bookMetadata.then().extract().path("book.isbn");
 			Log.info("isbn : "+isbn);
-			
+
 
 			Response updateClientBookId = UpdateClientBookId.updateClientBookId(bookID1, clientBookID1, consumerKey, consumerSecret);
 			Validation.responseHeaderCodeValidation(updateClientBookId, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(updateClientBookId, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(updateClientBookId);
 			Validation.responseKeyAndValue(updateClientBookId, "responseMsg","SUCCESS");
-			
+
 
 			updateClientBookId = UpdateClientBookId.updateClientBookId(bookID1, clientBookID1, consumerKey, consumerSecret);
 			Validation.responseHeaderCodeValidation(updateClientBookId, HttpStatus.SC_OK);
@@ -2193,24 +2211,24 @@ public class ProdUS_Sanity {
 
 			String[] formate11 ={"html5,android,ipad","fixed_epub","reflow_epub","author_epub"};
 			for(int i2=0;i2<=3;i2++)
-			{Response registerBook = RegisterBook.registerBook(formate11[i2],kitabooId, clientBookId, isbn, consumerKey, consumerSecret);
-			Validation.responseHeaderCodeValidation(registerBook, HttpStatus.SC_OK);
-			Validation.responseCodeValidation1(registerBook, HttpStatus.SC_OK);
-			Validation.responseTimeValidation(registerBook);
-			
-
-			registerBook = RegisterBook.registerBook_char(formate11[i2],kitabooId, clientBookId, isbn, consumerKey, consumerSecret);
+			{Response registerBook = RegisterBook.registerBook(formate11[i2],category1,kitabooId, clientBookId, isbn, consumerKey, consumerSecret);
 			Validation.responseHeaderCodeValidation(registerBook, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(registerBook, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(registerBook);
 
-			registerBook = RegisterBook.registerBook_charAA(formate11[i2],kitabooId, clientBookId, isbn, consumerKey, consumerSecret);
+
+			registerBook = RegisterBook.registerBook_char(formate11[i2],category1,kitabooId, clientBookId, isbn, consumerKey, consumerSecret);
 			Validation.responseHeaderCodeValidation(registerBook, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(registerBook, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(registerBook);
-			
 
-			registerBook = RegisterBook.registerBook_Roman(formate11[i2],kitabooId, clientBookId, isbn, consumerKey, consumerSecret);
+			registerBook = RegisterBook.registerBook_charAA(formate11[i2],category1,kitabooId, clientBookId, isbn, consumerKey, consumerSecret);
+			Validation.responseHeaderCodeValidation(registerBook, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(registerBook, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(registerBook);
+
+
+			registerBook = RegisterBook.registerBook_Roman(formate11[i2],category1,kitabooId, clientBookId, isbn, consumerKey, consumerSecret);
 			Validation.responseHeaderCodeValidation(registerBook, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(registerBook, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(registerBook);
@@ -2220,13 +2238,13 @@ public class ProdUS_Sanity {
 			Validation.responseHeaderCodeValidation(saveLastPageAccessed1, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(saveLastPageAccessed1, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(saveLastPageAccessed1);
-			
+
 
 			Response updateBookMetadata = UpdateBookMetadata.updateBookMetadata(clientcategory, clientBookId, consumerKey, consumerSecret);
 			Validation.responseHeaderCodeValidation(updateBookMetadata, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(updateBookMetadata, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(updateBookMetadata);
-			
+
 
 			Response getUsers1 = Getusers.getusers_pagi(0, 100,consumerKey, consumerSecret, clientUserID);
 			Validation.responseHeaderCodeValidation(getUsers1, HttpStatus.SC_OK);
@@ -2236,7 +2254,7 @@ public class ProdUS_Sanity {
 			Validation.responseKeyValidation_key(getUsers1, "username");
 			Validation.responseKeyValidation_key(getUsers1, "maxDeviceCount");
 			Validation.responseKeyValidation_key(getUsers1, "createDate");
-			
+
 
 			Response getClientUsers = GetClientUsers.getClientUsers_Pagi(0,100,consumerKey, consumerSecret);
 			Validation.responseHeaderCodeValidation(getClientUsers, HttpStatus.SC_OK);
@@ -2260,13 +2278,13 @@ public class ProdUS_Sanity {
 			Validation.responseHeaderCodeValidation(getLastPageAccessed1, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(getLastPageAccessed1, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(getLastPageAccessed1);
-			
+
 
 			Response updateClientUserID = UpdateClientUserID.updateClientUserID(clientUserID,"Test1", consumerKey, consumerSecret);
 			Validation.responseHeaderCodeValidation(updateClientUserID, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(updateClientUserID, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(updateClientUserID);
-			
+
 
 			updateClientUserID = UpdateClientUserID.updateClientUserID("Test1", clientUserID, consumerKey, consumerSecret);
 			Validation.responseHeaderCodeValidation(updateClientUserID, HttpStatus.SC_OK);
@@ -2279,18 +2297,18 @@ public class ProdUS_Sanity {
 			Validation.responseCodeValidation1(changePassword1, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(changePassword1);
 
-			
+
 			Response epubStatus = EpubStatus.epubStatus(consumerKey, consumerSecret, epubId);
 			Validation.responseHeaderCodeValidation(epubStatus, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(epubStatus, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(epubStatus);
-			
+
 
 			Response bulkDownloadBook = BulkDownloadBook.bulkDownloadBook(userToken, "we24", deviceType, bookID1, bookID2, bookID2, "online");
 			Validation.responseHeaderCodeValidation(bulkDownloadBook, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(bulkDownloadBook, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(bulkDownloadBook);
-			
+
 
 			//String[] searchTEXT = title.trim().split(" ");
 			String searchTEXT = title.substring(0,4);
@@ -2483,6 +2501,7 @@ public class ProdUS_Sanity {
 			String contenturl = epubcontentextract.then().extract().path("contenturl");
 			Log.info("contenturl : "+contenturl);
 
+			
 			Response contenturlHIT = ContenturlHIT.contenturlHIT(contenturl);
 			Validation.responseCodeValidation1(contenturlHIT, HttpStatus.SC_OK);
 
@@ -2492,6 +2511,7 @@ public class ProdUS_Sanity {
 			Validation.responseCodeValidation1(resetDevices_clientUserID, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(resetDevices_clientUserID);
 			Validation.responseKeyAndValue(resetDevices_clientUserID, "responseMsg","Ok");
+			
 
 			Response resetDevices_userName = ResetDevice.resetDevices_userName(consumerKey, consumerSecret,userName);
 			Validation.responseCodeValidation1(resetDevices_userName, HttpStatus.SC_OK);
@@ -2500,16 +2520,16 @@ public class ProdUS_Sanity {
 			Validation.responseKeyAndValue(resetDevices_userName, "responseMsg","Ok");
 
 
-
+			
 			isbnMeta = "1212121212121";
 			Log.info("isbnMeta: "+isbnMeta);
 			//String consumerKey, String consumerSecret,String string,String title,String author,String cat4
-			Response Metadata_res = Metadata.metadata(consumerKey, consumerSecret,isbnMeta,"Reflow_"+isbnMeta+"","Reflow_"+isbnMeta+"",catlevel,"description");
+			/*Response Metadata_res = Metadata.metadata(consumerKey, consumerSecret,isbnMeta,"Reflow_"+isbnMeta+"","Reflow_"+isbnMeta+"",catlevel,"description");
 			Validation.responseHeaderCodeValidation(Metadata_res, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(Metadata_res, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(Metadata_res);
 			Validation.responseKeyValidation_key(Metadata_res, "isbn");
-			Validation.responseKeyValidation_key(Metadata_res, "The request for the uploadEpub taken successfully.");
+			Validation.responseKeyValidation_key(Metadata_res, "The request for the uploadEpub taken successfully.");*/
 
 
 			String filepath = "https://hurix-staging-content.s3.amazonaws.com/test/1212121212121.epub?AWSAccessKeyId=AKIA4PI2NOPJS3DPE77X&Expires=1608523234&Signature=m%2BvmfWSzjUlNSVIorqDdmnS69F4%3D";
@@ -2525,7 +2545,7 @@ public class ProdUS_Sanity {
 
 			isbnIng = IngectEpub_res1.then().extract().path("isbn");			
 			Log.info("isbnIng: "+isbnIng);
-			Thread.sleep(4000);
+			//Thread.sleep(4000);
 			Response IngestionStatus_res = IngestionStatus.ingestionStatus(consumerKey, consumerSecret, isbnIng);
 			Validation.responseHeaderCodeValidation(IngestionStatus_res, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(IngestionStatus_res, HttpStatus.SC_OK);
@@ -2538,18 +2558,23 @@ public class ProdUS_Sanity {
 			Validation.responseKeyValidation_key(updatemeta, "The request for the update ePub metadata completed successfully");
 
 
-			Thread.sleep(5000);
+			Thread.sleep(4000);
 			IngestionStatus_res = IngestionStatus.ingestionStatus(consumerKey, consumerSecret, isbnIng);
 			Validation.responseHeaderCodeValidation(IngestionStatus_res, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(IngestionStatus_res, HttpStatus.SC_OK);
-			Validation.responseINTEGERKeyAndValue(IngestionStatus_res, "status", 100);	
+			Validation.responseINTEGERKeyAndValue(IngestionStatus_res, "status", 100);
 
-			Response getRawTrackingData = GetRawTrackingData.getRawTracking("2019-04-30 06:15:15","2019-04-30 06:20:15",consumerKey,consumerSecret);
+			SaveTrackingData.saveTrackingData(bookID2, classID, "2020-04-30 11:46:15", "2020-04-30 11:46:15",3, 3, 1, userToken, "asdfg234", deviceType);
+
+			SaveTrackingData.saveTrackingData(bookID1, classID, "2020-10-13 07:10:14", "2020-10-13 07:11:14",3, 3, 3, userToken, "asdfg234", deviceType);
+
+
+			Response getRawTrackingData = GetRawTrackingData.getRawTracking("2019-12-18 13:40:54","2019-12-18 13:50:54",consumerKey,consumerSecret);
 			Validation.responseHeaderCodeValidation(getRawTrackingData, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(getRawTrackingData, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(getRawTrackingData);
 
-			getRawTrackingData = GetRawTrackingData.getRawTrackingV1("2019-04-30 06:15:15","2019-04-30 06:20:15",1,consumerKey,consumerSecret);
+			getRawTrackingData = GetRawTrackingData.getRawTrackingV1("2019-04-30 23:45:15","2019-04-30 23:55:15",1,consumerKey,consumerSecret);
 			Validation.responseHeaderCodeValidation(getRawTrackingData, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(getRawTrackingData, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(getRawTrackingData);

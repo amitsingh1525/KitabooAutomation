@@ -35,6 +35,7 @@ public class CategoriesV2Hash {
 		} catch (Exception exp) 
 		{
 			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
 			
 		}
 		Log.endTestCase("End");

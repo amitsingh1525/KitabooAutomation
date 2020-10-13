@@ -43,6 +43,7 @@ public class Stag_Sanity {
 	public static String clientID;
 	public static String catlevel;
 	public static String userName1;
+	public static String categoryIdList;
 	public static String email;
 	public static String title;
 	public static int  bookID1;
@@ -81,12 +82,13 @@ public class Stag_Sanity {
 
 	public static void main(String[] args) throws Exception {
 		//Log.initialization("APITesting");//DIS-1979	
+
 		Log.initialization("Staging_Sanity");
 		try {
 			//startDate=EpochTime.getEpochTime(""+startDate+"");
-			excelPath="./testData/Staging_Sanity.xlsx";
+			excelPath="./testData/Rest_Sanity.xlsx";
 			workbook = new XSSFWorkbook(excelPath);
-			sheet= workbook.getSheet("Sheet1");
+			sheet= workbook.getSheet("Stag");
 			sheet1= workbook.getSheet("RegisterUSER");
 			for(int i=1;i<=sheet.getLastRowNum();i++)
 			{DataFormatter formatter = new DataFormatter();
@@ -377,7 +379,8 @@ public class Stag_Sanity {
 			Log.info("classID: "+classID);
 			version = fetchBookList_without_pagination.then().extract().path("bookList.book.version[0]");
 			Log.info("version: "+version);
-
+			Object categoryIdList = fetchBookList_without_pagination.then().extract().path("bookList.book.categoryIdList[0]");
+			Log.info("categoryIdList: "+categoryIdList);
 
 
 			Response GETfetchBookCount_res = FetchBookCount.fetchBookCount(userToken,"45616452",deviceType);
@@ -800,7 +803,7 @@ public class Stag_Sanity {
 
 
 			//int userID1 = Integer.parseInt(""+userID+"");
-			password="kitaboo!123";
+			//password="kitaboo!123";
 			Response orderV2_withBookID = OrderV2.orderV2_withcollectionRefID(EpochTime.current(),collectionRefID, consumerKey, consumerSecret, bookID1, time,firstName,lastName,userName1,password,""+userID+"", email,deviceLimit1,typeF);
 			Log.info("detail : "+detail);
 			Validation.responseHeaderCodeValidation(orderV2_withBookID, HttpStatus.SC_OK);
@@ -964,8 +967,10 @@ public class Stag_Sanity {
 			Validation.responseKeyValidation_key(listCollection, "referenceNumber");
 			Validation.responseINTEGERKeyAndValue(listCollection, "id", kitabooCollectionId);
 
+			String clientCollectionID = JDBC_Queries.getclientCollectionID(bookID1, client_Id, "Hey World", sqlhost, sqlUsername,sqlPassword);
 
-			Response deleteClientCollection = DeleteClientCollection.deleteClientCollection(clientCollectionId, consumerKey,consumerSecret);
+
+			Response deleteClientCollection = DeleteClientCollection.deleteClientCollection(clientCollectionID, consumerKey,consumerSecret);
 			Validation.responseCodeValidation1(deleteClientCollection, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(deleteClientCollection, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(deleteClientCollection);
@@ -982,7 +987,7 @@ public class Stag_Sanity {
 			int kitabooCollectionId1 =	savecollection.then().extract().path("kitabooCollectionId");
 			Log.info("kitabooCollectionId1 : "+kitabooCollectionId1);
 
-			deleteClientCollection = DeleteClientCollection.deleteClientCollection(clientCollectionId1, consumerKey,consumerSecret);
+			deleteClientCollection = DeleteClientCollection.deleteClientCollection(""+clientCollectionId1+"", consumerKey,consumerSecret);
 			Validation.responseCodeValidation1(deleteClientCollection, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(deleteClientCollection, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(deleteClientCollection);
@@ -1046,6 +1051,12 @@ public class Stag_Sanity {
 			Validation.responseKeyValidation_key(fetchDefaultCBMId, "defaultkitabooId");
 			Validation.responseKeyAndValue(fetchDefaultCBMId, "responseMsg","OK");
 
+			
+			Response refreshCategory = RefreshCategory.refreshCategory(categoryIdList, userToken, "23456asd", deviceType);
+			Validation.responseHeaderCodeValidation(refreshCategory, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(refreshCategory, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(refreshCategory);
+			
 			Response fetchCollectionCBMId = FetchCollectionCBMId.fetchCollectionCBMId(bookID3, userToken, "kjh9876", deviceType);
 			Validation.responseCodeValidation1(fetchCollectionCBMId, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(fetchCollectionCBMId, HttpStatus.SC_OK);
@@ -1383,9 +1394,9 @@ public class Stag_Sanity {
 			{formate1 = JDBC_Queries.getFormate_3(bookID6,sqlhost,sqlUsername,sqlPassword);
 			formate2 = JDBC_Queries.getFormate_5(bookID6,sqlhost,sqlUsername,sqlPassword);
 			formate3 = JDBC_Queries.getFormate_12(bookID6,sqlhost,sqlUsername,sqlPassword);
-			formate4 = JDBC_Queries.getFormate_13(bookID1,sqlhost,sqlUsername,sqlPassword);
+			formate4 = JDBC_Queries.getFormate_13(bookID6,sqlhost,sqlUsername,sqlPassword);
 			}
-			formate5 = JDBC_Queries.getFormate(bookID6,sqlhost,sqlUsername,sqlPassword);	
+			formate5 = JDBC_Queries.getFormate(bookID1,sqlhost,sqlUsername,sqlPassword);	
 
 
 			Response downloadBook = DownloadBook.downloadBook(userToken,"ds9465",formate,bookID6,"offline");
@@ -1398,7 +1409,7 @@ public class Stag_Sanity {
 			Validation.responseKeyValidation_key(downloadBook,"responseMsg");
 			Validation.responseKeyValidation_key(downloadBook,"timestamp");						
 
-			downloadBook = DownloadBook.downloadBook(userToken,"wert345",formate1,bookID1,"offline");
+			downloadBook = DownloadBook.downloadBook(userToken,"wert345",formate1,bookID6,"offline");
 			Validation.responseCodeValidation1(downloadBook, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(downloadBook);
 			Validation.responseKeyValidation_key(downloadBook,"content_ownership");
@@ -1441,7 +1452,7 @@ public class Stag_Sanity {
 			Validation.responseKeyValidation_key(downloadBook,"timestamp");
 
 
-			downloadBook = DownloadBook.downloadBook(userToken,"ds9465",formate5,bookID5,"online");
+			downloadBook = DownloadBook.downloadBook(userToken,"ds9465",formate5,bookID1,"online");
 			try {Validation.responseCodeValidation1(downloadBook, HttpStatus.SC_OK);
 			} catch (Exception e1) {Log.fail(e1.getMessage());}
 			Validation.responseTimeValidation(downloadBook);
@@ -1538,9 +1549,10 @@ public class Stag_Sanity {
 			Validation.responseKeyAndValue(SavetrackingDATA1, "responseMsg","OK");
 
 			Response fetchBookClassAnalytics = FetchBookClassAnalytics.fetchBookClassAnalytics(bookID1,classID, userToken, "rew432", deviceType);
-			Validation.responseCodeValidation1(fetchBookClassAnalytics, HttpStatus.SC_OK);
+			try {Validation.responseCodeValidation1(fetchBookClassAnalytics, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(fetchBookClassAnalytics, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(fetchBookClassAnalytics);
+			} catch (Exception e) {Log.fail(e.getMessage());	}
 
 			Response fetchAnalytics = FetchAnalytics.fetchAnalytics(bookID1,classID, userToken, "rew432", deviceType);
 			Validation.responseCodeValidation1(fetchAnalytics, HttpStatus.SC_OK);
@@ -1842,8 +1854,8 @@ public class Stag_Sanity {
 			Validation.responseKeyAndValue(fetchAllOrdersForInstitute,"responseMsg","OK");
 
 			String clientInstituteID =JDBC_Queries.getclientInstituteID(bookID1, instiName, client_Id, sqlhost, sqlUsername, sqlPassword);
-			
-			
+
+
 			fetchAllOrdersForInstitute = FetchAllOrdersForInstitute.fetchAllOrdersForInstitute(clientInstituteID, consumerKey, consumerSecret, "asdf234", deviceType);
 			Validation.responseHeaderCodeValidation(fetchAllOrdersForInstitute, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(fetchAllOrdersForInstitute, HttpStatus.SC_OK);
@@ -1930,9 +1942,10 @@ public class Stag_Sanity {
 
 
 			Response fetchClientBookClassAnalytics = FetchClientBookClassAnalytics.fetchClientBookClassAnalytics(bookID1, consumerKey, consumerSecret);
-			Validation.responseHeaderCodeValidation(fetchClientBookClassAnalytics, HttpStatus.SC_OK);
+			try {Validation.responseHeaderCodeValidation(fetchClientBookClassAnalytics, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(fetchClientBookClassAnalytics, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(fetchClientBookClassAnalytics);
+			} catch (Exception e) {Log.fail(e.getMessage());}
 
 			Response fetchClassAnalyticsResponse = FetchClassAnalyticsResponse.fetchClassAnalyticsResponse(tokenId, consumerKey, consumerSecret);
 			Validation.responseHeaderCodeValidation(fetchClassAnalyticsResponse, HttpStatus.SC_OK);
@@ -2046,7 +2059,10 @@ public class Stag_Sanity {
 			String time11 = time;
 			SaveSessionHistory.saveSessionHistory(userToken, "514185", deviceType,bookID1, time);
 
-			Response fetchSessionHistory= FetchSessionHistory.fetchSessionHistory(time11, "12-10-2020 20:50:20", consumerKey, consumerSecret);
+			SimpleDateFormat formatter111 = new SimpleDateFormat("dd-MM-yyyy");
+			String strDate= formatter111.format(date);
+			System.out.println(strDate);
+			Response fetchSessionHistory= FetchSessionHistory.fetchSessionHistory(time11, ""+strDate+" 20:50:20", consumerKey, consumerSecret);
 			Validation.responseHeaderCodeValidation(fetchSessionHistory, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(fetchSessionHistory, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(fetchSessionHistory);
@@ -2072,7 +2088,10 @@ public class Stag_Sanity {
 			Validation.responseKeyValidation_key(getUserBookDetails, "instituteID");
 			Validation.responseKeyValidation_key(getUserBookDetails, "clientID");
 
-			Response userLoginHistory = UserLoginHistory.userLoginHistory(time11, "12-10-2020 20:50:20", consumerKey, consumerSecret);
+			SimpleDateFormat formatter1111 = new SimpleDateFormat("dd-MM-yyyy");
+			String strDate1= formatter1111.format(date);
+			Log.info(strDate1);
+			Response userLoginHistory = UserLoginHistory.userLoginHistory(time11, ""+strDate1+" 20:50:20", consumerKey, consumerSecret);
 			Validation.responseHeaderCodeValidation(userLoginHistory, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(userLoginHistory, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(userLoginHistory);
@@ -2145,22 +2164,22 @@ public class Stag_Sanity {
 
 			String[] formate11 ={"html5,android,ipad","fixed_epub","reflow_epub","author_epub"};
 			for(int i2=0;i2<=3;i2++)
-			{Response registerBook = RegisterBook.registerBook(formate11[i2],kitabooId, clientBookId, isbn, consumerKey, consumerSecret);
+			{Response registerBook = RegisterBook.registerBook(formate11[i2],category1,kitabooId, clientBookId, isbn, consumerKey, consumerSecret);
 			Validation.responseHeaderCodeValidation(registerBook, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(registerBook, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(registerBook);
 
-			registerBook = RegisterBook.registerBook_char(formate11[i2],kitabooId, clientBookId, isbn, consumerKey, consumerSecret);
+			registerBook = RegisterBook.registerBook_char(formate11[i2],category1,kitabooId,clientBookId, isbn, consumerKey, consumerSecret);
 			Validation.responseHeaderCodeValidation(registerBook, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(registerBook, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(registerBook);
 
-			registerBook = RegisterBook.registerBook_charAA(formate11[i2],kitabooId, clientBookId, isbn, consumerKey, consumerSecret);
+			registerBook = RegisterBook.registerBook_charAA(formate11[i2],category1,kitabooId,clientBookId, isbn, consumerKey, consumerSecret);
 			Validation.responseHeaderCodeValidation(registerBook, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(registerBook, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(registerBook);
 
-			registerBook = RegisterBook.registerBook_Roman(formate11[i2],kitabooId, clientBookId, isbn, consumerKey, consumerSecret);
+			registerBook = RegisterBook.registerBook_Roman(formate11[i2],kitabooId,category1,clientBookId, isbn, consumerKey, consumerSecret);
 			Validation.responseHeaderCodeValidation(registerBook, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(registerBook, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(registerBook);
@@ -2435,7 +2454,7 @@ public class Stag_Sanity {
 			Validation.responseTimeValidation(resetDevices_userName);
 			Validation.responseKeyAndValue(resetDevices_userName, "responseMsg","Ok");
 
-
+			
 
 			isbnMeta = "1212121212121";
 			Log.info("isbnMeta: "+isbnMeta);
