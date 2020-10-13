@@ -31,7 +31,8 @@ public class UpDateEpub {
 		} catch (Exception exp) 
 		{
 			Log.fail(exp.getMessage());
-			exp.printStackTrace();
+			Log.fail("fails due to"+ exp.getCause());
+			//exp.printStackTrace();
 		}
 		Log.endTestCase("End");
 		return jsonResponse;		

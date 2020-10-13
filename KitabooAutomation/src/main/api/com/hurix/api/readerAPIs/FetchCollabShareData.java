@@ -8,8 +8,7 @@ import com.hurix.automation.utility.Log;
 public class FetchCollabShareData {
 	
 	public static Response fetchCollabShareData(String userToken,String deviceID,String deviceType,int bookID1)
-	{
-		
+	{		
 		Response jsonResponse = null;
 		try {
 			

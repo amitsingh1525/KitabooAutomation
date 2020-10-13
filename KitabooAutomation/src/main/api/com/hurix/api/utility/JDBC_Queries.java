@@ -431,38 +431,247 @@ public class JDBC_Queries {
 		return reader_key;		
 	}
 	
-	/*public static String getCKSK(int client_id, String sqlhost, String sqlUsername, String sqlPassword)
+	public static int getclientClassID(int bookID1,String classID,String sqlhost, String sqlUsername, String sqlPassword)
 	{
-		String[] cksk =null;
-		//String ck1 = null;	
-		//String  ck2 = null;	
-	
+		int client_class_id = 0;		
 		try {
 			//Connection con = DriverManager.getConnection("jdbc:mysql://172.18.10.147:3306","readonly","readonly@123");
 			Connection con = DriverManager.getConnection(sqlhost,sqlUsername,sqlPassword);
 			Statement stmt = con.createStatement();
 			ResultSet result = null;
-			Log.info("client_id : " +client_id);
-			result = stmt.executeQuery("SELECT consumer_key,shared_secret FROM cloudCore.CLIENT WHERE id="+client_id+"");
+			Log.info("bookID1 : " +bookID1);
+			
+			result= stmt.executeQuery("SELECT schemaNAme FROM cloudCore.CLIENT WHERE Id IN (SELECT client_id FROM cloudCore.BOOKS WHERE ID IN (SELECT book_id FROM cloudCore.COLLECTION_BOOK_MAP WHERE ID = "+bookID1+"))");
 			result.next();
-			//reader_key = result.getString("reader_key");
-			String ck1 = result.getString("consumer_key");
-			//result.next();
-			String ck2 = result.getString("shared_secret");
-			//String[] deviceT = {"IPAD","ANDROID","WINDOWS","PC","HTML5"};
-			//String [] here  ={"\""+ck1+"\"","\""+ck2+"\""};
-			//String[] 
-			cksk  ={ck1, ck2};
-			//Log.info("HERE : " +"SELECT consumer_key,shared_secret FROM cloudCore.CLIENT WHERE id="+client_id+"");
-			Log.info("Result consumer_key : " +cksk);
-			Log.info("Result shared_secret : " +cksk);
+			String schemaNAme = result.getString("schemaNAme");
+			System.out.println("schemaNAme : " +schemaNAme);
+			
+			result= stmt.executeQuery("SELECT client_class_id FROM "+schemaNAme+".CLASS WHERE id="+classID+"");
+			result.next();
+			Log.info("HERE : " +"SELECT client_class_id FROM "+schemaNAme+".CLASS WHERE id="+classID+"");
+			//client_id= Integer.parseInt(""+client_id+"");
+			String client_class_id1 = result.getString("client_class_id");
+			client_class_id = Integer.parseInt(""+client_class_id1+"");
+			Log.info("Result client_class_id : " +client_class_id);
 			stmt.close();
 			con.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (SQLException exp) {
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
 		}
-		return cksk;
-	}*/
+		return client_class_id;		
+	}	
 	
+	public static String getFormate(int bookID1,String sqlhost, String sqlUsername, String sqlPassword)
+	{
+		String format = null;		
+		try {
+			//Connection con = DriverManager.getConnection("jdbc:mysql://172.18.10.147:3306","readonly","readonly@123");
+			Connection con = DriverManager.getConnection(sqlhost,sqlUsername,sqlPassword);
+			Statement stmt = con.createStatement();
+			ResultSet result = null;
+			Log.info("bookID1 : " +bookID1);
+			
+			result= stmt.executeQuery("SELECT schemaNAme FROM cloudCore.CLIENT WHERE Id IN (SELECT client_id FROM cloudCore.BOOKS WHERE ID IN (SELECT book_id FROM cloudCore.COLLECTION_BOOK_MAP WHERE ID = "+bookID1+"))");
+			result.next();
+			String schemaNAme = result.getString("schemaNAme");
+			System.out.println("schemaNAme : " +schemaNAme);
+			
+			result= stmt.executeQuery("SELECT FORMAT FROM cloudCore.FORMATS WHERE ID IN (SELECT format_id FROM "+schemaNAme+".BOOK_FORMAT_MAP WHERE book_id "
+					+ "IN(SELECT book_id FROM cloudCore.COLLECTION_BOOK_MAP WHERE ID = "+bookID1+")) LIMIT 1;");
+			result.next();
+			Log.info("HERE : " +"SELECT FORMAT FROM cloudCore.FORMATS WHERE ID IN (SELECT format_id FROM "+schemaNAme+".BOOK_FORMAT_MAP WHERE book_id IN(SELECT book_id FROM cloudCore.COLLECTION_BOOK_MAP WHERE ID = "+bookID1+")) LIMIT 1;");
+			//client_id= Integer.parseInt(""+client_id+"");
+			format = result.getString("format");
+			
+			Log.info("Result format : " +format);
+			stmt.close();
+			con.close();
+		} catch (SQLException exp) {
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
+		}
+		return format;		
+	}		
+	
+	public static String getFormate_3(int bookID1,String sqlhost, String sqlUsername, String sqlPassword)
+	{
+		String format = null;		
+		try {
+			//Connection con = DriverManager.getConnection("jdbc:mysql://172.18.10.147:3306","readonly","readonly@123");
+			Connection con = DriverManager.getConnection(sqlhost,sqlUsername,sqlPassword);
+			Statement stmt = con.createStatement();
+			ResultSet result = null;
+			Log.info("bookID1 : " +bookID1);
+			
+			result= stmt.executeQuery("SELECT schemaNAme FROM cloudCore.CLIENT WHERE Id IN (SELECT client_id FROM cloudCore.BOOKS WHERE ID IN (SELECT book_id FROM cloudCore.COLLECTION_BOOK_MAP WHERE ID = "+bookID1+"))");
+			result.next();
+			String schemaNAme = result.getString("schemaNAme");
+			System.out.println("schemaNAme : " +schemaNAme);
+			
+			result= stmt.executeQuery("SELECT FORMAT FROM cloudCore.FORMATS WHERE id = 3 AND ID IN (SELECT format_id FROM "+schemaNAme+".BOOK_FORMAT_MAP WHERE book_id "
+					+ "IN(SELECT book_id FROM cloudCore.COLLECTION_BOOK_MAP WHERE ID = "+bookID1+")) LIMIT 1;");
+			result.next();
+			Log.info("HERE : " +"SELECT FORMAT FROM cloudCore.FORMATS WHERE  id = 3 AND ID IN (SELECT format_id FROM "+schemaNAme+".BOOK_FORMAT_MAP WHERE book_id IN(SELECT book_id FROM cloudCore.COLLECTION_BOOK_MAP WHERE ID = "+bookID1+")) LIMIT 1;");
+			//client_id= Integer.parseInt(""+client_id+"");
+			format = result.getString("format");
+			
+			Log.info("Result format : " +format);
+			stmt.close();
+			con.close();
+		} catch (SQLException exp) {
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
+		}
+		return format;		
+	}		
+	
+	public static String getFormate_5(int bookID1,String sqlhost, String sqlUsername, String sqlPassword)
+	{
+		String format = null;		
+		try {
+			//Connection con = DriverManager.getConnection("jdbc:mysql://172.18.10.147:3306","readonly","readonly@123");
+			Connection con = DriverManager.getConnection(sqlhost,sqlUsername,sqlPassword);
+			Statement stmt = con.createStatement();
+			ResultSet result = null;
+			Log.info("bookID1 : " +bookID1);
+			
+			result= stmt.executeQuery("SELECT schemaNAme FROM cloudCore.CLIENT WHERE Id IN (SELECT client_id FROM cloudCore.BOOKS WHERE ID IN (SELECT book_id FROM cloudCore.COLLECTION_BOOK_MAP WHERE ID = "+bookID1+"))");
+			result.next();
+			String schemaNAme = result.getString("schemaNAme");
+			System.out.println("schemaNAme : " +schemaNAme);
+			
+			result= stmt.executeQuery("SELECT FORMAT FROM cloudCore.FORMATS WHERE id = 5 AND ID IN (SELECT format_id FROM "+schemaNAme+".BOOK_FORMAT_MAP WHERE book_id "
+					+ "IN(SELECT book_id FROM cloudCore.COLLECTION_BOOK_MAP WHERE ID = "+bookID1+")) LIMIT 1;");
+			result.next();
+			Log.info("HERE : " +"SELECT FORMAT FROM cloudCore.FORMATS WHERE  id = 5 AND ID IN (SELECT format_id FROM "+schemaNAme+".BOOK_FORMAT_MAP WHERE book_id IN(SELECT book_id FROM cloudCore.COLLECTION_BOOK_MAP WHERE ID = "+bookID1+")) LIMIT 1;");
+			//client_id= Integer.parseInt(""+client_id+"");
+			format = result.getString("format");
+			
+			Log.info("Result format : " +format);
+			stmt.close();
+			con.close();
+		} catch (SQLException exp) {
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
+		}
+		return format;		
+	}		
+	public static String getFormate_12(int bookID1,String sqlhost, String sqlUsername, String sqlPassword)
+	{
+		String format = null;		
+		try {
+			//Connection con = DriverManager.getConnection("jdbc:mysql://172.18.10.147:3306","readonly","readonly@123");
+			Connection con = DriverManager.getConnection(sqlhost,sqlUsername,sqlPassword);
+			Statement stmt = con.createStatement();
+			ResultSet result = null;
+			Log.info("bookID1 : " +bookID1);
+			
+			result= stmt.executeQuery("SELECT schemaNAme FROM cloudCore.CLIENT WHERE Id IN (SELECT client_id FROM cloudCore.BOOKS WHERE ID IN (SELECT book_id FROM cloudCore.COLLECTION_BOOK_MAP WHERE ID = "+bookID1+"))");
+			result.next();
+			String schemaNAme = result.getString("schemaNAme");
+			System.out.println("schemaNAme : " +schemaNAme);
+			
+			result= stmt.executeQuery("SELECT FORMAT FROM cloudCore.FORMATS WHERE id = 12 AND ID IN (SELECT format_id FROM "+schemaNAme+".BOOK_FORMAT_MAP WHERE book_id "
+					+ "IN(SELECT book_id FROM cloudCore.COLLECTION_BOOK_MAP WHERE ID = "+bookID1+")) LIMIT 1;");
+			result.next();
+			Log.info("HERE : " +"SELECT FORMAT FROM cloudCore.FORMATS WHERE  id = 12 AND ID IN (SELECT format_id FROM "+schemaNAme+".BOOK_FORMAT_MAP WHERE book_id IN(SELECT book_id FROM cloudCore.COLLECTION_BOOK_MAP WHERE ID = "+bookID1+")) LIMIT 1;");
+			//client_id= Integer.parseInt(""+client_id+"");
+			format = result.getString("format");
+			
+			Log.info("Result format : " +format);
+			stmt.close();
+			con.close();
+		} catch (SQLException exp) {
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
+		}
+		return format;		
+	}		
+	public static String getFormate_13(int bookID1,String sqlhost, String sqlUsername, String sqlPassword)
+	{
+		String format = null;		
+		try {
+			//Connection con = DriverManager.getConnection("jdbc:mysql://172.18.10.147:3306","readonly","readonly@123");
+			Connection con = DriverManager.getConnection(sqlhost,sqlUsername,sqlPassword);
+			Statement stmt = con.createStatement();
+			ResultSet result = null;
+			Log.info("bookID1 : " +bookID1);
+			
+			result= stmt.executeQuery("SELECT schemaNAme FROM cloudCore.CLIENT WHERE Id IN (SELECT client_id FROM cloudCore.BOOKS WHERE ID IN (SELECT book_id FROM cloudCore.COLLECTION_BOOK_MAP WHERE ID = "+bookID1+"))");
+			result.next();
+			String schemaNAme = result.getString("schemaNAme");
+			System.out.println("schemaNAme : " +schemaNAme);
+			
+			result= stmt.executeQuery("SELECT FORMAT FROM cloudCore.FORMATS WHERE id = 13 AND ID IN (SELECT format_id FROM "+schemaNAme+".BOOK_FORMAT_MAP WHERE book_id "
+					+ "IN(SELECT book_id FROM cloudCore.COLLECTION_BOOK_MAP WHERE ID = "+bookID1+")) LIMIT 1;");
+			result.next();
+			Log.info("HERE : " +"SELECT FORMAT FROM cloudCore.FORMATS WHERE  id = 13 AND ID IN (SELECT format_id FROM "+schemaNAme+".BOOK_FORMAT_MAP WHERE book_id IN(SELECT book_id FROM cloudCore.COLLECTION_BOOK_MAP WHERE ID = "+bookID1+")) LIMIT 1;");
+			//client_id= Integer.parseInt(""+client_id+"");
+			format = result.getString("format");
+			
+			Log.info("Result format : " +format);
+			stmt.close();
+			con.close();
+		} catch (SQLException exp) {
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
+		}
+		return format;		
+	}
+		
+	public static String getclientInstituteID(int bookID1,String instiName,int client_Id,String sqlhost, String sqlUsername, String sqlPassword)
+	{
+		String CLIENT_INST_ID = null;		
+		try {
+			//Connection con = DriverManager.getConnection("jdbc:mysql://172.18.10.147:3306","readonly","readonly@123");
+			Connection con = DriverManager.getConnection(sqlhost,sqlUsername,sqlPassword);
+			Statement stmt = con.createStatement();
+			ResultSet result = null;
+			Log.info("instiName : " +instiName);
+			Log.info("bookID1 : " +bookID1);
+			result= stmt.executeQuery("SELECT schemaNAme FROM cloudCore.CLIENT WHERE Id IN (SELECT client_id FROM cloudCore.BOOKS WHERE ID IN (SELECT book_id FROM cloudCore.COLLECTION_BOOK_MAP WHERE ID = "+bookID1+"))");
+			result.next();
+			String schemaNAme = result.getString("schemaNAme");
+			System.out.println("schemaNAme : " +schemaNAme);
+			
+			result= stmt.executeQuery("SELECT CLIENT_INST_ID FROM "+schemaNAme+".INSTITUTE WHERE client_id = "+client_Id+" AND NAME='"+instiName+"' LIMIT 1;");
+			result.next();
+			Log.info("HERE : " +"SELECT CLIENT_INST_ID FROM "+schemaNAme+".INSTITUTE WHERE client_id = "+client_Id+" AND NAME='"+instiName+"' LIMIT 1;");
+			//client_id= Integer.parseInt(""+client_id+"");
+			CLIENT_INST_ID = result.getString("CLIENT_INST_ID");
+			//CLIENT_INST_ID = Integer.parseInt(""+CLIENT_INST_ID1+"");
+			Log.info("Result CLIENT_INST_ID : " +CLIENT_INST_ID);
+			stmt.close();
+			con.close();
+		} catch (SQLException exp) {
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
+		}
+		return CLIENT_INST_ID;		
+	}	
+	
+	public static String isbn_Title(String title,String sqlhost, String sqlUsername, String sqlPassword)
+	{
+		String isbn = null;		
+		try {
+			//Connection con = DriverManager.getConnection("jdbc:mysql://172.18.10.147:3306","readonly","readonly@123");
+			Connection con = DriverManager.getConnection(sqlhost,sqlUsername,sqlPassword);
+			Statement stmt = con.createStatement();
+			ResultSet result = null;
+			Log.info("title : " +title);
+			result= stmt.executeQuery("SELECT isbn FROM cloudCore.BOOKS WHERE title='"+title+"';");
+			result.next();
+			isbn = result.getString("isbn");
+			Log.info("Result ISBN : " +isbn);
+			stmt.close();
+			con.close();
+		} catch (SQLException exp) {
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
+		}
+		return isbn;		
+	}
+			
 }
 

@@ -103,7 +103,7 @@ public class Patch_OrderV2 {
 					break;
 				case "BASE_EU":
 					detail = "http://localhost:12347";
-					sqlhost="jdbc:mysql://localhost:56789";
+					sqlhost="jdbc:mysql://localhost:12348";
 					sqlUsername="shweta-katare";
 					sqlPassword="J&P@O4A7HV";
 					break;
@@ -115,7 +115,7 @@ public class Patch_OrderV2 {
 					break;
 				case "PROD_EU":
 					detail = "http://cloud.kitaboo.eu";
-					sqlhost="jdbc:mysql://localhost:56789";
+					sqlhost="jdbc:mysql://localhost:12348";
 					sqlUsername="shweta-katare";
 					sqlPassword="J&P@O4A7HV";
 					break;
@@ -357,7 +357,7 @@ public class Patch_OrderV2 {
 		{
 			Log.fail(exp.getMessage());
 			Log.fail("Fails due to "+exp.getCause());
-			exp.printStackTrace();
+			//exp.printStackTrace();
 		}
 	}	
 }

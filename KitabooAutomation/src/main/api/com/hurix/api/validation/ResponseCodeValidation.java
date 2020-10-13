@@ -2,8 +2,6 @@ package com.hurix.api.validation;
 
 import com.hurix.automation.utility.Log;
 
-import io.restassured.response.Response;
-
 public class ResponseCodeValidation {
 
 	public static void responseCodeValidation(int responseCode, int statusCode) 

@@ -36,10 +36,10 @@ public class DIS_2157 {
 
 	public static void main(String[] args) throws Exception {
 		//Log.initialization("APITesting");//DIS-1979	
-		Log.initialization("Sprint33.1/DIS-2125");
+		Log.initialization("Sprint34/DIS-2157");
 		try {
 			//startDate=EpochTime.getEpochTime(""+startDate+"");
-			excelPath="./testData/Sprint33.1/DIS-2125.xlsx";
+			excelPath="./testData/Sprint34/DIS-2157.xlsx";
 			workbook = new XSSFWorkbook(excelPath);
 			sheet= workbook.getSheet("Sheet1");
 			for(int i=1;i<=sheet.getLastRowNum();i++)

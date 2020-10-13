@@ -29,7 +29,7 @@ public class BookplayerStepModule extends UIElements {
 	
 	public static void btnBookPlayerProfileIcon(){
 		try {
-			elementFinderByXpath(prop.getProperty("bookPlayerProfileIcon_Xpath"), "Click on Profile Icon.").click();
+			elementFinderByID(prop.getProperty("bookPlayerProfileIcon_ID"), "Click on Profile Icon.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -38,6 +38,14 @@ public class BookplayerStepModule extends UIElements {
 	public static void btnBookPlayerProfileIcon_Signout(){
 		try {
 			elementFinderByXpath(prop.getProperty("bookPlayerProfileIconSignout_Xpath"), "Click on Signout.").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void btnSubmit(){
+		try {
+			elementFinderByXpath(prop.getProperty("submit_xpath"), "Click on Submit.").click();
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -129,9 +137,9 @@ public class BookplayerStepModule extends UIElements {
 			
 			threadHold_2Sec();
 			Driver.driver.switchTo().frame("epub_"+pageNum);
-			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@title=\""+title+"\"]")));
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@class=\""+title+"\"]")));
 			threadHold_2Sec();
-			WebElement ele = Driver.driver.findElement(By.xpath("//*[@title=\""+title+"\"]"));
+			WebElement ele = Driver.driver.findElement(By.xpath("//*[@class=\""+title+"\"]"));
 			JavascriptExecutor executor = (JavascriptExecutor)Driver.driver;
 			executor.executeScript("arguments[0].click();", ele);
 			Log.info("Click on "+title+" markup");
@@ -147,6 +155,61 @@ public class BookplayerStepModule extends UIElements {
 			Driver.driver.switchTo().defaultContent();
 		}
 	}
+	
+	public static void dropdownselect(int dropdownno){
+		try {
+			
+			threadHold_2Sec();
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"select_item"+dropdownno+"\"]")));
+			WebElement ele = Driver.driver.findElement(By.xpath("//*[@id=\"select_item"+dropdownno+"\"]"));
+			JavascriptExecutor executor = (JavascriptExecutor)Driver.driver;
+			executor.executeScript("arguments[0].click();", ele);
+			Log.info("Select dropdown "+dropdownno);
+			threadHold_2Sec();
+			
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void mathkeybord(){
+		try {
+			Driver.driver.switchTo().frame("equationFrame");
+			elementFinderByXpath("//*[@data-latex-val='math-second-1']", "Click on log(x).").click();
+			elementFinderByXpath("//*[@data-latex-val='math-first-2']", "Click on √x.").click();
+			elementFinderByXpath("//*[@data-latex-val='math-second-3']", "Click on π.").click();
+			
+			elementFinderByXpath("//*[@data-latex-val='math-four-1']", "Click on 123.").click();
+			elementFinderByXpath("//*[@data-latex-val='choosePanel2-first-4']", "Click on 4.").click();
+			elementFinderByXpath("//*[@data-latex-val='choosePanel2-second-4']", "Click on /.").click();
+			elementFinderByXpath("//*[@data-latex-val='choosePanel2-first-8']", "Click on 8.").click();
+			elementFinderByXpath("//*[@data-latex-val='math-four-1']", "Click on 123.").click();
+			threadHold_2Sec();
+			
+			elementFinderByXpath("//*[@class='addBtn']", "Click on save button.").click();
+			Driver.driver.switchTo().defaultContent();
+
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void btnmathtextbox(String mathtext){
+		try {
+			Driver.driver.switchTo().frame("equationFrame");
+			elementFinderByXpath(prop.getProperty("mathSwitchKeybord_xpath"), "Click on Switch Keybord.").click();
+			elementFinderByXpath(prop.getProperty("mathtextbox_xpath"), "Click on textbox.").click();
+			elementFinderByXpath(prop.getProperty("mathtextbox_xpath"), "Enter text on textbox.").sendKeys(mathtext);
+			elementFinderByXpath(prop.getProperty("mathsave_xpath"), "Click on Save.").click();
+			
+			threadHold_2Sec();
+			Driver.driver.switchTo().defaultContent();
+
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
 	
 	public static void lstresources_list(){
 		try {
@@ -656,6 +719,15 @@ public class BookplayerStepModule extends UIElements {
 		}
 	}
 
+	public static void btnteacherReview(int stdnt){
+		try {
+			elementFinderByXpath(prop.getProperty("teacherreview_xpath"), "Click on teacher review").click();
+			elementFinderByXpath("//*[@aria-label=\"reader5_student"+stdnt+" \"]", "Click on Student "+stdnt).click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
 	public static void btnstickynotes(){
 		try {
 			elementFinderByID(prop.getProperty("stickynotes_ID"), "Click on sticky notes.").click();
@@ -689,6 +761,7 @@ public class BookplayerStepModule extends UIElements {
 		}
 		return msg;
 	}
+	
 	public static void chkbxSharedNotesToAllTeacher(){
 		try {
 			elementFinderByXpath(prop.getProperty("sharedAllTeacherStickyNoteschkbx_xpath"), "Click on checkbox to all teacher.").click();
@@ -1052,13 +1125,13 @@ public class BookplayerStepModule extends UIElements {
 		}
 	}
 
-	public static void selectparagraph(int x, int y){
+	public static void selectparagraph(int pageNum,int x, int y, String xpath){
 		try {
 			Thread.sleep(1000);
-			Driver.driver.switchTo().frame(elementFinderByID(prop.getProperty("highlightfram_ID"), "Switiching iframe.."));
+			Driver.driver.switchTo().frame("epub_"+pageNum);
 			Thread.sleep(500);
-			elementFinderByID(prop.getProperty("highlightword_id"), "Waiting for word..");
-			WebElement from = elementFinderByID(prop.getProperty("highlightword_id"), "Click on word");
+			elementFinderByID(xpath, "Waiting for word..");
+			WebElement from = elementFinderByID(xpath, "Click on word");
 			JavascriptExecutor js = (JavascriptExecutor)Driver.driver;
 			js.executeScript("arguments[0].click();", from);
 			Thread.sleep(500);
@@ -1070,10 +1143,61 @@ public class BookplayerStepModule extends UIElements {
 			System.out.println("Element not present."+e.getMessage());
 		}
 	}
+	
+	public static void selectparagraph_delete(int pageNum, String xpath){
+		try {
+			Thread.sleep(1000);
+			Driver.driver.switchTo().frame("epub_"+pageNum);
+			Thread.sleep(500);
+			elementFinderByID(xpath, "Waiting for word..");
+			WebElement from = elementFinderByID(xpath, "Click on word");
+			from.click();
+			JavascriptExecutor js = (JavascriptExecutor)Driver.driver;
+			js.executeScript("arguments[0].click();", from);
+			Thread.sleep(1000);
+			Driver.driver.switchTo().defaultContent();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
 
+	public static String getSharedHighlightCommentmsg(){
+		String msg = "NA";
+		try {
+			msg = elementFinderByXpath("//*[@class='middleNOte sharedNote']/div[3]/div[2]/div[2]", "Getting Highlight notes comment message.").getText();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+		return msg;
+	}
+	
 	public static void btnhighlightdelete(){
 		try {
 			elementFinderByID(prop.getProperty("highlightdelete_id"), "Click on delete highlight.").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void btnhighlightsharedelete(){
+		try {
+			elementFinderByXpath(prop.getProperty("highlightShareDelete_xpath"), "Click on delete share highlight.").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void btnhighlightnote(){
+		try {
+			elementFinderByID(prop.getProperty("highlightnote_id"), "Click on note highlight.").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void txthighlighttext(String note){
+		try {
+			elementFinderByID(prop.getProperty("highlightexttnote_id"), "Enter text on highlight text note").sendKeys(note);
 		} catch (Exception e) {
 			System.out.println("Element not present."+e.getMessage());
 		}
@@ -1087,22 +1211,7 @@ public class BookplayerStepModule extends UIElements {
 		}
 	}
 
-	public static void selectparagraph_delete(){
-		try {
-			Thread.sleep(1000);
-			Driver.driver.switchTo().frame(elementFinderByID(prop.getProperty("highlightfram_ID"), "Switiching iframe"));
-			Thread.sleep(500);
-			elementFinderByID(prop.getProperty("highlightword_id"), "Waiting for word..");
-			WebElement from = elementFinderByID(prop.getProperty("highlightword_id"), "Click on word.");
-			from.click();
-			JavascriptExecutor js = (JavascriptExecutor)Driver.driver;
-			js.executeScript("arguments[0].click();", from);
-			Thread.sleep(1000);
-			Driver.driver.switchTo().defaultContent();
-		} catch (Exception e) {
-			System.out.println("Element not present."+e.getMessage());
-		}
-	}
+
 
 	public static void bltyellow(){
 		try {

@@ -34,5 +34,4 @@ public class ClientUserID_books {
 		Log.endTestCase("End");
 		return jsonResponse;
 	}
-
 }

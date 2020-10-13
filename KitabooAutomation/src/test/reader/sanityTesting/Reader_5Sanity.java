@@ -601,7 +601,7 @@ public class Reader_5Sanity{
 
 	public static void TC_PenTool() {
 		Log.startTestCase("TC_PenTool");
-		BookPlayerModule.pentool("blue", "5", 70, 60);
+		BookPlayerModule.pentool("blue", "5","//*[@id='p5-textid50001']", 70, 60);
 		Log.endTestCase("End");
 	}
 
@@ -638,7 +638,8 @@ public class Reader_5Sanity{
 		BookPlayerModule.threadHold_5Sec();
 		BookPlayerModule.threadHold_5Sec();
 		BookPlayerModule.threadHold_5Sec();
-		BookPlayerModule.allmarkup(1,"Test Go To Book");
+		BookPlayerModule.jumptobook(1,"pageresource jumptobook ");
+		BookPlayerModule.bookPlayerLogout();
 		Log.endTestCase("End");
 	}
 
@@ -697,7 +698,7 @@ public class Reader_5Sanity{
 		BookPlayerModule.btnDeleteStickyNotes();
 		BookPlayerModule.openStickyNotesWithCordinates("blue", "5", 195, 75);
 		String msg = BookPlayerModule.getSharedStickyNotesCommentmsg();
-		if(msg.equals("Yes, I found you message!")) {
+		if(msg.equals("Yes, I found your message!")) {
 			Log.pass("Teacher comment found in a student login. msg was: '"+msg+"'");
 		}else {
 			Log.fail("Teacher comment NOT found in a student login. msg was: '"+msg+"'");
@@ -708,52 +709,115 @@ public class Reader_5Sanity{
 	
 	public static void TC_HighlightSharing() {
 		Log.startTestCase("TC_HighlightSharing");
-		LoginModule.userLogin("hurixlearner@gmail.com", "kitaboo@123");
-		BookShelfModule.catNavigationAndLaunch("Automation");
+		LoginModule.userLogin("reader5_student1@yopmail.com", "kitaboo@123");
+		BookShelfModule.catNavigationAndLaunch("history");
 		BookPlayerModule.threadHold_5Sec();
 		BookPlayerModule.threadHold_5Sec();
 		BookPlayerModule.threadHold_5Sec();
 		BookPlayerModule.threadHold_5Sec();
-		BookPlayerModule.stickyNotes("purple", "5", 70, 60, "I noted down my text.");
-		BookPlayerModule.threadHold_5Sec();
-		BookPlayerModule.stickyNotes("blue", "5", 195, 75, "If you read this message please comment us.");
-		BookPlayerModule.openStickyNotesWithCordinates("purple", "5", 70, 60);
-		BookPlayerModule.btnSharedStickyNotes();
-		BookPlayerModule.chkbxSharedNotesToAllTeacher();
-		BookPlayerModule.btndoneSharedStickyNotes();
-
-		BookPlayerModule.openStickyNotesWithCordinates("blue", "5", 195, 75);
-		BookPlayerModule.btnSharedStickyNotes();
-		BookPlayerModule.chkbxSharedNotesToAllTeacher();
-		BookPlayerModule.btndoneSharedStickyNotes();
-
+		BookPlayerModule.highlightsharing("p5-textid50332","green","student 1 share highlight to teacher");
 		BookPlayerModule.bookPlayerLogout();
-		LoginModule.userLogin("hurixteacher5@gmail.com", "kitaboo@123");
-		BookShelfModule.catNavigationAndLaunch("Automation");
+		
+		LoginModule.userLogin("reader5_student2@yopmail.com", "kitaboo@123");
+		BookShelfModule.catNavigationAndLaunch("history");
 		BookPlayerModule.threadHold_5Sec();
 		BookPlayerModule.threadHold_5Sec();
 		BookPlayerModule.threadHold_5Sec();
 		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.highlightsharing("p5-textid50332","green","student 2 share highlight to teacher");
+		BookPlayerModule.bookPlayerLogout();
+		
+		LoginModule.userLogin("reader5_teacher@yopmail.com", "kitaboo@123");
+		BookShelfModule.catNavigationAndLaunch("history");
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.myDataSharedNotes(1, true);
 		BookPlayerModule.myDataSharedNotes(0, true);
-		BookPlayerModule.myDataSharedNotes(1, false);
+		BookPlayerModule.myDataCommentOnSharedNotes(1, "Yes, I found your message!");
 		BookPlayerModule.myDataCommentOnSharedNotes(0, "Yes, I found your message!");
+	//	BookPlayerModule.highlightsharing("green","student 2 share highlight to teacher");
+
 		BookPlayerModule.bookPlayerLogout();
-		LoginModule.userLogin("hurixlearner@gmail.com", "kitaboo@123");
-		BookShelfModule.catNavigationAndLaunch("Automation");
+		LoginModule.userLogin("reader5_student1@yopmail.com", "kitaboo@123");
+		BookShelfModule.catNavigationAndLaunch("history");
 		BookPlayerModule.threadHold_5Sec();
 		BookPlayerModule.threadHold_5Sec();
 		BookPlayerModule.threadHold_5Sec();
 		BookPlayerModule.threadHold_5Sec();
-		BookPlayerModule.openStickyNotesWithCordinates("purple", "5", 70, 60);
-		BookPlayerModule.btnDeleteStickyNotes();
-		BookPlayerModule.openStickyNotesWithCordinates("blue", "5", 195, 75);
-		String msg = BookPlayerModule.getSharedStickyNotesCommentmsg();
-		if(msg.equals("Yes, I found you message!")) {
-			Log.pass("Teacher comment found in a student login. msg was: '"+msg+"'");
+		BookPlayerModule.selectparagraph_delete(5,"p5-textid50332");
+		String msg = BookPlayerModule.getSharedHighlightCommentmsg();
+		if(msg.equals("Yes, I found your message!")) {
+			Log.pass("Teacher comment found in a student 1 login. msg was: '"+msg+"'");
 		}else {
-			Log.fail("Teacher comment NOT found in a student login. msg was: '"+msg+"'");
+			Log.fail("Teacher comment NOT found in a student 1 login. msg was: '"+msg+"'");
 		}
-		BookPlayerModule.btnDeleteStickyNotes();
+		BookPlayerModule.btnhighlightsharedelete();
+		
+		BookPlayerModule.bookPlayerLogout();
+		LoginModule.userLogin("reader5_student2@yopmail.com", "kitaboo@123");
+		BookShelfModule.catNavigationAndLaunch("history");
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.selectparagraph_delete(5,"p5-textid50332");
+	//	String msg = BookPlayerModule.getSharedHighlightCommentmsg();
+		if(msg.equals("Yes, I found your message!")) {
+			Log.pass("Teacher comment found in a student 2 login. msg was: '"+msg+"'");
+		}else {
+			Log.fail("Teacher comment NOT found in a student 2 login. msg was: '"+msg+"'");
+		}
+		BookPlayerModule.btnhighlightsharedelete();
+		
+		Log.endTestCase("End");
+		BookPlayerModule.bookPlayerLogout();
+	}
+	
+	public static void TC_fib_dropdown_pentoolSharing() throws InterruptedException {
+		Log.startTestCase("TC_Clear All");
+		LoginModule.userLogin("reader5_student1@yopmail.com", "kitaboo@123");
+		BookShelfModule.catNavigationAndLaunch("history");
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.clearAll(1);
+		Log.endTestCase("End");
+		BookPlayerModule.threadHold_5Sec();
+	//	BookPlayerModule.bookPlayerLogout();
+		
+		Log.startTestCase("TC_Fib_Dropdown_Pentool Sharing");
+		BookPlayerModule.fib_dropdown_pentoolSharing(1,"Student 1 share fib_dropdown_pentool");
+		BookPlayerModule.pentool("purple", "2","//*[@id='p2-textid20002']", 70, 60);
+		Thread.sleep(1000);
+		BookPlayerModule.btnSubmit();
+		BookPlayerModule.threadHold_2Sec();
+		BookPlayerModule.bookPlayerLogout();
+		
+		LoginModule.userLogin("reader5_student2@yopmail.com", "kitaboo@123");
+		BookShelfModule.catNavigationAndLaunch("history");
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.fib_dropdown_pentoolSharing(2,"Student 2 share fib_dropdown_pentool");
+		BookPlayerModule.pentool("blue", "2","//*[@id='p2-textid20002']", 160, 160);
+		Thread.sleep(1000);
+		BookPlayerModule.btnSubmit();
+		BookPlayerModule.threadHold_2Sec();
+		BookPlayerModule.bookPlayerLogout();
+		
+		LoginModule.userLogin("reader5_teacher@yopmail.com", "kitaboo@123");
+		BookShelfModule.catNavigationAndLaunch("history");
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.threadHold_5Sec();
+		BookPlayerModule.teacherReview(1);
+		BookPlayerModule.teacherReview(2);
+		
 		Log.endTestCase("End");
 	}
 
@@ -789,8 +853,8 @@ public class Reader_5Sanity{
 		Log.endTestCase("End");
 	}
 
-	public static void main(String []args){
-	/*	setup();
+	public static void main(String []args) throws InterruptedException{
+		/*setup();
 		TC_InvalidUserNameANDPassword("", "");
 		TC_DownloadForDesktop();
 		TC_AvailableOnTheAppleStore();
@@ -799,14 +863,8 @@ public class Reader_5Sanity{
 		TC_LoginWithValidUserNameANDPassword("", "");
 		TC_RememberMe("", "");
 		TC_InvalidAccessCodeSignup("");
-<<<<<<< HEAD
 		TC_AccessCodeSignupByUsedEmailID("0503111170616024", "", "", "", "");
 		TC_AccessCodeSignup("0503111170616024", "", "", "", "");
-
-=======
-		TC_AccessCodeSignupByUsedEmailID("3195071221489016", "", "", "", "");
-		TC_AccessCodeSignup("3195071221489016", "", "", "", "");
->>>>>>> branch 'master' of https://github.com/amitsingh1525/KitabooAutomation.git
 
 		TC_InvalidForgetPassword("");
 		TC_ForgetPassword("");
@@ -880,7 +938,7 @@ public class Reader_5Sanity{
 		setup();
 		TC_JumptoBook();
 		TC_HighlightSharing();
-		
+		TC_fib_dropdown_pentoolSharing();
 		
 		//termination();
 
