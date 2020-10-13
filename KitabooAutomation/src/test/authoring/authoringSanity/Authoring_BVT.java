@@ -1,6 +1,9 @@
 package authoringSanity;
 
+import java.util.List;
+
 import com.hurix.automation.utility.BrowserConfigure;
+import com.hurix.automation.utility.Credentials;
 import com.hurix.automation.utility.Driver;
 import com.hurix.automation.utility.Log;
 import com.hurix.library.Authorwidget.AuthorwidgetModule;
@@ -16,18 +19,21 @@ public class Authoring_BVT {
 		Log.initialization("AuthoringBVT");
 		Log.startTestCase("setup");
 		BrowserConfigure.browserConfigure("Chrome");
-		Driver.driver.navigate().to("https://create.kitaboo.com/home.xhtml");
 		
-		LoginModule.loginScenario("pdg.rakesh@hurix.com", "kitaboo!123");
+		
+		List<String> credential = Credentials.getCredentials("authoring", "New skin");
+		
+		Driver.driver.navigate().to(Credentials.URL);
+		LoginModule.loginScenario(credential.get(0), credential.get(1));
 		// Getting the current epoch time
 		  long epoch = System.currentTimeMillis()/1000;
 		  
-		  KitabooBooksModule.bookCreationPDF("Test Authoring", "Test Author", "level 4", "discription", "keyWords");
+		  //KitabooBooksModule.bookCreationPDF("Test Authoring", "Test Author", "level 4", "discription", "keyWords");
 		  
 		  
 		 // AuthorwidgetModule.UploadDocbook("\\testData\\STRUMENTI.zip","Nature, in the broadest sense, is the natural, physical, or material world","Automation Team");
 		  
-		/*AuthorwidgetModule.Components("Authoring Widget_"+epoch,"category","tag","courseDescriptionNature, in the broadest sense, is the natural, physical","Nature, in the broadest sense, is the natural, physical, or material world","Automation Team",
+		AuthorwidgetModule.Components("Authoring Widget_"+epoch,"category","tag","courseDescriptionNature, in the broadest sense, is the natural, physical","Nature, in the broadest sense, is the natural, physical, or material world","Automation Team",
 				"Nature, in the broadest sense, is the natural, physical, or material world or universe.Nature can refer to the phenomena of the physical world, and also to life in general.", "Nature, in the broadest sense, is the natural, physical, or material world or universe. Nature can refer to the phenomena of the physical world, and also to life in general. The study of nature is a large, if not the only, part of science. Although humans are part of nature, human activity is often understood as a separate category from other natural phenomena.", 
 				"Test Image component", "Nature, in the broadest sense, is the natural, physical, or material world or universe.","\\testData\\dog.jpg","Test video Component", "\\testData\\flower.mp4","\\testData\\Long_audio.mp3",
 				"\\testData\\disco-lights-on-flying-cube.zip","4","3","Test Table Component","Test Static Sidebar Component",
@@ -42,7 +48,7 @@ public class Authoring_BVT {
 		AuthorwidgetModule.userLogOut();
 		LoginModule.loginScenario("author_beta@yopmail.com", "kitaboo@123");
 		AuthorwidgetModule.linkActivities();
-		AuthorwidgetModule.txtanotherSharedUser();*/
+		AuthorwidgetModule.txtanotherSharedUser();
 		//AuthorwidgetModule.txtSharedUser();
 		
 		
