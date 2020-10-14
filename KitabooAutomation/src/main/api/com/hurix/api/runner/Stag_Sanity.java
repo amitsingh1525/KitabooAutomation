@@ -2384,7 +2384,7 @@ public class Stag_Sanity {
 			Validation.responseCodeValidation1(deRegisterUser, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(deRegisterUser);
 
-
+		
 			Response banners = Banners.banners_pagi(0,100,userToken, "asd4544", deviceType);
 			Validation.responseHeaderCodeValidation(banners, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(banners, HttpStatus.SC_OK);
