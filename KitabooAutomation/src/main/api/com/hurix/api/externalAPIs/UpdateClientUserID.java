@@ -13,6 +13,7 @@ public class UpdateClientUserID {
 		try {
 			Log.startTestCase("UpdateClientUserID");
 			Log.info("clientUserID : "+clientUserID);
+			Log.info("updateClientUserIDURL : "+"/DistributionServices/ext/api/updateClientUserID");
 			Log.info("updateClientUserIDBody : "+updateClientUserIDBody);
 			jsonResponse = given()
 					.auth()

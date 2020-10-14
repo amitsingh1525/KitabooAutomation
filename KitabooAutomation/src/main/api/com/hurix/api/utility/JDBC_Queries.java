@@ -93,13 +93,13 @@ public class JDBC_Queries {
 	{
 		int id = 0;
 		try {
-			//Connection con = DriverManager.getConnection("jdbc:mysql://172.18.10.147:3306","readonly","readonly@123");
 			Connection con = DriverManager.getConnection(sqlhost,sqlUsername,sqlPassword);
 			Statement stmt = con.createStatement();
 			ResultSet result = null;
 			Log.info("Title : " +Title);
 			Log.info("client_id : " +client_id);
 			result= stmt.executeQuery("SELECT id FROM cloudCore.COLLECTION_BOOK_MAP WHERE BOOK_ID=(SELECT book_package_id FROM cloudCore.BOOKS WHERE client_id = "+client_id+" AND title like '%"+Title+"%' LIMIT 1) LIMIT 1");
+			
 			Log.info("here : "+"SELECT id FROM cloudCore.COLLECTION_BOOK_MAP WHERE BOOK_ID=(SELECT book_package_id FROM cloudCore.BOOKS WHERE client_id = "+client_id+" AND title like '%"+Title+"%' LIMIT 1) LIMIT 1" );
 			result.next();
 			String id1 = result.getString("id");
@@ -112,14 +112,13 @@ public class JDBC_Queries {
 			Log.fail("fails due to"+ exp.getCause());
 		}
 		return id;
-		//return new String(encodeValue);
+		
 	}
 	
 	public static String getArchiveDate(int client_id, String Title, String sqlhost, String sqlUsername, String sqlPassword)
 	{
 		String archive_date = null;
 		try {
-			//Connection con = DriverManager.getConnection("jdbc:mysql://172.18.10.147:3306","readonly","readonly@123");
 			Connection con = DriverManager.getConnection(sqlhost,sqlUsername,sqlPassword);
 			Statement stmt = con.createStatement();
 			ResultSet result = null;
@@ -142,7 +141,6 @@ public class JDBC_Queries {
 	{
 		String keywords = null;
 		try {
-			//Connection con = DriverManager.getConnection("jdbc:mysql://172.18.10.147:3306","readonly","readonly@123");
 			Connection con = DriverManager.getConnection(sqlhost,sqlUsername,sqlPassword);
 			Statement stmt = con.createStatement();
 			ResultSet result = null;
@@ -165,7 +163,6 @@ public class JDBC_Queries {
 	{
 		String category = null;
 		try {
-			//Connection con = DriverManager.getConnection("jdbc:mysql://172.18.10.147:3306","readonly","readonly@123");
 			Connection con = DriverManager.getConnection(sqlhost,sqlUsername,sqlPassword);
 			Statement stmt = con.createStatement();
 			ResultSet result = null;
@@ -189,7 +186,6 @@ public class JDBC_Queries {
 	{
 		String subtype = null;
 		try {
-			//Connection con = DriverManager.getConnection("jdbc:mysql://172.18.10.147:3306","readonly","readonly@123");
 			Connection con = DriverManager.getConnection(sqlhost,sqlUsername,sqlPassword);
 			Statement stmt = con.createStatement();
 			ResultSet result = null;
@@ -211,7 +207,6 @@ public class JDBC_Queries {
 	{
 		String reader_key = null;		
 		try {
-			//Connection con = DriverManager.getConnection("jdbc:mysql://172.18.10.147:3306","readonly","readonly@123");
 			Log.info("userName in query: " +userName);
 			Connection con = DriverManager.getConnection(sqlhost,sqlUsername,sqlPassword);
 			Statement stmt = con.createStatement();
@@ -235,7 +230,6 @@ public class JDBC_Queries {
 	{
 		String reader_key = null;		
 		try {
-			//Connection con = DriverManager.getConnection("jdbc:mysql://172.18.10.147:3306","readonly","readonly@123");
 			Connection con = DriverManager.getConnection(sqlhost,sqlUsername,sqlPassword);
 			Statement stmt = con.createStatement();
 			ResultSet result = null;
@@ -257,7 +251,6 @@ public class JDBC_Queries {
 	{
 		String consumer_key = null;		
 		try {
-			//Connection con = DriverManager.getConnection("jdbc:mysql://172.18.10.147:3306","readonly","readonly@123");
 			Connection con = DriverManager.getConnection(sqlhost,sqlUsername,sqlPassword);
 			Statement stmt = con.createStatement();
 			ResultSet result = null;
@@ -281,7 +274,6 @@ public class JDBC_Queries {
 	{
 		String shared_secret = null;		
 		try {
-			//Connection con = DriverManager.getConnection("jdbc:mysql://172.18.10.147:3306","readonly","readonly@123");
 			Connection con = DriverManager.getConnection(sqlhost,sqlUsername,sqlPassword);
 			Statement stmt = con.createStatement();
 			ResultSet result = null;
@@ -305,7 +297,6 @@ public class JDBC_Queries {
 	{
 		String bookcode = null;		
 		try {
-			//Connection con = DriverManager.getConnection("jdbc:mysql://172.18.10.147:3306","readonly","readonly@123");
 			Connection con = DriverManager.getConnection(sqlhost,sqlUsername,sqlPassword);
 			Statement stmt = con.createStatement();
 			ResultSet result = null;
@@ -329,7 +320,6 @@ public class JDBC_Queries {
 	{
 		int client_id = 0;		
 		try {
-			//Connection con = DriverManager.getConnection("jdbc:mysql://172.18.10.147:3306","readonly","readonly@123");
 			Connection con = DriverManager.getConnection(sqlhost,sqlUsername,sqlPassword);
 			Statement stmt = con.createStatement();
 			ResultSet result = null;
@@ -354,7 +344,6 @@ public class JDBC_Queries {
 	{
 		int format_id = 0;		
 		try {
-			//Connection con = DriverManager.getConnection("jdbc:mysql://172.18.10.147:3306","readonly","readonly@123");
 			Connection con = DriverManager.getConnection(sqlhost,sqlUsername,sqlPassword);
 			Statement stmt = con.createStatement();
 			ResultSet result = null;
@@ -384,7 +373,6 @@ public class JDBC_Queries {
 	{
 		String reader_key = null;		
 		try {
-			//Connection con = DriverManager.getConnection("jdbc:mysql://172.18.10.147:3306","readonly","readonly@123");
 			Log.info("clientID in query: " +clientID);
 			Connection con = DriverManager.getConnection(sqlhost,sqlUsername,sqlPassword);
 			Statement stmt = con.createStatement();
@@ -408,7 +396,6 @@ public class JDBC_Queries {
 	{
 		String reader_key = null;		
 		try {
-			//Connection con = DriverManager.getConnection("jdbc:mysql://172.18.10.147:3306","readonly","readonly@123");
 			Log.info("user_id in query: " +user_id);
 			Connection con = DriverManager.getConnection(sqlhost,sqlUsername,sqlPassword);
 			Statement stmt = con.createStatement();
@@ -432,7 +419,6 @@ public class JDBC_Queries {
 	{
 		int client_class_id = 0;		
 		try {
-			//Connection con = DriverManager.getConnection("jdbc:mysql://172.18.10.147:3306","readonly","readonly@123");
 			Connection con = DriverManager.getConnection(sqlhost,sqlUsername,sqlPassword);
 			Statement stmt = con.createStatement();
 			ResultSet result = null;
@@ -463,7 +449,6 @@ public class JDBC_Queries {
 	{
 		String format = null;		
 		try {
-			//Connection con = DriverManager.getConnection("jdbc:mysql://172.18.10.147:3306","readonly","readonly@123");
 			Connection con = DriverManager.getConnection(sqlhost,sqlUsername,sqlPassword);
 			Statement stmt = con.createStatement();
 			ResultSet result = null;
@@ -495,7 +480,6 @@ public class JDBC_Queries {
 	{
 		String format = null;		
 		try {
-			//Connection con = DriverManager.getConnection("jdbc:mysql://172.18.10.147:3306","readonly","readonly@123");
 			Connection con = DriverManager.getConnection(sqlhost,sqlUsername,sqlPassword);
 			Statement stmt = con.createStatement();
 			ResultSet result = null;
@@ -527,7 +511,6 @@ public class JDBC_Queries {
 	{
 		String format = null;		
 		try {
-			//Connection con = DriverManager.getConnection("jdbc:mysql://172.18.10.147:3306","readonly","readonly@123");
 			Connection con = DriverManager.getConnection(sqlhost,sqlUsername,sqlPassword);
 			Statement stmt = con.createStatement();
 			ResultSet result = null;
@@ -558,7 +541,6 @@ public class JDBC_Queries {
 	{
 		String format = null;		
 		try {
-			//Connection con = DriverManager.getConnection("jdbc:mysql://172.18.10.147:3306","readonly","readonly@123");
 			Connection con = DriverManager.getConnection(sqlhost,sqlUsername,sqlPassword);
 			Statement stmt = con.createStatement();
 			ResultSet result = null;
@@ -589,7 +571,6 @@ public class JDBC_Queries {
 	{
 		String format = null;		
 		try {
-			//Connection con = DriverManager.getConnection("jdbc:mysql://172.18.10.147:3306","readonly","readonly@123");
 			Connection con = DriverManager.getConnection(sqlhost,sqlUsername,sqlPassword);
 			Statement stmt = con.createStatement();
 			ResultSet result = null;
@@ -621,7 +602,6 @@ public class JDBC_Queries {
 	{
 		String CLIENT_INST_ID = null;		
 		try {
-			//Connection con = DriverManager.getConnection("jdbc:mysql://172.18.10.147:3306","readonly","readonly@123");
 			Connection con = DriverManager.getConnection(sqlhost,sqlUsername,sqlPassword);
 			Statement stmt = con.createStatement();
 			ResultSet result = null;
@@ -652,7 +632,6 @@ public class JDBC_Queries {
 	{
 		String isbn = null;		
 		try {
-			//Connection con = DriverManager.getConnection("jdbc:mysql://172.18.10.147:3306","readonly","readonly@123");
 			Connection con = DriverManager.getConnection(sqlhost,sqlUsername,sqlPassword);
 			Statement stmt = con.createStatement();
 			ResultSet result = null;
@@ -673,7 +652,6 @@ public class JDBC_Queries {
 	{
 		String  client_collection_id = null;		
 		try {
-			//Connection con = DriverManager.getConnection("jdbc:mysql://172.18.10.147:3306","readonly","readonly@123");
 			Connection con = DriverManager.getConnection(sqlhost,sqlUsername,sqlPassword);
 			Statement stmt = con.createStatement();
 			ResultSet result = null;
@@ -700,4 +678,3 @@ public class JDBC_Queries {
 		return client_collection_id;		
 	}
 }
-

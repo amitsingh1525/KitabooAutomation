@@ -174,43 +174,42 @@ public class Stag_Sanity {
 
 			String userNameC = formatter.formatCellValue(sheet.getRow(3).getCell(1));			
 			String passwordC = formatter.formatCellValue(sheet.getRow(3).getCell(2));
-			Log.startTestCase("Authenticate."+deviceType+"");
+			Log.startTestCase("Authenticate."+deviceType+"_Client");
 			Response authenticateValueC = Authenticate.authenticate(clientID, userNameC, passwordC,"514185",deviceType);
 			Log.info("Authenticate Response: "+authenticateValueC.then().extract().response().prettyPrint());				
-			Log.info("HERE_Before");
-			Log.info("clientID : "+clientID);
+			//Log.info("clientID : "+clientID);
 			Validation.responseHeaderCodeValidation(authenticateValueC, HttpStatus.SC_OK);
 			//Validation.responseCodeValidation1(authenticateValue, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(authenticateValueC);
 			Validation.responseKeyValidation_key(authenticateValueC, "userName");
 			Validation.responseKeyValidation_key(authenticateValueC, userNameC);			
-			Log.info("HERE_After");
+			//Log.info("HERE_After");
 			String userNameCC = authenticateValueC.then().extract().path("user.userName");
 			Validation.responseKeyAndValue(authenticateValueC, "userName", userNameCC);
 			int userIDC = authenticateValueC.then().extract().path("user.id");
 			Log.info("userIDC : "+userIDC);
 			String userTokenC = authenticateValueC.then().extract().path("userToken");
-			Log.info("userTokenT :"+userTokenC);
+			System.out.println("userTokenT :"+userTokenC);
 			String clientUserIDC = authenticateValueC.then().extract().path("user.clientUserID");
-			Log.info("clientUserIDT :"+clientUserIDC);
+			System.out.println("clientUserIDT :"+clientUserIDC);
 			int client_IdC = authenticateValueC.then().extract().path("user.clientID");
-			Log.info("client_IdC :"+client_IdC);
+			System.out.println("client_IdC :"+client_IdC);
 			String firstNameC= authenticateValueC.then().extract().path("user.firstName");
-			Log.info("firstNameC:"+firstNameC);
+			System.out.println("firstNameC:"+firstNameC);
 			String lastNameC = authenticateValueC.then().extract().path("user.lastName");
-			Log.info("lastNameC :"+lastNameC);
-			Log.info("HEWEWEWEWE");
+			System.out.println("lastNameC :"+lastNameC);
+			//Log.info("HEWEWEWEWE");
 			String userName1C = authenticateValueC.then().extract().path("user.userName");
-			Log.info("userName1C :"+""+userName1C+"");
+			System.out.println("userName1C :"+""+userName1C+"");
 			String emailC = authenticateValueC.then().extract().path("user.email");
-			Log.info("emailT :"+emailC);
+			System.out.println("emailT :"+emailC);
 
 
 
 
 			String userNameT = formatter.formatCellValue(sheet.getRow(2).getCell(1));			
 			String passwordT = formatter.formatCellValue(sheet.getRow(2).getCell(2));
-			Log.startTestCase("Authenticate."+deviceType+"");
+			Log.startTestCase("Authenticate."+deviceType+"_Instructor");
 			Response authenticateValueT = Authenticate.authenticate(clientID, userNameT, passwordT,"514185",deviceType);
 			Log.info("Authenticate Response: "+authenticateValueT.then().extract().response().prettyPrint());				
 			Log.info("HERE_Before");
@@ -220,24 +219,24 @@ public class Stag_Sanity {
 			Validation.responseTimeValidation(authenticateValueT);
 			Validation.responseKeyValidation_key(authenticateValueT, "userName");
 			Validation.responseKeyValidation_key(authenticateValueT, userNameT);			
-			Log.info("HERE_After");
+			//Log.info("HERE_After");
 			//String userNameTT = authenticateValueT.then().extract().path("user.userName");
 			Validation.responseKeyAndValue(authenticateValueT, "userName", userNameT);
 			int userIDT = authenticateValueT.then().extract().path("user.id");
-			Log.info("userIDT : "+userID);
+			System.out.println("userIDT : "+userID);
 			String userTokenT = authenticateValueT.then().extract().path("userToken");
-			Log.info("userTokenT :"+userTokenT);
+			System.out.println("userTokenT :"+userTokenT);
 			String clientUserIDT = authenticateValueT.then().extract().path("user.clientUserID");
-			Log.info("clientUserIDT :"+clientUserIDT);
+			System.out.println("clientUserIDT :"+clientUserIDT);
 			int client_IdT = authenticateValueT.then().extract().path("user.clientID");
-			Log.info("client_IdT :"+client_IdT);
+			System.out.println("client_IdT :"+client_IdT);
 			String firstNameT = authenticateValueT.then().extract().path("user.firstName");
-			Log.info("firstNameT:"+firstNameT);
+			System.out.println("firstNameT:"+firstNameT);
 			String lastNameT = authenticateValueT.then().extract().path("user.lastName");
-			Log.info("lastNameT :"+lastNameT);
-			Log.info("HEWEWEWEWE");
+			System.out.println("lastNameT :"+lastNameT);
+			//Log.info("HEWEWEWEWE");
 			String userName1T = authenticateValueT.then().extract().path("user.userName");
-			Log.info("userName1T :"+""+userName1T+"");
+			System.out.println("userName1T :"+""+userName1T+"");
 			String emailT = authenticateValueT.then().extract().path("user.email");
 			Log.info("emailT :"+emailT);
 
@@ -246,36 +245,36 @@ public class Stag_Sanity {
 			Log.info("password : "+password);
 			Log.info("ReaderKey : "+clientID);
 
-			Log.startTestCase("Authenticate."+deviceType+"");
+			Log.startTestCase("Authenticate."+deviceType+"_Learner");
 			Response authenticateValue = Authenticate.authenticate(clientID, userName, password,"514185",deviceType);
 			Log.info("Authenticate Response: "+authenticateValue.then().extract().response().prettyPrint());				
-			Log.info("HERE_Before");
+			//Log.info("HERE_Before");
 			Log.info("clientID : "+clientID);
 			Validation.responseHeaderCodeValidation(authenticateValue, HttpStatus.SC_OK);
 			//Validation.responseCodeValidation1(authenticateValue, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(authenticateValue);
 			Validation.responseKeyValidation_key(authenticateValue, "userName");
 			Validation.responseKeyValidation_key(authenticateValue, userName);			
-			Log.info("HERE_After");
+			//Log.info("HERE_After");
 			userName = authenticateValue.then().extract().path("user.userName");
 			Validation.responseKeyAndValue(authenticateValue, "userName", userName);
 			userID = authenticateValue.then().extract().path("user.userID");
-			Log.info("userID_learner  : "+userID);
+			System.out.println("userID_learner  : "+userID);
 			String userToken = authenticateValue.then().extract().path("userToken");
-			Log.info("userToken:"+userToken);
+			System.out.println("userToken:"+userToken);
 			String clientUserID = authenticateValue.then().extract().path("user.clientUserID");
-			Log.info("clientUserID:"+clientUserID);
+			System.out.println("clientUserID:"+clientUserID);
 			int client_Id = authenticateValue.then().extract().path("user.clientID");
-			Log.info("client_Id:"+client_Id);
+			System.out.println("client_Id:"+client_Id);
 			firstName = authenticateValue.then().extract().path("user.firstName");
-			Log.info("firstName:"+firstName);
+			System.out.println("firstName:"+firstName);
 			lastName = authenticateValue.then().extract().path("user.lastName");
-			Log.info("lastName:"+lastName);
-			Log.info("HEWEWEWEWE");
+			System.out.println("lastName:"+lastName);
+			//Log.info("HEWEWEWEWE");
 			userName1 = authenticateValue.then().extract().path("user.userName");
-			Log.info("userName1:"+""+userName1+"");
+			System.out.println("userName1:"+""+userName1+"");
 			email = authenticateValue.then().extract().path("user.email");
-			Log.info("email:"+email);
+			System.out.println("email:"+email);
 			Log.endTestCase("End");
 
 			consumerKey = JDBC_Queries.getCK(client_Id, sqlhost, sqlUsername, sqlPassword);
@@ -389,7 +388,6 @@ public class Stag_Sanity {
 			Validation.responseTimeValidation(GETfetchBookCount_res);
 			Validation.responseKeyValidation_key(GETfetchBookCount_res, "totalbooks");
 			Validation.responseKeyValidation_key(GETfetchBookCount_res, "timestamp");
-
 
 
 
@@ -889,9 +887,9 @@ public class Stag_Sanity {
 			Validation.responseKeyValidation_key(fetchBookClassExpandedAnalytics, "bookOpened");
 			Validation.responseKeyValidation_key(fetchBookClassExpandedAnalytics, "bookAssigned");
 			Validation.responseKeyValidation_key(fetchBookClassExpandedAnalytics, "studentAnalytics");
-			try{Validation.responseKeyValidation_key(fetchBookClassExpandedAnalytics, "totalSession");
+			/*try{Validation.responseKeyValidation_key(fetchBookClassExpandedAnalytics, "totalSession");
 			int totalSession = fetchBookClassExpandedAnalytics.then().extract().path("analytics.studentAnalytics[0].totalSession");
-			Log.info("totalSession : "+totalSession);} catch (Exception e) {Log.fail(e.getMessage());}
+			Log.info("totalSession : "+totalSession);} catch (Exception e) {Log.fail(e.getMessage());}*/
 
 
 			Response fetchBookClassUserExpandedAnalytics = FetchBookClassUserExpandedAnalytics.fetchBookClassUserExpandedAnalytics(bookID1, classID, userID, userToken, "asdfg345", deviceType);
@@ -2505,9 +2503,10 @@ public class Stag_Sanity {
 			Validation.responseCodeValidation1(getRawTrackingData, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(getRawTrackingData);
 			} catch (Exception e) {	Log.fail(e.getMessage());}
+			
 
 
-			getRawTrackingData = GetRawTrackingData.getRawTracking("2019-04-30 18:18:40","2019-04-30 18:20:40",consumerKey,consumerSecret);
+			getRawTrackingData = GetRawTrackingData.getRawTracking("2019-04-30 19:18:40","2019-04-30 18:20:40",consumerKey,consumerSecret);
 			Validation.responseHeaderCodeValidation(getRawTrackingData, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(getRawTrackingData, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(getRawTrackingData);

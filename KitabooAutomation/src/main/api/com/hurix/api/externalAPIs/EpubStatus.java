@@ -5,12 +5,14 @@ import io.restassured.response.Response;
 import com.hurix.automation.utility.Log;
 
 public class EpubStatus {
+	
 	public static Response epubStatus(String consumerKey, String consumerSecret,int epubID)
 	{		
 		Response jsonResponse = null;
 		try {
 			Log.startTestCase("EpubStatus");
-			
+			Log.info("epubID : "+epubID);
+			Log.info("URL : "+"/DistributionServices/ext/api/epubStatus");
 			jsonResponse = given()
 					.auth()
 					.oauth(consumerKey, consumerSecret, "", "")

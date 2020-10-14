@@ -890,10 +890,9 @@ public class ProdUS_Sanity {
 			Validation.responseKeyValidation_key(fetchBookClassExpandedAnalytics, "bookOpened");
 			Validation.responseKeyValidation_key(fetchBookClassExpandedAnalytics, "bookAssigned");
 			Validation.responseKeyValidation_key(fetchBookClassExpandedAnalytics, "studentAnalytics");
-			try 
-			{Validation.responseKeyValidation_key(fetchBookClassExpandedAnalytics, "totalSession");
+			/*try {Validation.responseKeyValidation_key(fetchBookClassExpandedAnalytics, "totalSession");
 			int totalSession = fetchBookClassExpandedAnalytics.then().extract().path("analytics.studentAnalytics[0].totalSession");
-			Log.info("totalSession : "+totalSession);} catch (Exception e) {Log.fail(e.getMessage());}
+			Log.info("totalSession : "+totalSession);} catch (Exception e) {Log.fail(e.getMessage());}*/
 
 
 			Response fetchBookClassUserExpandedAnalytics = FetchBookClassUserExpandedAnalytics.fetchBookClassUserExpandedAnalytics(bookID1, classID, userID, userToken, "asdfg345", deviceType);
@@ -1696,7 +1695,7 @@ public class ProdUS_Sanity {
 
 
 			//2019/10/31 14:46:04
-			Response v1refreshBookList =V1refreshBookList.v1refreshBookList(""+archiveDate+"","NEW","UPDATE",bookID1,bookID2,userToken,"56454", deviceType,clientID);
+			Response v1refreshBookList = V1refreshBookList.v1refreshBookList(""+archiveDate+"","NEW","UPDATE",bookID1,bookID6,userToken,"56454", deviceType,clientID);
 			Validation.responseHeaderCodeValidation(v1refreshBookList, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(v1refreshBookList, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(v1refreshBookList);
@@ -2492,8 +2491,9 @@ public class ProdUS_Sanity {
 			Validation.responseTimeValidation(compUserBook);
 			Log.endTestCase("End");
 
-			String isbn_reflow = JDBC_Queries.isbn_Title("Upload_Reflow_3jully", sqlhost, sqlUsername, sqlPassword);
-
+			//String isbn_reflow = JDBC_Queries.isbn_Title("Upload_Reflow_3jully", sqlhost, sqlUsername, sqlPassword);
+			String isbn_reflow = "1212121212121";
+			
 			Response epubcontentextract = Epubcontentextract.epubcontentextract(isbn_reflow,consumerKey, consumerSecret);
 			Validation.responseCodeValidation1(epubcontentextract, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(epubcontentextract, HttpStatus.SC_OK);

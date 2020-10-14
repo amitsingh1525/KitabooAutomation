@@ -38,7 +38,8 @@ public class Banners {
 			
 			Log.info("URL :"+"/DistributionServices/services/api/reader/user/"+deviceID+"/"+deviceType+"/banners");
 			Log.info("userToken : "+userToken);
-					
+			Log.info("startIndex : "+startIndex);
+			Log.info("userToken : "+userToken);
 			jsonResponse = given()
 					.header("usertoken", userToken)	
 					.header("startIndex", startIndex)	

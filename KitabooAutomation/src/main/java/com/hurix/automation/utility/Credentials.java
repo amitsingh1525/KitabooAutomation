@@ -10,6 +10,7 @@ public class Credentials {
 	public static String readerExcel = "\\testData\\readerConfig.xlsx";
 	public static String platformExcel = "\\testData\\platformConfig.xlsx";
 	public static String authoringExcel = "\\testData\\authoringConfig.xlsx";
+	public static String apiExcel = "\\testData\\APIConfig.xlsx";
 	
 	public static List<String> getCredentials(String product, String module){
 
@@ -55,7 +56,8 @@ public class Credentials {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-			List<String> credential = getCredentials("platform", "Distribution");
+		
+			List<String> credential = getCredentials("reader", "learner");
 			System.out.println("Username: "+credential.get(0));
 			System.out.println("Password: "+credential.get(1));
 	}

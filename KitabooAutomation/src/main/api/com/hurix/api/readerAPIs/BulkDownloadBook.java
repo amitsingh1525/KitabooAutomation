@@ -6,24 +6,23 @@ import io.restassured.response.Response;
 import com.hurix.automation.utility.Log;
 
 public class BulkDownloadBook {
-	public static String bulkDownload;
-
+	
 	public static Response bulkDownloadBook(String userToken,String deviceID,String deviceType,int bookID1,int bookID2,int bookID3,String State)
 	{
-		bulkDownload="{\"bookIds\":[\""+bookID1+"\",\""+bookID2+"\",\""+bookID3+"\"]}";
+		String bulkDownload="{\"bookIds\":[\""+bookID1+"\",\""+bookID2+"\",\""+bookID3+"\"]}";
 
 		Response jsonResponse = null;
 		try {
 			String[] state1 = {"online","offline"};
 			for(int i=0; i<=1 ;i++)
 			{
-				Log.startTestCase("BulkDownloadBook."+deviceType+"_"+state1[i]+".bookID1:"+bookID1+".bookID2:"+bookID2+".bookID3:"+bookID3+"");
-				Log.info("deviceType : "+deviceType);
-				Log.info("userToken: "+userToken);
-				Log.info("bookID1 : "+bookID1+ "bookID2: " +bookID2+  "bookID3: " +bookID3);
-				Log.info("deviceType: "+deviceType);
-				Log.info("deviceID: "+deviceID);
-				Log.info("State: "+State);
+				Log.startTestCase("BulkDownloadBook."+deviceType+"_"+state1[i]+"");
+				Log.info("deviceType : " +deviceType);
+				Log.info("userToken: " +userToken);
+				Log.info("bulkDownload " +bulkDownload);
+				Log.info("deviceType: " +deviceType);
+				Log.info("deviceID: " +deviceID);
+				Log.info("State: " +state1[i]);
 				jsonResponse = given()
 						.header("usertoken",userToken)	
 						.header("Content-Type","application/json")
