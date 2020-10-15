@@ -6,10 +6,10 @@ import io.restassured.response.Response;
 import com.hurix.automation.utility.Log;
 
 public class RegisterBook {
-	public static Response registerBook(String formate,String kitabooId,String clientBookId,String isbn,String consumerKey, String consumerSecret)
+	public static Response registerBook(String formate,String subject,String kitabooId,String clientBookId,String isbn,String consumerKey, String consumerSecret)
 	{
 		String registerBookBODY = "{\"kitabooId\":\""+kitabooId+"\",\"clientBookId\":\""+clientBookId+"\","
-				+ "\"isbn\":\""+isbn+"\",\"partNo\":\"1\",\"schoolYear\":\"5\",\"subject\":\"cat1||cat2||cat3||cat4\","
+				+ "\"isbn\":\""+isbn+"\",\"partNo\":\"1\",\"schoolYear\":\"5\",\"subject\":\""+subject+"\","
 				+ "\"title\":\"Native_book_RESTAPI\",\"author\":\".\",\"pages\":\"6\",\"thumbnail\":{\"base64\":\"22\",\"mimeType\":"
 				+ "\"image/jpeg\"},\"version\":\"2.0\",\"formats\":\""+formate+"\",\"dictionaryId\":\"lingua-portuguesa\","
 				+ "\"resources\":\"\",\"units\":[],\"current_page_map\":[{\"pageNum\":\"1\",\"folio\":\"1\"},"
@@ -36,10 +36,10 @@ public class RegisterBook {
 		return jsonResponse;
 	}
 	
-	public static Response registerBook_char(String formate,String kitabooId,String clientBookId,String isbn,String consumerKey, String consumerSecret)
+	public static Response registerBook_char(String formate,String subject,String kitabooId,String clientBookId,String isbn,String consumerKey, String consumerSecret)
 	{
 		String registerBookBODY = "{\"kitabooId\":\""+kitabooId+"\",\"clientBookId\":\""+clientBookId+"\","
-				+ "\"isbn\":\""+isbn+"\",\"partNo\":\"1\",\"schoolYear\":\"5\",\"subject\":\"cat1||cat2||cat3||cat4\","
+				+ "\"isbn\":\""+isbn+"\",\"partNo\":\"1\",\"schoolYear\":\"5\",\"subject\":\""+subject+"\","
 				+ "\"title\":\"Native_book_RESTAPI\",\"author\":\".\",\"pages\":\"6\",\"thumbnail\":{\"base64\":\"22\",\"mimeType\":"
 				+ "\"image/jpeg\"},\"version\":\"2.0\",\"formats\":\""+formate+"\",\"dictionaryId\":\"lingua-portuguesa\","
 				+ "\"resources\":\"\",\"units\":[],\"current_page_map\":[{\"pageNum\":\"1\",\"folio\":\"a\"},{\"pageNum\":\"2\","
@@ -66,10 +66,10 @@ public class RegisterBook {
 		return jsonResponse;
 	}
 	
-	public static Response registerBook_charAA(String formate,String kitabooId,String clientBookId,String isbn,String consumerKey, String consumerSecret)
+	public static Response registerBook_charAA(String formate,String subject,String kitabooId,String clientBookId,String isbn,String consumerKey, String consumerSecret)
 	{
 		String registerBookBODY = "{\"kitabooId\":\""+kitabooId+"\",\"clientBookId\":\""+clientBookId+"\","
-				+ "\"isbn\":\""+isbn+"\",\"partNo\":\"1\",\"schoolYear\":\"5\",\"subject\":\"cat1||cat2||cat3||cat4\","
+				+ "\"isbn\":\""+isbn+"\",\"partNo\":\"1\",\"schoolYear\":\"5\",\"subject\":\""+subject+"\","
 				+ "\"title\":\"Native_book_RESTAPI\",\"author\":\".\",\"pages\":\"6\",\"thumbnail\":{\"base64\":\"22\",\"mimeType\":"
 				+ "\"image/jpeg\"},\"version\":\"2.0\",\"formats\":\""+formate+"\",\"dictionaryId\":\"lingua-portuguesa\","
 				+ "\"resources\":\"\",\"units\":[],\"current_page_map\":[{\"pageNum\":\"1\",\"folio\":\"AA\"},"
@@ -96,10 +96,10 @@ public class RegisterBook {
 		return jsonResponse;
 	}
 	
-	public static Response registerBook_Roman(String formate,String kitabooId,String clientBookId,String isbn,String consumerKey, String consumerSecret)
+	public static Response registerBook_Roman(String formate,String subject,String kitabooId,String clientBookId,String isbn,String consumerKey, String consumerSecret)
 	{
 		String registerBookBODY = "{\"kitabooId\":\""+kitabooId+"\",\"clientBookId\":\""+clientBookId+"\","
-				+ "\"isbn\":\""+isbn+"\",\"partNo\":\"1\",\"schoolYear\":\"5\",\"subject\":\"cat1||cat2||cat3||cat4\","
+				+ "\"isbn\":\""+isbn+"\",\"partNo\":\"1\",\"schoolYear\":\"5\",\"subject\":\""+subject+"\","
 				+ "\"title\":\"Native_book_RESTAPI\",\"author\":\".\",\"pages\":\"6\",\"thumbnail\":{\"base64\":\"22\",\"mimeType\":"
 				+ "\"image/jpeg\"},\"version\":\"2.0\",\"formats\":\""+formate+"\",\"dictionaryId\":\"lingua-portuguesa\","
 				+ "\"resources\":\"\",\"units\":[],\"current_page_map\":[{\"pageNum\":\"1\",\"folio\":\"i\"},"

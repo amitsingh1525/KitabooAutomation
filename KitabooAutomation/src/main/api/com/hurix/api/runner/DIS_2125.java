@@ -245,9 +245,6 @@ public class DIS_2125 {
 
 			Validation.responseKeyAndValue(getUsers, "userid", ""+userId+"");  //from getclient user Assertion
 			Validation.responseKeyAndValue(getUsers, "username", ""+userName+"");*/ //from getclient user Assertion
-
-
-
 			}
 			}
 		}catch (AssertionError exp) 

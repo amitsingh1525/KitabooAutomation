@@ -6,7 +6,7 @@ import com.hurix.automation.utility.Log;
 
 public class DeleteClientCollection {
 	
-	public static Response deleteClientCollection(long clientCollectionId,String consumerKey, String consumerSecret)
+	public static Response deleteClientCollection(String clientCollectionId,String consumerKey, String consumerSecret)
 	{		
 		Response jsonResponse = null;
 		try {

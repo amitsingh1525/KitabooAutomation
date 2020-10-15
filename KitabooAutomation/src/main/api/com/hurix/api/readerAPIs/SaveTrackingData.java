@@ -14,13 +14,13 @@ public class SaveTrackingData {
 		savetrckingBody="{\"trackings\":[{\"accessTimestamp\":\""+accessTime+"\",\"bookOpenTimestamp\":"
 				+ "\""+accessTime+"\",\"bookID\":\""+bookID1+"\",\"pageTracking\":[{\"resources\":[],\"ugc\":"
 				+ "[{\"type\":\"note\",\"created\":1,\"shared\":0,\"received\":0,\"deleted\":0,\""
-				+ "shareDeleted\":0},{\"type\":\"important-highlight\",\"created\":0,\"shared\":0,\""
+				+ "shareDeleted\":0},{\"type\":\"important-highlight\",\"created\":1,\"shared\":0,\""
 				+ "received\":0,\"deleted\":0,\"shareDeleted\":0},{\"type\":\"normal-highlight\","
 				+ "\"created\":1,\"shared\":0,\"received\":0,\"deleted\":0,\"shareDeleted\":0}],\"totalNotesCreated\":1,"
 				+ "\"totalImpHightlightCreated\":0,\"totalNormalHightlightCreated\":1,\"totalNotesShared\":0,"
 				+ "\"totalNotesReceived\":0,\"totalHighlightsShared\":0,\"totalHighlightsReceived\":0,"
-				+ "\"pageID\":\""+pageID+"\",\"timeSpent\":\"104\",\"chapterID\":"+chapterID+",\"chapterName\":\"Front Matter\"}],"
-				+ "\"lastPageFolio\":\""+lastPage+"\",\"SuspendData\":\"0.1,#000000\",\"classID\":"+classID+"}]}";
+				+ "\"pageID\":\""+pageID+"\",\"timeSpent\":\"104\",\"chapterID\":"+chapterID+",\"chapterName\":\"Chapter1\"}],"
+				+ "\"lastPageFolio\":\""+lastPage+"\",\"classID\":"+classID+",\"SuspendData\":\"0.1,#000000\"}]}";
 		Log.startTestCase("SaveTrackingData");
 		Log.info("savetrckingBody : "+savetrckingBody);
 		jsonResponse = given()

@@ -33,13 +33,11 @@ public class GetBookDetailsSecuredHash {
 					.header("hash",MD5Genration.hashGenration(RestAssured.detail+"/DistributionServices/services/api/reader/distribution/123/pc/book/details?bookID="+bookID1+"&type="+assetType+"&t="+epoch+""))
 					.get("/DistributionServices/services/api/reader/distribution/"+deviceID+"/"+deviceType+"/book/details?bookID="+bookID1+"&type="+assetType+"&t="+epoch+"");
 			
-			
-
 			Log.info("GetBookDetailsSecuredHash Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 
 		{
 			Log.fail(exp.getMessage());
-			exp.printStackTrace();
+			Log.fail("fails due to"+ exp.getCause());
 		}
 		Log.endTestCase("End");
 		return jsonResponse;

@@ -1,9 +1,7 @@
 package com.hurix.api.utility;
 
 import java.sql.*;
-
 import org.apache.commons.codec.binary.Base64;
-
 import com.hurix.automation.utility.Log;
 
 public class JDBC_Queries {	
@@ -20,14 +18,13 @@ public class JDBC_Queries {
 			result= stmt.executeQuery("SELECT schemaNAme FROM cloudCore.CLIENT WHERE Id IN (SELECT client_id FROM cloudCore.BOOKS WHERE ID IN (SELECT book_id FROM cloudCore.COLLECTION_BOOK_MAP WHERE ID = "+bookID+"))");
 			result.next();
 			String schemaNAme = result.getString("schemaNAme");
-			System.out.println("schemaNAme : " +schemaNAme);
+			//System.out.println("schemaNAme : " +schemaNAme);
 			//String schemaNAme="client18";
 			if(catLevel.contains("level1")){
 				result= stmt.executeQuery("SELECT `TITLE` C1 FROM "+schemaNAme+".`CATEGORY_METADATA` WHERE ID IN (SELECT `CATEGORY` FROM "+schemaNAme+".`BOOKS_CATEGORY_MAP`WHERE book_id IN (SELECT book_id FROM cloudCore.COLLECTION_BOOK_MAP WHERE ID = "+bookID+"))");
 				System.out.println("**************Results1**************");
 				result.next();
-				String c1 = result.getString("c1");
-				
+				String c1 = result.getString("c1");				
 				//System.out.println("String1 : " + new String(encodeValue));
 				/*byte[] decoded = Base64.decodeBase64(encodedc11);      
 			     System.out.println("Base 64 Decoded  String : " + new String(decoded));*/
@@ -55,7 +52,7 @@ public class JDBC_Queries {
 				System.out.println("String4"+c4);
 				return new String(Base64.encodeBase64(c4.getBytes()));
 			}
-			//result.close();
+			result.close();
 			stmt.close();
 			con.close();
 			
@@ -672,6 +669,35 @@ public class JDBC_Queries {
 		}
 		return isbn;		
 	}
+	public static String getclientCollectionID(int bookID1,int client_Id,String title,String sqlhost, String sqlUsername, String sqlPassword)
+	{
+		String  client_collection_id = null;		
+		try {
+			//Connection con = DriverManager.getConnection("jdbc:mysql://172.18.10.147:3306","readonly","readonly@123");
+			Connection con = DriverManager.getConnection(sqlhost,sqlUsername,sqlPassword);
+			Statement stmt = con.createStatement();
+			ResultSet result = null;
+			Log.info("client_Id : " +client_Id);
 			
+			result= stmt.executeQuery("SELECT schemaNAme FROM cloudCore.CLIENT WHERE Id IN (SELECT client_id FROM cloudCore.BOOKS WHERE ID IN (SELECT book_id FROM cloudCore.COLLECTION_BOOK_MAP WHERE ID = "+bookID1+"))");
+			result.next();
+			String schemaNAme = result.getString("schemaNAme");
+			System.out.println("schemaNAme : " +schemaNAme);
+			
+			result= stmt.executeQuery("SELECT client_collection_id FROM cloudCore.COLLECTION WHERE client_id="+client_Id+" AND  title='"+title+"' AND STATUS = 0 LIMIT 1;");
+			result.next();
+			Log.info("HERE : " +"SELECT client_collection_id FROM cloudCore.COLLECTION WHERE client_id="+client_Id+" AND  title='"+title+"' AND STATUS = 0 LIMIT 1;");
+			//client_id= Integer.parseInt(""+client_id+"");
+			client_collection_id = result.getString("client_collection_id");
+			//client_collection_id = Integer.parseInt(""+client_collection_id+"");
+			Log.info("Result client_class_id : " +client_collection_id);
+			stmt.close();
+			con.close();
+		} catch (SQLException exp) {
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
+		}
+		return client_collection_id;		
+	}
 }
 

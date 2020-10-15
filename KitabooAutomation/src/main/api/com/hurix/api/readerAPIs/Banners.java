@@ -40,9 +40,9 @@ public class Banners {
 			Log.info("userToken : "+userToken);
 					
 			jsonResponse = given()
-					.header("usertoken",userToken)	
-					.header("startIndex",startIndex)	
-					.header("endIndex",endIndex)	
+					.header("usertoken", userToken)	
+					.header("startIndex", startIndex)	
+					.header("endIndex", endIndex)
 					.get("/DistributionServices/services/api/reader/user/"+deviceID+"/"+deviceType+"/banners");
 			
 			Log.info("Banners Response: "+jsonResponse.then().extract().response().prettyPrint());

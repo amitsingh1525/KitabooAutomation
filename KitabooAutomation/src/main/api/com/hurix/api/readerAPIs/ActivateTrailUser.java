@@ -12,6 +12,7 @@ public class ActivateTrailUser {
 		Response jsonResponse = null;
 		try {
 			Log.startTestCase("ActivateTrailUser");
+			Log.info("URL : "+"/DistributionServices/services/api/reader/user/"+deviceID+"/"+deviceType+"/activateTrailUser?clientUserId="+clientUserID+"&readerKey="+clientID+"");
 			jsonResponse = given()
 					.header("usertoken",userToken)
 					.formParam("clientUserId", clientUserID)
