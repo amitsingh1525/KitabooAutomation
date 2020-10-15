@@ -38,4 +38,32 @@ public class DownloadBook {
 		Log.endTestCase("End");
 		return jsonResponse;
 	}
+	
+	public static Response downloadBookV1(String userToken,String deviceID,String deviceType,int bookID,String state)
+	{		
+		Response jsonResponse = null;
+		try {
+			jsonResponse = given()
+					.header("usertoken",userToken)						
+					.get("/DistributionServices/services/api/reader/distribution/"+deviceID+"/"+deviceType+"/"+bookID+"/downloadBook");
+		} catch (Exception e) {
+			Log.error("ERROR: "+e.getMessage());
+			e.printStackTrace();
+		}
+		return jsonResponse;
+	}
+	
+	public static Response fetchPublicKey(String userToken,String deviceID,String deviceType,String ebookID)
+	{		
+		Response jsonResponse = null;
+		try {
+			jsonResponse = given()
+					.header("usertoken",userToken)						
+					.get("/DistributionServices/services/api/readerExt/user/"+deviceID+"/"+deviceType+"/"+ebookID+"/fetchPublicKey");
+		} catch (Exception e) {
+			Log.error("ERROR: "+e.getMessage());
+			e.printStackTrace();
+		}
+		return jsonResponse;
+	}
 }

@@ -52,10 +52,10 @@ public class SendEmail
          
          MimeBodyPart attachmentBodyPart= new MimeBodyPart();
          File Logfileobject= new File("");	 
-		 String LogFilePath = "/log/LogInAndBookLaunchReport.html";
+		 String LogFilePath = "/log/LoginAndBookLaunch.html";
          DataSource source = new FileDataSource(Logfileobject.getAbsolutePath()+LogFilePath);
          attachmentBodyPart.setDataHandler(new DataHandler(source));
-         attachmentBodyPart.setFileName("LogInAndBookLaunchReport.html");
+         attachmentBodyPart.setFileName("LoginAndBookLaunch.html");
          multipart.addBodyPart(textFirstPart);
          multipart.addBodyPart(tabularBodyPart);
          multipart.addBodyPart(textLastPart);

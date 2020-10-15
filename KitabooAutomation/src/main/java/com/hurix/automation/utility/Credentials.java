@@ -7,9 +7,10 @@ public class Credentials {
 
 	public static String URL = "";
 	
-	public static String readerExcel = "\\testData\\readerConfig.xlsx";
-	public static String platformExcel = "\\testData\\platformConfig.xlsx";
-	public static String authoringExcel = "\\testData\\authoringConfig.xlsx";
+	public static String readerExcel = "/testData/readerConfig.xlsx";
+	public static String platformExcel = "/testData/platformConfig.xlsx";
+	public static String authoringExcel = "/testData/authoringConfig.xlsx";
+	public static String APIExcel = "/testData/APIConfig.xlsx";
 	
 	public static List<String> getCredentials(String product, String module){
 
@@ -24,6 +25,8 @@ public class Credentials {
 				filePath = System.getProperty("user.dir")+platformExcel;
 			}else if(product.equalsIgnoreCase("authoring")) {
 				filePath = System.getProperty("user.dir")+authoringExcel;
+			}else if(product.equalsIgnoreCase("restAPI")) {
+				filePath = System.getProperty("user.dir")+APIExcel;
 			}
 
 			ExcelFile.setExcelFile(filePath, "userConfig");
@@ -55,7 +58,7 @@ public class Credentials {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-			List<String> credential = getCredentials("platform", "Distribution");
+			List<String> credential = getCredentials("restAPI", "Admin");
 			System.out.println("Username: "+credential.get(0));
 			System.out.println("Password: "+credential.get(1));
 	}
