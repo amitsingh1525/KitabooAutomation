@@ -23,11 +23,8 @@ public class Authenticate {
 
 		} catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
-
 			Log.fail(exp.getMessage());			
-			exp.printStackTrace();
+			Log.fail("Fails due to : "+exp.getCause());
 		}
 		Log.endTestCase("End");
 		return jsonResponse;

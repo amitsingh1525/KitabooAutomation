@@ -2257,8 +2257,18 @@ public class Stag_Sanity {
 			Validation.responseHeaderCodeValidation(readingSpeed, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(readingSpeed, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(readingSpeed);
+			Validation.responseKeyValidation_key(readingSpeed, ""+bookID1+"");
+			Validation.responseKeyValidation_key(readingSpeed, ""+bookID2+"");
+			Validation.responseKeyValidation_key(readingSpeed, ""+bookID3+"");
+			Validation.responseKeyValidation_key(readingSpeed, ""+bookID4+"");
+			Validation.responseKeyValidation_key(readingSpeed, ""+bookID5+"");
 
-
+			Response searchData = SearchData.searchData(consumerKey, consumerSecret);
+			Validation.responseHeaderCodeValidation(searchData, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(searchData, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(searchData);
+			
+			
 			if(catlevel.contains ("1")){}			
 			else{Response multiCategories_res = MultiCategories.multiCategories(catlevel,userToken,"fs445",deviceType);
 			Validation.responseHeaderCodeValidation(multiCategories_res, HttpStatus.SC_OK);
@@ -2506,7 +2516,7 @@ public class Stag_Sanity {
 			
 
 
-			getRawTrackingData = GetRawTrackingData.getRawTracking("2019-04-30 19:18:40","2019-04-30 18:20:40",consumerKey,consumerSecret);
+			getRawTrackingData = GetRawTrackingData.getRawTracking("2019-04-30 19:18:40","2019-04-30 19:20:40",consumerKey,consumerSecret);
 			Validation.responseHeaderCodeValidation(getRawTrackingData, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(getRawTrackingData, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(getRawTrackingData);

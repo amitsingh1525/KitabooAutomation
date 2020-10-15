@@ -11,9 +11,10 @@ public class ReadingSpeed {
 	{
 		Response jsonResponse = null;
 		try {
-			Log.startTestCase("ReadingSpeed.device:"+deviceType+".id1="+bookID1+".id2="+bookID2+".id3="+bookID3+"");
+			Log.startTestCase("ReadingSpeed.device:"+deviceType+"");
 			Log.info("ReadingSpeed URL : "+"/DistributionServices/services/api/readerExt/user/"+deviceID+"/"+deviceType+"/fetchReadingPercentage");
-
+			Log.info("userToken : "+userToken);
+			Log.info("ReadingSpeedBODY : "+"{\"bookIds\":["+bookID1+","+bookID2+","+bookID3+","+bookID4+","+bookID5+"]}");
 			jsonResponse = given()
 					.header("Content-Type","application/json")
 					.queryParam("usertoken", userToken)

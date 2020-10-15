@@ -677,4 +677,28 @@ public class JDBC_Queries {
 		}
 		return client_collection_id;		
 	}
+	
+	public static int getUserDeleted(int userID,String sqlhost, String sqlUsername, String sqlPassword)
+	{
+		int deleted = 0;		
+		try {
+			Connection con = DriverManager.getConnection(sqlhost,sqlUsername,sqlPassword);
+			Statement stmt = con.createStatement();
+			ResultSet result = null;
+			Log.info("userID : " +userID);
+			result= stmt.executeQuery("SELECT deleted FROM cloudCore.USER WHERE id ="+userID+"");
+			result.next();
+			Log.info("HERE : " +"SELECT deleted FROM cloudCore.USER WHERE id ="+userID+"");
+			//client_id= Integer.parseInt(""+client_id+"");
+			//String deleted1 = result.getString("deleted");
+			//deleted1= Integer.parseInt(""+deleted1+"");
+			Log.info("Result deleted : " +deleted);
+			stmt.close();
+			con.close();
+		} catch (SQLException exp) {
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
+		}
+		return deleted;		
+	}	
 }

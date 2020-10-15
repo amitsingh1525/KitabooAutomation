@@ -148,9 +148,4 @@ public class GoogleSpreadSheetData {
 		}
 		return size;
 	}
-	
-	/*public static void main(String []args) throws Exception{
-	    	
-	    	System.out.println(lastValues("Fixed_ePUB!B2:B"));
-	    }*/
 }

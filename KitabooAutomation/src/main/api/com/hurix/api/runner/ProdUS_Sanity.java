@@ -340,7 +340,7 @@ public class ProdUS_Sanity {
 			Log.info("bookID2: "+bookID2);
 			bookID3 = fetchBookList_without_pagination.then().extract().path("bookList.book.id[2]");			
 			Log.info("bookID3: "+bookID3);
-						
+
 			try {bookID4 = fetchBookList_without_pagination.then().extract().path("bookList.book.id[3]");
 			Log.info("bookID4 :: "+bookID4);
 			bookID5 = fetchBookList_without_pagination.then().extract().path("bookList.book.id[4]");
@@ -970,7 +970,7 @@ public class ProdUS_Sanity {
 
 
 			String clientCollectionID = JDBC_Queries.getclientCollectionID(bookID1, client_Id, "Hey World", sqlhost, sqlUsername,sqlPassword);
-			
+
 			Response deleteClientCollection = DeleteClientCollection.deleteClientCollection(clientCollectionID, consumerKey,consumerSecret);
 			Validation.responseCodeValidation1(deleteClientCollection, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(deleteClientCollection, HttpStatus.SC_OK);
@@ -1056,8 +1056,8 @@ public class ProdUS_Sanity {
 			Validation.responseHeaderCodeValidation(refreshCategory, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(refreshCategory, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(refreshCategory);
-			
-			
+
+
 			Response fetchCollectionCBMId = FetchCollectionCBMId.fetchCollectionCBMId(bookID3, userToken, "kjh9876", deviceType);
 			Validation.responseCodeValidation1(fetchCollectionCBMId, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(fetchCollectionCBMId, HttpStatus.SC_OK);
@@ -1858,12 +1858,13 @@ public class ProdUS_Sanity {
 
 			Response fetchSingleinstitutes = FetchSingleinstitutes.fetchSingleinstitutes(InstitutesID, consumerKey, consumerSecret);
 			Validation.responseHeaderCodeValidation(fetchSingleinstitutes, HttpStatus.SC_OK);
-			Validation.responseCodeValidation1(fetchSingleinstitutes, HttpStatus.SC_OK);
+			int instituteId1=1;
+			try {Validation.responseCodeValidation1(fetchSingleinstitutes, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(fetchSingleinstitutes);
 			String instiName = fetchSingleinstitutes.then().extract().path("institutes[0].name");
 			Log.info("instiName : "+instiName);
 			int instituteId = fetchSingleinstitutes.then().extract().path("instituteId");
-			Log.info("instituteId : "+instituteId);
+			Log.info("instituteId : "+instituteId);			
 			Validation.responseKeyValidation_key(fetchSingleinstitutes, "instituteId");
 			Validation.responseKeyValidation_key(fetchSingleinstitutes, "id");
 			Validation.responseKeyValidation_key(fetchSingleinstitutes, "admin");
@@ -1871,14 +1872,17 @@ public class ProdUS_Sanity {
 			Validation.responseKeyValidation_key(fetchSingleinstitutes, "firstName");
 			Validation.responseKeyValidation_key(fetchSingleinstitutes, "email");			
 			Validation.responseKeyValidation_key(fetchSingleinstitutes, "admin");
+			 instituteId1 = fetchSingleinstitutes.then().extract().path("instituteId");
+			Log.info("instituteId1 : "+instituteId1);} 
+			catch (Exception e1) {Log.fail(e1.getMessage());}
+			
 
 			Response addInstitute = AddInstitute.addInstitute(consumerKey, consumerSecret);
 			Validation.responseHeaderCodeValidation(addInstitute, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(addInstitute, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(addInstitute);			
 			Validation.responseKeyValidation_key(addInstitute, "instituteId");			
-			int instituteId1 = fetchSingleinstitutes.then().extract().path("instituteId");
-			Log.info("instituteId1 : "+instituteId1);
+			
 
 			Response fetchAllOrdersForInstitute = FetchAllOrdersForInstitute.fetchAllOrdersForInstitute(instituteId1, consumerKey, consumerSecret, "asdf234", deviceType);
 			Validation.responseHeaderCodeValidation(fetchAllOrdersForInstitute, HttpStatus.SC_OK);
@@ -2053,7 +2057,7 @@ public class ProdUS_Sanity {
 
 
 			long client_user_id=EpochTime.current();
-			String usernameFinal=userNameT1+""+EpochTime.current()+"";
+			String usernameFinal = userNameT1+""+EpochTime.current()+"";
 			String emailIDF = emailIDT1+""+EpochTime.current()+"@yopmail.com";
 			Response registerUser1 = RegisterUser_ext.registerUser_ext(consumerKey, consumerSecret, emailIDF, firstNameT1, lastNameT1, usernameFinal,client_user_id);
 			Validation.responseHeaderCodeValidation(registerUser1, HttpStatus.SC_OK);
@@ -2321,6 +2325,17 @@ public class ProdUS_Sanity {
 			Validation.responseHeaderCodeValidation(readingSpeed, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(readingSpeed, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(readingSpeed);
+			Validation.responseKeyValidation_key(readingSpeed, ""+bookID1+"");
+			Validation.responseKeyValidation_key(readingSpeed, ""+bookID2+"");
+			Validation.responseKeyValidation_key(readingSpeed, ""+bookID3+"");
+			Validation.responseKeyValidation_key(readingSpeed, ""+bookID4+"");
+			Validation.responseKeyValidation_key(readingSpeed, ""+bookID5+"");
+
+
+			Response searchData = SearchData.searchData(consumerKey, consumerSecret);
+			Validation.responseHeaderCodeValidation(searchData, HttpStatus.SC_OK);
+			Validation.responseCodeValidation1(searchData, HttpStatus.SC_OK);
+			Validation.responseTimeValidation(searchData);
 
 
 			if(catlevel.contains ("1")){}			
@@ -2493,7 +2508,7 @@ public class ProdUS_Sanity {
 
 			//String isbn_reflow = JDBC_Queries.isbn_Title("Upload_Reflow_3jully", sqlhost, sqlUsername, sqlPassword);
 			String isbn_reflow = "1212121212121";
-			
+
 			Response epubcontentextract = Epubcontentextract.epubcontentextract(isbn_reflow,consumerKey, consumerSecret);
 			Validation.responseCodeValidation1(epubcontentextract, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(epubcontentextract, HttpStatus.SC_OK);
@@ -2501,7 +2516,7 @@ public class ProdUS_Sanity {
 			String contenturl = epubcontentextract.then().extract().path("contenturl");
 			Log.info("contenturl : "+contenturl);
 
-			
+
 			Response contenturlHIT = ContenturlHIT.contenturlHIT(contenturl);
 			Validation.responseCodeValidation1(contenturlHIT, HttpStatus.SC_OK);
 
@@ -2511,7 +2526,7 @@ public class ProdUS_Sanity {
 			Validation.responseCodeValidation1(resetDevices_clientUserID, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(resetDevices_clientUserID);
 			Validation.responseKeyAndValue(resetDevices_clientUserID, "responseMsg","Ok");
-			
+
 
 			Response resetDevices_userName = ResetDevice.resetDevices_userName(consumerKey, consumerSecret,userName);
 			Validation.responseCodeValidation1(resetDevices_userName, HttpStatus.SC_OK);
@@ -2520,7 +2535,7 @@ public class ProdUS_Sanity {
 			Validation.responseKeyAndValue(resetDevices_userName, "responseMsg","Ok");
 
 
-			
+
 			isbnMeta = "1212121212121";
 			Log.info("isbnMeta: "+isbnMeta);
 			//String consumerKey, String consumerSecret,String string,String title,String author,String cat4

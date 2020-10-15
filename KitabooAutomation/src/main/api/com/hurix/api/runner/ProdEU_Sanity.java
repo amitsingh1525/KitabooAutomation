@@ -2323,6 +2323,11 @@ public class ProdEU_Sanity {
 			Validation.responseHeaderCodeValidation(readingSpeed, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(readingSpeed, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(readingSpeed);
+			Validation.responseKeyValidation_key(readingSpeed, ""+bookID1+"");
+			Validation.responseKeyValidation_key(readingSpeed, ""+bookID2+"");
+			Validation.responseKeyValidation_key(readingSpeed, ""+bookID3+"");
+			Validation.responseKeyValidation_key(readingSpeed, ""+bookID4+"");
+			Validation.responseKeyValidation_key(readingSpeed, ""+bookID5+"");
 
 
 			if(catlevel.contains ("1")){}			
