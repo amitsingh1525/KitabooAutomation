@@ -20,6 +20,7 @@ public class Sprint_34_DIS_2187 {
 
 		Log.initialization("APIDetailsLog");
 
+		//done
 		List<String> credential = Credentials.getCredentials("restAPI", "Learner");
 		io.restassured.RestAssured.baseURI = Credentials.URL;
 
@@ -29,8 +30,7 @@ public class Sprint_34_DIS_2187 {
 		Log.startTestCase("Authenticate");
 		Response authResponse = Authenticate.authenticateV1("QC", credential.get(0), credential.get(1), "123", deviceType[1]);
 		ResponseCodeValidation.responseCodeValidation(authResponse.getStatusCode(), 200);
-		ResponseValueValidation.responseStringValidation(authResponse, "user.email", "enterpriseproduction21jan@gmail.com");
-		ResponseValueValidation.responseValueValidation(authResponse, "user.clientID", 2195);
+		ResponseValueValidation.responseStringValidation(authResponse, "user.email", credential.get(0));
 		Log.info(authResponse.then().extract().response().prettyPrint());
 		String userToken = authResponse.then().extract().path("userToken");
 		Log.endTestCase("END");
