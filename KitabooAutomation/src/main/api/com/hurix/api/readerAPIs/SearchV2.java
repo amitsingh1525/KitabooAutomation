@@ -22,7 +22,6 @@ public class SearchV2 {
 			Log.info("userToken : "+userToken);
 			Log.info("URL : "+"/DistributionServices/services/api/elasticsearch/distribution/"+deviceID+"/"+deviceType+"/searchV2");
 			
-			Log.info("Body: "+searchV2Body);
 			jsonResponse = given()
 					.header("Content-Type","application/json")
 					.header("usertoken",userToken)

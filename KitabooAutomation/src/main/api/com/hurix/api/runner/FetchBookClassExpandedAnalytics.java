@@ -13,7 +13,8 @@ public class FetchBookClassExpandedAnalytics {
 		try {
 			Log.startTestCase("FetchBookClassExpandedAnalytics");
 			Log.info("userToken :" +userToken);
-			
+			Log.info("classID :" +classID);
+			Log.info("URL :" +"/DistributionServices/services/api/reader/analytics/"+deviceID+"/"+deviceType+"/"+bookID1+"/"+classID+"/bookOpen/fetchBookClassExpandedAnalytics");
 			jsonResponse = given()
 					.header("usertoken", userToken)
 					.get("/DistributionServices/services/api/reader/analytics/"+deviceID+"/"+deviceType+"/"+bookID1+"/"+classID+"/bookOpen/fetchBookClassExpandedAnalytics");

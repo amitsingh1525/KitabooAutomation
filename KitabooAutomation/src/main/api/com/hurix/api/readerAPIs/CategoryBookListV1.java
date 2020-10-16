@@ -28,7 +28,7 @@ public class CategoryBookListV1 {
 			result= stmt.executeQuery("SELECT schemaNAme FROM cloudCore.CLIENT WHERE Id IN (SELECT client_id FROM cloudCore.BOOKS WHERE ID IN (SELECT book_id FROM cloudCore.COLLECTION_BOOK_MAP WHERE ID = "+bookID+"))");
 			result.next();
 			String schemaNAme = result.getString("schemaNAme");
-			System.out.println("schemaNAme : " +schemaNAme);
+			//System.out.println("schemaNAme : " +schemaNAme);
 
 			result= stmt.executeQuery("SELECT `TITLE` C1 FROM "+schemaNAme+".`CATEGORY_METADATA` WHERE ID IN (SELECT `CATEGORY` FROM "+schemaNAme+".`BOOKS_CATEGORY_MAP`WHERE book_id IN (SELECT book_id FROM cloudCore.COLLECTION_BOOK_MAP WHERE ID = "+bookID+"))");
 			System.out.println("**************Results1**************");
@@ -62,9 +62,9 @@ public class CategoryBookListV1 {
 			}
 			else if(catLevel .contains("3"))
 			{
-				System.out.println("schemaNAme : " +schemaNAme);
+				//Log.info("schemaNAme : " +schemaNAme);
 				Log.info("Fcatname  : "+Fcatname);
-				System.out.println("GETcategoryBookListV1 RequestURL:" +GETcategoryBookListV1Path);
+				Log.info("GETcategoryBookListV1 RequestURL:" +GETcategoryBookListV1Path);
 				jsonResponse = given()
 						.header("usertoken",userToken)	
 						.get("/DistributionServices/services/api/reader/books/"+DeviceID+"/"+DeviceType+"/books/"+Fcatname+"");
@@ -75,7 +75,7 @@ public class CategoryBookListV1 {
 			else if(catLevel .contains("4"))
 			{
 				Log.info("Fcatname  : "+Fcatname);
-				System.out.println("GETcategoryBookListV1 RequestURL:" +GETcategoryBookListV1Path);
+				Log.info("GETcategoryBookListV1 RequestURL:" +GETcategoryBookListV1Path);
 				jsonResponse = given()
 						.header("usertoken",userToken)	
 						.get("/DistributionServices/services/api/reader/books/"+DeviceID+"/"+DeviceType+"/books/"+Fcatname+"");
@@ -105,7 +105,7 @@ public class CategoryBookListV1 {
 			result= stmt.executeQuery("SELECT schemaNAme FROM cloudCore.CLIENT WHERE Id IN (SELECT client_id FROM cloudCore.BOOKS WHERE ID IN (SELECT book_id FROM cloudCore.COLLECTION_BOOK_MAP WHERE ID = "+bookID+"))");
 			result.next();
 			String schemaNAme = result.getString("schemaNAme");
-			System.out.println("schemaNAme : " +schemaNAme);
+			//Log.info("schemaNAme : " +schemaNAme);
 
 			result= stmt.executeQuery("SELECT `TITLE` C1 FROM "+schemaNAme+".`CATEGORY_METADATA` WHERE ID IN (SELECT `CATEGORY` FROM "+schemaNAme+".`BOOKS_CATEGORY_MAP`WHERE book_id IN (SELECT book_id FROM cloudCore.COLLECTION_BOOK_MAP WHERE ID = "+bookID+"))");
 			System.out.println("**************Results1**************");
@@ -118,7 +118,7 @@ public class CategoryBookListV1 {
 			{
 				//catname=catname;
 				Log.info("catname  : "+catname);
-				System.out.println("GETcategoryBookListV1 RequestURL:" +GETcategoryBookListV1Path);
+				Log.info("GETcategoryBookListV1 RequestURL:" +GETcategoryBookListV1Path);
 				jsonResponse = given()
 						.header("usertoken",userToken)
 						.header("SortBy",SortBy)
@@ -131,7 +131,7 @@ public class CategoryBookListV1 {
 			else if(catLevel .contains("2"))
 			{
 				Log.info("Fcatname  : "+Fcatname);
-				System.out.println("GETcategoryBookListV1 RequestURL:" +GETcategoryBookListV1Path);
+				Log.info("GETcategoryBookListV1 RequestURL:" +GETcategoryBookListV1Path);
 				jsonResponse = given()
 						.header("usertoken",userToken)
 						.header("SortBy",SortBy)
@@ -144,10 +144,10 @@ public class CategoryBookListV1 {
 			else if(catLevel .contains("3"))
 			{
 
-				System.out.println("schemaNAme : " +schemaNAme);
+				//System.out.println("schemaNAme : " +schemaNAme);
 
 				Log.info("Fcatname  : "+Fcatname);
-				System.out.println("GETcategoryBookListV1 RequestURL:" +GETcategoryBookListV1Path);
+				Log.info("GETcategoryBookListV1 RequestURL:" +GETcategoryBookListV1Path);
 				jsonResponse = given()
 						.header("usertoken",userToken)
 						.header("SortBy",SortBy)
@@ -160,7 +160,7 @@ public class CategoryBookListV1 {
 			else if(catLevel .contains("4"))
 			{
 				Log.info("Fcatname  : "+Fcatname);
-				System.out.println("GETcategoryBookListV1 RequestURL:" +GETcategoryBookListV1Path);
+				Log.info("GETcategoryBookListV1 RequestURL:" +GETcategoryBookListV1Path);
 				jsonResponse = given()
 						.header("usertoken",userToken)
 						.header("SortBy",SortBy)
@@ -192,7 +192,7 @@ public class CategoryBookListV1 {
 			result= stmt.executeQuery("SELECT schemaNAme FROM cloudCore.CLIENT WHERE Id IN (SELECT client_id FROM cloudCore.BOOKS WHERE ID IN (SELECT book_id FROM cloudCore.COLLECTION_BOOK_MAP WHERE ID = "+bookID+"))");
 			result.next();
 			String schemaNAme = result.getString("schemaNAme");
-			System.out.println("schemaNAme : " +schemaNAme);
+			//System.out.println("schemaNAme : " +schemaNAme);
 
 			result= stmt.executeQuery("SELECT `TITLE` C1 FROM "+schemaNAme+".`CATEGORY_METADATA` WHERE ID IN (SELECT `CATEGORY` FROM "+schemaNAme+".`BOOKS_CATEGORY_MAP`WHERE book_id IN (SELECT book_id FROM cloudCore.COLLECTION_BOOK_MAP WHERE ID = "+bookID+"))");
 			System.out.println("**************Results1**************");
@@ -205,7 +205,7 @@ public class CategoryBookListV1 {
 			{
 				//catname=catname;
 				Log.info("catname  : "+catname);
-				System.out.println("GETcategoryBookListV1 RequestURL:" +GETcategoryBookListV1Path);
+				Log.info("GETcategoryBookListV1 RequestURL:" +GETcategoryBookListV1Path);
 				jsonResponse = given()
 						.header("usertoken",userToken)
 						.header("SortBy",SortBy)
@@ -220,7 +220,7 @@ public class CategoryBookListV1 {
 			else if(catLevel .contains("2"))
 			{
 				Log.info("Fcatname  : "+Fcatname);
-				System.out.println("GETcategoryBookListV1 RequestURL:" +GETcategoryBookListV1Path);
+				Log.info("GETcategoryBookListV1 RequestURL:" +GETcategoryBookListV1Path);
 				jsonResponse = given()
 						.header("usertoken",userToken)
 						.header("SortBy",SortBy)
@@ -235,10 +235,10 @@ public class CategoryBookListV1 {
 			else if(catLevel .contains("3"))
 			{
 
-				System.out.println("schemaNAme : " +schemaNAme);
+				//System.out.println("schemaNAme : " +schemaNAme);
 
 				Log.info("Fcatname  : "+Fcatname);
-				System.out.println("GETcategoryBookListV1 RequestURL:" +GETcategoryBookListV1Path);
+				Log.info("GETcategoryBookListV1 RequestURL:" +GETcategoryBookListV1Path);
 				jsonResponse = given()
 						.header("usertoken",userToken)
 						.header("SortBy",SortBy)
@@ -253,7 +253,7 @@ public class CategoryBookListV1 {
 			else if(catLevel .contains("4"))
 			{
 				Log.info("Fcatname  : "+Fcatname);
-				System.out.println("GETcategoryBookListV1 RequestURL:" +GETcategoryBookListV1Path);
+				Log.info("GETcategoryBookListV1 RequestURL:" +GETcategoryBookListV1Path);
 				jsonResponse = given()
 						.header("usertoken",userToken)
 						.header("SortBy",SortBy)
@@ -283,7 +283,7 @@ public class CategoryBookListV1 {
 			Log.startTestCase("categoryBookListV1.catname="+catname+"");
 
 			Log.info("catname  : "+catname);
-			System.out.println("GETcategoryBookListV1 RequestURL:" +GETcategoryBookListV1Path);
+			Log.info("GETcategoryBookListV1 RequestURL:" +GETcategoryBookListV1Path);
 			jsonResponse = given()
 					.header("usertoken",userToken)	
 					.get("/DistributionServices/services/api/reader/books/"+DeviceID+"/"+DeviceType+"/books/"+catname+"");

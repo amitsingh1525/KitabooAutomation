@@ -26,7 +26,7 @@ public class Getusers {
 		} catch (Exception exp) 
 		{
 			Log.fail(exp.getMessage());
-			exp.printStackTrace();
+			Log.fail("fails due to"+ exp.getCause());
 		}
 		Log.endTestCase("End");
 		return jsonResponse;
@@ -47,14 +47,14 @@ public class Getusers {
 					.oauth(consumerKey, consumerSecret, "", "")
 					.header("Content-Type","application/json")	
 					.header("startIndex",startIndex)
-					.header("endindex", endIndex)
+					.header("endIndex", endIndex)
 					.get("/DistributionServices/ext/api/getClientUsers?clientUserID="+clientUserID+"");					
 							
 			Log.info("Getusers Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 
 		{
 			Log.fail(exp.getMessage());
-			exp.printStackTrace();
+			Log.fail("fails due to"+ exp.getCause());
 		}
 		Log.endTestCase("End");
 		return jsonResponse;

@@ -40,7 +40,7 @@ public class BookPlayerModule extends BookplayerStepModule
 		btnthumbnail();
 		txtbxgotopage("5");
 		btnhighlight();
-		selectparagraph(0, 45);
+		selectparagraph(5,0, 45,"p5-textid50226");
 		if(color.equalsIgnoreCase("yellow")) {
 			bltyellow();
 		}
@@ -61,17 +61,49 @@ public class BookPlayerModule extends BookplayerStepModule
 
 	public static void deleteHighlight(){
 		//btnhighlight();
-		selectparagraph_delete();
+		selectparagraph_delete(5,"p5-textid50226");
 		btnhighlightdelete();
 		//btnhighlight();
 	}
 
-	public static void pentool(String color, String pageNum, int x, int y){
-
+	public static void highlightsharing(String xpath, String color, String note){
 		btnthumbnail();
 		txtbxgotopage("5");
+		btnhighlight();
+		/*selectparagraph_delete(5,"p5-textid50226");
+		btnhighlightsharedelete();
+		Log.info("Delete old share Highlight note");*/
+		selectparagraph(5,0, 45,xpath);
+		btnhighlightnote();
+		txthighlighttext(note);
+		if(color.equalsIgnoreCase("Orange")) {
+			btnStickyClr_orange();
+		}
+		if(color.equalsIgnoreCase("pink")) {
+			btnStickyClr_pink();
+		}
+		if(color.equalsIgnoreCase("purple")) {
+			btnStickyClr_purple();
+		}
+		if(color.equalsIgnoreCase("green")) {
+			btnStickyClr_green();
+		}
+		if(color.equalsIgnoreCase("blue")) {
+			btnStickyClr_blue();
+		}
+		
+		btnSharedStickyNotes();
+		chkbxSharedNotesToAllTeacher();
+		btndoneSharedStickyNotes();
+	}
+	
+	
+	public static void pentool(String color, String pageNum,String xpath, int x, int y){
+
+		btnthumbnail();
+		txtbxgotopage(pageNum);
 		btnpentool();
-		dragthicknessbar();
+	//	dragthicknessbar();
 		//btnpentool();
 		if(color.equalsIgnoreCase("black")) {
 			btnPenColour_Black();
@@ -90,7 +122,7 @@ public class BookPlayerModule extends BookplayerStepModule
 		}
 
 		Driver.driver.switchTo().frame("epub_"+pageNum);
-		drawLine(By.id("p5-textid50001"), x, y);
+		drawLine(By.xpath(xpath), x, y);
 		Driver.driver.switchTo().parentFrame();
 		btnpentool();
 	}
@@ -212,7 +244,7 @@ public class BookPlayerModule extends BookplayerStepModule
 		btnthumbnail();
 		txtbxgotopage("5");
 		btnhighlight();
-		selectparagraph(0, 0);
+		selectparagraph(5,0, 45,"p5-textid50226");
 		btnhighlightsearch();
 		int size= elementsFinderByXpaths(prop.getProperty("searchresult_lstview_xpath"), "Search result count").size();
 		Log.info("Number of search found:"+ size);
@@ -463,7 +495,9 @@ public class BookPlayerModule extends BookplayerStepModule
 	}
 	
 	
-	public static void allmarkup(int pageNum,String title) {
+	public static void jumptobook(int pageNum,String title) {
+		btnthumbnail();
+		txtbxgotopage("1");
 		threadHold_2Sec();
 		markup (pageNum, title);	
 		windowhandle();
@@ -476,6 +510,40 @@ public class BookPlayerModule extends BookplayerStepModule
 		Driver.driver.close();
 		windowhandle();
 		
+	}
+	
+	public static void clearAll(int dropdownno) {
+		btnthumbnail();
+		txtbxgotopage("2");
+		threadHold_2Sec();
+		markup (2, "kitaboo-drop-down-label");	
+		dropdownselect(dropdownno);
+		markup (3, "kitaboo-text-box");	
+		mathkeybord();
+		btnclearall();
+		btnclearallAlertPopup_Yes();
+	}
+	
+	public static void fib_dropdown_pentoolSharing(int dropdownno,String mathtext) {
+		btnthumbnail();
+		txtbxgotopage("2");
+		threadHold_2Sec();
+		markup (2, "kitaboo-drop-down-label");	
+		dropdownselect(dropdownno);
+		markup (3, "kitaboo-text-box");	
+		btnmathtextbox(mathtext);
+		btnSubmit();
+		threadHold_5Sec();
+	}
+	
+	public static void teacherReview(int stdnt) {
+		btnthumbnail();
+		txtbxgotopage("2");
+		threadHold_2Sec();
+		btnteacherReview(stdnt);
+		/*btnclearall();
+		btnclearallAlertPopup_Yes();*/
+		btnhighlight();
 	}
 
 	

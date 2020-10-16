@@ -630,6 +630,48 @@ public static Properties prop = getProperty(System.getProperty("user.dir")+"/con
 	}
 	
 //	Components started
+	
+//Help Screen
+	public static void btn_helpscreen(){
+		try {
+			elementFinderByXpath(prop.getProperty("helpscreen_btn_xpath"), "Clicked on Help Screen button").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void btn_skip(){
+		try {
+			elementFinderByXpath(prop.getProperty("skip_btn_xpath"), "Clicked on skip button").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void btn_nextPage(){
+		try {
+			elementFinderByXpath(prop.getProperty("next_btn_xpath"), "Clicked on next button").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void btn_TakeAWalkThrough(){
+		try {
+			UIElements.wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(prop.getProperty("TakeAWalkThrough_btn_xpath"))));
+			elementFinderByXpath(prop.getProperty("TakeAWalkThrough_btn_xpath"), "Clicked on TakeAWalkThrough button").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
+	
+	public static void btn_gotIt(){
+		try {
+			elementFinderByXpath(prop.getProperty("gotIt_btn_xpath"), "Clicked on gotIt button").click();
+		} catch (Exception e) {
+			System.out.println("Element not present."+e.getMessage());
+		}
+	}
 
 // Title component started
 	
@@ -1950,7 +1992,7 @@ public static Properties prop = getProperty(System.getProperty("user.dir")+"/con
     
 		public static void btnProfileIcon(){
 			try {
-				elementFinderByID(prop.getProperty("profileIcon_id"), "Click on profile icon.").click();
+				elementFinderByID(prop.getProperty("profileIcon_id"), "Clicked on profile icon.").click();
 			} catch (Exception e) {
 				System.out.println("Element not present. ERROR: "+e.getMessage());
 			}
@@ -1958,10 +2000,531 @@ public static Properties prop = getProperty(System.getProperty("user.dir")+"/con
 		
 		public static void btnLogOut(){
 			try {
-				elementFinderByID(prop.getProperty("LogOut_id"), "Click on Log out.").click();
+				elementFinderByID(prop.getProperty("LogOut_id"), "Clicked on Log out.").click();
 			} catch (Exception e) {
 				System.out.println("Element not present. ERROR: "+e.getMessage());
 			}
 		}
+		
+	//	 Upload Docbook functionality
 	
+		public static void linkepubBooks(){
+			try {
+				elementFinderByID(prop.getProperty("link_epubBooks_ID"), "Clicked on epubBooks link.").click();
+			} catch (Exception e) {
+				System.out.println("Element not present. ERROR: "+e.getMessage());
+			}
+		}
+		
+		public static void loaderinprogress(){
+			try {
+				 UIElements.wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id(prop.getProperty("loader_inprogress_ID"))));
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void btnAddNew(){
+			try {
+				elementFinderByID(prop.getProperty("drp_addNew_ID"), "Clicked on Add new button.").click();
+			} catch (Exception e) {
+				System.out.println("Element not present. ERROR: "+e.getMessage());
+			}
+		}
+		
+		public static void btnUploadDocbook(){
+			try {
+				elementFinderByLinkText(prop.getProperty("drp_uploadeDocbook_linktext"), "Clicked on upload docbook button.").click();
+			} catch (Exception e) {
+				System.out.println("Element not present. ERROR: "+e.getMessage());
+			}
+		}
+		
+		public static void btnChooseFile(){
+			try {
+				elementFinderByID(prop.getProperty("btn_choosefile_ID"), "Clicked on choose file button.").click();
+			} catch (Exception e) {
+				System.out.println("Element not present. ERROR: "+e.getMessage());
+			}
+		}
+		
+		public static void loaderimage(){
+			try {
+				 UIElements.wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id(prop.getProperty("loader_ID"))));
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void btnDocbookResume(){
+			try {
+				elementFinderByID(prop.getProperty("btn_docbookresume_ID"), "Clicked on Resume button.").click();
+			} catch (Exception e) {
+				System.out.println("Element not present. ERROR: "+e.getMessage());
+			}
+		}
+		
+	// Upload HTML interactivity 
+		public static void btnEnrichBeta(){
+			try {
+				elementFinderByID(prop.getProperty("btn_Enrich_Beta_ID"), "Clicked on Enrich Beta button.").click();
+			} catch (Exception e) {
+				System.out.println("Element not present. ERROR: "+e.getMessage());
+			}
+		}
+		
+		public static void markupimage(){
+			try {
+				 UIElements.wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(prop.getProperty("markup_image_xpath"))));
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void preloader(){
+			try {
+				 UIElements.wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(prop.getProperty("preloader_xpath"))));
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void markuphtmlinteractivity(){
+			try {
+				elementFinderByID(prop.getProperty("markup_htmlinteractivity_xpath"), "Clicked on htmlinteractivityMarkup button.").click();
+			} catch (Exception e) {
+				System.out.println("Element not present. ERROR: "+e.getMessage());
+			}
+		}
+		
+		public static void txttitle(String title){
+			try {
+			//	elementFinderByXpath(prop.getProperty("wordsearchinstruction_txt_Xpath"), "txtbx_EnterText").clear();
+				elementFinderByXpath(prop.getProperty("txt_title_xpath"), "txtbx_EnterText").sendKeys(title);
+				//elementFinderByXpath(prop.getProperty("highlighterinstruction_txtbx_Xpath"), "txtbx_instruction").click();
+			} catch (Exception e) {
+				System.out.println("Element not present."+e.getMessage());
+			}
+		}
+		
+		public static void chkbxhideicon(){
+			try {
+				elementFinderByXpath(prop.getProperty("chkbx_hideicon_xpath"), "Clicked on Hide markup checkbox.").click();
+			} catch (Exception e) {
+				System.out.println("Element not present. ERROR: "+e.getMessage());
+			}
+		}
+		
+		public static void btnupload(){
+			try {
+				elementFinderByXpath(prop.getProperty("btn_upload_xpath"), "Clicked on upload box.").click();
+			} catch (Exception e) {
+				System.out.println("Element not present. ERROR: "+e.getMessage());
+			}
+		}
+		
+		public static void btnOk(){
+			try {
+				elementFinderByXpath(prop.getProperty("btn_Ok_xpath"), "Clicked on Ok button.").click();
+			} catch (Exception e) {
+				System.out.println("Element not present. ERROR: "+e.getMessage());
+			}
+		}
+		
+		public static void btndone(){
+			try {
+				elementFinderByXpath(prop.getProperty("btn_done_xpath"), "Clicked on done button.").click();
+			} catch (Exception e) {
+				System.out.println("Element not present. ERROR: "+e.getMessage());
+			}
+		}
+		
+		public static void btnsave(){
+			try {
+				elementFinderByXpath(prop.getProperty("btn_save_xpath"), "Clicked on save button.").click();
+			} catch (Exception e) {
+				System.out.println("Element not present. ERROR: "+e.getMessage());
+			}
+		}
+		
+		// create author ePub
+		
+				/*public static void linkepubBooks(){
+					try {
+						elementFinderByID(prop.getProperty("link_epubBooks_ID"), "Clicked on epub Books link ").click();
+					} catch (Exception e) {
+						System.out.println("Element not present."+e.getMessage());
+					}
+				}
+				
+				public static void btnAddNew(){
+					try {
+						elementFinderByID(prop.getProperty("addNew_btn_ID"), "Clicked on add new button").click();
+					} catch (Exception e) {
+						System.out.println("Element not present."+e.getMessage());
+					}
+				}*/
+				
+				public static void btnAuthorePub(){
+					try {
+						elementFinderByLinkText(prop.getProperty("authorePub_drpdw_linkText"), "Clicked on authorePub button").click();
+					} catch (Exception e) {
+						System.out.println("Element not present."+e.getMessage());
+					}
+				}
+				
+				public static void txtbxTitle(String title){
+					try {
+						elementFinderByID(prop.getProperty("title_txtbx_ID"), "Clicked on Title textbox").sendKeys(title);
+					} catch (Exception e) {
+						System.out.println("Element not present."+e.getMessage());
+					}
+				}
+				
+				public static void txtbxAuthor(String author){
+					try {
+						elementFinderByID(prop.getProperty("author_txtbx_ID"), "Clicked on Author textbox").sendKeys(author);
+					} catch (Exception e) {
+						System.out.println("Element not present."+e.getMessage());
+					}
+				}
+				
+				public static void txtbxCategory(String category){
+					try {
+						elementFinderByID(prop.getProperty("category_txtbx_ID"), "Clicked on Category textbox ").sendKeys(category);
+					} catch (Exception e) {
+						System.out.println("Element not present."+e.getMessage());
+					}
+				}
+				
+				public static void txtbxISBN(String ISBN){
+					try {
+						elementFinderByID(prop.getProperty("isbn_txtbx_ID"), "Clicked on ISBN textbox ").sendKeys(ISBN);
+					} catch (Exception e) {
+						System.out.println("Element not present."+e.getMessage());
+					}
+				}
+				
+				public static void btnBeginePub(){
+					try {
+						elementFinderByID(prop.getProperty("beginCreateEpub_btn_ID"), "Clicked on Begin button").click();
+					} catch (Exception e) {
+						System.out.println("Element not present."+e.getMessage());
+					}
+				}
+				
+				public static void btnePubresume(){
+					try {
+						elementFinderByID(prop.getProperty("ePubresume_btn_ID"), "Clicked on Resume button").click();
+					} catch (Exception e) {
+						System.out.println("Element not present."+e.getMessage());
+					}
+				}
+				
+			//Publish and download Author ePub
+				
+				public static void txtbxSearchText(String searchText){
+					try {
+						elementFinderByID(prop.getProperty("searchText_txtbx_ID"), "Clicked on search textbox ").sendKeys(searchText);
+					} catch (Exception e) {
+						System.out.println("Element not present."+e.getMessage());
+					}
+				}	
+				
+				public static void btnSearchePub(){
+					try {
+						elementFinderByID(prop.getProperty("search_btn_ID"), "Clicked on search button").click();
+					} catch (Exception e) {
+						System.out.println("Element not present."+e.getMessage());
+					}
+				}
+				
+				public static void btnPublishepub(){
+					try {
+						elementFinderByXpath(prop.getProperty("publishepub_btn_Xpath"), "Clicked on publishepub button").click();
+					} catch (Exception e) {
+						System.out.println("Element not present."+e.getMessage());
+					}
+				}
+				
+				public static void btnPublishAllFormat(){
+					try {
+						elementFinderByXpath(prop.getProperty("publishallformat_btn_Xpath"), "Clicked on PublishAllFormat button").click();
+					} catch (Exception e) {
+						System.out.println("Element not present."+e.getMessage());
+					}
+				}
+				
+				public static void btnPublishOkePub(){
+					try {
+						elementFinderByLinkText(prop.getProperty("publishok_btn_linkText"), "Clicked on Publish Ok button").click();
+					} catch (Exception e) {
+						System.out.println("Element not present."+e.getMessage());
+					}
+				}
+				
+				public static void btnMore(){
+					try {
+						elementFinderByXpath(prop.getProperty("more_btn_Xpath"), "Clicked on More button").click();
+					} catch (Exception e) {
+						System.out.println("Element not present."+e.getMessage());
+					}
+				}
+				
+				public static void btnDownloadePub(){
+					try {
+						elementFinderByXpath(prop.getProperty("downloadePub_btn_Xpath"), "Clicked on download ePub button").click();
+					} catch (Exception e) {
+						System.out.println("Element not present."+e.getMessage());
+					}
+				}
+				
+				public static void btnDownloadpackage(){
+					try {
+						elementFinderByXpath(prop.getProperty("downloadpackage_btn_Xpath"), "Clicked on download pacage button").click();
+					} catch (Exception e) {
+						System.out.println("Element not present."+e.getMessage());
+					}
+				}
+				
+			//revert To Previous Version ePub
+				
+				public static void drpdnprogressStatus(){
+					try {
+						elementFinderByID(prop.getProperty("progressStatus_drpdn_ID"), "Clicked on progress Status dropdown").click();
+					} catch (Exception e) {
+						System.out.println("Element not present."+e.getMessage());
+					}
+				}
+				
+				public static void drpdnArchived(){
+					try {
+						elementFinderByXpath(prop.getProperty("Archived_drpdn_Xpath"), "Clicked on Archived dropdown").click();
+					} catch (Exception e) {
+						System.out.println("Element not present."+e.getMessage());
+					}
+				}
+				
+				public static void btnEdit(){
+					try {
+						elementFinderByID(prop.getProperty("Edit_btn_ID"), "Clicked on Edit button").click();
+					} catch (Exception e) {
+						System.out.println("Element not present."+e.getMessage());
+					}
+				}
+				
+				public static void btnRevert(){
+					try {
+						elementFinderByLinkText(prop.getProperty("revert_btn_linkText"), "Clicked on linkText button").click();
+					} catch (Exception e) {
+						System.out.println("Element not present."+e.getMessage());
+					}
+				}
+				
+				public static void btnYes(){
+					try {
+						UIElements.wait.until(ExpectedConditions.visibilityOfElementLocated(By.linkText(prop.getProperty("yes_btn_linkText"))));
+						elementFinderByLinkText(prop.getProperty("yes_btn_linkText"), "Clicked on yes linkText button").click();
+					} catch (Exception e) {
+						System.out.println("Element not present."+e.getMessage());
+					}
+				}
+				
+				public static void msgepubReverted(){
+					try {
+						UIElements.wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(prop.getProperty("epubReverted_msg_Xpath"))));
+					} catch (Exception e) {
+						System.out.println("Element not present."+e.getMessage());
+					}
+				}
+				
+			// Delete component
+				public static void btncanceldelete(){
+					try {
+						elementFinderByXpath(prop.getProperty("canceldelete_btn_xpath"), "Clicked on cancel delete button").click();
+					} catch (Exception e) {
+						System.out.println("Element not present."+e.getMessage());
+					}
+				}
+				
+				public static void btndeleteok(){
+					try {
+						elementFinderByXpath(prop.getProperty("deleteok_btn_xpath"), "Clicked on delete ok button").click();
+					} catch (Exception e) {
+						System.out.println("Element not present."+e.getMessage());
+					}
+				}
+				
+			// Floating panel
+				
+				public static void drpdnfontfamily(){
+					try {
+						elementFinderByXpath(prop.getProperty("fontfamily_drpdn_Xpath"), "Clicked on dropdown font family").click();
+					} catch (Exception e) {
+						System.out.println("Element not present."+e.getMessage());
+					}
+				}
+				
+				public static void btncalibri(){
+					try {
+						elementFinderByXpath(prop.getProperty("calibri_btn_Xpath"), "Clicked on calibri").click();
+					} catch (Exception e) {
+						System.out.println("Element not present."+e.getMessage());
+					}
+				}
+				
+				public static void drpdnSizefamily(){
+					try {
+						elementFinderByXpath(prop.getProperty("Sizefamily_drpdn_Xpath"), "Clicked on dropdown Size family").click();
+					} catch (Exception e) {
+						System.out.println("Element not present."+e.getMessage());
+					}
+				}
+				
+				public static void btnSize(){
+					try {
+						elementFinderByXpath(prop.getProperty("Size_btn_Xpath"), "Clicked on Size").click();
+					} catch (Exception e) {
+						System.out.println("Element not present."+e.getMessage());
+					}
+				}
+				
+				public static void btnBold(){
+					try {
+						elementFinderByXpath(prop.getProperty("bold_btn_Xpath"), "Clicked on bold").click();
+					} catch (Exception e) {
+						System.out.println("Element not present."+e.getMessage());
+					}
+				}
+				
+				public static void btnItalic(){
+					try {
+						elementFinderByXpath(prop.getProperty("italic_btn_Xpath"), "Clicked on Italic").click();
+					} catch (Exception e) {
+						System.out.println("Element not present."+e.getMessage());
+					}
+				}
+				
+				public static void btnUnderline(){
+					try {
+						elementFinderByXpath(prop.getProperty("Underline_btn_Xpath"), "Clicked on Underline").click();
+					} catch (Exception e) {
+						System.out.println("Element not present."+e.getMessage());
+					}
+				}
+				
+				public static void btnfloatingstrikethrough(){
+					try {
+						elementFinderByXpath(prop.getProperty("strikethrough_btn_Xpath"), "Clicked on strikethrough").click();
+					} catch (Exception e) {
+						System.out.println("Element not present."+e.getMessage());
+					}
+				}
+				
+				public static void btnsubscript(){
+					try {
+						elementFinderByXpath(prop.getProperty("subscript_btn_Xpath"), "Clicked on subscript").click();
+					} catch (Exception e) {
+						System.out.println("Element not present."+e.getMessage());
+					}
+				}
+				
+				public static void btnsuperscript(){
+					try {
+						elementFinderByXpath(prop.getProperty("superscript_btn_Xpath"), "Clicked on superscript").click();
+					} catch (Exception e) {
+						System.out.println("Element not present."+e.getMessage());
+					}
+				}
+				
+				public static void btnalignleft(){
+					try {
+						elementFinderByID(prop.getProperty("alignleft_btn_ID"), "Clicked on align left").click();
+					} catch (Exception e) {
+						System.out.println("Element not present."+e.getMessage());
+					}
+				}
+				
+				public static void btnalignright(){
+					try {
+						elementFinderByID(prop.getProperty("alignright_btn_ID"), "Clicked on align right").click();
+					} catch (Exception e) {
+						System.out.println("Element not present."+e.getMessage());
+					}
+				}
+				
+				public static void btnaligncenter(){
+					try {
+						elementFinderByID(prop.getProperty("aligncenter_btn_ID"), "Clicked on align center").click();
+					} catch (Exception e) {
+						System.out.println("Element not present."+e.getMessage());
+					}
+				}
+				
+				public static void btnjustified(){
+					try {
+						elementFinderByXpath(prop.getProperty("justified_btn_Xpath"), "Clicked on justified").click();
+					} catch (Exception e) {
+						System.out.println("Element not present."+e.getMessage());
+					}
+				}
+				
+				public static void btnlineheight(){
+					try {
+						elementFinderByXpath(prop.getProperty("lineheight_btn_Xpath"), "Clicked on lineheight").click();
+					} catch (Exception e) {
+						System.out.println("Element not present."+e.getMessage());
+					}
+				}
+				
+				public static void btnlineheight1_15(){
+					try {
+						elementFinderByID(prop.getProperty("lineheight1_15_btn_ID"), "Clicked on lineheight1_15").click();
+					} catch (Exception e) {
+						System.out.println("Element not present."+e.getMessage());
+					}
+				}
+				
+				public static void btnlineheight2(){
+					try {
+						elementFinderByID(prop.getProperty("lineheight2_btn_ID"), "Clicked on lineheight2").click();
+					} catch (Exception e) {
+						System.out.println("Element not present."+e.getMessage());
+					}
+				}
+				
+				public static void btnorderlist(){
+					try {
+						elementFinderByXpath(prop.getProperty("orderlist_btn_Xpath"), "Clicked on orderlist").click();
+					} catch (Exception e) {
+						System.out.println("Element not present."+e.getMessage());
+					}
+				}
+				
+				public static void btnUnorderlist(){
+					try {
+						elementFinderByXpath(prop.getProperty("unorderlist_btn_Xpath"), "Clicked on Unorderlist").click();
+					} catch (Exception e) {
+						System.out.println("Element not present."+e.getMessage());
+					}
+				}
+				
+				public static void btnIndentLeft(){
+					try {
+						elementFinderByXpath(prop.getProperty("IndentLeft_btn_Xpath"), "Clicked on IndentLeft").click();
+					} catch (Exception e) {
+						System.out.println("Element not present."+e.getMessage());
+					}
+				}
+				
+				public static void btnIndentRight(){
+					try {
+						elementFinderByXpath(prop.getProperty("IndentRight_btn_Xpath"), "Clicked on IndentRight").click();
+					} catch (Exception e) {
+						System.out.println("Element not present."+e.getMessage());
+					}
+				}
+				
+		
+		
 }

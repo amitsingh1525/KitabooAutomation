@@ -24,12 +24,9 @@ public class DIS_2055 {
 	public static List<String> detailisbn =  ExcelUtils.getisbn();
 	DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
 	Date dateobj = new Date();
-	//System.out.println(df.format(dateobj));
-	//public static long startDate1 = EpochTime.getEpochTime("df.format(dateobj");
 	public static long startDate ;//EpochTime.getEpochTime("2019/10/31 14:46:04");
 	public static long startIndex = 0;
 	public static long endIndex = 100;
-	//public static int level;
 	public static String assetType;
 	public static int level;
 	public static String numberOfBooks;

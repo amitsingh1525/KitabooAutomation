@@ -29,7 +29,7 @@ public class CategoryBookListV2 {
 			result= stmt.executeQuery("SELECT schemaNAme FROM cloudCore.CLIENT WHERE Id IN (SELECT client_id FROM cloudCore.BOOKS WHERE ID IN (SELECT book_id FROM cloudCore.COLLECTION_BOOK_MAP WHERE ID = "+bookID+"))");
 			result.next();
 			String schemaNAme = result.getString("schemaNAme");
-			System.out.println("schemaNAme : " +schemaNAme);
+			//Log.info("schemaNAme : " +schemaNAme);
 			//String schemaNAme="client18";
 			result= stmt.executeQuery("SELECT `TITLE` C1 FROM "+schemaNAme+".`CATEGORY_METADATA` WHERE ID IN (SELECT `CATEGORY` FROM "+schemaNAme+".`BOOKS_CATEGORY_MAP`WHERE book_id IN (SELECT book_id FROM cloudCore.COLLECTION_BOOK_MAP WHERE ID = "+bookID+"))");
 			System.out.println("**************Results1**************");
@@ -122,7 +122,7 @@ public class CategoryBookListV2 {
 			result= stmt.executeQuery("SELECT schemaNAme FROM cloudCore.CLIENT WHERE Id IN (SELECT client_id FROM cloudCore.BOOKS WHERE ID IN (SELECT book_id FROM cloudCore.COLLECTION_BOOK_MAP WHERE ID = "+bookID+"))");
 			result.next();
 			String schemaNAme = result.getString("schemaNAme");
-			System.out.println("schemaNAme : " +schemaNAme);
+			//Log.info("schemaNAme : " +schemaNAme);
 			//String schemaNAme="client18";
 			result= stmt.executeQuery("SELECT `TITLE` C1 FROM "+schemaNAme+".`CATEGORY_METADATA` WHERE ID IN (SELECT `CATEGORY` FROM "+schemaNAme+".`BOOKS_CATEGORY_MAP`WHERE book_id IN (SELECT book_id FROM cloudCore.COLLECTION_BOOK_MAP WHERE ID = "+bookID+"))");
 			System.out.println("**************Results1**************");
@@ -217,6 +217,4 @@ public class CategoryBookListV2 {
 		Log.endTestCase("End");
 		return jsonResponse;
 	}
-
-
 }

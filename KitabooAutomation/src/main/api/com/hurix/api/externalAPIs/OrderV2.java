@@ -46,9 +46,8 @@ public class OrderV2 {
 			Log.info("OrderV2."+BookID1+" Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
-			exp.printStackTrace();
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
 		}
 		Log.endTestCase("End");
 		return jsonResponse;		
@@ -81,9 +80,8 @@ public class OrderV2 {
 			Log.info("orderV2_with.clientBookID."+clientBookID+" Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
-			exp.printStackTrace();
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
 		}
 		Log.endTestCase("End");
 		return jsonResponse;		
@@ -128,9 +126,9 @@ public class OrderV2 {
 			Log.info("orderV2_with.CollectionRefID."+collectionRefID+" Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
-			exp.printStackTrace();
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
+			//exp.printStackTrace();
 		}
 		Log.endTestCase("End");
 		return jsonResponse;		
@@ -173,9 +171,8 @@ public class OrderV2 {
 			Log.info("orderV2_with.LibraryRef."+libraryRef+" Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
-			exp.printStackTrace();
+			Log.fail(exp.getMessage());
+			Log.fail("fails due to"+ exp.getCause());
 		}
 		Log.endTestCase("End");
 		return jsonResponse;		
@@ -211,10 +208,9 @@ public class OrderV2 {
 		} catch (Exception exp) 
 		{
 			Log.fail(exp.getMessage());
-			exp.printStackTrace();
+			Log.fail("fails due to"+ exp.getCause());
 		}
 		Log.endTestCase("End");
 		return jsonResponse;		
 	}
-
 }

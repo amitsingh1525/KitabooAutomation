@@ -14,14 +14,16 @@ public class UpdateUser_OAuth {
 	private static String updateUserBody ;//= "{\"user\":{\"firstName\":\"ent_learner\",\"lastName\":\"cat4\",\"userName\":\"ent_lear_cat4@yopmail.com\",\"password\":\"kitaboo!123\",\"clientUserID\":\"95750033\",\"email\":\"ent_lear_cat4@yopmail.com\"}}";
 
 
-	public static Response updateUser_OAuth(String consumerKey, String consumerSecret,String userName,String password,String firstName,String lastName,String clientUserID)
+	public static Response updateUser_OAuth(String email,String userName,String password,String firstName,String lastName,String clientUserID,String consumerKey, String consumerSecret)
 	{
 		//System.out.println("POSTresetDevices_clientUserIDPath: " +updateUser_OAuthPath);		
 		Response jsonResponse = null;
 		try {
-			updateUserBody = "{\"user\":{\"firstName\":\"ent_learner\",\"lastName\":\"cat4\",\"userName\":\""+userName+"\",\"password\":\""+password+"\",\"clientUserID\":\""+clientUserID+"\",\"email\":\"ent_lear_cat4@yopmail.com\"}}";
+			updateUserBody = "{\"user\":{\"firstName\":\"ent_learner\",\"lastName\":\"cat4\",\"userName\":\""+userName+"\","
+					+ "\"password\":\""+password+"\",\"clientUserID\":\""+clientUserID+"\",\"email\":\""+email+"\"}}";
 
 			Log.startTestCase("updateUser_OAuth");
+			Log.info("updateUserBody : "+updateUserBody);
 			jsonResponse = given()
 					.auth()
 					.oauth(consumerKey, consumerSecret, "", "")
@@ -33,7 +35,8 @@ public class UpdateUser_OAuth {
 		} catch (Exception exp) 
 		{
 			Log.fail(exp.getMessage());
-			exp.printStackTrace();
+			Log.fail("fails due to"+ exp.getCause());
+			//exp.printStackTrace();
 		}
 		Log.endTestCase("End");
 		return jsonResponse;

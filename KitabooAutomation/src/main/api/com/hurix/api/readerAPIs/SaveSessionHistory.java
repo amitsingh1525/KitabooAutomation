@@ -5,8 +5,6 @@ import io.restassured.response.Response;
 
 import com.hurix.automation.utility.Log;
 
-
-
 public class SaveSessionHistory {
 	
 	//public static String POSTsaveSessionHistoryPath=""+com.hurix.api.utility.ExcelUtils.getbaseURI()+"/DistributionServices/services/api/reader/distribution/123234234/PC/"+com.hurix.api.runner.RestAssured.bookID1+"/saveSessionHistory";
@@ -19,7 +17,7 @@ public class SaveSessionHistory {
 			POSTsaveSessionHistoryBody = "{\"sessionHistory\":[{\"collection_book_id\":\""+bookID1+"\",\"time\":\""+time+"\"}]}";
 			Log.startTestCase("saveSessionHistory");
 			//System.out.println("POSTsaveSessionHistoryRequestURL:" +POSTsaveSessionHistoryPath);
-			System.out.println("POSTsaveSessionHistoryBody: "+POSTsaveSessionHistoryBody);
+			Log.info("POSTsaveSessionHistoryBody: "+POSTsaveSessionHistoryBody);
 			jsonResponse = given()
 					.header("Content-Type","application/json")
 					.header("usertoken",userToken)
@@ -35,9 +33,6 @@ public class SaveSessionHistory {
 			exp.printStackTrace();
 		}
 		Log.endTestCase("End");
-		return jsonResponse;
-		
-	}
-	
-	
+		return jsonResponse;		
+	}	
 }

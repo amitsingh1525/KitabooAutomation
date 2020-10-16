@@ -2,8 +2,6 @@ package com.hurix.api.readerAPIs;
 
 import static io.restassured.RestAssured.given;
 import io.restassured.response.Response;
-
-import com.hurix.api.utility.DatabaseQuerry;
 import com.hurix.automation.utility.Log;
 
 public class Authenticate {
@@ -11,7 +9,7 @@ public class Authenticate {
 	public static Response authenticate(String clientID, String username, String password,String deviceID,String deviceType)
 	{
 		Response jsonResponse = null;
-		Log.info("URL : "+"/DistributionServices/services/api/reader/user/"+deviceID+"/"+deviceType+"/authenticateUser");
+		Log.info("URL : "+"/DistributionServices/services/api/reader/user/"+deviceID+"/"+deviceType+"/authenticateUser?clientID="+clientID+"");
 		Log.info("BODY : "+"{\"user\":{\"userName\":\""+username+"\",\"password\":\""+password+"\"}}");
 		Log.info("clientID : "+clientID);
 		try {
@@ -25,11 +23,8 @@ public class Authenticate {
 
 		} catch (Exception exp) 
 		{
-			System.out.println(exp.getMessage());
-			System.out.println(exp.getCause());
-
 			Log.fail(exp.getMessage());			
-			exp.printStackTrace();
+			Log.fail("Fails due to : "+exp.getCause());
 		}
 		Log.endTestCase("End");
 		return jsonResponse;

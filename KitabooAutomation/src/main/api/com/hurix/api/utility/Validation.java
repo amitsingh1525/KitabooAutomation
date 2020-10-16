@@ -17,7 +17,7 @@ public class Validation {
 		
 		if(responseCode == statusCode)
 		{
-			Log.pass("Expected and actual statusCode: " +jsonResponse.getStatusCode()+" is matched.");
+			Log.pass("SuccessFull!! Expected and actual statusCode: " +jsonResponse.getStatusCode()+" is matched.");
 		}
 		else if(responseCode != statusCode)
 		{
@@ -50,7 +50,7 @@ public class Validation {
 		if(act_responsecode == statusCode)
 		{
 			System.out.println("In the Pass Assertion");
-			Log.pass("successFull Actual Response code Validate, status code is = " +jsonResponse.then().extract().path("responseCode"));
+			Log.pass("Actual Response code Validate, status code is = " +jsonResponse.then().extract().path("responseCode"));
 		}
 		else
 		{
@@ -97,10 +97,10 @@ public class Validation {
 			try {
 				Assert.assertTrue(bodyStringValue.contains(key));
 				
-				Log.pass("Parameter is Present= "+key+"  .inside response body.");
+				Log.pass("Parameter: "+key+" .is Present inside response body.");
 			} catch (AssertionError e) {
 				e.printStackTrace();
-				Log.fail("Expected Parameter is NOT Present= "+key+" .inside response body.");
+				Log.fail("Expected Parameter is NOT Present : "+key+" .inside response body.");
 				//Log.fail("validated Not FOUND are : " +key+ "=" +value );
 			}	
 		}else{
@@ -125,6 +125,8 @@ public class Validation {
 
 		}	
 	}
+	
+	
 	public static void responseISGreater(String  variable , int key,int value)
 	{
 		if(key >= value)
@@ -139,15 +141,15 @@ public class Validation {
 
 	public static void responseISGreater_String(Response variable,String key1,int value)
 	{
-		int key= Integer.parseInt(""+key1+"");	
+		int key= Integer.parseInt(""+key1+"");			
 
 		if(key >= value)
 		{
-			Log.pass("size Validation pass is : " + ""+variable+""+" =$GREATER THEN EQUALS TO$: "+value);
+			Log.pass("size Validation pass is : " +""+key1+""+" =$GREATER THEN EQUALS TO$: "+value);
 		}
 		else
 		{
-			Log.fail("size Validation pass is : " +""+variable+""+" =$GREATER THEN EQUALS TO$: "+value);
+			Log.fail("size Validation pass is : " +""+key1+""+" =$GREATER THEN EQUALS TO$: "+value);
 		}
 	}
 	public static void responseKeyAndValue(Response jsonResponse, String key,String value)

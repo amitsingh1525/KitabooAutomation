@@ -51,7 +51,8 @@ public class DIS_2010 {
 			//clientID = formatter.formatCellValue(sheet.getRow(i).getCell(3));
 
 			Log.info("runY_N : "+runY_N);
-			if(runY_N.contains("NO")){Log.info("Permission to Run that Row is Denied!!..Please change YES in Ith row in Respective Sheet of Yours, Thank You");}
+			if(runY_N.contains("NO"))
+			{Log.info("runY_N : "+runY_N);Log.info("Permission to Run that Row is Denied!!..Please change YES in Ith row in Respective Sheet of Yours, Thank You");}
 			else if(runY_N.contains("YES"))
 			{switch(environMent){
 			case "QC":
@@ -127,7 +128,7 @@ public class DIS_2010 {
 
 			consumerKey = JDBC_Queries.getCK(client_Id, sqlhost, sqlUsername, sqlPassword);
 			consumerSecret =JDBC_Queries.getSK(client_Id, sqlhost, sqlUsername, sqlPassword);
-
+			
 			Response userAssignedBooks_res = UserAssignedBooks_OAuth.userAssignedBooks_OAuth(consumerKey, consumerSecret,clientUserID);
 			Validation.responseHeaderCodeValidation(userAssignedBooks_res, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(userAssignedBooks_res, HttpStatus.SC_OK);
@@ -169,9 +170,9 @@ public class DIS_2010 {
 			Validation.responseKeyValidation_key(userAssignedBooks_withPagi_Res, "version");
 			Validation.responseKeyValidation_key(userAssignedBooks_withPagi_Res, "totalbooks");
 			Validation.responseKeyValidation_key(userAssignedBooks_withPagi_Res, "expiryDate");
-			String totalbooks=userAssignedBooks_withPagi_Res.then().extract().path("totalbooks");
+			int totalbooks=userAssignedBooks_withPagi_Res.then().extract().path("totalbooks");
 			Log.info("totalbooks: "+totalbooks);
-			Validation.responseISGreater_String(userAssignedBooks_withPagi_Res, "totalbooks", 3);
+			Validation.responseISGreater("totalbooks", totalbooks, 3);
 			Validation.responseKeyAndValue(userAssignedBooks_withPagi_Res, "expiryDate", "PERPETUAL");
 
 			}

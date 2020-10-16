@@ -615,7 +615,7 @@ public class DIS_1979 {
 		{
 			Log.fail(exp.getMessage());
 			Log.fail("fails due to"+ exp.getCause());
-			exp.printStackTrace();
+			//exp.printStackTrace();
 		}
 	}
 }

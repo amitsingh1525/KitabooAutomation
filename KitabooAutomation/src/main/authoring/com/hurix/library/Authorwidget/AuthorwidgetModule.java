@@ -48,6 +48,7 @@ public class AuthorwidgetModule extends AuthorwidgetStepModule {
 		Thread.sleep(5000);
 		Thread.sleep(5000);
 		
+		Helpscreen();
 		titleComponent(title,author);
 		headerComponent(header);
 		textComponent(text);
@@ -645,5 +646,99 @@ public class AuthorwidgetModule extends AuthorwidgetStepModule {
 		threadHold_2Sec();
 		return Driver.driver.getCurrentUrl();
 	}
-
+	
+	public static void UploadDocbook(String uploaddocbook,String title, String author) throws Exception {
+		linkepubBooks();
+		loaderinprogress();
+		btnAddNew();
+		btnUploadDocbook();
+		wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("filepicker_dialog"));
+		System.out.println("Frame switched");
+		btnChooseFile();
+		Uploadpath.uploadpath(uploaddocbook);
+		loaderimage();
+		btnDocbookResume();
+		//New Window Handle	
+				Thread.sleep(5000);
+				String winHandleBefore = Driver.driver.getWindowHandle();
+				for(String winHandle : Driver.driver.getWindowHandles()){
+					Driver.driver.switchTo().window(winHandle);
+				}
+				Log.info("Handle the new window");
+				Driver.driver.manage().window().maximize();
+				Thread.sleep(5000);
+				Thread.sleep(5000);
+				titleComponent(title,author);
+				
+				Thread.sleep(3000);
+				Driver.driver.close();
+//		 		Old Window Handle
+			    Thread.sleep(5000);
+			    Driver.driver.switchTo().window(winHandleBefore);
+	}
+	
+	public static void Enrich() throws Exception {
+		btnEnrichBeta();
+	}
+ 
+	public static void Helpscreen() throws Exception {
+		btn_helpscreen();
+		btn_skip();
+		btn_helpscreen();
+		btn_TakeAWalkThrough();
+		btn_nextPage();
+		btn_gotIt();
+	}
+	
+	public static void authorEpub(String title,String author,String category,String ISBN) {
+		linkepubBooks();
+		btnAddNew();
+		btnAuthorePub();
+		txtbxTitle(title);
+		txtbxAuthor(author);
+		txtbxCategory(category);
+		txtbxISBN(ISBN);
+		btnBeginePub();
+		btnePubresume();
+		
+	}
+	
+	public static void publishDownloadAuthorEpub(String searchText) {
+		txtbxSearchText(searchText);
+		btnSearchePub();
+		btnPublishepub();
+		btnPublishAllFormat();
+		btnPublishOkePub();
+		btnMore();
+		btnDownloadePub();
+		btnDownloadpackage();
+	}
+	
+	public static void revertToPreviousVersion(String searchText) {
+		linkepubBooks();
+		drpdnprogressStatus();
+		drpdnArchived();
+		txtbxSearchText(searchText);
+		btnSearchePub();
+		btnMore();
+		btnEdit();
+		btnMore();
+		btnRevert();
+		btnYes();
+		WebElement msgepubReverted=UIElements.wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(prop.getProperty("epubReverted_msg_Xpath"))));
+		  if(msgepubReverted != null){
+				String actual = msgepubReverted.getText();
+				String expected = "eBook has been reverted to previous version successfully.";
+				//Verification.compareStrings(actual, expected);
+	        	
+	        }else{
+	        	String actual = msgepubReverted.getText();
+				System.out.println("Fail"+actual);
+	        	
+	        }
+		
+		
+	}
+	
+	
 }

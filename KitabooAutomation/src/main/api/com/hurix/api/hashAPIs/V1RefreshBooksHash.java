@@ -36,15 +36,12 @@ public class V1RefreshBooksHash {
 					///DistributionServices/services/api/reader/distribution/"+deviceID+"/"+DiviceType+"/v1/refreshBooks?t="+startDate+"
 					.header("hash",hashVal)
 					.post("/DistributionServices/services/api/reader/distribution/123/PC/v1/refreshBooks?t=1599557170188");
-			Validation.responseHeaderCodeValidation(jsonResponse, HttpStatus.SC_OK);
-			Validation.responseCodeValidation1(jsonResponse, HttpStatus.SC_OK);
-			Validation.responseTimeValidation(jsonResponse);		
-
+			
 			Log.info("V1RefreshBooks Response: "+jsonResponse.then().extract().response().prettyPrint());
 		} catch (Exception exp) 
 		{
 			Log.fail(exp.getMessage());
-			exp.printStackTrace();
+			Log.fail("fails due to"+ exp.getCause());
 		}
 		Log.endTestCase("End");
 		return jsonResponse;
@@ -79,10 +76,9 @@ public class V1RefreshBooksHash {
 		} catch (Exception exp) 
 		{
 			Log.fail(exp.getMessage());
-			exp.printStackTrace();
+			Log.fail("fails due to"+ exp.getCause());
 		}
 		Log.endTestCase("End");
 		return jsonResponse;
 	}
-
 }

@@ -13,7 +13,8 @@ public class FetchFavouriteBooks {
 		try {
 			
 			Log.startTestCase("FetchFavouriteBooks");		
-			//System.out.println("GETfetchCategoriesCollectionsBooksRequestURL:" +GETfetchCategoriesCollectionsBooksPath);
+			Log.info("URL:" +"/DistributionServices/services/api/reader/user/"+devideId+"/"+DeviceType+"/fetchFavouriteBooks");
+			Log.info("userToken : "+userToken);
 			jsonResponse = given()
 					.header("usertoken",userToken)
 					.get("/DistributionServices/services/api/reader/user/"+devideId+"/"+DeviceType+"/fetchFavouriteBooks");

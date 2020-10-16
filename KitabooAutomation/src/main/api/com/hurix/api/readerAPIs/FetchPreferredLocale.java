@@ -27,6 +27,4 @@ public class FetchPreferredLocale {
 		Log.endTestCase("End");
 		return jsonResponse;
 	}
-
-
 }

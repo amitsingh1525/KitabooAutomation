@@ -12,6 +12,7 @@ import com.hurix.asset.audio.AudioStepModule;
 import com.hurix.automation.utility.Driver;
 import com.hurix.automation.utility.Log;
 import com.hurix.automation.utility.UIElements;
+import com.hurix.library.kitabooBooks.KitabooBooksStepModule;
 
 public class EpubBookModule extends EpubBookStepModule
 {
@@ -31,29 +32,65 @@ public class EpubBookModule extends EpubBookStepModule
 		Log.endTestCase("End");
 	}
 			
-	public static void epubhtmlbookcreate(String isbn,String title,String language,String spreadtype,String bookorentation,String epubtype,String font,String picformate,String pdffilepath,String pdfanswer,String coveranswer,String coverfilepath)
+	public static void epubhtmlbookcreate(String title, String language,
+			String spreadtype, String epubtype, String bookOriantaion,
+			String dPI, String picformat, String metaDataPath,
+			String pDF_DocPath, String uploadCover, String lowImagePath,
+			String uploadTOC, String uploadFile)
 	{
+		
+		String parentWin = Driver.driver.getWindowHandle();
 		linkepub();
-		String parent = Driver.driver.getWindowHandle();
-		btnaddnewbuttonepubbook();
-		btnhtmlcreatebookepubbook();
+		KitabooBooksStepModule.drpAddNew_HTMLCreateBook();
 		windowswitch();
-		txtisbnepubbook(isbn);
-		//rbPngpicformat(picformate);
-		drpfontepubbook(font);
-		txttitleepubbook(title);
-		drplanguagedropdownepubbook(language);
+		KitabooBooksStepModule.txtISBN("1245484578547");
+		KitabooBooksStepModule.txtTitle(title);
+		KitabooBooksStepModule.btnsavedraft();
+		Driver.driver.switchTo().window(parentWin);
+		KitabooBooksStepModule.btnresume();
+		windowswitch();
+		KitabooBooksStepModule.btncancel();
+		Driver.driver.switchTo().window(parentWin);
+		KitabooBooksStepModule.btnresume();
+		windowswitch();
+		KitabooBooksStepModule.drpLanguageSelection(language);
 		drpspreadtypeepubbook(spreadtype);
-		drpbookorientationepubbook(bookorentation);
 		drpepubtypeepubbook(epubtype);
-		Log.info(parent);
-		pdffileupload(pdfanswer,pdffilepath);
-		uploadcoverimage(coveranswer, coverfilepath);
-		btnfinishepubbook();
-		btncontinueepubbooks();
-		Driver.driver.switchTo().window(parent);
-		Log.info(parent);		
-	
+		KitabooBooksStepModule.drpBookOriantation(bookOriantaion);
+		KitabooBooksStepModule.chkFontPermission(true);
+		KitabooBooksStepModule.drpdpi(dPI, picformat);
+		KitabooBooksStepModule.linksamplemetadata();
+		KitabooBooksStepModule.samplefileupload(metaDataPath);
+		String[] paths = pDF_DocPath.split(",");
+		for(String path : paths) {
+			KitabooBooksStepModule.btnUploadBook(path,uploadFile);
+		}
+		KitabooBooksStepModule.deletebook();
+		String Lowquality="Low quality";
+		KitabooBooksStepModule.rdbDefaultImage(uploadCover, Lowquality, lowImagePath);
+		String Highquality="High quality";
+		KitabooBooksStepModule.rdbDefaultImage(uploadCover, Highquality, lowImagePath);
+		KitabooBooksStepModule.SampleTOC(); 
+		KitabooBooksStepModule.UploadTOC(uploadTOC);
+		KitabooBooksStepModule.DownloadTOC();
+		KitabooBooksStepModule.Deletelevel();
+		KitabooBooksStepModule.UploadTOC("D:\\eclipseWorkSpace\\KitabooAutomation\\KitabooAutomation\\testData\\uploadTOC.xls");
+		KitabooBooksStepModule.ChapterNumber();
+		KitabooBooksStepModule.PagePosition();
+		KitabooBooksStepModule.DeleteFolio();
+		KitabooBooksStepModule.DeletePageNo();
+		KitabooBooksStepModule.DeleteTOC();
+		KitabooBooksStepModule.GenerateFolio();
+		KitabooBooksStepModule.refresh();
+		KitabooBooksStepModule.UploadTOC("D:\\eclipseWorkSpace\\KitabooAutomation\\KitabooAutomation\\testData\\uploadTOC.xls");
+		KitabooBooksStepModule.btnFinish();
+		KitabooBooksStepModule.afterFinishBtnContinue();
+		threadHold_5Sec();
+		threadHold_5Sec();
+		Driver.driver.switchTo().window(parentWin);
+		
+			
 	}
+
 }
 
