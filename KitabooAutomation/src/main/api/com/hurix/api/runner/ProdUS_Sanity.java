@@ -1949,7 +1949,9 @@ public class ProdUS_Sanity {
 			consumerSecret11 = JDBC_Queries.getSK(881, sqlhost, sqlUsername, sqlPassword);}
 			else{consumerKey11 = JDBC_Queries.getCK(client_Id, sqlhost, sqlUsername, sqlPassword);
 			consumerSecret11 = JDBC_Queries.getSK(client_Id, sqlhost, sqlUsername, sqlPassword);}
-			Response fetchInstitutes1 = FetchInstitutes.fetchInstitutes(consumerKey11, consumerSecret11);
+			
+			
+			Response fetchInstitutes1 = FetchInstitutes.fetchInstitutes(consumerKey1, consumerSecret1);
 			Validation.responseHeaderCodeValidation(fetchInstitutes1, HttpStatus.SC_OK);
 			Validation.responseCodeValidation1(fetchInstitutes1, HttpStatus.SC_OK);
 			Validation.responseTimeValidation(fetchInstitutes1);
